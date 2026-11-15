@@ -27,7 +27,7 @@ const intl = (l, d, o) => { try { return new Intl.DateTimeFormat(l === 'he' ? 'h
 const monthName = (d, l = lang()) => { const m = intl(l, d, { month: 'long' }); return l === 'ru' ? cap(m) : m; };
 const monthYear = d => monthName(d) + ' ' + d.getFullYear();
 const dayMonth = (d, l = lang()) => intl(l, d, { day: 'numeric', month: 'long' });
-const longDate = (d, l = lang()) => { const s = intl(l, d, { weekday: 'long' }) + ', ' + dayMonth(d, l); return l === 'ru' ? cap(s) : s; };
+const longDate = (d, l = lang(), up = true) => { const s = intl(l, d, { weekday: 'long' }) + ', ' + dayMonth(d, l); return l === 'ru' && up ? cap(s) : s; };
 const shortNum = d => `${d.getDate()}.${d.getMonth() + 1}`;
 const workDay = d => { let x = new Date(d); while (x.getDay() > 4) x = addDays(x, 1); return x; };
 const nextWorkDay = () => { let x = addDays(today0(), 1); while (x.getDay() === 6) x = addDays(x, 1); return x; };
@@ -365,11 +365,11 @@ const scene = (key, label) => svgScene((SCENES[key] || SCENES.music)(), label);
 
 /* login illustration: castle door ajar, Noa peeking */
 function loginArt() {
-  let bumps = ''; for (let i = 0; i < 9; i++) bumps += 'a10 10 0 0 1 20 0';
-  const tower = (x, w, roof) => `<rect x="${x + 3}" y="104" width="${w}" height="140" fill="#F3DCE8"/><rect x="${x}" y="100" width="${w}" height="144" fill="#fff"/>
-    <path d="M${x - 8} 104L${x + w / 2} ${roof}L${x + w + 8} 104Q${x + w / 2} 112 ${x - 8} 104Z" fill="#F49BB6"/><path d="M${x - 8} 102L${x + w / 2} ${roof - 2}L${x + w / 2} 108Q${x + w / 4} 108 ${x - 8} 102Z" fill="#F6B0C6"/>
-    <path d="M${x + w / 2} ${roof}V${roof - 20}" stroke="#2D2B6B" stroke-width="2" stroke-linecap="round"/><path class="pa-a pa-a-flag" d="M${x + w / 2 + 1} ${roof - 20}c7-2 10 3 17 1-4 5-10 6-17 8Z" fill="${MAG}"/>
-    <path d="M${x + w / 2 - 7} 150v-8a7 7 0 0 1 14 0v8Z" fill="#3E3B7E"/><path d="M${x + w / 2 - 7} 150v-8a7 7 0 0 1 7-7v15Z" fill="#545097"/>`;
+  let bumps = ''; for (let i = 0; i < 7; i++) bumps += 'a10 10 0 0 1 20 0';
+  const tower = (x, w, roof, ty = 118) => `<rect x="${x + 3}" y="${ty + 4}" width="${w}" height="${250 - ty}" fill="#F3DCE8"/><rect x="${x}" y="${ty}" width="${w}" height="${250 - ty}" fill="#fff"/>
+    <path d="M${x - 8} ${ty + 4}L${x + w / 2} ${roof}L${x + w + 8} ${ty + 4}Q${x + w / 2} ${ty + 12} ${x - 8} ${ty + 4}Z" fill="#F49BB6"/><path d="M${x - 8} ${ty + 2}L${x + w / 2} ${roof - 2}L${x + w / 2} ${ty + 8}Q${x + w / 4} ${ty + 8} ${x - 8} ${ty + 2}Z" fill="#F6B0C6"/>
+    <path d="M${x + w / 2} ${roof}V${roof - 18}" stroke="#2D2B6B" stroke-width="2" stroke-linecap="round"/><path class="pa-a pa-a-flag" d="M${x + w / 2 + 1} ${roof - 18}c7-2 10 3 17 1-4 5-10 6-17 8Z" fill="${MAG}"/>
+    <path d="M${x + w / 2 - 7} ${ty + 54}v-8a7 7 0 0 1 14 0v8Z" fill="#3E3B7E"/><path d="M${x + w / 2 - 7} ${ty + 54}v-8a7 7 0 0 1 7-7v15Z" fill="#545097"/>`;
   return `<svg viewBox="0 0 360 250" class="pa-login__svg" aria-hidden="true" focusable="false">
     <defs>
       <linearGradient id="pa-lg-sky" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#BFE6FC"/><stop offset="1" stop-color="#FDEAF2"/></linearGradient>
@@ -377,16 +377,17 @@ function loginArt() {
       <radialGradient id="pa-lg-halo"><stop offset="0" stop-color="#FFE4A3" stop-opacity=".9"/><stop offset="1" stop-color="#FFE4A3" stop-opacity="0"/></radialGradient>
       <clipPath id="pa-lg-arch"><path d="M24 250V140C24 66 94 14 180 14s156 52 156 126v110Z"/></clipPath>
     </defs>
+    <path d="M18 250V140C18 62 92 8 180 8s162 54 162 132v110Z" fill="#F6B0C6" opacity=".55" transform="translate(5 6)"/>
     <path d="M18 250V140C18 62 92 8 180 8s162 54 162 132v110Z" fill="#fff"/>
     <g clip-path="url(#pa-lg-arch)">
       <rect width="360" height="250" fill="url(#pa-lg-sky)"/>
-      ${sunG(292, 64, 16)}
-      ${cloud(40, 54, 1)}${cloud(222, 34, .7)}
-      ${sp(86, 40, 5, MAG, 'pa-a pa-a-tw')}${sp(262, 110, 4, '#01AEF2', 'pa-a pa-a-tw')}${sp(52, 116, 3.6, '#FFC24D', 'pa-a pa-a-tw')}
+      ${sunG(180, 58, 15)}
+      ${cloud(46, 64, .85)}${cloud(232, 40, .75)}
+      ${sp(124, 40, 5, MAG, 'pa-a pa-a-tw')}${sp(292, 104, 4, '#01AEF2', 'pa-a pa-a-tw')}${sp(52, 122, 3.6, '#FFC24D', 'pa-a pa-a-tw')}
       <path d="M0 214C80 196 150 200 196 206S300 218 360 208V250H0Z" fill="#A4D9BF"/>
-      ${tower(56, 44, 62)}${tower(260, 44, 62)}
-      <path d="M104 244V124${bumps}V244Z" fill="#F3DCE8" transform="translate(4 4)"/>
-      <path d="M100 244V124${bumps}V244Z" fill="#fff"/>
+      ${tower(72, 42, 86)}${tower(246, 42, 86)}
+      <path d="M110 244V124${bumps}V244Z" fill="#F3DCE8" transform="translate(4 4)"/>
+      <path d="M110 244V124${bumps}V244Z" fill="#fff"/>
       <path d="M118 112c20 10 40 14 62 14s42-4 62-14" stroke="#C98E4A" stroke-width="1.4" fill="none"/>
       ${[0, 1, 2, 3, 4, 5, 6].map(i => { const x = 126 + i * 18, y = 116 + Math.sin((i + .5) / 7 * Math.PI) * 9; return `<circle class="pa-a pa-a-tw" style="animation-delay:${-i * .3}s" cx="${x}" cy="${y}" r="3" fill="${['#FFD27A', '#F6B0C6', '#7FD3F7'][i % 3]}"/>`; }).join('')}
       <circle class="pa-lg-halo" cx="180" cy="200" r="58" fill="url(#pa-lg-halo)"/>
@@ -416,7 +417,7 @@ function headArt() {
     <defs><linearGradient id="${id}" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#D0EDFD"/><stop offset="1" stop-color="#FDEAF2"/></linearGradient></defs>
     <rect width="400" height="170" fill="url(#${id})"/>
     ${cloud(150, 18, .7)}${cloud(300, 40, .55)}
-    ${sp(120, 60, 4, '#FFC24D', 'pa-a pa-a-tw')}${sp(240, 22, 3.4, MAG, 'pa-a pa-a-tw')}${sp(352, 88, 3, '#01AEF2', 'pa-a pa-a-tw')}
+    ${sp(98, 42, 4.2, '#FFC24D', 'pa-a pa-a-tw')}${sp(44, 30, 3.2, MAG, 'pa-a pa-a-tw')}${sp(270, 14, 3, '#01AEF2', 'pa-a pa-a-tw')}
     <g transform="translate(16 76)">
       <rect x="6" y="34" width="22" height="64" fill="#F3DCE8"/><rect x="3" y="30" width="22" height="66" fill="#fff"/>
       <path d="M-2 33L14 6l16 27Z" fill="#F49BB6"/><path d="M14 6V-6" stroke="#2D2B6B" stroke-width="1.6"/><path d="M15-6c5-1.4 7 2 12 .8-3 3.6-7 4.2-12 5.6Z" fill="${MAG}"/>
@@ -553,6 +554,10 @@ async function sendCode(again = false) {
   q('[data-pa="sentTo"]').textContent = t('pa.login.sentTo', { phone: fmtPhone(d) });
   if (!reduced() && step.animate) step.animate([{ opacity: 0, transform: 'translateY(-8px)' }, { opacity: 1, transform: 'none' }], { duration: 420, easing: 'cubic-bezier(.22,1,.36,1)' });
   updateEnter();
+  if (!App.tour.running) {
+    const r = step.getBoundingClientRect(), lim = innerHeight - 100;
+    if (r.bottom > lim) App.scrollTo(App.scrollY() + r.bottom - lim + 12, { duration: 500 });
+  }
   await sleep(App.tour.running ? 450 : 750);
   if (seq !== S.loginSeq) return;
   showSms(seq);
@@ -759,7 +764,7 @@ function openAbsent() {
     S.sent.absent = { reason, date: d }; renderTiles();
     App.emit('parent:absent', { kid: 'noa', date: d, reason });
     showDone(sh, {
-      title: t('pa.abs.doneT'), text: t(reason === 'sick' ? 'pa.abs.doneSick' : 'pa.abs.done', { date: longDate(d) }),
+      title: t('pa.abs.doneT'), text: t(reason === 'sick' ? 'pa.abs.doneSick' : 'pa.abs.done', { date: longDate(d, lang(), false) }),
       extra: `<button type="button" class="link-btn pa-undo" data-undo>${esc(t('pa.abs.undo'))}</button>`
     });
     $('[data-undo]', sh.body).addEventListener('click', () => { S.sent.absent = null; renderTiles(); sh.close(); App.ui.toast(t('pa.abs.undone'), { icon: 'heart' }); });
@@ -817,7 +822,7 @@ function openPickup() {
     App.emit('parent:pickup', { kid: 'noa', person: who, code });
     const sex = TRUST_SEX[who] || 'f';
     const nm = firstName(p);
-    const msgTxt = { he: `היי ${firstName({ he: L({ he: p.he }) })}, הקוד לאיסוף של נועה היום: ${code}. בתוקף עד ${until}.`, ru: `${String(p.ru).split(' · ').pop()}, привет! Код, чтобы забрать Ноа сегодня: ${code}. Действует до ${until}.` };
+    const msgTxt = { he: `היי ${p.he.split(' · ').pop()}, הקוד לאיסוף של נועה היום: ${code}. בתוקף עד ${until}.`, ru: `${String(p.ru).split(' · ').pop()}, привет! Код, чтобы забрать Ноа сегодня: ${code}. Действует до ${until}.` };
     const extra = `<div class="pa-code" aria-label="${esc(t('pa.pick.codeA', { code: code.split('').join(' ') }))}">${App.avatarEl(p, 52, { label: '' })}
         <div class="pa-code__digits" aria-hidden="true" dir="ltr">${code.split('').map((c, i) => `<span style="--i:${i}">${c}</span>`).join('')}</div>
         <p class="pa-code__until">${icon('clock', 'ic--sm')} ${esc(t('pa.pick.until', { time: until }))}</p></div>
@@ -1108,7 +1113,7 @@ function renderCal() {
     </section>
     <section class="card pa-cal" aria-labelledby="pa-cal-t">
       <div class="pa-cal__top">
-        <button type="button" class="pa-cal__nav" data-nav="-1" aria-label="${esc(t('pa.cal.prev'))}">${icon('chevron', 'ic--dir pa-flip')}</button>
+        <button type="button" class="pa-cal__nav" data-nav="-1" aria-label="${esc(t('pa.cal.prev'))}">${icon('chevron', 'pa-back')}</button>
         <h2 class="h4" id="pa-cal-t" aria-live="polite">${esc(monthYear(m))}</h2>
         <button type="button" class="pa-cal__nav" data-nav="1" aria-label="${esc(t('pa.cal.next'))}">${icon('chevron', 'ic--dir')}</button>
       </div>
@@ -1185,7 +1190,7 @@ function renderMenu() {
   const keys = Object.keys(App.data.allergens);
   const al = S.allergen;
   const count = al ? MENU.reduce((n, d) => n + ['b', 'l', 's'].filter(k => d[k].a.includes(al)).length, 0) : 0;
-  box.innerHTML = `<section class="pa-menu ${S.allergyOn && al ? 'is-filter' : ''}" aria-labelledby="pa-menu-t">
+  box.innerHTML = `<section class="pa-food ${S.allergyOn && al ? 'is-filter' : ''}" aria-labelledby="pa-menu-t">
     <div class="pa-menu__head">
       <div><h2 class="h3" id="pa-menu-t">${esc(t('pa.menu.title'))}</h2><p class="small muted pa-menu__fact">${icon('chef', 'ic--sm')} ${esc(t('pa.menu.fact'))}</p></div>
       <span class="demo-tag">${esc(t('pa.menu.example'))}</span>
@@ -1257,6 +1262,7 @@ function bindDocs() {
   cv.addEventListener('pointerup', end); cv.addEventListener('pointercancel', end); cv.addEventListener('pointerleave', end);
   q('[data-pa="sigClear"]').addEventListener('click', clearSig);
   q('[data-pa="sigDone"]').addEventListener('click', signDoc);
+  q('[data-pa="sigTyped"]').addEventListener('click', typedSig);
   qq('[data-consent]').forEach(b => b.addEventListener('click', () => {
     const k = b.dataset.consent; S.consent[k] = !S.consent[k]; b.setAttribute('aria-checked', String(S.consent[k]));
     App.ui.toast(t('pa.docs.saved'), { tone: 'ok' });
@@ -1270,6 +1276,13 @@ function sizeSig() {
   cv.width = Math.round(r.width * dpr); cv.height = Math.round(r.height * dpr);
   const c = sig.ctx; c.setTransform(dpr, 0, 0, dpr, 0, 0); c.lineCap = 'round'; c.lineJoin = 'round'; c.strokeStyle = INK; c.lineWidth = 2.8;
   S.sigStrokes = 0; q('.pa-sig').classList.remove('has-ink');
+}
+function typedSig() {
+  if (S.signed) return; sizeSig(); clearSig();
+  const c = sig.ctx, w = sig.cv.getBoundingClientRect().width, h = sig.cv.getBoundingClientRect().height;
+  c.save(); c.fillStyle = INK; c.font = `italic 600 ${Math.round(h * .34)}px ${getComputedStyle(document.body).getPropertyValue('--font-display') || 'serif'}`;
+  c.textAlign = 'center'; c.textBaseline = 'middle'; c.fillText(momName(), w / 2, h * .5); c.restore();
+  S.sigStrokes = 1; q('.pa-sig').classList.add('has-ink'); fieldErr(q('[data-pa="sigErr"]'), '');
 }
 function clearSig() {
   const cv = sig.cv; if (!cv) return; sig.ctx.save(); sig.ctx.setTransform(1, 0, 0, 1, 0, 0); sig.ctx.clearRect(0, 0, cv.width, cv.height); sig.ctx.restore();
@@ -1469,7 +1482,7 @@ const I18N = {
     'pa.login.phone': 'מספר הנייד שלכם', 'pa.login.hint': 'נשלח אליכם קוד חד-פעמי', 'pa.login.sample': 'מספר לדוגמה',
     'pa.login.send': 'שליחת קוד', 'pa.login.sending': 'שולחים קוד…', 'pa.login.err': 'חסרות ספרות. מספר נייד מלא, למשל 050-123-4567',
     'pa.login.code': 'הקוד שקיבלתם', 'pa.login.sentTo': 'שלחנו קוד ל-{phone}', 'pa.login.enter': 'כניסה', 'pa.login.resend': 'לא הגיע? לשלוח שוב', 'pa.login.other': 'מספר אחר',
-    'pa.login.digit': 'ספרה {n} מתוך 4', 'pa.login.demo': 'דמו: כל מספר נייד עובד, ושום הודעה לא נשלחת באמת.',
+    'pa.login.d1': 'ספרה 1 מתוך 4', 'pa.login.d2': 'ספרה 2 מתוך 4', 'pa.login.d3': 'ספרה 3 מתוך 4', 'pa.login.d4': 'ספרה 4 מתוך 4', 'pa.login.demo': 'דמו: כל מספר נייד עובד, ושום הודעה לא נשלחת באמת.',
     'pa.login.smsApp': 'הודעות', 'pa.login.smsNow': 'עכשיו', 'pa.login.smsText': 'גן סינדרלה: קוד הכניסה שלכם הוא 4815',
     'pa.hi.morning': 'בוקר טוב, {name}', 'pa.hi.day': 'צהריים טובים, {name}', 'pa.hi.evening': 'ערב טוב, {name}', 'pa.hi.night': 'לילה טוב, {name}',
     'pa.group': 'קבוצת {g}', 'pa.status.in': 'בגן מ-07:48', 'pa.status.home': 'היום בגן: 07:48–16:50',
@@ -1533,11 +1546,11 @@ const I18N = {
     'pa.login.phone': 'Ваш мобильный', 'pa.login.hint': 'Пришлём одноразовый код', 'pa.login.sample': 'Номер для примера',
     'pa.login.send': 'Получить код', 'pa.login.sending': 'Отправляем код…', 'pa.login.err': 'Не хватает цифр. Нужен мобильный номер, например 050-123-4567',
     'pa.login.code': 'Код из сообщения', 'pa.login.sentTo': 'Отправили код на {phone}', 'pa.login.enter': 'Войти', 'pa.login.resend': 'Не пришло? Отправить ещё раз', 'pa.login.other': 'Другой номер',
-    'pa.login.digit': 'Цифра {n} из 4', 'pa.login.demo': 'Демо: подойдёт любой мобильный, ничего на самом деле не отправляется.',
+    'pa.login.d1': 'Цифра 1 из 4', 'pa.login.d2': 'Цифра 2 из 4', 'pa.login.d3': 'Цифра 3 из 4', 'pa.login.d4': 'Цифра 4 из 4', 'pa.login.demo': 'Демо: подойдёт любой мобильный, ничего на самом деле не отправляется.',
     'pa.login.smsApp': 'Сообщения', 'pa.login.smsNow': 'сейчас', 'pa.login.smsText': 'Синдерелла: ваш код для входа 4815',
     'pa.hi.morning': 'Доброе утро, {name}', 'pa.hi.day': 'Добрый день, {name}', 'pa.hi.evening': 'Добрый вечер, {name}', 'pa.hi.night': 'Доброй ночи, {name}',
     'pa.group': '{g}', 'pa.status.in': 'В саду с 07:48', 'pa.status.home': 'Сегодня в саду: 07:48–16:50',
-    'pa.trust': 'Фото Ноа видите только вы, не общие группы', 'pa.onlyYou': 'Только у вас',
+    'pa.trust': 'Фото Ноа только у вас. Никаких общих групп', 'pa.onlyYou': 'Только у вас',
     'pa.menuBtn': 'Меню аккаунта', 'pa.notifs': 'Уведомления на телефон', 'pa.logout': 'Выйти', 'pa.loggedOut': 'Вы вышли. До встречи!',
     'pa.tabs': 'Разделы кабинета', 'pa.tab.today': 'Сегодня', 'pa.tab.pay': 'Оплаты', 'pa.tab.cal': 'Календарь', 'pa.tab.menu': 'Меню', 'pa.tab.docs': 'Документы', 'pa.tab.album': 'Альбом',
     'pa.qa.title': 'Быстрые действия',

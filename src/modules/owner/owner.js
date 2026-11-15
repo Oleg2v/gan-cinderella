@@ -59,7 +59,7 @@ const HE = {
   'ow.st.when': 'מה מפעיל', 'ow.st.log': 'מה קורה עכשיו', 'ow.st.again': 'מההתחלה', 'ow.st.close': 'סגירה',
   'ow.st.done': 'בוצע', 'ow.st.doneSub': 'בלי אף נגיעה שלך.',
   'ow.st.parent': 'הורה', 'ow.st.inHe': 'בעברית', 'ow.st.inRu': 'ברוסית', 'ow.st.owner': 'הטלפון שלך', 'ow.st.kitchen': 'טאבלט המטבח', 'ow.st.staff': 'טאבלט הצוות',
-  'ow.st.sent': 'נשלחו', 'ow.st.tabKitchen': 'מטבח · התראות', 'ow.st.tabStaff': 'בוגרים · תזכורות', 'ow.st.tabEmpty': 'אין התראות חדשות',
+  'ow.st.sent': 'נשלחו', 'ow.st.tabKitchen': 'המטבח', 'ow.st.tabStaff': 'צוות בוגרים', 'ow.st.tabEmpty': 'אין התראות חדשות',
   /* the nine */
   'ow.a.lead.t': 'פנייה חדשה מהאתר', 'ow.a.lead.d': 'ההורה מקבל מיד מועדים לסיור, ואת מקבלת התראה.', 'ow.a.lead.trig': 'טופס באתר', 'ow.a.lead.act1': 'מועדים לסיור', 'ow.a.lead.act2': 'התראה אלייך', 'ow.a.lead.log': 'פנייה מהאתר · נשלחו מועדים לסיור',
   'ow.a.visit.t': 'תזכורת לסיור', 'ow.a.visit.d': 'יום לפני הסיור ההורה מקבל תזכורת, ואחריו קישור להרשמה.', 'ow.a.visit.trig': 'סיור מחר', 'ow.a.visit.act1': 'תזכורת', 'ow.a.visit.act2': 'קישור להרשמה', 'ow.a.visit.log': 'תזכורת לסיור של מחר',
@@ -100,7 +100,7 @@ const RU = {
   'ow.st.when': 'Запуск', 'ow.st.log': 'Что происходит', 'ow.st.again': 'Сначала', 'ow.st.close': 'Закрыть',
   'ow.st.done': 'Готово', 'ow.st.doneSub': 'Вам не пришлось ничего делать.',
   'ow.st.parent': 'Родитель', 'ow.st.inHe': 'на иврите', 'ow.st.inRu': 'по-русски', 'ow.st.owner': 'Ваш телефон', 'ow.st.kitchen': 'Планшет кухни', 'ow.st.staff': 'Планшет команды',
-  'ow.st.sent': 'отправлено', 'ow.st.tabKitchen': 'Кухня · уведомления', 'ow.st.tabStaff': 'Старшая группа · напоминания', 'ow.st.tabEmpty': 'Новых уведомлений нет',
+  'ow.st.sent': 'отправлено', 'ow.st.tabKitchen': 'Кухня', 'ow.st.tabStaff': 'Старшая группа', 'ow.st.tabEmpty': 'Новых уведомлений нет',
   'ow.a.lead.t': 'Новая заявка с сайта', 'ow.a.lead.d': 'Родитель сразу получает время экскурсии, а вам приходит уведомление.', 'ow.a.lead.trig': 'Форма на сайте', 'ow.a.lead.act1': 'Время экскурсии', 'ow.a.lead.act2': 'Уведомление вам', 'ow.a.lead.log': 'Заявка с сайта · отправлено время экскурсии',
   'ow.a.visit.t': 'Напоминание об экскурсии', 'ow.a.visit.d': 'Накануне экскурсии родитель получает напоминание, а после неё ссылку на регистрацию.', 'ow.a.visit.trig': 'Экскурсия завтра', 'ow.a.visit.act1': 'Напоминание', 'ow.a.visit.act2': 'Ссылка на регистрацию', 'ow.a.visit.log': 'Напоминание о завтрашней экскурсии',
   'ow.a.seat.t': 'Освободилось место', 'ow.a.seat.d': 'Место сразу предлагается следующей семье из листа ожидания.', 'ow.a.seat.trig': 'Свободное место', 'ow.a.seat.act1': 'Предложение следующей семье', 'ow.a.seat.log': 'Место в младшей группе предложено следующей семье',
@@ -157,7 +157,7 @@ const AUTOS = [
         { t: 'trig', log: P('נכנסה פנייה חדשה מהאתר', 'Пришла новая заявка с сайта') },
         { t: 'go', lanes: ['p'] },
         { t: 'type', lanes: ['p'] },
-        { t: 'msg', lane: 'p', text: P('שלום מרינה! תודה על הפנייה. אפשר לבוא לסיור: ב׳ 09:30, ד׳ 16:00 או ה׳ 10:00. מה נוח לך?', 'Здравствуйте, Марина! Спасибо за заявку. Приглашаем на экскурсию: пн 09:30, ср 16:00 или чт 10:00. Когда вам удобно?'), log: P('ההורה קיבלה מועדים לסיור, ברוסית', 'Родитель получила время экскурсии по-русски') },
+        { t: 'msg', lane: 'p', text: P('שלום מרינה! תודה על הפנייה. אפשר לבוא לסיור: ב׳ 09:30, ד׳ 16:00 או ה׳ 10:00. מה נוח לך?', 'Здравствуйте, Марина! Спасибо за заявку. Приглашаем на экскурсию: пн 09:30, ср 16:00 или чт 10:00. Когда вам удобно?'), log: P('מרינה קיבלה מועדים לסיור, ברוסית', 'Марина получила время экскурсии по-русски') },
         { t: 'reply', lane: 'p', text: P('ד׳ 16:00 מתאים. תודה!', 'Ср 16:00 подходит. Спасибо!'), log: P('מרינה בחרה: ד׳ 16:00', 'Марина выбрала ср 16:00') },
         { t: 'go', lanes: ['o'] },
         { t: 'notify', lane: 'o', title: P('פנייה חדשה מהאתר', 'Новая заявка с сайта'), text: P('מרינה, בן שנה וחצי. בחרה סיור ביום ד׳ 16:00, וזה כבר ביומן.', 'Марина, сыну полтора года. Выбрала экскурсию в ср 16:00, она уже в календаре.'), log: P('התראה נשלחה אלייך', 'Вам пришло уведомление') }
@@ -322,8 +322,8 @@ const AUTOS = [
         { t: 'trig', log: P('התפריט נבדק מול האלרגיות של כל הילדים', 'Меню сверяется с аллергиями всех детей') },
         { t: 'scan', ids: ['m1', 'm2', 'm3', 'm4', 'm5'], end: { m1: 'ok', m2: 'ok', m3: 'hit', m4: 'ok', m5: 'hit' }, log: P('שתי התאמות: איתי (בוטנים), תמר (שומשום)', 'Два совпадения: Итай (арахис), Тамар (кунжут)') },
         { t: 'go', lanes: ['k'] },
-        { t: 'tab', lane: 'k', icon: 'alert', tone: 'warn', kid: 'itai', title: P('ג׳ · מנחה: חטיף בוטנים', 'Вт · полдник: арахисовые палочки'), text: P('לאיתי אלרגיה לבוטנים. להכין לו חלופה.', 'У Итая аллергия на арахис. Приготовьте замену.'), ms: 700 },
-        { t: 'tab', lane: 'k', icon: 'alert', tone: 'warn', kid: 'tamar', title: P('ה׳ · צהריים: ממרח טחינה', 'Чт · обед: тхина'), text: P('לתמר אלרגיה לשומשום. להכין לה חלופה.', 'У Тамар аллергия на кунжут. Приготовьте замену.'), log: P('המטבח קיבל שתי התראות', 'Кухня получила два предупреждения') },
+        { t: 'tab', lane: 'k', icon: 'alert', tone: 'warn', kid: 'itai', title: P('ג׳ · מנחה עם בוטנים', 'Вт · полдник с арахисом'), text: P('לאיתי אלרגיה. להכין לו חלופה.', 'У Итая аллергия. Нужна замена.'), ms: 700 },
+        { t: 'tab', lane: 'k', icon: 'alert', tone: 'warn', kid: 'tamar', title: P('ה׳ · צהריים עם טחינה', 'Чт · обед с тхиной'), text: P('לתמר אלרגיה לשומשום. להכין לה חלופה.', 'У Тамар аллергия на кунжут. Нужна замена.'), log: P('המטבח קיבל שתי התראות', 'Кухня получила два предупреждения') },
         { t: 'go', lanes: ['o'] },
         { t: 'notify', lane: 'o', title: P('תפריט השבוע נבדק', 'Меню недели проверено'), text: P('שתי התאמות לאלרגיות. המטבח כבר מכין חלופות.', 'Два совпадения с аллергиями. Кухня уже готовит замену.') }
       ]
@@ -426,7 +426,7 @@ function renderBento() {
   el.innerHTML = `
   <article class="ow-card ow-k ow-k--kids" data-ow-kpi="kids" style="--ow-n:0">
     ${kHead('users', 'ow.k.kids', `<span class="tag tag--ok ow-k__pill">${ic('check-circle')}${esc(t('ow.k.kidsPill', { p: att }))}</span>`)}
-    <p class="ow-big">${CU(k.present, 'ow-big__n')}<span class="ow-big__of">/${num(k.registered)}</span></p>
+    <p class="ow-big"><span class="ow-frac" dir="ltr">${CU(k.present, 'ow-big__n')}<span class="ow-big__of">/${num(k.registered)}</span></span></p>
     <p class="ow-k__sub">${esc(t('ow.k.kidsSub', { n: num(k.registered), m: num(k.registered - k.present) }))}</p>
     <figure class="ow-arr" role="img" aria-label="${esc(t('ow.k.arrA11y', { list: k.arrivals.map(a => `${a[0]} ${a[1]}`).join(', ') }))}">
       <figcaption class="ow-k__cap" aria-hidden="true">${esc(t('ow.k.arr'))}</figcaption>
@@ -458,7 +458,7 @@ function renderBento() {
   </article>
   <article class="ow-card ow-k ow-k--pay" data-ow-kpi="pay" style="--ow-n:5">
     ${kHead('card', 'ow.k.pay', `<span class="tag tag--warn ow-k__pill" data-ow-paypill>${esc(t('ow.k.payPill', { n: pend }))}</span>`)}
-    <div class="ow-pay" role="img" aria-label="${esc(t('ow.k.payA11y', { a: k.paid, b: pend }))}"><span class="ow-pay__art" aria-hidden="true">${payRing()}<span class="ow-pay__c">${CU(k.paid, 'ow-pay__n')}<small>/${num(k.families)}</small></span></span>
+    <div class="ow-pay" role="img" aria-label="${esc(t('ow.k.payA11y', { a: k.paid, b: pend }))}"><span class="ow-pay__art" aria-hidden="true">${payRing()}<span class="ow-pay__c" dir="ltr">${CU(k.paid, 'ow-pay__n')}<small>/${num(k.families)}</small></span></span>
       <ul class="ow-legend" aria-hidden="true"><li><i class="is-a"></i><span>${esc(t('ow.k.paid'))}</span><b class="tnum">${num(k.paid)}</b></li><li><i class="is-b"></i><span>${esc(t('ow.k.pending'))}</span><b class="tnum">${num(pend)}</b></li></ul></div>
   </article>
   <article class="ow-card ow-k ow-k--shift" data-ow-kpi="shift" style="--ow-n:6">
@@ -538,7 +538,7 @@ function schemaHtml(a) {
   const paths = ys.map(y => `<path d="M0 50C20 50 20 ${y} 40 ${y}"/>`).join('');
   return `<div class="ow-sch" data-n="${n}" role="img" aria-label="${esc(t('ow.a.schemaA11y', { trig: t(`ow.a.${a.id}.trig`), acts: acts.join(', ') }))}">
     <span class="ow-sch__trig" aria-hidden="true">${ic(a.sch.trig)}<span>${esc(t(`ow.a.${a.id}.trig`))}</span></span>
-    <svg class="ow-sch__wire" viewBox="0 0 40 100" preserveAspectRatio="none" aria-hidden="true" focusable="false">${paths}</svg>
+    <span class="ow-sch__wire" aria-hidden="true"><svg viewBox="0 0 40 100" preserveAspectRatio="none" focusable="false">${paths}</svg></span>
     <span class="ow-sch__acts" aria-hidden="true">${a.sch.acts.map((x, k) => `<span class="ow-sch__act">${ic(x)}<span>${esc(acts[k])}</span></span>`).join('')}</span>
   </div>`;
 }
@@ -562,7 +562,10 @@ function cardHtml(a, i) {
 function renderGrid() {
   const g = $('[data-ow-grid]', root); if (!g) return;
   g.innerHTML = AUTOS.map(cardHtml).join('');
-  if (!S.cardsIn) App.reveal(g);
+  if ('IntersectionObserver' in window) {
+    if (!S.cardIO) S.cardIO = new IntersectionObserver(es => es.forEach(en => en.target.classList.toggle('is-vis', en.isIntersecting)), { rootMargin: '40px 0px' });
+    $$('.ow-a', g).forEach(c => S.cardIO.observe(c));
+  } else $$('.ow-a', g).forEach(c => c.classList.add('is-vis'));
   updActive();
 }
 function updActive() {
@@ -612,7 +615,7 @@ function trigHtml(st) {
       <span class="ow-trig__main"><span class="ow-trig__k">${ic('bolt')}${esc(t('ow.st.when'))}</span><b class="ow-trig__t" data-ow-tt>${esc(L(tr.t))}</b>${tr.sub ? `<span class="ow-trig__sub">${esc(L(tr.sub))}</span>` : ''}</span>
       <span class="ow-trig__side">
         <span class="ow-trig__v tnum" data-ow-tv>${esc(L(tr.v))}</span>
-        ${tr.counter ? `<span class="ow-trig__count"><b class="tnum" data-ow-cnt>0</b><span class="tnum">/${tr.counter}</span><span>${esc(t('ow.st.sent'))}</span></span>` : ''}
+        ${tr.counter ? `<span class="ow-trig__count"><span class="ow-frac tnum" dir="ltr"><b data-ow-cnt>0</b>/${tr.counter}</span><span>${esc(t('ow.st.sent'))}</span></span>` : ''}
       </span>
     </div>
     ${st.props ? `<ul class="ow-props" data-n="${st.props.length}" aria-hidden="true">${st.props.map(prop).join('')}</ul>` : ''}
@@ -626,9 +629,9 @@ function laneHtml(l) {
 }
 function stageHtml(a) {
   const st = a.stage;
-  return `<div class="ow-stage" data-lanes="${st.lanes.length}" data-auto="${a.id}">
+  return `<div class="ow-stage" data-lanes="${st.lanes.length}" data-auto="${a.id}"${st.props ? ' data-props' : ''}>
     <div class="ow-stage__main">
-      <p class="ow-stage__desc">${esc(t(`ow.a.${a.id}.d`))}</p>
+      <p class="ow-stage__desc">${esc(t(`ow.a.${a.id}.d`))} <span class="demo-tag">${esc(t('ow.example'))}</span></p>
       <div class="ow-flow">
         <svg class="ow-flow__svg" aria-hidden="true" focusable="false"></svg>
         ${trigHtml(st)}
@@ -764,8 +767,8 @@ function tabAdd(F, s) {
     <span class="ow-tcard__ic">${s.kid ? App.avatar(App.data.kid(s.kid), { label: '' }) : ic(s.icon)}</span>
     <span class="ow-tcard__m"><b>${ic(s.icon)}<span></span></b><span class="ow-tcard__x"></span></span></div>`);
   $('b span', c).textContent = L(s.title); $('.ow-tcard__x', c).textContent = L(s.text);
-  list.prepend(c);
-  while (list.children.length > 2) list.lastElementChild.remove();
+  list.append(c);
+  while (list.children.length > 2) list.firstElementChild.remove();
 }
 function setProp(F, id, s) {
   const p = $(`[data-p="${id}"]`, F.stage); if (!p) return;
@@ -812,7 +815,7 @@ async function runFilm(F) {
         await Promise.all(s.lanes.map(id => travel(F, id))); break;
       }
       case 'type': s.lanes.forEach(id => typing(F.devs[id], true)); await W(s.ms || 780); break;
-      case 'msg': { const n = bubble(F, s, false); logLine(F, s.log); await W(s.ms != null ? s.ms : 650 + Math.min(1100, n * 9)); break; }
+      case 'msg': { const n = bubble(F, s, false); logLine(F, s.log); await W(s.ms != null ? s.ms : 600 + Math.min(950, n * 8)); break; }
       case 'reply': { await W(380); bubble(F, s, true); logLine(F, s.log); await W(750); break; }
       case 'notify': { const d = F.devs[s.lane]; if (d && d.el.notify) d.el.notify({ title: s.title, text: s.text }); logLine(F, s.log); await W(1050); break; }
       case 'tab': tabAdd(F, s); logLine(F, s.log); await W(s.ms || 1050); break;
@@ -828,6 +831,15 @@ function finishFilm(F) {
   }
   $$('.ow-log li', F.stage).forEach(li => li.classList.remove('is-cur'));
   App.haptic(14);
+  // keep "done" in sight on short screens
+  const body = PL.s && PL.s.body;
+  if (body && done) {
+    const br = body.getBoundingClientRect(), dr = $('.ow-stage__btns', F.stage).getBoundingClientRect();
+    if (dr.bottom > br.bottom - 4) {
+      const to = body.scrollTop + dr.bottom - br.bottom + 16;
+      if (reduced() || !body.scrollTo) body.scrollTop = to; else body.scrollTo({ top: to, behavior: 'smooth' });
+    }
+  }
   // the dashboard reacts: last run → "now", a new line in the activity feed
   const id = F.a.id;
   S.last[id] = Date.now();
@@ -925,14 +937,21 @@ App.module('owner', {
       const sw = e.target.closest('[data-ow-sw]'); if (sw) { toggle(sw.dataset.owSw); return; }
       const per = e.target.closest('[data-ow-period]'); if (per) { setPeriod(per.dataset.owPeriod); return; }
       const go = e.target.closest('[data-ow-go]');
-      if (go) { const el = $(go.dataset.owGo, root); if (el) { App.scrollTo(el, { offset: 84 }); el.classList.remove('is-ping'); reflow(el); el.classList.add('is-ping'); } return; }
+      if (go) {
+        const el = $(go.dataset.owGo, root); if (!el) return;
+        App.scrollTo(el, { offset: 84 });
+        if (!el.hasAttribute('tabindex')) el.setAttribute('tabindex', '-1');
+        try { el.focus({ preventScroll: true }); } catch (err) { }
+        el.classList.remove('is-ping'); reflow(el); el.classList.add('is-ping');
+        return;
+      }
       const pl = e.target.closest('[data-ow-play]'), card = e.target.closest('[data-ow-a]');
       const id = pl ? pl.dataset.owPlay : card ? card.dataset.owA : null;
       if (!id) return;
       if (!S.on[id]) { offNudge(id); return; }
       play(id);
     });
-    App.on('lang', () => { renderAll(); });
+    App.on('lang', () => { renderAll(); if (PL.s && !PL.s.closed) startFilm(); });
     App.on('motion', () => { const b = $('[data-ow-bento]', root); if (b) b.classList.add('is-on'); const f = $('.ow-fun', root); if (f) f.classList.add('is-on'); });
     addEventListener('resize', onResize, { passive: true });
   },
@@ -986,7 +1005,8 @@ App.module('owner', {
         await ctx.scrollTo($('#ow-auto .ow-auto__head'), { duration: f ? 0 : 650, offset: 70 });
         for (const id of ['lead', 'summaries']) {
           ctx.check();
-          await ctx.tap($(`[data-ow-a="${id}"] [data-ow-play]`, root), { after: 120 });
+          await ctx.tap($(`[data-ow-a="${id}"] [data-ow-play]`, root), { after: 60 });
+          ctx.hideFinger();
           const t0 = performance.now();
           while (!PL.finished && performance.now() - t0 < 9000) await ctx.wait(80);
           ctx.hideFinger();
