@@ -60,7 +60,7 @@
 /* two twinkles hug the dial (in the empty corners of its square), never on top of the text */
 .ow-dial .ow-dial__tw { position: absolute; z-index: 1; width: 13px; height: 13px; color: var(--magenta); pointer-events: none; animation: ow-twinkle 3.2s ease-in-out infinite; }
 .ow-dial .ow-dial__tw--a { top: -1px; inset-inline-start: -9px; }
-.ow-dial .ow-dial__tw--b { top: calc(var(--ow-dial) * .76); inset-inline-end: -11px; width: 10px; height: 10px; color: var(--blue); animation-delay: -1.6s; }
+.ow-dial .ow-dial__tw--b { top: calc(var(--ow-dial) * .84); inset-inline-end: -5px; width: 10px; height: 10px; color: var(--blue); animation-delay: -1.6s; }
 @media (max-width: 899px) { .ow-twk { display: none; } }
 
 .ow-quick { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; margin-top: 16px; }
@@ -138,7 +138,7 @@ html[lang="ru"] .ow-k__label { font-weight: 600; letter-spacing: 0; }
 .is-on .ow-dots i { transform: none; }
 .ow-k__link { align-self: flex-start; text-align: start; display: inline-flex; align-items: center; gap: 8px; min-height: 44px; margin: -6px 0 -8px; padding: 0 2px; color: var(--magenta-700); font-weight: 600; font-size: var(--fs-sm); }
 .ow-k__link .ic { width: 22px; height: 22px; padding: 5px; border-radius: 50%; background: var(--magenta-600); color: #fff; }
-.ow-k__link:hover span { text-decoration: underline; text-underline-offset: .2em; }
+@media (hover: hover) { .ow-k__link:hover span { text-decoration: underline; text-underline-offset: .2em; } }
 
 /* tours week */
 .ow-week { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 2px; align-items: end; }
@@ -151,6 +151,7 @@ html[lang="ru"] .ow-k__label { font-weight: 600; letter-spacing: 0; }
 .ow-week__l { font-size: .6875rem; font-weight: 600; color: var(--ink-3); padding: 1px 5px; border-radius: var(--r-pill); }
 .ow-week__d.is-today .ow-week__l { color: var(--ink); background: var(--sky); }
 .ow-next { display: flex; align-items: center; gap: 6px; font-size: var(--fs-sm); color: var(--ink-2); line-height: 1.3; }
+.ow-k--tours .ow-next { margin-top: auto; }   /* sits on the card floor, level with the neighbour's link */
 .ow-next .ic { width: 16px; height: 16px; color: var(--magenta-700); }
 .ow-next b { color: var(--ink); font-weight: 600; white-space: nowrap; }
 
@@ -341,7 +342,8 @@ html[lang="ru"] .ow-k__label { font-weight: 600; letter-spacing: 0; }
 .ow.is-paused *, .ow.is-paused *::before, .ow.is-paused *::after { animation-play-state: paused !important; }
 
 /* ---------- the player (sheet) ---------- */
-.ow-sheet .sheet__body { padding: 0 16px 16px; }
+.ow-sheet { --ow-sp: 16px; }
+.ow-sheet .sheet__body { padding: 0 var(--ow-sp) 16px; }
 .ow-stage { display: flex; flex-direction: column; gap: 12px; }
 .ow-stage__main { display: flex; flex-direction: column; gap: 10px; min-width: 0; }
 .ow-stage__desc { font-size: var(--fs-sm); color: var(--ink-2); line-height: 1.45; }
@@ -477,11 +479,26 @@ html[lang="ru"] .ow-k__label { font-weight: 600; letter-spacing: 0; }
   .ow-ring__art { width: 70px; height: 70px; }
   .ow-k { padding: 14px 12px; }
   .ow-avs .av { --s: 24px !important; }
-  .ow-sheet .sheet__body { padding: 0 12px 14px; }
-  .ow-lanes { gap: 8px; }
+  .ow-sheet { --ow-sp: 10px; }
+  .ow-flow { padding: 10px 6px 12px; }
+  .ow-lanes { gap: 6px; }
 }
 @media (min-width: 640px) {
   .ow-sch__trig { max-width: 40%; }
+}
+@media (max-width: 759px) {
+  /* phone layout of the film: "what happens now" is a sticky caption bar at the bottom of the sheet
+     (the film follows the action above it); at the end the bar turns into "done" + the buttons */
+  .ow-sheet .sheet__body { padding-bottom: 0; flex: 1 1 auto; display: flex; flex-direction: column; }
+  .ow-stage { flex: 1 0 auto; }
+  .ow-stage__side {
+    position: sticky; bottom: 0; z-index: 5; margin: auto calc(-1 * var(--ow-sp)) 0; padding: 10px var(--ow-sp) 14px;
+    background: var(--paper); box-shadow: 0 -1px 0 var(--line), 0 -16px 18px -16px rgba(27,26,75,.28);
+  }
+  .ow-log { min-height: 40px; justify-content: center; }
+  .ow-stage:not(.is-done) .ow-stage__btns { display: none; }
+  .ow-stage.is-done .ow-log { display: none; }
+  .ow-lanes { margin-top: 36px; }
 }
 @media (min-width: 700px) {
   .ow-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }

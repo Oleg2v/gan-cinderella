@@ -31,7 +31,7 @@ const HE = {
   'ow.hero.sub': 'ככה נראה הגן שלך היום',
   'ow.greet.morning': 'בוקר טוב', 'ow.greet.noon': 'צהריים טובים', 'ow.greet.eve': 'ערב טוב', 'ow.greet.night': 'לילה טוב',
   'ow.status.open': 'יום רגוע. {n} ילדים בגן, ושום דבר לא דחוף.',
-  'ow.status.early': 'בוקר שקט. הגן נפתח ב-07:00, והכל מוכן.',
+  'ow.status.early': 'בוקר שקט. הגן נפתח ב-\u206007:00, והכל מוכן.',
   'ow.status.closed': 'היום הסתיים. הסיכומים נשלחו, והכל מוכן למחר.',
   'ow.status.weekend': 'שבת שלום. הגן נח, והמערכת שומרת על הסדר.',
   'ow.dial.open': 'פתוח', 'ow.dial.closed': 'סגור', 'ow.dial.a11y': 'שעות הגן היום {hrs}. עכשיו {now}, {state}.', 'ow.dial.sat': 'יום מנוחה',
@@ -41,7 +41,7 @@ const HE = {
   'ow.k.kids': 'ילדים היום', 'ow.k.kidsY': 'ילדים אתמול', 'ow.k.kidsFri': 'ילדים ביום שישי', 'ow.k.kidsPill': '{p} נוכחות', 'ow.k.kidsSub': 'מתוך {n} רשומים · {m} לא הגיעו', 'ow.k.arr': 'הגעות לפי שעה', 'ow.k.peak': 'הכי עמוס: ב-{t} הגיעו {n} ילדים', 'ow.k.arrA11y': 'הגעות לפי שעה: {list}',
   'ow.k.groups': 'תפוסה בקבוצות', 'ow.k.groupsPill': 'מקומות פנויים: {n}', 'ow.k.free': '{n} פנויים', 'ow.k.last': 'מקום אחרון', 'ow.k.full': 'מלא', 'ow.k.ringA11y': '{g}: תפוסה {p}, {note}',
   'ow.k.wait': 'רשימת המתנה', 'ow.k.waitUnit': 'משפחות', 'ow.k.waitPill': '+2 השבוע', 'ow.k.waitHint': 'כשמתפנה מקום, ההצעה יוצאת לבד.', 'ow.k.waitHow': 'איך זה עובד', 'ow.k.waitA11y': '{n} משפחות ברשימת ההמתנה',
-  'ow.k.tours': 'סיורים השבוע', 'ow.k.toursNext': 'הבא', 'ow.k.toursWhen': 'מחר ב-09:30', 'ow.k.toursSun': 'ביום א׳ ב-09:30', 'ow.k.weekA11y': 'סיורים לפי יום: {list}',
+  'ow.k.tours': 'סיורים השבוע', 'ow.k.toursNext': 'הבא', 'ow.k.toursWhen': 'מחר ב-\u206009:30', 'ow.k.toursSun': 'ביום א׳ ב-\u206009:30', 'ow.k.weekA11y': 'סיורים לפי יום: {list}',
   'ow.k.src': 'פניות לפי מקור', 'ow.k.srcPill': '{n} החודש', 'ow.k.src.site': 'אתר', 'ow.k.src.fb': 'Facebook', 'ow.k.src.ru': 'פורטל ברוסית',
   'ow.k.pay': 'תשלומים', 'ow.k.paid': 'שולם', 'ow.k.pending': 'ממתין', 'ow.k.payPill': 'ממתינים: {n}', 'ow.k.payUnit': 'משפחות', 'ow.k.payA11y': '{a} משפחות שילמו, {b} ממתינות',
   'ow.k.shift': 'מי במשמרת', 'ow.k.shiftPill': 'צוות מלא', 'ow.k.role.carers': 'מטפלות', 'ow.k.role.kitchen': 'מטבח', 'ow.k.shiftA11y': '{role}: {n} מתוך {m}',
@@ -64,8 +64,8 @@ const HE = {
   'ow.a.lead.t': 'פנייה חדשה מהאתר', 'ow.a.lead.d': 'ההורה מקבל מיד מועדים לסיור, ואת מקבלת התראה.', 'ow.a.lead.trig': 'טופס באתר', 'ow.a.lead.act1': 'מועדים לסיור', 'ow.a.lead.act2': 'התראה אלייך', 'ow.a.lead.log': 'פנייה מהאתר · נשלחו מועדים לסיור',
   'ow.a.visit.t': 'תזכורת לסיור', 'ow.a.visit.d': 'יום לפני הסיור ההורה מקבל תזכורת, ואחריו קישור להרשמה.', 'ow.a.visit.trig': 'סיור מחר', 'ow.a.visit.act1': 'תזכורת', 'ow.a.visit.act2': 'קישור להרשמה', 'ow.a.visit.log': 'תזכורת לסיור של מחר',
   'ow.a.seat.t': 'התפנה מקום', 'ow.a.seat.d': 'המקום מוצע מיד למשפחה הבאה ברשימת ההמתנה.', 'ow.a.seat.trig': 'מקום פנוי', 'ow.a.seat.act1': 'הצעה למשפחה הבאה', 'ow.a.seat.log': 'מקום בצעירים הוצע למשפחה הבאה',
-  'ow.a.billing.t': 'חשבון חודשי', 'ow.a.billing.d': 'ב-1 בחודש חשבון, ב-5 תזכורת עדינה, והקבלה יוצאת לבד.', 'ow.a.billing.trig': '1 בחודש', 'ow.a.billing.act1': 'חשבון', 'ow.a.billing.act2': 'תזכורת ב-5', 'ow.a.billing.act3': 'קבלה', 'ow.a.billing.log': 'חשבון, תזכורת וקבלה יצאו לבד',
-  'ow.a.summaries.t': 'סיכומי ערב', 'ow.a.summaries.d': 'ב-17:30 כל הורה מקבל סיכום חם של היום, בשפה שלו.', 'ow.a.summaries.trig': '17:30', 'ow.a.summaries.act1': 'סיכום לכל הורה', 'ow.a.summaries.log': '38 סיכומי ערב נשלחו',
+  'ow.a.billing.t': 'חשבון חודשי', 'ow.a.billing.d': 'ב-\u20601 בחודש חשבון, ב-\u20605 תזכורת עדינה, והקבלה יוצאת לבד.', 'ow.a.billing.trig': '1 בחודש', 'ow.a.billing.act1': 'חשבון', 'ow.a.billing.act2': 'תזכורת ב-\u20605', 'ow.a.billing.act3': 'קבלה', 'ow.a.billing.log': 'חשבון, תזכורת וקבלה יצאו לבד',
+  'ow.a.summaries.t': 'סיכומי ערב', 'ow.a.summaries.d': 'ב-\u206017:30 כל הורה מקבל סיכום חם של היום, בשפה שלו.', 'ow.a.summaries.trig': '17:30', 'ow.a.summaries.act1': 'סיכום לכל הורה', 'ow.a.summaries.log': '38 סיכומי ערב נשלחו',
   'ow.a.shabbat.t': 'הורי שבת', 'ow.a.shabbat.d': 'ביום רביעי הורי השבת מקבלים תזכורת מה להביא.', 'ow.a.shabbat.trig': 'יום רביעי', 'ow.a.shabbat.act1': 'תזכורת להורים', 'ow.a.shabbat.log': 'תזכורת להורי השבת',
   'ow.a.docs.t': 'מסמך חסר', 'ow.a.docs.d': 'כשחסר מסמך בתיק, ההורה מקבל תזכורת עם קישור לחתימה.', 'ow.a.docs.trig': 'חסר מסמך', 'ow.a.docs.act1': 'תזכורת להורה', 'ow.a.docs.log': 'תזכורת על הצהרת בריאות',
   'ow.a.birthday.t': 'יום הולדת מחר', 'ow.a.birthday.d': 'יום לפני, הצוות מקבל תזכורת להכין חגיגה קטנה.', 'ow.a.birthday.trig': 'מחר יום הולדת', 'ow.a.birthday.act1': 'תזכורת לצוות', 'ow.a.birthday.log': 'תזכורת יום הולדת לצוות',
@@ -104,7 +104,7 @@ const RU = {
   'ow.a.lead.t': 'Новая заявка с сайта', 'ow.a.lead.d': 'Родитель сразу получает время экскурсии, а вам приходит уведомление.', 'ow.a.lead.trig': 'Форма на сайте', 'ow.a.lead.act1': 'Время экскурсии', 'ow.a.lead.act2': 'Уведомление вам', 'ow.a.lead.log': 'Заявка с сайта · отправлено время экскурсии',
   'ow.a.visit.t': 'Напоминание об экскурсии', 'ow.a.visit.d': 'Накануне экскурсии родитель получает напоминание, а после неё ссылку на запись в сад.', 'ow.a.visit.trig': 'Экскурсия завтра', 'ow.a.visit.act1': 'Напоминание', 'ow.a.visit.act2': 'Ссылка на запись', 'ow.a.visit.log': 'Напоминание о завтрашней экскурсии',
   'ow.a.seat.t': 'Освободилось место', 'ow.a.seat.d': 'Место сразу предлагается следующей семье из листа ожидания.', 'ow.a.seat.trig': 'Свободное место', 'ow.a.seat.act1': 'Предложение следующей семье', 'ow.a.seat.log': 'Место в младшей группе предложено следующей семье',
-  'ow.a.billing.t': 'Ежемесячный счёт', 'ow.a.billing.d': '1-го числа счёт, 5-го мягкое напоминание, а квитанция уходит сама.', 'ow.a.billing.trig': '1-е число', 'ow.a.billing.act1': 'Счёт', 'ow.a.billing.act2': 'Напоминание 5-го', 'ow.a.billing.act3': 'Квитанция', 'ow.a.billing.log': 'Счёт, напоминание и квитанция ушли сами',
+  'ow.a.billing.t': 'Ежемесячный счёт', 'ow.a.billing.d': '1-\u2060го числа счёт, 5-\u2060го мягкое напоминание, а квитанция уходит сама.', 'ow.a.billing.trig': '1-\u2060е число', 'ow.a.billing.act1': 'Счёт', 'ow.a.billing.act2': 'Напоминание 5-\u2060го', 'ow.a.billing.act3': 'Квитанция', 'ow.a.billing.log': 'Счёт, напоминание и квитанция ушли сами',
   'ow.a.summaries.t': 'Вечерние сводки', 'ow.a.summaries.d': 'В 17:30 каждый родитель получает тёплую сводку дня на своём языке.', 'ow.a.summaries.trig': '17:30', 'ow.a.summaries.act1': 'Сводка каждой семье', 'ow.a.summaries.log': 'Отправлено 38 вечерних сводок',
   'ow.a.shabbat.t': 'Шабатные родители', 'ow.a.shabbat.d': 'В среду шабатные родители получают напоминание, что принести.', 'ow.a.shabbat.trig': 'Среда', 'ow.a.shabbat.act1': 'Напоминание родителям', 'ow.a.shabbat.log': 'Напоминание шабатным родителям',
   'ow.a.docs.t': 'Не хватает документа', 'ow.a.docs.d': 'Если в папке не хватает документа, родитель получает напоминание со ссылкой на подпись.', 'ow.a.docs.trig': 'Нет документа', 'ow.a.docs.act1': 'Напоминание родителю', 'ow.a.docs.log': 'Напоминание: декларация о здоровье',
@@ -169,13 +169,13 @@ const AUTOS = [
     last: P('היום 08:30', 'сегодня 08:30'),
     stage: {
       time: '18:00',
-      trig: { icon: 'calendar', t: P('מחר סיור ב-09:30', 'Завтра экскурсия в 09:30'), v: P('ב׳ 18:00', 'пн 18:00'), sub: P('רותם · בת שנתיים', 'Ротем · дочке 2 года') },
+      trig: { icon: 'calendar', t: P('מחר סיור ב-\u206009:30', 'Завтра экскурсия в 09:30'), v: P('ב׳ 18:00', 'пн 18:00'), sub: P('רותם · בת שנתיים', 'Ротем · дочке 2 года') },
       lanes: [{ id: 'p', kind: 'parent', lang: 'he' }, { id: 'o', kind: 'owner' }],
       steps: [
         { t: 'trig', log: P('ערב לפני הסיור', 'Вечер накануне экскурсии') },
         { t: 'go', lanes: ['p'] },
         { t: 'type', lanes: ['p'] },
-        { t: 'msg', lane: 'p', text: P('היי רותם, מזכירים: מחר ב-09:30 סיור בגן סינדרלה, העצמאות 58, אשדוד. מחכים לך!', 'Ротем, напоминаем: завтра в 09:30 экскурсия в «Синдерелле», ул. ха-Ацмаут 58, Ашдод. Ждём вас!'), log: P('תזכורת נשלחה להורה', 'Родителю ушло напоминание') },
+        { t: 'msg', lane: 'p', text: P('היי רותם, מזכירים: מחר ב-\u206009:30 סיור בגן סינדרלה, העצמאות 58, אשדוד. מחכים לך!', 'Ротем, напоминаем: завтра в 09:30 экскурсия в «Синдерелле», ул. ха-Ацмаут 58, Ашдод. Ждём вас!'), log: P('תזכורת נשלחה להורה', 'Родителю ушло напоминание') },
         { t: 'reply', lane: 'p', text: P('נהיה שם. תודה!', 'Будем. Спасибо!') },
         { t: 'phase', tt: P('הסיור הסתיים', 'Экскурсия закончилась'), v: P('ג׳ 10:30', 'вт 10:30'), time: '10:30', log: P('למחרת, אחרי הסיור', 'На следующий день, после экскурсии') },
         { t: 'go', lanes: ['p'] },
@@ -208,23 +208,23 @@ const AUTOS = [
   },
   {
     id: 'billing', icon: 'receipt', tint: 'peach', sch: { trig: 'calendar', acts: ['receipt', 'bell', 'check-circle'] },
-    last: P('ב-5 בחודש, 10:00', '5-го числа, 10:00'),
+    last: P('ב-\u20605 בחודש, 10:00', '5-\u2060го числа, 10:00'),
     stage: {
       time: '08:00',
-      trig: { icon: 'receipt', t: P('התחיל חודש חדש', 'Начался новый месяц'), v: P('1 בחודש', '1-е число'), sub: P('בלי סכומים בדמו', 'В демо без сумм') },
-      props: [{ id: 'b1', icon: 'receipt', label: P('1 בחודש', '1-е') }, { id: 'b5', icon: 'bell', label: P('5 בחודש', '5-е') }, { id: 'bp', icon: 'check-circle', label: P('שולם', 'Оплачено') }],
+      trig: { icon: 'receipt', t: P('התחיל חודש חדש', 'Начался новый месяц'), v: P('1 בחודש', '1-\u2060е число'), sub: P('בלי סכומים בדמו', 'В демо без сумм') },
+      props: [{ id: 'b1', icon: 'receipt', label: P('1 בחודש', '1-\u2060е') }, { id: 'b5', icon: 'bell', label: P('5 בחודש', '5-\u2060е') }, { id: 'bp', icon: 'check-circle', label: P('שולם', 'Оплачено') }],
       lanes: [{ id: 'p', kind: 'parent', lang: 'he' }, { id: 'o', kind: 'owner' }],
       steps: [
         { t: 'trig' },
-        { t: 'prop', id: 'b1', s: 'on', log: P('1 בחודש · יוצאים חשבונות', '1-е число · уходят счета') },
+        { t: 'prop', id: 'b1', s: 'on', log: P('1 בחודש · יוצאים חשבונות', '1-\u2060е число · уходят счета') },
         { t: 'go', lanes: ['p'] },
         { t: 'type', lanes: ['p'] },
         { t: 'msg', lane: 'p', text: P('בוקר טוב, מיכל! החשבון של החודש מחכה לך באזור האישי.', 'Доброе утро, Михаль! Счёт за месяц ждёт вас в личном кабинете.'), link: P('לתשלום', 'Оплатить'), log: P('החשבון נשלח', 'Счёт отправлен') },
-        { t: 'phase', v: P('5 בחודש', '5-е число'), time: '10:00', prop: ['b1', 'done', 'b5', 'on'], log: P('5 בחודש · החשבון עוד פתוח', '5-е число · счёт ещё открыт') },
+        { t: 'phase', v: P('5 בחודש', '5-\u2060е число'), time: '10:00', prop: ['b1', 'done', 'b5', 'on'], log: P('5 בחודש · החשבון עוד פתוח', '5-\u2060е число · счёт ещё открыт') },
         { t: 'go', lanes: ['p'] },
         { t: 'msg', lane: 'p', text: P('תזכורת קטנה: החשבון של החודש עדיין פתוח. אם כבר שילמת, אפשר להתעלם.', 'Небольшое напоминание: счёт за месяц ещё открыт. Если уже оплатили, просто не обращайте внимания.'), log: P('יצאה תזכורת עדינה', 'Ушло мягкое напоминание') },
         { t: 'reply', lane: 'p', text: P('שילמתי עכשיו, תודה!', 'Оплатила, спасибо!') },
-        { t: 'phase', tt: P('התשלום התקבל', 'Оплата получена'), v: P('5 בחודש', '5-е число'), time: '10:04', prop: ['b5', 'done', 'bp', 'ok'] },
+        { t: 'phase', tt: P('התשלום התקבל', 'Оплата получена'), v: P('5 בחודש', '5-\u2060е число'), time: '10:04', prop: ['b5', 'done', 'bp', 'ok'] },
         { t: 'go', lanes: ['p'] },
         { t: 'msg', lane: 'p', text: P('התשלום התקבל, תודה! הקבלה כבר באזור האישי.', 'Оплата получена, спасибо! Квитанция уже в личном кабинете.'), link: P('קבלה', 'Квитанция'), log: P('הקבלה יצאה לבד', 'Квитанция ушла сама') },
         { t: 'kpi', key: 'paid', d: 1 },
@@ -623,7 +623,7 @@ function offNudge(id) {
   const nudge = () => { sw.classList.remove('is-nudge'); reflow(sw); sw.classList.add('is-nudge'); };
   // the toast sits at the top of the screen: make sure the switch it talks about is in sight, below it
   const r = sw.getBoundingClientRect();
-  if (r.top < 150 || r.bottom > innerHeight - 110) App.scrollTo(card, { offset: 150 }).then(nudge); else nudge();
+  if (r.top < 176 || r.bottom > innerHeight - 110) App.scrollTo(card, { offset: 160 }).then(nudge); else nudge();
 }
 
 /* =====================================================================
@@ -903,6 +903,7 @@ function startFilm() {
   if (PL.ctrl) PL.ctrl.abort();
   const a = PL.a, body = PL.s.body;
   body.innerHTML = stageHtml(a);
+  body.scrollTop = 0;   // a replay / a language switch starts from the top, with the trigger in sight
   const ctrl = new AbortController(); PL.ctrl = ctrl; PL.finished = false;
   const F = { a, stage: $('.ow-stage', body), signal: ctrl.signal, speed: reduced() ? .3 : S.speed, litOn: {}, devs: {} };
   F.flow = $('.ow-flow', F.stage);
@@ -954,14 +955,17 @@ function onResize() {
 function renderAll() {
   renderHero(); renderBento(); renderFunnel(); renderGrid(); renderFeed();
 }
+/* ticks on the minute boundary, so the dial shows the same minute as the phone's own clock */
 function startClock() {
   stopClock();
-  S.clock = setInterval(() => {
+  const tick = () => {
     renderHero(); updLastRuns(); updFeedTimes();
     if (S.bentoKey !== kidsKey() + new Date().getDay()) renderBento();   // the day turned over or the gan opened
-  }, 30000);
+    S.clock = setTimeout(tick, 60000 - (Date.now() % 60000) + 60);
+  };
+  S.clock = setTimeout(tick, 60000 - (Date.now() % 60000) + 60);
 }
-function stopClock() { if (S.clock) { clearInterval(S.clock); S.clock = 0; } }
+function stopClock() { if (S.clock) { clearTimeout(S.clock); S.clock = 0; } }
 function observe() {
   if (!('IntersectionObserver' in window)) { introFunnel(); return; }
   const fun = $('.ow-fun', root);
@@ -1037,13 +1041,13 @@ App.module('owner', {
       await ctx.scrollTo(0, { duration: f ? 0 : 420 });
       introKpis();
       await ctx.point($('[data-ow-kpi="kids"] .ow-big', root));
-      await ctx.wait(f ? 250 : 850);
+      await ctx.wait(f ? 250 : 620);
       await ctx.point($('[data-ow-kpi="groups"] .ow-rings', root));
-      await ctx.wait(f ? 250 : 700);
+      await ctx.wait(f ? 250 : 520);
       await ctx.scrollTo($('#ow-funnel'), { duration: f ? 0 : 650, offset: 72 });
       S.funDone = true; introFunnel();
       await ctx.point($('.ow-fs__st:nth-child(2) .ow-fs__track', root));
-      await ctx.wait(f ? 300 : 1300);
+      await ctx.wait(f ? 300 : 1150);
     },
     /* scroll backstage, play "new lead" and "17:30 summaries" by tapping their cards (≈ 9.5 s) */
     async automations(ctx) {
