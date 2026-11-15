@@ -775,6 +775,8 @@ function openCamera(pre = []) {
 }
 
 /* ---------- parents' inbox ---------- */
+/* "Mom of Daniel · Olga": the dot stays glued to the first part, so a wrap never starts a line with "·" */
+const fromName = m => A.L(m.from).replace(' · ', '\u00a0· ');
 function bubbleHTML(text, lg, out, time) {
   return `<div class="bubble${out ? ' bubble--out is-new' : ''}" dir="${lg === 'ru' ? 'ltr' : 'rtl'}" lang="${lg}"><span class="bubble__t">${esc(text)}</span><span class="bubble__meta"><span class="tnum">${esc(time || '')}</span>${out ? icon('checks') : ''}</span></div>`;
 }
@@ -799,7 +801,7 @@ function openInbox(focusId) {
       return `<li><button type="button" class="st-msg${m.read ? ' is-read' : ''}" data-in-open="${m.id}">
         ${A.avatarEl(m.look, 46, { label: '' })}
         <span class="st-msg__main">
-          <span class="st-msg__top"><span class="st-msg__from">${esc(A.L(m.from))}</span><span class="st-msg__time tnum">${m.time}</span><span class="st-msg__dot" aria-hidden="true"></span></span>
+          <span class="st-msg__top"><span class="st-msg__from">${esc(fromName(m))}</span><span class="st-msg__time tnum">${m.time}</span><span class="st-msg__dot" aria-hidden="true"></span></span>
           <span class="st-msg__txt" dir="auto">${esc(txt)}</span>
           <span class="st-msg__tags">${m.orig === 'ru' ? `<span class="st-trtag">${icon('translate')}${esc(t('st.in.trHe'))}</span>` : ''}${m.pickup ? `<span class="tag tag--warn">${icon('key')}${esc(t('st.in.pickup'))}</span>` : ''}${m.stage === 'done' ? `<span class="tag tag--ok">${icon('check')}${esc(t('st.in.done'))}</span>` : ''}</span>
         </span></button></li>`;
@@ -824,7 +826,7 @@ function openInbox(focusId) {
     } else tail = `<span class="st-done">${icon('check-circle')}${esc(t('st.in.handled'))}</span>`;
     return `<div class="st-thread">
       <button type="button" class="st-back" data-in-back>${icon('back', 'ic--dir')}<span>${esc(t('st.in.back'))}</span></button>
-      <div class="st-who">${A.avatarEl(m.look, 48, { label: '' })}<div class="st-who__t"><p class="st-who__n">${esc(A.L(m.from))}</p><p class="st-who__s tnum">${m.time}</p></div><span class="st-kidchip">${A.avatarEl(k, 28, { label: '' })}<span>${esc(nm(m.kid))}</span></span></div>
+      <div class="st-who">${A.avatarEl(m.look, 48, { label: '' })}<div class="st-who__t"><p class="st-who__n">${esc(fromName(m))}</p><p class="st-who__s tnum">${m.time}</p></div><span class="st-kidchip">${A.avatarEl(k, 28, { label: '' })}<span>${esc(nm(m.kid))}</span></span></div>
       <div class="st-chat">${bubbleHTML(m.text[m.orig], m.orig, false, m.time)}${trHTML(m)}${reply}</div>
       ${tail}</div>`;
   };
@@ -1281,11 +1283,11 @@ A.module('staff', {
   tour: {
     async checkin(ctx) {
       reset();
-      await ctx.wait(ctx.fast ? 60 : 280);
+      await ctx.wait(ctx.fast ? 60 : 220);
       if (!isDevice()) await ctx.scrollTo(0, { duration: 400 });
       if (S.mode !== 'arrive') await ctx.tap('[data-st-mode="arrive"]', { after: 200 });
-      for (const id of ['daniel', 'itai', 'noa', 'maya']) await ctx.tap(cardSel(id), { after: ctx.fast ? 120 : 300 });
-      await ctx.wait(ctx.fast ? 150 : 450);
+      for (const id of ['daniel', 'itai', 'noa', 'maya']) await ctx.tap(cardSel(id), { after: ctx.fast ? 120 : 260 });
+      await ctx.wait(ctx.fast ? 150 : 400);
     },
     async meal(ctx) {
       closeSheets();

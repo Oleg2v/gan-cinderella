@@ -64,7 +64,7 @@ const SUMMARY = {
 };
 const SUM_NOTIF = {
   he: { title: 'גן סינדרלה', text: 'הסיכום של נועה מהיום: אכלה הכל, ניגנה על קסילופון וישנה שעה ו-40 דק׳.', now: 'עכשיו' },
-  ru: { title: 'Сад «Синдерелла»', text: 'Итоги дня: съела весь завтрак, играла на ксилофоне, спала 1 ч 40 мин.', now: 'сейчас' }
+  ru: { title: 'Сад «Синдерелла»', text: 'Ноа: съела весь завтрак, играла на ксилофоне, спала 1 ч 40 мин.', now: 'сейчас' }
 };
 
 const REASONS = [
@@ -577,7 +577,7 @@ async function sendCode(again = false) {
   fieldErr(err, '');
   const seq = ++S.loginSeq;
   const btn = q('[data-pa="sendCode"]');
-  if (!again) await busyBtn(btn, 520, 'pa.login.sending');
+  if (!again) await busyBtn(btn, App.tour.running ? 150 : 520, 'pa.login.sending');
   if (seq !== S.loginSeq) return;
   S.codeSent = true;
   const step = q('[data-pa="otpStep"]');
@@ -590,10 +590,10 @@ async function sendCode(again = false) {
     const r = q('.pa-otp').getBoundingClientRect();
     if (r.bottom > innerHeight * .62) App.scrollTo(App.scrollY() + r.top - innerHeight * .36, { duration: 520 });
   }
-  await sleep(App.tour.running ? 300 : 520);
+  await sleep(App.tour.running ? 120 : 520);
   if (seq !== S.loginSeq) return;
   showSms(seq);
-  await sleep(App.tour.running ? 260 : 480);
+  await sleep(App.tour.running ? 120 : 480);
   if (seq !== S.loginSeq) return;
   autofill(seq);
 }
@@ -615,7 +615,7 @@ async function autofill(seq) {
     boxes[i].value = code[i];
     boxes[i].classList.remove('is-pop'); void boxes[i].offsetWidth; boxes[i].classList.add('is-pop');
     if (!reduced()) { const r = boxes[i].getBoundingClientRect(); App.fx.burst(r.left + r.width / 2, r.top + r.height / 2, { count: 6, speed: [40, 120], size: [5, 11], life: [300, 600], gravity: 60 }); }
-    await sleep(reduced() ? 0 : App.tour.running ? 95 : 130);
+    await sleep(reduced() ? 0 : App.tour.running ? 70 : 130);
   }
   updateEnter();
 }
@@ -630,9 +630,9 @@ async function enter() {
   const login = q('.pa-login');
   if (!reduced()) {
     login.classList.add('is-opening');
-    await sleep(App.tour.running ? 380 : 560);
+    await sleep(App.tour.running ? 240 : 560);
     if (seq !== S.loginSeq) return;
-    await login.animate([{ opacity: 1, transform: 'none' }, { opacity: 0, transform: 'scale(.97) translateY(-8px)' }], { duration: 320, easing: 'ease-in', fill: 'forwards' }).finished.catch(() => { });
+    await login.animate([{ opacity: 1, transform: 'none' }, { opacity: 0, transform: 'scale(.97) translateY(-8px)' }], { duration: App.tour.running ? 220 : 320, easing: 'ease-in', fill: 'forwards' }).finished.catch(() => { });
     if (seq !== S.loginSeq) return;
   }
   showApp({ animate: !reduced() });
@@ -1609,7 +1609,7 @@ const I18N = {
     'pa.hi.morning': 'בוקר טוב, {name}', 'pa.hi.day': 'צהריים טובים, {name}', 'pa.hi.evening': 'ערב טוב, {name}', 'pa.hi.night': 'לילה טוב, {name}',
     'pa.group': 'קבוצת {g}', 'pa.status.in': 'בגן מ-07:48', 'pa.status.home': 'היום בגן: \u206607:48–16:50\u2069',
     'pa.trust': 'התמונות של נועה רק אצלכם, לא בקבוצות', 'pa.onlyYou': 'רק אצלכם',
-    'pa.menuBtn': 'תפריט חשבון', 'pa.notifs': 'התראות לטלפון', 'pa.logout': 'התנתקות', 'pa.loggedOut': 'התנתקתם. להתראות!',
+    'pa.menuBtn': 'תפריט חשבון', 'pa.notifs': 'התראות לטלפון', 'pa.notifsOn': 'ההתראות הופעלו', 'pa.notifsOff': 'ההתראות כובו', 'pa.logout': 'התנתקות', 'pa.loggedOut': 'התנתקתם. להתראות!',
     'pa.tabs': 'מדורים באזור ההורים', 'pa.tab.today': 'היום', 'pa.tab.pay': 'תשלומים', 'pa.tab.cal': 'לוח שנה', 'pa.tab.menu': 'תפריט', 'pa.tab.docs': 'מסמכים', 'pa.tab.album': 'אלבום',
     'pa.qa.title': 'פעולות מהירות',
     'pa.qa.absent': 'לא מגיעים מחר', 'pa.qa.absentSun': 'לא מגיעים ביום א׳', 'pa.qa.absentSub': 'עדכון לצוות', 'pa.qa.late': 'מאחרים', 'pa.qa.lateSub': 'כמה דקות?',
@@ -1674,7 +1674,7 @@ const I18N = {
     'pa.hi.morning': 'Доброе утро, {name}', 'pa.hi.day': 'Добрый день, {name}', 'pa.hi.evening': 'Добрый вечер, {name}', 'pa.hi.night': 'Доброй ночи, {name}',
     'pa.group': '{g}', 'pa.status.in': 'В саду с 07:48', 'pa.status.home': 'В саду: 07:48–16:50',
     'pa.trust': 'Фото Ноа только у вас, не в общих чатах', 'pa.onlyYou': 'Только у вас',
-    'pa.menuBtn': 'Меню аккаунта', 'pa.notifs': 'Уведомления на телефон', 'pa.logout': 'Выйти', 'pa.loggedOut': 'Вы вышли. До встречи!',
+    'pa.menuBtn': 'Меню аккаунта', 'pa.notifs': 'Уведомления на телефон', 'pa.notifsOn': 'Уведомления включены', 'pa.notifsOff': 'Уведомления выключены', 'pa.logout': 'Выйти', 'pa.loggedOut': 'Вы вышли. До встречи!',
     'pa.tabs': 'Разделы кабинета', 'pa.tab.today': 'Сегодня', 'pa.tab.pay': 'Оплата', 'pa.tab.cal': 'Календарь', 'pa.tab.menu': 'Меню', 'pa.tab.docs': 'Документы', 'pa.tab.album': 'Альбом',
     'pa.qa.title': 'Быстрые действия',
     'pa.qa.absent': 'Завтра не придём', 'pa.qa.absentSun': 'Не придём в воскресенье', 'pa.qa.absentSub': 'Предупредить', 'pa.qa.late': 'Опаздываем', 'pa.qa.lateSub': 'На сколько?',
@@ -1742,7 +1742,7 @@ App.module('parent', {
     bindLogin();
     q('[data-pa="menuBtn"]').addEventListener('click', e => { e.stopPropagation(); toggleMenu(); });
     q('[data-pa="logout"]').addEventListener('click', () => { logout(); App.ui.toast(t('pa.loggedOut'), { icon: 'door' }); });
-    q('[data-pa="notif"]').addEventListener('click', e => { S.notifOn = !S.notifOn; e.currentTarget.setAttribute('aria-checked', String(S.notifOn)); });
+    q('[data-pa="notif"]').addEventListener('click', e => { S.notifOn = !S.notifOn; e.currentTarget.setAttribute('aria-checked', String(S.notifOn)); App.ui.toast(t(S.notifOn ? 'pa.notifsOn' : 'pa.notifsOff'), { icon: 'bell' }); });
     document.addEventListener('click', e => { if (!e.target.closest('#pa-menu') && !e.target.closest('[data-pa="menuBtn"]')) closeMenu(); });
     document.addEventListener('keydown', e => { if (e.key === 'Escape' && q('#pa-menu') && !q('#pa-menu').hidden) { closeMenu(); q('[data-pa="menuBtn"]').focus(); } });
     qq('.pa-tile').forEach(b => b.addEventListener('click', () => ({ absent: openAbsent, late: openLate, pickup: openPickup, msg: openMsg })[b.dataset.qa]()));
@@ -1790,14 +1790,14 @@ App.module('parent', {
       closeSheets();
       if (S.logged || q('.pa-login').hidden) logout({ instant: true });
       resetState(); resetLogin();
-      await ctx.scrollTo(0, { duration: 200 });
-      await ctx.type('#pa-phone', '0501234567', { cps: ctx.fast ? 60 : 30, after: 120 });
-      await ctx.tap('[data-pa="sendCode"]', { after: 150 });
+      if (App.scrollY() > 4) await ctx.scrollTo(0, { duration: 200 });
+      await ctx.type('#pa-phone', '0501234567', { cps: ctx.fast ? 60 : 40, after: 80 });
+      await ctx.tap('[data-pa="sendCode"]', { after: 0 });
       await ctx.waitFor(() => otpValue().length === 4 && !q('[data-pa="enter"]').disabled, 3500);
-      await ctx.wait(ctx.fast ? 80 : 200);
+      await ctx.wait(ctx.fast ? 60 : 120);
       await ctx.tap('[data-pa="enter"]', { after: 0 });
       await ctx.waitFor(() => S.logged, 2500);
-      await ctx.wait(ctx.fast ? 150 : 450);
+      await ctx.wait(ctx.fast ? 150 : 220);
     },
     async feed(ctx) {
       closeSheets();

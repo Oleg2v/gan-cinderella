@@ -394,7 +394,9 @@ html.is-touring .pb-fab, html.sheet-open .pb-fab { display: none; }
 .pb-sfoot { flex-wrap: wrap; }
 .pb-sfoot > .btn { min-width: 0; }
 .pb-sfoot .btn--ghost { flex: none; }
-.pb-sfoot > .pb-grow, .pb-sfoot .btn--ghost.pb-grow { flex: 1 1 0; min-width: max-content; } /* equal halves; wraps to full rows when labels are long */
+/* equal halves; a pair that doesn't fit wraps to two full rows, and a label longer than the row (big a11y text) wraps inside */
+.pb-sfoot > .pb-grow, .pb-sfoot .btn--ghost.pb-grow { flex: 1 1 0; min-width: -webkit-fit-content; min-width: fit-content; }
+.pb-sfoot > .btn { white-space: normal; text-align: center; padding-block: 8px; }
 .pb-sfoot.is-arming > * { pointer-events: none; }
 /* on phones the "back" button folds to an icon so the primary label never gets clipped */
 @media (max-width: 420px) {
@@ -537,7 +539,8 @@ button.pb-cal__day:active { transform: scale(.93); }
 .pb-slot small { font-size: var(--fs-2xs); opacity: .8; }
 .pb-slot:disabled { opacity: .5; text-decoration: line-through; cursor: not-allowed; }
 .pb-two { display: grid; gap: 12px; }
-@media (min-width: 360px) { .pb-two { grid-template-columns: 1fr 1.15fr; } }
+/* name + phone side by side only when both fit (em-based, so bigger a11y text stacks them instead of clipping) */
+.pb-two { grid-template-columns: repeat(auto-fit, minmax(min(100%, 10em), 1fr)); }
 .pb-bk__go.is-busy { opacity: 1 !important; }
 .pb-bk__go.is-busy .ic { animation: pb-spin .8s linear infinite; }
 

@@ -302,6 +302,7 @@
 
 /* payment sheet */
 .pa-sheet { padding-bottom: 4px; }
+.pa-sheet textarea.input { min-height: 74px; }
 .pa-paysum { display: flex; flex-direction: column; align-items: center; gap: 4px; padding: 16px; border-radius: 22px; background: linear-gradient(160deg, var(--sky), var(--blush)); }
 .pa-paysum__n { font-family: var(--font-display); font-size: 2.6rem; font-weight: 600; line-height: 1.05; }
 .pa-paysum .tiny { color: var(--ink-2); }
