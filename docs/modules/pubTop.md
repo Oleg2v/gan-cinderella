@@ -1,0 +1,25 @@
+# Module brief: pubTop (view: visitors)
+
+MODULE pubTop: the first screens of the public site: HERO + "השעון של סינדרלה". This is the first thing the owner sees on her phone. It must be breathtaking at 390px and gorgeous on desktop.
+
+1) HERO <section id="hero" class="pt-hero" data-sparkle-zone>
+- Full-screen (100svh, min ~640px) illustrated fairy-tale scene in layered inline SVG with parallax depth (5-7 layers): gradient sky; sun glow (day) / crescent moon + twinkling stars (night); far rolling hills (light blue / lilac); an ORIGINAL storybook castle on a hill (chunky, rounded, toy-like: wide body, 2-3 round towers of DIFFERENT heights with cone roofs in magenta/pink, little flags, arched door, round + heart-shaped windows; absolutely NOT the Disney castle silhouette, no tall central spire cluster); a winding dotted magic trail down the hill with a tiny pumpkin carriage slowly travelling along it; mid hills in blush/pink; drifting puffy clouds; foreground bushes / cloud banks framing the bottom; a floating glass slipper with a glint; scattered 4-point sparkles.
+- Parallax: layers translate at different speeds on scroll (App.onScroll) plus subtle pointer-follow on desktop. GPU-only transforms. Pause loops when offscreen and in onLeave.
+- Content over the calm part of the sky (centered): logo in a circle mask (~108px: <span class="brand__logo" data-logo style="width:108px;height:108px"></span> then App.ui.fillLogos(root)) with a slow orbit of 2-3 sparkles; tiny eyebrow (e.g. "מעון יום · אשדוד"); H1 = the slogan "גן ילדים מהאגדות" in huge display type with a delightful word/letter reveal on load + a sparkle burst; one short lead using only facts (e.g. "מעון יום מוכר ומפוקח, מלידה ועד גיל 3"); two buttons: primary "קביעת סיור בגן" -> App.mod('pubBottom') && App.mod('pubBottom').openBooking(); ghost "בדיקת מקום פנוי" -> App.scrollTo('#availability'). Both data-magnetic. AA contrast in day AND night.
+- Day/night: automatically night if local hour >= 18 or < 6. Plus a small round sun/moon toggle in the hero (role="switch", aria-label) to preview the other mode, with a ~1.2s magical transition (sky crossfade, stars fade in with stagger, castle windows light up gold, moon rises). Night: --night/--night-2 sky, gold windows, white text.
+- Scroll cue at the bottom leading into the clock.
+- On load: orchestrated intro (layers rise in with stagger, clouds drift in, title reveal, buttons pop), total <= 1.6s; none with reduced motion.
+
+2) FACTS RIBBON between hero and clock: compact band with 4 facts + icons: "מלידה עד גיל 3", "מעון מוכר ומפוקח", "מטבח משלנו, אוכל טרי כל יום", "א׳–ה׳ 07:00–17:00 · ו׳ 07:00–13:00". 2x2 on phone, 4 across on desktop. Scalloped awning edge welcome.
+
+3) CLOCK SCENE <section id="clock" class="pt-clock"> titled "השעון של סינדרלה"
+- A tall scroll track (~900-1100svh on phone) with a position:sticky; top:0; height:100svh stage. Drive everything from App.progress(track) inside App.onScroll (no ScrollTrigger).
+- A big ornate-but-clean SVG clock: 12 Arabic numerals, minute ticks, a rim with tiny sparkles, hour + minute hands (navy with magenta tips), a center jewel. Hands move continuously 07:00 -> 17:00 with scroll (minute hand 10 turns, hour hand 7 -> 5). A digital readout (tabular, LTR) of the current time.
+- The stage background shifts through the day: crisp morning sky -> bright midday -> warm afternoon -> golden-pink 17:00.
+- At each hour a scene comes alive (crossfade + springy pop of the vignette + small particle accent): 07 arrival ("בוקר טוב": child + parent at the castle door), 08 breakfast from our own kitchen (steaming bowl, chef hat), 09 club (music notes / ball / leaf + bunny = the three clubs), 10 the yard (swing, sun, sandbox), ~12 lunch (plate, spoon), ~12:30-14:30 nap (moon, Zz, blanket; the stage dims slightly), 15 מנחה (fruit, cup), 16-17 parents pick up (hug at the door, sunset tint). Each scene = small paper-cut SVG vignette (App.avatar-style heads) + short title + one warm line. The text must not claim an exact schedule or specific foods as facts; the clock shows the hour.
+- Hour beads rail (07 ... 17), current highlighted; tapping a bead scrolls to that hour.
+- FINALE at 17:00: the clock chimes (pulse ring + sparkle burst + glass slipper glint). Big line exactly: "אצלנו היום נגמר ב-17:00, לא בחצות". Small line: "אפשר להאריך עד 18:00 · ביום ו׳ 07:00–13:00". Russian: «У нас день заканчивается в 17:00, а не в полночь» / «Можно продлить до 18:00 · в пятницу 07:00–13:00».
+- Phone: clock ~70vw at the top of the stage, scene card below. Desktop >= 900px: clock on one side, scene on the other.
+- Reduced motion: no sticky track; a calm vertical timeline (small static clock per hour + vignette + text) and the finale.
+
+Tour fns: tour.hero(ctx): scroll to top, ctx.tap the night toggle, admire ~1.5s, tap back to day (or restore the automatic mode), burst on the logo; <= 5s. tour.clock(ctx): ctx.scrollTo through the whole track (duration ~10000, linear: true) so every hour shows, pause ~1.2s on the finale; <= 12s.

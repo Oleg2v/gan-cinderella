@@ -1,0 +1,17 @@
+# Module brief: staff (view: staff)
+
+MODULE staff: the caregiver's TABLET app ("צוות"). Design it as a real tablet product: on desktop render it inside a landscape tablet device frame (~1000x680, scaled to fit); on a phone render the same app full-width with a slim "מצב טאבלט" header (no squeezed fake frame). Group: בוגרים, the 14 kids of App.data.kids (avatars via App.avatar, localized names). Caregiver identity = role only ("מטפלת בוגרים"), never a name. All data is example (.demo-tag in the header).
+
+- Header: group, date, counters (נוכחים x/14, ישנים, ארוחה), a sync dot, buttons: inbox (badge), photo, incident, "סיום יום".
+- Kids grid (3 cols phone, 5-7 cols tablet/desktop): card = avatar + name + status icons (arrival time, meal, sleep timer, diaper); allergy badge on Itai (peanuts), Tamar (sesame), Sofia (milk). Not-arrived kids faded with a dashed ring.
+- Two modes (segmented control): "הגעה" (tap a kid -> arrival marked with the current time, card pops into color + tiny burst, counter increments; tap again to undo) and "בחירה" (multi-select + a "כל הנוכחים" chip). When >= 1 selected, a bottom action bar slides up: אוכל · שינה · החתלה · צילום.
+  * אוכל -> meal (בוקר / צהריים / מנחה) -> amount (הכל / חצי / מעט): two taps, then the cards show the result icon.
+  * If the meal is צהריים and Itai is selected: BEFORE recording, a prominent alert (danger style, shake): "שימו לב: לאיתי אלרגיה לבוטנים" (+ Tamar / Sofia lines when selected) with "בדקתי, המנה בטוחה" / "ביטול".
+  * שינה -> start (moon badge with a live timer on the cards) / stop (records duration).
+  * החתלה -> type chips (רטוב / מלא / יבש) -> recorded with time.
+- צילום: camera mock sheet: an illustrated viewfinder (kids playing, no real faces), shutter -> flash -> tag kids (avatar chips) -> note "יישלח רק להורים שלהם" -> send -> burst + toast.
+- Inbox from parents: key message from Daniel's mom in Russian «Сегодня Даниэля заберёт бабушка Люда» shown with the auto-translation "היום סבתא לודה תאסוף את דניאל" (translation badge). Tap -> "בדיקה מול רשימת המורשים" animates a scan over App.data.trusted.daniel -> match (grandma's avatar) -> "אישור" -> reply sent to the parent in Russian (show the bubble). Plus 1-2 other messages (e.g. Noa will be late; Maya's dad asks about a jacket) with quick replies.
+- דיווח אירוע (incident): sheet: child picker, what happened (chips: נפילה קלה, מכה, שריטה, עקיצה...), first aid (chips), time, note -> preview -> "שליחה להורים ולמנהלת" -> two phone mocks (parent + owner) receive it, each in its language.
+- סיום יום: button -> stage "המערכת כותבת סיכומים": per-kid rows shimmer then fill with a short summary built from that kid's marks (fallback to example marks), a language badge per family (עב / RU: daniel, maya, misha, sofia, alisa are Russian-speaking) -> preview list (expand a row to read) -> "שלח לכולם" -> choreographed send: envelopes/sparkles fly from the tablet to a grid of mini phones; each phone lights up with its bubble in he or ru; counter "14/14 נשלחו". Then App.emit('staff:endday').
+
+Public: reset() (fresh morning: nobody arrived, no marks, inbox unread). Tour fns: tour.checkin(ctx) (reset, mode הגעה, tap 4 kids incl. Noa and Itai; <= 6s), tour.meal(ctx) (mark the rest present quickly if needed, mode בחירה, tap Noa, Itai, Daniel, Maya -> אוכל -> צהריים -> alert -> "בדקתי" -> הכל; <= 8s), tour.endDay(ctx) (tap סיום יום -> wait for summaries -> tap שלח לכולם -> wait for phones -> close; <= 8s).

@@ -303,7 +303,7 @@ function updateDarkTop() {
   html.classList.toggle('pt-dark-top', !!(S.night && S.active && S.sy < S.heroH - 80));
 }
 
-/* layout: castle fills the room left between the content and the bottom chrome */
+/* layout: the castle fills the room left between the content and the bottom chrome */
 function layout() {
   if (!hero || hero.offsetParent === null) return;
   hero.style.minHeight = '';
@@ -312,8 +312,8 @@ function layout() {
   const cb = content.offsetTop + content.offsetHeight;
   const dockH = parseFloat(getComputedStyle(html).getPropertyValue('--dock-h')) || 68;
   const base = desk ? clamp(Math.round(H * .13), 96, 140) : Math.round(dockH + 22 + 54);
-  const minCh = desk ? 230 : 156, maxCh = desk ? 420 : 320;
-  let room = H - cb - base - (desk ? 22 : 14);
+  const minCh = desk ? 230 : 156, maxCh = desk ? 440 : 320;
+  let room = H - cb - base - (desk ? 18 : 14);
   if (room < minCh) { H += minCh - room; hero.style.minHeight = H + 'px'; room = minCh; }
   const ch = clamp(Math.round(room), minCh, maxCh);
   hero.style.setProperty('--pt-base', base + 'px');
@@ -345,9 +345,11 @@ function placeCarriage() {
   carriage.style.transform = `translate3d(${x.toFixed(1)}px, ${y.toFixed(1)}px, 0) rotate(${ang.toFixed(1)}deg) scale(${(flip * sc).toFixed(3)}, ${sc.toFixed(3)})`;
   carriage.style.opacity = App.motion.reduced ? 1 : String(clamp(Math.min(t / .05, (.9 - t) / .05), 0, 1));
 }
-function applyLayers() {
+function applyLayers(force) {
   const sy = Math.min(S.sy, S.heroH), p = S.ptr, fine = App.isFine && !App.motion.reduced;
   if (App.motion.reduced) { layers.forEach(l => { l.el.style.translate = ''; }); content.style.translate = ''; content.style.opacity = ''; return; }
+  const key = sy.toFixed(1) + '|' + p.x.toFixed(3) + '|' + p.y.toFixed(3);
+  if (!force && key === S.lkey) return; S.lkey = key;
   for (const l of layers) {
     const x = fine ? -p.x * l.pd * 18 : 0, y = sy * l.sp + (fine ? -p.y * l.pd * 9 : 0);
     l.el.style.translate = `${x.toFixed(2)}px ${y.toFixed(2)}px`;
@@ -634,7 +636,7 @@ App.module('pubTop', {
     layout(); sizeDial(); measureRuler();
     S.scene = -1; updateClock();
     applyMode(false);
-    applyLayers(); placeCarriage();
+    applyLayers(true); placeCarriage();
     if (!S.introStarted) playIntro();
     startLoop();
   },

@@ -223,7 +223,7 @@ html[lang="ru"] .pt-ctas .btn { flex: 1 1 auto; }
 
 /* day / night switch */
 .pt-mode {
-  position: absolute; z-index: 3; top: calc(var(--bar-h) + var(--safe-t) + 14px); inset-inline-end: var(--gutter-l);
+  position: absolute; z-index: 3; top: calc(var(--bar-h) + var(--safe-t) + 14px); inset-inline-end: max(var(--gutter-l), calc((100% - 1120px) / 2 + 12px));
   width: 68px; height: 44px; display: grid; place-items: center; border-radius: var(--r-pill);
 }
 .pt-mode__track {
@@ -313,7 +313,9 @@ html.pt-armed .pt-L--front, html.pt-armed .pt-L--clouds svg, html.pt-armed .pt-L
 /* desktop hero */
 @media (min-width: 900px) {
   .pt-title__a, .pt-title__b { display: inline; }
-  .pt-title { font-size: min(7vw, 9svh, 6.2rem); }
+  .pt-title { font-size: min(6.4vw, 8.6svh, 5.8rem); margin-top: 6px; }
+  .pt-logo, .pt-logo__img { width: 100px !important; height: 100px !important; }
+  .pt-eyebrow { margin-top: 12px; }
   html[lang="ru"] .pt-title { font-size: min(5.6vw, 8svh, 5rem); }
   .pt-cta { --bh: 56px; padding: 0 28px; font-size: 1.0625rem; }
   .pt-ctas { margin-top: 22px; gap: 14px; }
@@ -326,6 +328,7 @@ html.pt-armed .pt-L--front, html.pt-armed .pt-L--clouds svg, html.pt-armed .pt-L
   .pt-cloud--4 { inset-inline-start: 16%; width: 150px; }
   .pt-sp { width: 20px; height: 20px; }
 }
+
 
 /* ------------------------------------------------------- FACTS RIBBON */
 .pt-facts { position: relative; z-index: 2; background: #fff; padding-block: 18px 6px; }

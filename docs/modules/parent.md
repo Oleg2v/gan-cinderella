@@ -1,0 +1,20 @@
+# Module brief: parent (view: parents)
+
+MODULE parent: the parents' personal area ("הורים" in the dock), a polished mobile app inside the page. Fictional child: נועה (App.data.kid('noa')), קבוצת בוגרים. Everything here is example data: show a .demo-tag near the header.
+
+LOGIN (initial state): soft illustrated welcome (arched castle window / door, a Noa-style avatar peeking), title, phone input (dir=ltr, mock), "שליחת קוד" -> after ~0.8s a neutral notification slides in ("הקוד שלך: 4815") and 4 OTP boxes auto-fill digit by digit -> "כניסה" -> sparkle burst -> the area opens with a lovely transition. "התנתקות" available later (header menu) -> back to login.
+
+THE AREA (after login): app-like, ~620px column on desktop with tasteful side art, or a 2-column layout >= 1000px.
+- Header: greeting by time of day, Noa's avatar (App.avatarEl), "נועה · קבוצת בוגרים", today's status chip ("בגן מ-07:48"), and the trust line with a lock icon: "התמונות של נועה רק אצלכם, לא בקבוצות".
+- Tab bar (role=tablist; horizontally scrollable chips on phone; sticky under the top bar): היום · תשלומים · לוח שנה · תפריט · מסמכים · אלבום. Panels switch with a soft slide/fade.
+- היום:
+  * 4 quick-action tiles: "לא מגיעים מחר" (reason chips -> send -> confirmation "הצוות קיבל"), "מאחרים" (ETA chips 15/30/45 min + optional note -> sent), "מי אוסף היום" (choose a trusted person with illustrated photo from App.data.trusted.noa -> a one-time pickup code (4 digits, big, "בתוקף עד 18:00") + "הצוות יבקש את הקוד באיסוף"), "הודעה לצוות" (textarea in either language; on send show "תורגם אוטומטית לעברית לצוות" with the translated preview; prewritten example chips; a simple mock translation for the examples is fine).
+  * Day feed timeline: הגיעה 07:48 · ארוחת בוקר "אכלה הכל" · חוג מוזיקה · חצר · ארוחת צהריים · שינה 12:30–14:10 · מנחה. Each item: time, icon bubble, short warm text; several with "photos" = illustrated placeholders ONLY with Noa (arch-framed SVG scenes: Noa with a xylophone, Noa on a swing, Noa asleep under a star blanket...). Items reveal one by one.
+  * Evening summary card: warm 3-4 sentence summary from the feed, label "נכתב אוטומטית מהסימונים של הצוות", a language switch inside the card (עברית / Русский) that swaps the SAME summary to Russian with a nice text transition (independent of the global language). Beside it (below on phone) an App.ui.phone at 17:30 where the notification drops in when the card scrolls into view.
+- תשלומים: current month card (example amounts + .demo-tag): tuition line, "הנחת סבסוד" line (negative, highlighted), total; "לתשלום" -> mock payment sheet (saved card ••4242 or new card form) -> processing -> success + a receipt row appears; receipts list (past months) with a receipt view in a sheet.
+- לוח שנה: month grid of the current month (real today's date; Sunday-first), event dots, legend (חג / יום סגור לדוגמה / אירוע / יום הולדת), upcoming list, highlighted card "השבוע אתם הורי שבת" with a tickable checklist of what to bring (Russian: «На этой неделе вы — шабатные родители»), birthdays (e.g. Eitan tomorrow). Mark example.
+- תפריט: week menu (Sun-Thu x breakfast/lunch/מנחה) marked "תפריט לדוגמה", allergen badges via App.data.allergens; a toggle "סימון לפי האלרגיות של נועה" (Noa has none: show "אין אלרגיות רשומות" and let the parent pick one to see highlights).
+- מסמכים: הצהרת בריאות ("ממתין לחתימה"), אישור צילום (consent switches), a signature pad on canvas (finger/mouse, clear, done) -> "נחתם" + burst + status turns green.
+- אלבום: "האלבום של נועה": a book that assembles itself (pages fly in) and flips like a real book (CSS 3D page turn; swipe, arrows, keyboard). 6-8 spreads of illustrated "photos" of Noa across the year (Sep -> Jun) with captions; a cover with her name. Line: "נבנה לבד מהתמונות של השנה".
+
+Public: reset() (log out, back to היום, clear sent states). Tour fns: tour.login(ctx) (reset -> type a phone -> tap send code -> wait for autofill -> tap enter; <= 6s); tour.feed(ctx) (ensure היום; scroll through the feed; <= 6.5s); tour.summary(ctx) (scroll to summary + phone, the 17:30 notification drops, tap Русский, wait, tap עברית; <= 9s).
