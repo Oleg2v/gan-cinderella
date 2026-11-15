@@ -638,3 +638,6 @@ button, .btn, .chip, .tb-btn, .dock__btn, [role="tab"], [role="switch"] { -webki
   .tour-cap__hint { display: none; }
   .tour-cap__stop { height: 34px; }
 }
+
+/* while a sheet is open, toasts sit above it instead of over its title */
+html.sheet-open .toasts { top: calc(var(--safe-t) + 6px); }

@@ -331,7 +331,13 @@
     if (o.titleKey) api.setTitle({ key: o.titleKey }); else api.setTitle(o.title);
     if (o.hideTitle) titleEl.classList.add('sr-only');
     api.setContent(o.content);
-    root.addEventListener('click', e => { if (e.target.closest('[data-close]')) api.close('dismiss'); });
+    const openedAt = performance.now();
+    root.addEventListener('click', e => {
+      const c = e.target.closest('[data-close]'); if (!c) return;
+      // a double-tap on whatever opened the sheet must not land on the backdrop and close it right away
+      if (c.classList.contains('sheet-backdrop') && performance.now() - openedAt < 550) return;
+      api.close('dismiss');
+    });
     // drag down to close (phone)
     let y0 = null, dy = 0;
     const startDrag = e => { if (innerWidth >= 760) return; y0 = e.clientY; dy = 0; root.classList.add('is-dragging'); e.target.setPointerCapture && e.target.setPointerCapture(e.pointerId); };
