@@ -26,6 +26,9 @@ const HE = {
   'pb.gs.baby': 'תינוקייה', 'pb.gs.young': 'צעירים', 'pb.gs.big': 'בוגרים',
   'pb.next': 'המשך', 'pb.back': 'חזרה', 'pb.close': 'סגירה', 'pb.done': 'סיום', 'pb.stepOf': 'שלב {n} מתוך {m}',
   'pb.name': 'שם', 'pb.phone': 'טלפון נייד', 'pb.phonePh': '050-000-0000', 'pb.msgLang': 'שפת ההודעות',
+  'pb.rvf.title': 'המלצה על הגן', 'pb.rvf.who': 'מי כותב', 'pb.rvf.mom': 'אמא', 'pb.rvf.dad': 'אבא', 'pb.rvf.gp': 'סבא או סבתא',
+  'pb.rvf.group': 'קבוצה', 'pb.rvf.text': 'כמה מילים על הגן', 'pb.rvf.ph': 'מה הכי אהבתם?', 'pb.rvf.err': 'כתבו לפחות כמה מילים',
+  'pb.rvf.send': 'שליחה', 'pb.rvf.doneT': 'תודה, {name}!', 'pb.rvf.doneP': 'ההמלצה תופיע באתר אחרי שהגן יאשר אותה.', 'pb.rvf.anon': 'הורה',
   'pb.dateFmt': 'יום / חודש / שנה', 'pb.errName': 'איך קוראים לכם?', 'pb.errPhone': 'מספר נייד: 10 ספרות, מתחיל ב-05', 'pb.example': 'לדוגמה',
   'pb.kw.holTile': 'חג', 'pb.kw.openTile': 'חול המועד, פתוחים',
   'pb.kw.m.sukkot': 'תשרי', 'pb.kw.m.pesach': 'ניסן', 'pb.kw.range': '{a}–{b} ב{m}', 'pb.kw.dayA11y': '{d} ב{m}: {s}',
@@ -111,6 +114,10 @@ const RU = {
   'pb.rg.s1': 'Ребёнок', 'pb.rg.s1s': 'Имя и дата рождения', 'pb.rg.s2': 'Родители', 'pb.rg.s2s': 'Имя, телефон и язык сообщений', 'pb.rg.s3': 'Документы', 'pb.rg.s3s': 'Хватит фото с телефона',
   'pb.rg.btn': 'Начать запись',
   'pb.rv.eye': 'Отзывы', 'pb.rv.h': 'Что говорят родители', 'pb.rv.cap': 'Здесь появятся отзывы родителей',
+  'pb.rv.demo': 'демо', 'pb.rv.note': 'В полной версии родители получают короткую просьбу написать пару слов после первого месяца в саду. На сайте появляются только отзывы, которые одобрил сад.',
+  'pb.rv.cta': 'Написать отзыв', 'pb.rvf.title': 'Отзыв о саде', 'pb.rvf.who': 'Кто пишет', 'pb.rvf.mom': 'Мама', 'pb.rvf.dad': 'Папа', 'pb.rvf.gp': 'Бабушка или дедушка',
+  'pb.rvf.group': 'Группа', 'pb.rvf.text': 'Пара слов о саде', 'pb.rvf.ph': 'Что вам больше всего нравится?', 'pb.rvf.err': 'Напишите хотя бы пару слов',
+  'pb.rvf.send': 'Отправить', 'pb.rvf.doneT': 'Спасибо, {name}!', 'pb.rvf.doneP': 'Отзыв появится на сайте после одобрения сада.', 'pb.rvf.anon': 'Родитель',
   'pb.ask.eye': 'Есть вопрос?', 'pb.ask.h': 'Спросите нас', 'pb.ask.lead': 'Быстрые ответы про часы работы, еду, кружки и скидку. На иврите и по-русски.',
   'pb.ask.btn': 'Открыть чат', 'pb.ask.demoQ': 'До скольки вы работаете?', 'pb.ask.demoA': 'Вс–чт до 17:00, можно продлить до 18:00.',
   'pb.ft.name': 'Сад «Синдерелла»', 'pb.ft.slogan': 'Детский сад из сказки', 'pb.ft.addrH': 'Адрес', 'pb.ft.addr': 'ул. ха-Ацмаут 58, Ашдод',
@@ -516,6 +523,57 @@ function queueResult(s, box, pos, noteKey) {
   setTimeout(() => App.fx.burstAt($('.pb-queue__p.is-me', box), { count: 30 }), App.motion.reduced ? 0 : 200 + pos * 220);
   s.body.scrollTop = 0;
 }
+/* =====================================================================
+   REVIEW (a parent writes a recommendation → shown after approval)
+   ===================================================================== */
+function openReview() {
+  const s = openSheet('review', { titleKey: 'pb.rvf.title', content: '<div class="pb-wl"></div>' });
+  const box = $('.pb-wl', s.body);
+  const chips = (name, items, sel) => `<div class="chips" role="group">${items.map(([v, k]) => `<button type="button" class="chip" data-${name}="${v}" aria-pressed="${v === sel}">${T(k)}</button>`).join('')}</div>`;
+  box.innerHTML = `<form class="stack pb-form" style="--gap:14px" novalidate>
+      <div class="field"><label for="pb-rv-n">${T('pb.name')}</label><input class="input" id="pb-rv-n" autocomplete="given-name"></div>
+      <div class="field"><span class="label">${T('pb.rvf.who')}</span>${chips('who', [['mom', 'pb.rvf.mom'], ['dad', 'pb.rvf.dad'], ['gp', 'pb.rvf.gp']], 'mom')}</div>
+      <div class="field"><span class="label">${T('pb.rvf.group')}</span>${chips('grp', App.data.groups.map(g => [g.id, 'pb.g.' + g.id]), 'young')}</div>
+      <div class="field"><label for="pb-rv-t">${T('pb.rvf.text')}</label><textarea class="input" id="pb-rv-t" rows="4" data-i18n-attr="placeholder:pb.rvf.ph" placeholder="${esc(t('pb.rvf.ph'))}"></textarea><span class="hint pb-rv-err" hidden>${T('pb.rvf.err')}</span></div>
+      ${sfoot(`<button type="submit" class="btn btn--primary btn--block">${icon('send')}${T('pb.rvf.send')}</button>`)}
+    </form>`;
+  box.addEventListener('click', e => {
+    const c = e.target.closest('.chip'); if (!c) return;
+    $$('.chip', c.parentElement).forEach(x => x.setAttribute('aria-pressed', x === c));
+  });
+  $('#pb-rv-t', box).addEventListener('input', e => { if (e.target.value.trim().length >= 4) { $('.pb-rv-err', box).hidden = true; e.target.removeAttribute('aria-invalid'); } });
+  $('form', box).addEventListener('submit', e => {
+    e.preventDefault();
+    const txt = $('#pb-rv-t', box), msg = txt.value.trim(), err = $('.pb-rv-err', box);
+    if (msg.length < 4) { err.hidden = false; txt.setAttribute('aria-invalid', 'true'); txt.focus(); return; }
+    const name = $('#pb-rv-n', box).value.trim() || t('pb.rvf.anon');
+    const who = $('[data-who][aria-pressed="true"]', box), grp = $('[data-grp][aria-pressed="true"]', box);
+    const sub = [who && who.textContent, grp && grp.textContent].filter(Boolean).join(' · ');
+    box.innerHTML = `<div class="pb-done pb-anim-in">
+        <div class="pb-done__head"><span class="pb-stamp pb-stamp--sm">${icon('heart', 'ic--fill')}</span><div><h3 class="h3">${esc(t('pb.rvf.doneT', { name }))}</h3><p class="muted small">${T('pb.rvf.doneP')}</p></div></div>
+        <div class="pb-rv pb-rv--mine card"><span class="pb-rv__q"></span><p class="pb-rv__txt"></p><span class="pb-rv__who"><span class="pb-rv__av"></span><span><b class="pb-rv__name"></b><br><span class="tiny muted pb-rv__sub"></span></span></span></div>
+        ${sfoot(`<button type="button" class="btn btn--ghost btn--block" data-close>${T('pb.close')}</button>`)}
+      </div>`;
+    $('.pb-rv__txt', box).textContent = msg; $('.pb-rv__name', box).textContent = name; $('.pb-rv__sub', box).textContent = sub;
+    $('[data-close]', box).addEventListener('click', () => s.close());
+    App.fx.burstAt($('.pb-stamp', box), { count: 26 }); App.haptic(14);
+  });
+  return s;
+}
+/* stacked review placeholders shuffle gently on phones while in view */
+const Shuffle = {
+  t: 0,
+  start() {
+    const wrap = $('.pb-reviews', root); if (!wrap || this.t || App.motion.reduced) return;
+    this.t = setInterval(() => {
+      if (!wrap.classList.contains('pb-on') || innerWidth >= 760 || document.hidden) return;
+      const top = wrap.firstElementChild; if (!top || !top.animate) return;
+      top.animate([{ transform: 'none', opacity: 1 }, { transform: 'translateY(-18px) scale(.97)', opacity: 0 }], { duration: 380, easing: 'cubic-bezier(.65,0,.35,1)' })
+        .finished.then(() => { wrap.append(top); top.animate([{ opacity: 0 }, { opacity: .8 }], { duration: 420, easing: 'ease-out' }); }).catch(() => { });
+    }, 3600);
+  },
+  stop() { clearInterval(this.t); this.t = 0; }
+};
 function openCheck() {
   const s = openSheet('check', { titleKey: 'pb.ck.title', content: '<div class="pb-wl"></div>' });
   const box = $('.pb-wl', s.body);
@@ -931,6 +989,7 @@ const M = App.module('pubBottom', {
     renderSeats();
     Plate.init(); initClubs(); Hol.init(); initArt(); Fab.init();
     r.addEventListener('click', e => {
+      if (e.target.closest('[data-pb-review]')) { openReview(); return; }
       const b = e.target.closest('[data-pb-book],[data-pb-elig],[data-pb-register],[data-pb-reserve],[data-pb-waitlist],[data-pb-check],[data-pb-ask]');
       if (!b || b.classList.contains('pb-fab')) return;
       if (b.hasAttribute('data-pb-book')) openBooking();
@@ -947,8 +1006,8 @@ const M = App.module('pubBottom', {
       const es = mine.get('elig'); if (es && !es.closed && EL.step < 3) elRender(es);
     });
   },
-  onEnter() { root && root.classList.remove('pb-paused'); Fab.schedule(); },
-  onLeave() { root && root.classList.add('pb-paused'); clearTimeout(Fab.showTmo); Fab.set(false); },
+  onEnter() { root && root.classList.remove('pb-paused'); Fab.schedule(); Shuffle.start(); },
+  onLeave() { root && root.classList.add('pb-paused'); clearTimeout(Fab.showTmo); Fab.set(false); Shuffle.stop(); },
   reset() {
     closeMine(); CH.log = []; CH.busy = Promise.resolve();
     WL.ref = null; Plate.reset();

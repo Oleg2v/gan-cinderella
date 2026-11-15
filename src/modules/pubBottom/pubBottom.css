@@ -635,3 +635,12 @@ html[lang="ru"] .pb-rg__title { font-weight: 800; }
 }
 html.a11y-motion [data-module="pubBottom"] *, html.a11y-motion [data-module="pubBottom"] *::before, html.a11y-motion [data-module="pubBottom"] *::after,
 html.a11y-motion .pb-sh *, html.a11y-motion .pb-sh *::before, html.a11y-motion .pb-sh *::after { transition-delay: 0s !important; animation-delay: 0s !important; }
+
+/* reviews: demo note + "write a review" (the live system collects real ones) */
+@media (max-width: 759px) { .pb-reviews .pb-rv { transition: rotate .6s var(--ease-out), translate .6s var(--ease-out), opacity .5s; } }
+.pb-rv__more { display: flex; flex-direction: column; align-items: center; gap: 14px; max-width: 520px; margin: 18px auto 0; text-align: center; }
+.pb-rv__note { font-size: var(--fs-sm); color: var(--ink-2); line-height: 1.55; text-wrap: pretty; }
+.pb-rv__note .demo-tag { margin-inline-end: 4px; }
+.pb-rv--mine { rotate: 0deg !important; margin-top: 4px; background: #fff; box-shadow: var(--shadow-1); }
+.pb-rv__txt { font-size: 1rem; line-height: 1.55; color: var(--ink); white-space: pre-line; overflow-wrap: anywhere; }
+.pb-rv--mine .pb-rv__who { line-height: 1.3; }
