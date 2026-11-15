@@ -56,6 +56,12 @@
 .ow-dial__c span { font-size: .6875rem; font-weight: 700; color: var(--ink-2); }
 .ow-dial.is-open .ow-dial__c span { color: var(--ok); }
 .ow-dial__hrs { font-size: .6875rem; font-weight: 600; color: var(--ink-2); direction: ltr; unicode-bidi: isolate; white-space: nowrap; }
+.ow-dial__in { display: contents; }
+/* two twinkles hug the dial (in the empty corners of its square), never on top of the text */
+.ow-dial .ow-dial__tw { position: absolute; z-index: 1; width: 13px; height: 13px; color: var(--magenta); pointer-events: none; animation: ow-twinkle 3.2s ease-in-out infinite; }
+.ow-dial .ow-dial__tw--a { top: -1px; inset-inline-start: -9px; }
+.ow-dial .ow-dial__tw--b { top: calc(var(--ow-dial) * .76); inset-inline-end: -11px; width: 10px; height: 10px; color: var(--blue); animation-delay: -1.6s; }
+@media (max-width: 899px) { .ow-twk { display: none; } }
 
 .ow-quick { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; margin-top: 16px; }
 .ow-quick .chip { min-height: 44px; padding: 0 14px; font-size: .875rem; font-weight: 600; line-height: 1.2; text-align: start; background: rgba(255,255,255,.9); }
@@ -267,6 +273,8 @@ html[lang="ru"] .ow-k__label { font-weight: 600; letter-spacing: 0; }
 .ow-feed__list {
   list-style: none; display: flex; gap: 10px; overflow-x: auto; overscroll-behavior-x: contain; scroll-snap-type: x proximity;
   margin-left: calc(-1 * var(--gutter-l)); margin-right: calc(-1 * var(--gutter-r)); padding: 2px var(--gutter-r) 8px var(--gutter-l);
+  /* snap to the gutter, not to the screen edge (else the first item sits flush against the edge) */
+  scroll-padding-left: var(--gutter-l); scroll-padding-right: var(--gutter-r);
   scrollbar-width: none;
 }
 .ow-feed__list::-webkit-scrollbar { display: none; }
@@ -402,16 +410,16 @@ html[lang="ru"] .ow-k__label { font-weight: 600; letter-spacing: 0; }
 .ow-lane__dev { width: 100%; display: flex; justify-content: center; }
 
 /* device tuning inside the stage: legible bubbles on small phones */
-.ow-stage .phone { aspect-ratio: 9 / 16.4; box-shadow: 0 20px 40px -20px rgba(18,22,74,.6), inset 0 0 0 2px rgba(255,255,255,.1); }
-.ow-stage .chatv .bubble { --bfs: clamp(10.5px, calc(var(--pw) * .061), 12.5px); max-width: 90%; }
+.ow-stage .phone, .ow-stage .ow-tab { aspect-ratio: 9 / 16.4; box-shadow: 0 20px 40px -20px rgba(18,22,74,.6), inset 0 0 0 2px rgba(255,255,255,.1); }
+.ow-stage .chatv .bubble { --bfs: clamp(11px, calc(var(--pw) * .064), 12.5px); max-width: 92%; }
 .ow-stage .chatv__head { font-size: clamp(10.5px, calc(var(--pw) * .06), 12.5px); }
-.ow-stage .chatv__body { padding: 5% 5% 6%; }
+/* older messages slide away under a soft fade instead of being cut by a hard line under the chat header */
+.ow-stage .chatv__body { padding: 5% 5% 6%; -webkit-mask-image: linear-gradient(to bottom, transparent 0, #000 16px); mask-image: linear-gradient(to bottom, transparent 0, #000 16px); }
 .ow-stage .notif { font-size: clamp(10px, calc(var(--pw) * .057), 12px); }
 .ow-stage .notif__text { -webkit-line-clamp: 5; }
 .ow-stage .phone__date { font-size: clamp(9.5px, calc(var(--pw) * .055), 12px); }
 .ow-stage .phone__notifs { top: 37%; }
-.ow-stage[data-props] .phone { aspect-ratio: 9 / 15; }
-.ow-stage[data-props] .ow-tab { aspect-ratio: 9 / 13.2; }
+.ow-stage[data-props] .phone, .ow-stage[data-props] .ow-tab { aspect-ratio: 9 / 15; }
 .ow-typing { padding: 2px 4px; }
 .ow-typing .typing { padding: 6px 6px; }
 .ow-blink { display: flex; align-items: center; gap: 5px; margin-top: 6px; padding: 5px 8px; border-radius: 9px; background: rgba(2,112,168,.1); color: var(--blue-700); font-weight: 600; white-space: nowrap; }
@@ -427,15 +435,18 @@ html[lang="ru"] .ow-k__label { font-weight: 600; letter-spacing: 0; }
 .ow-tab__list:empty { display: none; }
 .ow-tab__empty { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 6px; padding: 10px; text-align: center; font-size: .6875rem; color: var(--ink-3); }
 .ow-tab__empty .ic { width: 22px; height: 22px; color: var(--ok); }
-.ow-tcard { display: flex; align-items: flex-start; gap: 7px; padding: 8px; border-radius: 12px; background: #fff; font-size: clamp(10.5px, calc(var(--pw) * .058), 12px); line-height: 1.35; box-shadow: var(--shadow-1); }
+.ow-tcard { display: flex; flex-direction: column; gap: 4px; padding: 7px 8px 8px; border-radius: 12px; background: #fff; font-size: clamp(10.5px, calc(var(--pw) * .058), 12px); line-height: 1.32; box-shadow: var(--shadow-1); }
 .ow-tcard--warn { background: var(--warn-bg); box-shadow: inset 0 0 0 1.5px rgba(154,74,0,.32); }
-.ow-tcard--warn b { color: var(--warn); }
 .ow-tcard--pink { background: var(--blush); }
-.ow-tcard__ic { width: 28px; height: 28px; border-radius: 50%; overflow: hidden; flex: none; display: grid; place-items: center; background: #fff; }
-.ow-tcard__ic svg:not(.ic) { width: 100%; height: 100%; display: block; }
-.ow-tcard__m { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
-.ow-tcard b { display: flex; align-items: flex-start; gap: 4px; font-weight: 700; }
-.ow-tcard b .ic { width: 1.1em; height: 1.1em; margin-top: .1em; }
+.ow-tcard__top { display: flex; align-items: center; gap: 7px; min-width: 0; }
+.ow-tcard__ic { position: relative; width: 24px; height: 24px; border-radius: 50%; flex: none; display: grid; place-items: center; background: #fff; }
+.ow-tcard__ic > svg:not(.ic) { width: 100%; height: 100%; display: block; border-radius: 50%; }
+.ow-tcard__ic > .ic { width: 15px; height: 15px; }
+.ow-tcard__badge { position: absolute; bottom: -3px; inset-inline-end: -5px; width: 14px; height: 14px; border-radius: 50%; display: grid; place-items: center; background: var(--warn); color: #fff; box-shadow: 0 0 0 1.5px #fff; }
+.ow-tcard--pink .ow-tcard__badge { background: var(--magenta-600); }
+.ow-tcard__badge .ic { width: 9px; height: 9px; }
+.ow-tcard__t { min-width: 0; font-weight: 700; }
+.ow-tcard--warn .ow-tcard__t { color: var(--warn); }
 .ow-tcard.is-new { animation: ow-tcIn .65s var(--ease-spring) both; }
 @keyframes ow-tcIn { from { opacity: 0; transform: translateY(-14px) scale(.94); } }
 

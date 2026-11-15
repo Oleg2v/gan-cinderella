@@ -51,6 +51,10 @@ const who = ids => (ids.length <= 3 ? joinNames(ids.map(nm)) : kidsN(ids.length)
 const famN = n => (lang() === 'ru' ? `${n} ${pluralRu(n, ['семья', 'семьи', 'семей'])}` : `${n} משפחות`);
 const dateStr = (lg, d) => { try { return new Intl.DateTimeFormat(lg === 'ru' ? 'ru-RU' : 'he-IL', { weekday: 'long', day: 'numeric', month: 'long' }).format(d); } catch (e) { return ''; } };
 const lc = txt => (lang() === 'ru' ? txt.toLowerCase() : txt);
+const dirOf = lg => (lg === 'ru' ? 'ltr' : 'rtl');
+/* Unicode isolation for user-typed text inside a sentence of another direction */
+const iso = txt => '\u2068' + txt + '\u2069';
+const now = () => performance.now();
 function today() { const d = new Date(); if (d.getDay() === 6) d.setDate(d.getDate() + 1); return d; }
 
 /* ---------- i18n ---------- */
@@ -75,6 +79,8 @@ const I18N = {
     'st.q.meal': 'איזו ארוחה?', 'st.q.amt': '{meal} · כמה אכלו?', 'st.q.sleep': 'שינה · {who}', 'st.q.diaper': 'החתלה · איך היה?',
     'st.amt.all': 'הכל', 'st.amt.half': 'חצי', 'st.amt.little': 'מעט',
     'st.sleep.start': 'נרדמו', 'st.sleep.stop': 'התעוררו',
+    'st.sleep.start1.f': 'נרדמה', 'st.sleep.start1.m': 'נרדם', 'st.sleep.stop1.f': 'התעוררה', 'st.sleep.stop1.m': 'התעורר',
+    'st.t.wokeOne.f': '{name} התעוררה', 'st.t.wokeOne.m': '{name} התעורר',
     'st.dia.wet': 'רטוב', 'st.dia.full': 'מלא', 'st.dia.dry': 'יבש',
     'st.t.sleepStart': 'שינה נעימה · {who}', 'st.t.sleepStop': 'התעוררו · {who}',
     'st.al.a11y': 'התראת אלרגיה', 'st.al.title': 'שימו לב', 'st.al.sub': 'בודקים שהמנה מתאימה לפני שמגישים.',
@@ -93,7 +99,7 @@ const I18N = {
     'st.inc.preview': 'תצוגה מקדימה', 'st.inc.need': 'בוחרים ילד ומה קרה', 'st.inc.to': 'למי זה נשלח',
     'st.inc.toParents': 'ההורים של {name} · {lang}', 'st.inc.toOwner': 'המנהלת · בעברית', 'st.inc.lang.he': 'בעברית', 'st.inc.lang.ru': 'ברוסית',
     'st.inc.edit': 'עריכה', 'st.inc.send': 'שליחה להורים ולמנהלת', 'st.inc.sent': 'הדיווח נשלח',
-    'st.inc.parentPhone': 'ההורים · {lang}', 'st.inc.ownerPhone': 'המנהלת · בעברית', 'st.inc.close': 'סגירה',
+    'st.inc.capParents': 'ההורים', 'st.inc.capOwner': 'המנהלת', 'st.inc.close': 'סגירה',
     'st.eod.title': 'סיום יום', 'st.eod.writing': 'המערכת כותבת סיכומים', 'st.eod.sub': 'מהסימונים של היום, לכל משפחה בשפה שלה',
     'st.eod.ready': 'הסיכומים מוכנים', 'st.eod.readySub': 'אפשר לפתוח כל שורה ולקרוא לפני השליחה',
     'st.eod.send': 'שלח לכולם', 'st.eod.sending': 'שולחים להורים…', 'st.eod.sentSub': 'כל משפחה מקבלת סיכום לטלפון',
@@ -128,6 +134,8 @@ const I18N = {
     'st.q.meal': 'Что едим?', 'st.q.amt': '{meal}: сколько съели?', 'st.q.sleep': 'Сон: {who}', 'st.q.diaper': 'Подгузник: какой?',
     'st.amt.all': 'Всё', 'st.amt.half': 'Половину', 'st.amt.little': 'Немного',
     'st.sleep.start': 'Уснули', 'st.sleep.stop': 'Проснулись',
+    'st.sleep.start1.f': 'Уснула', 'st.sleep.start1.m': 'Уснул', 'st.sleep.stop1.f': 'Проснулась', 'st.sleep.stop1.m': 'Проснулся',
+    'st.t.wokeOne.f': '{name} проснулась', 'st.t.wokeOne.m': '{name} проснулся',
     'st.dia.wet': 'Мокрый', 'st.dia.full': 'Грязный', 'st.dia.dry': 'Сухой',
     'st.t.sleepStart': 'Сладкого сна · {who}', 'st.t.sleepStop': 'Проснулись · {who}',
     'st.al.a11y': 'Предупреждение об аллергии', 'st.al.title': 'Внимание', 'st.al.sub': 'Проверьте блюдо, прежде чем подавать.',
@@ -146,7 +154,7 @@ const I18N = {
     'st.inc.preview': 'Предпросмотр', 'st.inc.need': 'Выберите ребёнка и что случилось', 'st.inc.to': 'Кому уйдёт',
     'st.inc.toParents': 'Родители: {name} · {lang}', 'st.inc.toOwner': 'Заведующая · на иврите', 'st.inc.lang.he': 'на\u00a0иврите', 'st.inc.lang.ru': 'по-русски',
     'st.inc.edit': 'Изменить', 'st.inc.send': 'Отправить отчёт', 'st.inc.sent': 'Отчёт отправлен',
-    'st.inc.parentPhone': 'Родители · {lang}', 'st.inc.ownerPhone': 'Заведующая · на\u00a0иврите', 'st.inc.close': 'Закрыть',
+    'st.inc.capParents': 'Родители', 'st.inc.capOwner': 'Заведующая', 'st.inc.close': 'Закрыть',
     'st.eod.title': 'Конец дня', 'st.eod.writing': 'Система пишет сводки', 'st.eod.sub': 'По отметкам за день, каждой семье на её языке',
     'st.eod.ready': 'Сводки готовы', 'st.eod.readySub': 'Нажмите на строку, чтобы прочитать перед отправкой',
     'st.eod.send': 'Отправить всем', 'st.eod.sending': 'Отправляем родителям…', 'st.eod.sentSub': 'Каждая семья получает сводку на телефон',
@@ -215,7 +223,7 @@ function makeInbox() {
   const tr = A.data.trusted;
   return [
     {
-      id: 'daniel', kid: 'daniel', orig: 'ru', time: '07:21', pickup: true,
+      id: 'daniel', kid: 'daniel', orig: 'ru', time: '07:38', pickup: true,
       from: { he: 'אמא של דניאל · אולגה', ru: 'Мама Даниэля · Ольга' }, short: { he: 'אמא של דניאל', ru: 'мама Даниэля' },
       look: tr.daniel[0].look,
       text: { ru: 'Сегодня Даниэля заберёт бабушка Люда', he: 'היום סבתא לודה תאסוף את דניאל' },
@@ -223,7 +231,7 @@ function makeInbox() {
       read: false, stage: 'new', sent: null
     },
     {
-      id: 'maya', kid: 'maya', orig: 'ru', time: '07:36',
+      id: 'maya', kid: 'maya', orig: 'ru', time: '07:26',
       from: { he: 'אבא של מאיה', ru: 'Папа Майи' }, short: { he: 'אבא של מאיה', ru: 'папа Майи' },
       look: { adult: true, skin: 0, hair: 'short', hc: 3, bg: 4, shirt: A.SHIRTS.navy },
       text: { ru: 'Доброе утро! Мы забыли дома куртку Майи. Если станет прохладно, можно дать ей запасную?', he: 'בוקר טוב! שכחנו בבית את המעיל של מאיה. אם יתקרר, אפשר לתת לה מעיל רזרבי?' },
@@ -444,6 +452,7 @@ function setMode(m) {
   paintMode(); paintAllKids(); renderBar();
 }
 function finish(ids, freshType) {
+  barOffAt = now();
   S.sel.clear(); S.bar = 'root'; S.meal = null; S.checked = false;
   paintAllKids(ids, freshType); paintAllChip(); renderBar(); paintStats(); sync(); ensureTick();
 }
@@ -474,7 +483,7 @@ function sleepStop() {
   ids.forEach(id => { const ks = S.kids[id]; ks.sleeps.push({ start: ks.sleep.start, end: Math.max(S.clock, ks.sleep.start + 1) }); ks.sleep = null; });
   const w = ids.slice(), tm = S.clock;
   log('sun', () => t('st.log.sleepStop', { who: who(w) }), tm);
-  A.ui.toast(t('st.t.sleepStop', { who: who(ids) }), { icon: 'sun', tone: 'ok' });
+  A.ui.toast(ids.length === 1 ? tg('st.t.wokeOne', ids[0], { name: nm(ids[0]) }) : t('st.t.sleepStop', { who: who(ids) }), { icon: 'sun', tone: 'ok' });
   finish(ids, 'sleep');
 }
 function recordDiaper(type) {
@@ -507,10 +516,13 @@ function barItems() {
   switch (S.bar) {
     case 'food': return MEALS.map(m => ({ id: m, ic: icon(MEAL_IC[m]), label: t('st.meal.' + m), tone: 'meal' }));
     case 'amount': return AMTS.map(a => ({ id: a, ic: sic('pie-' + a), label: t('st.amt.' + a), tone: 'amt' }));
-    case 'sleep': return [
-      { id: 'start', ic: icon('moon'), label: t('st.sleep.start'), tone: 'sleep', off: sel.every(id => S.kids[id].sleep) },
-      { id: 'stop', ic: icon('sun'), label: t('st.sleep.stop'), tone: 'wake', off: !sel.some(id => S.kids[id].sleep) }
-    ];
+    case 'sleep': {
+      const one = sel.length === 1 ? sel[0] : null;
+      return [
+        { id: 'start', ic: icon('moon'), label: one ? tg('st.sleep.start1', one) : t('st.sleep.start'), tone: 'sleep', off: sel.every(id => S.kids[id].sleep) },
+        { id: 'stop', ic: icon('sun'), label: one ? tg('st.sleep.stop1', one) : t('st.sleep.stop'), tone: 'wake', off: !sel.some(id => S.kids[id].sleep) }
+      ];
+    }
     case 'diaper': return DIAPERS.map(([d, ic]) => ({ id: d, ic: icon(ic), label: t('st.dia.' + d), tone: 'diaper' }));
     default: return [
       { id: 'food', ic: icon('plate'), label: t('st.act.food'), tone: 'food' },
@@ -530,7 +542,7 @@ function barTitle() {
     default: return t('st.bar.n', { n });
   }
 }
-let barSig = '';
+let barSig = '', barOffAt = 0, actAt = 0;
 function renderBar(force) {
   const bar = $('[data-st-bar]', root); if (!bar) return;
   const on = S.mode === 'select' && S.sel.size > 0;
@@ -545,7 +557,7 @@ function renderBar(force) {
   $('.st-bar__avs', bar).innerHTML = sel.slice(0, 3).map(id => A.avatarEl(kid(id), 28, { label: '' })).join('') + (sel.length > 3 ? `<span class="st-bar__more">+${sel.length - 3}</span>` : '');
   $('.st-bar__title', bar).textContent = barTitle();
   const items = barItems();
-  const sig = S.bar + '|' + lang() + '|' + items.map(i => i.id + (i.off ? 0 : 1)).join(',');
+  const sig = S.bar + '|' + lang() + '|' + items.map(i => i.id + (i.off ? 0 : 1) + i.label).join(',');
   if (sig === barSig && !force) return;
   const animate = !barSig.startsWith(S.bar + '|') || force;
   barSig = sig;
@@ -587,7 +599,11 @@ function onBarX() {
    ===================================================================== */
 function sheet(o) {
   const s = A.ui.sheet(Object.assign({}, o, { onClose: r => { open.delete(s); o.onClose && o.onClose(r); } }));
-  open.add(s); return s;
+  open.add(s);
+  /* a quick double tap on the button that opened the sheet must not land on the fresh backdrop and close it again */
+  const t0 = now(), bd = $('.sheet-backdrop', s.root);
+  if (bd) bd.addEventListener('click', e => { if (now() - t0 < 500) e.stopPropagation(); });
+  return s;
 }
 function closeSheets() { [...open].forEach(s => s.close('staff')); open.clear(); }
 
@@ -684,6 +700,7 @@ function openCamera(pre = []) {
   const scene = (pre.length ? pre : p.length ? p : ['noa', 'maya', 'itai']).slice(0, 3);
   const tags = new Set(pre.length ? pre : scene);
   const fromBar = pre.length > 0;
+  let sent = false;
   const body = A.h('<div class="st-camwrap"></div>');
   const s = sheet({ titleKey: 'st.cam.title', content: body, className: 'st-cam-sheet' });
   const live = () => {
@@ -695,7 +712,7 @@ function openCamera(pre = []) {
         <span class="st-vf__flash" aria-hidden="true"></span>
       </div>
       <div class="st-vf__ctrl">
-        <span class="st-vf__zoom" aria-hidden="true">1×</span>
+        <span class="st-vf__zoom" dir="ltr" aria-hidden="true">1×</span>
         <button type="button" class="st-shutter" data-cam="shoot" aria-label="${esc(t('st.cam.shoot'))}"><i></i></button>
         <span class="st-vf__tip">${esc(t('st.cam.tip'))}</span>
       </div></div>`;
@@ -708,9 +725,9 @@ function openCamera(pre = []) {
       <p class="st-q">${esc(t('st.cam.who'))}</p>
       <div class="chips st-tagchips">${kidsList.map(id => `<button type="button" class="chip st-tag" data-tag="${id}" aria-pressed="${tags.has(id)}">${A.avatarEl(kid(id), 32, { label: '' })}<span>${esc(nm(id))}</span></button>`).join('')}</div>
       <p class="st-private">${icon('lock')}<span>${esc(t('st.cam.private'))}</span></p>
-      <p class="st-need" aria-live="polite" data-need></p>
-      <div class="st-actions"><button type="button" class="btn btn--ghost" data-cam="retake">${icon('camera')}<span>${esc(t('st.cam.retake'))}</span></button>
-        <button type="button" class="btn btn--primary" data-cam="send">${icon('send', 'ic--dir')}<span data-sendlbl></span></button></div>
+      <div class="st-foot"><p class="st-need" aria-live="polite" data-need></p>
+        <div class="st-actions"><button type="button" class="btn btn--ghost" data-cam="retake">${icon('camera')}<span>${esc(t('st.cam.retake'))}</span></button>
+        <button type="button" class="btn btn--primary" data-cam="send">${icon('send', 'ic--dir')}<span data-sendlbl></span></button></div></div>
     </div>`;
     paintSend();
   };
@@ -734,14 +751,16 @@ function openCamera(pre = []) {
       if (!s.closed) tagView();
     } else if (a === 'retake') live();
     else if (a === 'send') {
+      if (sent) return;
       if (!tags.size) { $('[data-need]', body).textContent = t('st.cam.need'); return; }
+      sent = true; b.disabled = true;
       const ids = [...tags];
       ids.forEach(id => { S.kids[id].photos++; });
       A.fx.burstAt(b, { count: 26 });
       const w = ids.slice();
       log('camera', () => t('st.log.photo', { who: who(w) }));
       A.ui.toast(t('st.cam.sent', { names: joinNames(ids.map(nm)) }), { icon: 'lock', tone: 'ok' });
-      if (fromBar) { S.sel.clear(); S.bar = 'root'; }
+      if (fromBar) { S.sel.clear(); S.bar = 'root'; barOffAt = now(); }
       paintAllKids(ids, 'photo'); paintAllChip(); renderBar(); sync();
       setTimeout(() => s.close('sent'), 220);
     }
@@ -757,8 +776,9 @@ function origLine(lg, txt) {
 }
 function trHTML(m) {
   const ui = lang();
-  if (m.orig === 'ru') return `<div class="st-tr" dir="rtl" lang="he"><span class="st-tr__l">${icon('translate')}${esc(t('st.in.trHe'))}</span><p>${esc(m.text.he)}</p></div>`;
-  if (ui === 'ru') return `<div class="st-tr" dir="ltr" lang="ru"><span class="st-tr__l">${icon('translate')}${esc(t('st.in.trRu'))}</span><p>${esc(m.text.ru)}</p></div>`;
+  const lab = key => `<span class="st-tr__l" dir="${dirOf(ui)}" lang="${ui}">${icon('translate')}<span>${esc(t(key))}</span></span>`;
+  if (m.orig === 'ru') return `<div class="st-tr" dir="rtl" lang="he">${lab('st.in.trHe')}<p>${esc(m.text.he)}</p></div>`;
+  if (ui === 'ru') return `<div class="st-tr" dir="ltr" lang="ru">${lab('st.in.trRu')}<p>${esc(m.text.ru)}</p></div>`;
   return '';
 }
 function openInbox(focusId) {
@@ -787,7 +807,7 @@ function openInbox(focusId) {
         <p class="st-trust__h">${icon('shield')}<span>${esc(t('st.in.list'))}</span><span class="demo-tag">${esc(t('core.example'))}</span></p>
         <ul class="st-trust__list">${tr.map(p => `<li class="st-trust__p${m.stage !== 'new' && p.id === 'grandma' ? ' is-match' : ''}" data-p="${p.id}">${A.avatarEl(p, 46, { label: '' })}<span class="st-trust__n">${esc(A.L(p))}</span><span class="st-trust__st">${icon('check')}${esc(t('st.in.match'))}</span></li>`).join('')}</ul>
         <span class="st-trust__beam" aria-hidden="true"></span></div>
-        <div class="st-trust__act" aria-live="polite">${m.stage === 'new'
+        <div class="st-trust__act${m.stage !== 'done' ? ' st-foot' : ''}" aria-live="polite">${m.stage === 'new'
           ? `<button type="button" class="btn btn--night btn--block" data-in-check>${icon('shield')}<span>${esc(t('st.in.check'))}</span></button>`
           : m.stage === 'checked'
             ? `<button type="button" class="btn btn--primary btn--block" data-in-approve>${icon('check')}<span>${esc(t('st.in.approve'))}</span></button>`
@@ -854,7 +874,7 @@ function incTexts(st, lg) {
   const parts = [fill(P.what, { t: hm(st.t), what: lg === 'ru' ? what.toLowerCase() : what })];
   if (aids.length) parts.push(fill(P.aid, { aids: lg === 'ru' ? aids.join(', ').toLowerCase() : aids.join(', ') }));
   else if (st.aid.has('none')) parts.push(P.none);
-  if (st.note.trim()) parts.push(st.note.trim().replace(/([^.!?])$/, '$1.'));
+  if (st.note.trim()) parts.push(iso(st.note.trim().replace(/([^.!?…])$/, '$1.')));
   parts.push(fill(P.calm[g(st.kid)], { name }));
   return { title: fill(P.title, { name }), text: parts.join(' ') };
 }
@@ -864,7 +884,9 @@ function ownerText(st) {
   return { title: `דיווח אירוע · ${k.he}`, text: `${what} בשעה ${hm(st.t)}. ${aids.length ? 'טיפול: ' + aids.join(', ') + '.' : 'לא היה צורך בטיפול.'} ההורים קיבלו עדכון ${k.lang === 'ru' ? 'ברוסית' : 'בעברית'}.` };
 }
 function openIncident() {
-  const st = { kid: S.sel.size === 1 ? [...S.sel][0] : null, what: null, aid: new Set(), t: Math.max(7 * 60, Math.floor(S.clock / 5) * 5), note: '' };
+  /* an incident is reported after it happened: the time can't go past "now" */
+  const tMax = () => Math.max(7 * 60, Math.floor(S.clock / 5) * 5);
+  const st = { kid: S.sel.size === 1 ? [...S.sel][0] : null, what: null, aid: new Set(), t: tMax(), note: '' };
   const body = A.h('<div class="st-incwrap"></div>');
   const s = sheet({ titleKey: 'st.inc.title', content: body, className: 'st-inc-sheet' });
   const ordered = () => { const p = present(); return p.concat(KIDS.map(k => k.id).filter(id => !p.includes(id))); };
@@ -875,15 +897,26 @@ function openIncident() {
       <fieldset><legend>${esc(t('st.inc.aid'))}</legend><div class="chips">${INC_AID.map(([id, l]) => `<button type="button" class="chip" data-ia="${id}" aria-pressed="${st.aid.has(id)}">${esc(A.L(l))}</button>`).join('')}</div></fieldset>
       <div class="field"><span class="label" id="st-inc-when">${esc(t('st.inc.when'))}</span>
         <div class="st-stepper" role="group" aria-labelledby="st-inc-when"><button type="button" data-it="-5" aria-label="${esc(t('st.inc.earlier'))}">${icon('minus')}</button><output class="tnum" data-itime>${hm(st.t)}</output><button type="button" data-it="5" aria-label="${esc(t('st.inc.later'))}">${icon('plus')}</button></div></div>
-      <div class="field"><label class="label" for="st-inc-note">${esc(t('st.inc.note'))}</label><textarea class="input" id="st-inc-note" rows="2" placeholder="${esc(t('st.inc.notePh'))}">${esc(st.note)}</textarea></div>
-      <p class="st-need" aria-live="polite" data-need></p>
-      <button type="submit" class="btn btn--primary btn--block">${icon('eye')}<span>${esc(t('st.inc.preview'))}</span></button>
+      <div class="field"><label class="label" for="st-inc-note">${esc(t('st.inc.note'))}</label><textarea class="input" id="st-inc-note" rows="2" dir="auto" placeholder="${esc(t('st.inc.notePh'))}">${esc(st.note)}</textarea></div>
+      <div class="st-foot"><p class="st-need" aria-live="polite" data-need></p>
+        <button type="submit" class="btn btn--primary btn--block">${icon('eye')}<span>${esc(t('st.inc.preview'))}</span></button></div>
     </form>`;
     const f = $('form', body);
     f.addEventListener('submit', e => {
       e.preventDefault();
       st.note = $('#st-inc-note', body).value || '';
-      if (!st.kid || !st.what) { $('[data-need]', body).textContent = t('st.inc.need'); return; }
+      if (!st.kid || !st.what) {
+        $('[data-need]', body).textContent = t('st.inc.need');
+        /* show the caregiver what is missing: scroll to it and nudge it */
+        const all = $$('fieldset', f), fs = all[st.kid ? 1 : 0];
+        all.forEach(x => x.classList.remove('is-miss'));
+        void fs.offsetWidth; fs.classList.add('is-miss');
+        if (s.body) {
+          const top = s.body.scrollTop + fs.getBoundingClientRect().top - s.body.getBoundingClientRect().top - 6;
+          if (s.body.scrollTo) s.body.scrollTo({ top, behavior: reduced() ? 'auto' : 'smooth' }); else s.body.scrollTop = top;
+        }
+        return;
+      }
       preview();
     });
   };
@@ -896,8 +929,8 @@ function openIncident() {
       <p class="st-q">${esc(t('st.inc.to'))}</p>
       <ul class="st-to"><li><span class="icon-bubble icon-bubble--pink" aria-hidden="true">${icon('home-heart')}</span>${esc(t('st.inc.toParents', { name: nm(st.kid), lang: fl }))}</li>
         <li><span class="icon-bubble" aria-hidden="true">${icon('crown')}</span>${esc(t('st.inc.toOwner'))}</li></ul>
-      <div class="st-actions"><button type="button" class="btn btn--ghost" data-inc="edit">${icon('edit')}<span>${esc(t('st.inc.edit'))}</span></button>
-        <button type="button" class="btn btn--primary" data-inc="send">${icon('send', 'ic--dir')}<span>${esc(t('st.inc.send'))}</span></button></div></div>`;
+      <div class="st-foot"><div class="st-actions"><button type="button" class="btn btn--ghost" data-inc="edit">${icon('edit')}<span>${esc(t('st.inc.edit'))}</span></button>
+        <button type="button" class="btn btn--primary" data-inc="send">${icon('send', 'ic--dir')}<span>${esc(t('st.inc.send'))}</span></button></div></div></div>`;
     if (s.body) s.body.scrollTop = 0;
   };
   const sent = () => {
@@ -908,12 +941,12 @@ function openIncident() {
     log('aid', () => t('st.log.incident', { name: nm(nameNow) }));
     sync();
     body.innerHTML = `<div class="st-incprev"><p class="st-okline">${icon('check-circle')}<span>${esc(t('st.inc.sent'))}</span></p>
-      <div class="st-phones2"><figure data-ph="p"><figcaption>${icon('home-heart')}${esc(t('st.inc.parentPhone', { lang: t(fam === 'ru' ? 'st.inc.lang.ru' : 'st.inc.lang.he') }))}</figcaption></figure>
-        <figure data-ph="o"><figcaption>${icon('crown')}${esc(t('st.inc.ownerPhone'))}</figcaption></figure></div>
-      <button type="button" class="btn btn--night btn--block" data-inc="close">${esc(t('st.inc.close'))}</button></div>`;
+      <div class="st-phones2"><figure data-ph="p"><figcaption>${icon('home-heart')}<span><b>${esc(t('st.inc.capParents'))}</b>${esc(t(fam === 'ru' ? 'st.inc.lang.ru' : 'st.inc.lang.he'))}</span></figcaption></figure>
+        <figure data-ph="o"><figcaption>${icon('crown')}<span><b>${esc(t('st.inc.capOwner'))}</b>${esc(t('st.inc.lang.he'))}</span></figcaption></figure></div>
+      <div class="st-foot"><button type="button" class="btn btn--night btn--block" data-inc="close">${esc(t('st.inc.close'))}</button></div></div>`;
     if (s.body) s.body.scrollTop = 0;
     const w = Math.max(140, Math.min(220, Math.floor(((s.body ? s.body.clientWidth : 340) - 40 - 14) / 2)));
-    const tm = hm(Math.min(T_MAX, st.t + 2));
+    const tm = hm(S.clock);
     const mk = (lg, slot, n, delay) => {
       const ph = A.ui.phone({ time: tm, date: dateStr(lg, today()), size: w, max: 1 });
       $(`[data-ph="${slot}"]`, body).prepend(ph);
@@ -926,13 +959,14 @@ function openIncident() {
   body.addEventListener('click', e => {
     const b = e.target.closest('[data-ik],[data-iw],[data-ia],[data-it],[data-inc]'); if (!b) return;
     const need = $('[data-need]', body); if (need) need.textContent = '';
+    const fsx = b.closest('fieldset'); if (fsx) fsx.classList.remove('is-miss');
     if (b.dataset.ik) { st.kid = b.dataset.ik; $$('[data-ik]', body).forEach(x => x.setAttribute('aria-pressed', String(x === b))); }
     else if (b.dataset.iw) { st.what = b.dataset.iw; $$('[data-iw]', body).forEach(x => x.setAttribute('aria-pressed', String(x === b))); }
     else if (b.dataset.ia) {
       const id = b.dataset.ia;
       if (st.aid.has(id)) st.aid.delete(id); else { st.aid.add(id); if (id === 'none') [...st.aid].forEach(x => x !== 'none' && st.aid.delete(x)); else st.aid.delete('none'); }
       $$('[data-ia]', body).forEach(x => x.setAttribute('aria-pressed', String(st.aid.has(x.dataset.ia))));
-    } else if (b.dataset.it) { st.t = A.clamp(st.t + +b.dataset.it, 7 * 60, 17 * 60 + 55); $('[data-itime]', body).textContent = hm(st.t); }
+    } else if (b.dataset.it) { st.t = A.clamp(st.t + +b.dataset.it, 7 * 60, tMax()); $('[data-itime]', body).textContent = hm(st.t); }
     else if (b.dataset.inc === 'edit') { form(); }
     else if (b.dataset.inc === 'send') sent();
     else if (b.dataset.inc === 'close') s.close('done');
@@ -949,12 +983,18 @@ function example(id, i) {
     diapers: 1 + (i % 3), photos: i % 4 === 1 ? 1 : 0
   };
 }
+const wakeEnd = ks => Math.max(ks.sleep.start + 20, S.clock);
 function marksFor(id) {
   const i = KID_IDX[id], ks = S.kids[id], ex = example(id, i);
   const meals = {}; MEALS.forEach(m => { meals[m] = ks.meals[m] ? ks.meals[m].amt : ex.meals[m]; });
   const last = ks.sleeps.length ? ks.sleeps[ks.sleeps.length - 1] : null;
-  const now = ks.sleep ? { start: ks.sleep.start, end: Math.max(ks.sleep.start + 20, S.clock) } : null;
-  return { arrived: ks.arrived != null ? ks.arrived : ex.arrived, meals, sleep: now || last || ex.sleep, diapers: ks.diapers.length || ex.diapers, photos: ks.photos || ex.photos, pickup: ks.pickup, incident: ks.incident };
+  const cur = ks.sleep ? { start: ks.sleep.start, end: wakeEnd(ks) } : null;
+  return { arrived: ks.arrived != null ? ks.arrived : ex.arrived, meals, sleep: cur || last || ex.sleep, diapers: ks.diapers.length || ex.diapers, photos: ks.photos || ex.photos, pickup: ks.pickup, incident: ks.incident };
+}
+function wakeAll() {
+  const ids = sleeping(); if (!ids.length) return;
+  ids.forEach(id => { const ks = S.kids[id]; ks.sleeps.push({ start: ks.sleep.start, end: wakeEnd(ks) }); ks.sleep = null; });
+  paintAllKids(); paintStats(); ensureTick();
 }
 function compose(id, lg) {
   const P = SUM[lg], gg = g(id), k = kid(id), name = k[lg], m = marksFor(id), i = KID_IDX[id];
@@ -984,10 +1024,11 @@ function compose(id, lg) {
   out.push(k.birthdayTomorrow ? P.bday[gg] : P.bye[gg][i % 2]);
   return out.join(' ');
 }
-const dirOf = lg => (lg === 'ru' ? 'ltr' : 'rtl');
 function langBadge(lg) { return `<span class="st-lang st-lang--${lg}" title="${esc(t(lg === 'ru' ? 'st.lang.ruA' : 'st.lang.heA'))}">${t('st.lang.' + lg)}</span>`; }
 function openEod() {
   closeSheets(); if (S.sel.size) clearSel();
+  /* the day is over: whoever still sleeps is woken now, so the summaries and the cards tell the same story */
+  wakeAll();
   const items = KIDS.map(k => ({ id: k.id, lg: k.lang, text: { he: compose(k.id, 'he'), ru: compose(k.id, 'ru') } }));
   const ui = lang();
   const row = (it, i) => {
@@ -1036,10 +1077,17 @@ function openEod() {
     const sb = e.target.closest('[data-eod="send"]');
     if (sb && !sb.disabled) { sb.disabled = true; await sendAll(); return; }
     const ph = e.target.closest('.st-mph__btn');
-    if (ph && !ph.disabled) { pick(ph.closest('.st-mph').dataset.kid); return; }
+    if (ph && !ph.disabled) { pick(ph.closest('.st-mph').dataset.kid); showReader(); return; }
     if (e.target.closest('[data-eod="close"]')) s.close('done');
   });
   let big = null, featured = null;
+  const showReader = () => {
+    const rd = $('.st-read', body); if (!rd || !s.body) return;
+    const br = s.body.getBoundingClientRect(), r = rd.getBoundingClientRect();
+    if (r.top >= br.top && r.bottom <= br.bottom - 70) return;
+    const top = s.body.scrollTop + r.top - br.top - 8;
+    if (s.body.scrollTo) s.body.scrollTo({ top, behavior: reduced() ? 'auto' : 'smooth' }); else s.body.scrollTop = top;
+  };
   const pick = id => {
     const it = items.find(x => x.id === id); if (!it || !big) return;
     $$('.st-mph', body).forEach(p => p.classList.toggle('is-pick', p.dataset.kid === id));
@@ -1182,9 +1230,13 @@ A.module('staff', {
     repaintAll();
     root.addEventListener('click', e => {
       const card = e.target.closest('.st-kid');
-      if (card) { const id = card.dataset.kid; if (S.mode === 'arrive') toggleArrive(id); else toggleSel(id); return; }
+      if (card) {
+        if (S.mode === 'select' && now() - barOffAt < 380) return;
+        const id = card.dataset.kid; if (S.mode === 'arrive') toggleArrive(id); else toggleSel(id); return;
+      }
       const mb = e.target.closest('[data-st-mode]'); if (mb) { setMode(mb.dataset.stMode); return; }
-      const act = e.target.closest('[data-act]'); if (act && !act.disabled) { onAct(act.dataset.act); return; }
+      const act = e.target.closest('[data-act]');
+      if (act) { if (!act.disabled && now() - actAt > 280) { actAt = now(); onAct(act.dataset.act); } return; }
       if (e.target.closest('[data-st-barx]')) { onBarX(); return; }
       const b = e.target.closest('[data-st]'); if (!b) return;
       switch (b.dataset.st) {
@@ -1231,13 +1283,13 @@ A.module('staff', {
         if (r.top < 64 || r.top > innerHeight * .4) await ctx.scrollTo($('.st-tools', root), { offset: 70, duration: 380 });
       }
       if (S.mode !== 'select') await ctx.tap('[data-st-mode="select"]', { after: 160 });
-      for (const id of need) await ctx.tap(cardSel(id), { after: 130 });
+      for (const id of need) await ctx.tap(cardSel(id), { after: 100 });
       await ctx.tap('.st-bar [data-act="food"]', { after: 200 });
       await ctx.tap('.st-bar [data-act="lunch"]', { after: 100 });
       const ok = await ctx.waitFor('.st-alert [data-al="ok"]', 2500);
-      await ctx.wait(ctx.fast ? 200 : 760);
-      if (ok) await ctx.tap(ok, { after: 380 });
-      await ctx.tap('.st-bar [data-act="all"]', { after: 420 });
+      await ctx.wait(ctx.fast ? 200 : 620);
+      if (ok) await ctx.tap(ok, { after: 320 });
+      await ctx.tap('.st-bar [data-act="all"]', { after: 380 });
     },
     async endDay(ctx) {
       closeSheets(); if (S.sel.size) clearSel();

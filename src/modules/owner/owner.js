@@ -34,14 +34,14 @@ const HE = {
   'ow.status.early': 'בוקר שקט. הגן נפתח ב-07:00, והכל מוכן.',
   'ow.status.closed': 'היום הסתיים. הסיכומים נשלחו, והכל מוכן למחר.',
   'ow.status.weekend': 'שבת שלום. הגן נח, והמערכת שומרת על הסדר.',
-  'ow.dial.open': 'פתוח', 'ow.dial.closed': 'סגור', 'ow.dial.a11y': 'שעות הגן היום {hrs}. עכשיו {now}, {state}.', 'ow.dial.sat': 'סגור היום',
+  'ow.dial.open': 'פתוח', 'ow.dial.closed': 'סגור', 'ow.dial.a11y': 'שעות הגן היום {hrs}. עכשיו {now}, {state}.', 'ow.dial.sat': 'יום מנוחה',
   'ow.quick': 'קיצורי דרך', 'ow.q.funnel': 'מהאתר להרשמה', 'ow.q.auto': 'מאחורי הקלעים', 'ow.q.pay': 'תשלומים', 'ow.q.wait': 'רשימת המתנה',
   'ow.kpis.h': 'המספרים של היום',
   /* KPI */
-  'ow.k.kids': 'ילדים היום', 'ow.k.kidsPill': '{p} נוכחות', 'ow.k.kidsSub': 'מתוך {n} רשומים · {m} לא הגיעו היום', 'ow.k.arr': 'הגעות לפי שעה', 'ow.k.peak': 'שעת השיא: {t}, {n} ילדים', 'ow.k.arrA11y': 'הגעות לפי שעה: {list}',
+  'ow.k.kids': 'ילדים היום', 'ow.k.kidsY': 'ילדים אתמול', 'ow.k.kidsFri': 'ילדים ביום שישי', 'ow.k.kidsPill': '{p} נוכחות', 'ow.k.kidsSub': 'מתוך {n} רשומים · {m} לא הגיעו', 'ow.k.arr': 'הגעות לפי שעה', 'ow.k.peak': 'הכי עמוס: ב-{t} הגיעו {n} ילדים', 'ow.k.arrA11y': 'הגעות לפי שעה: {list}',
   'ow.k.groups': 'תפוסה בקבוצות', 'ow.k.groupsPill': 'מקומות פנויים: {n}', 'ow.k.free': '{n} פנויים', 'ow.k.last': 'מקום אחרון', 'ow.k.full': 'מלא', 'ow.k.ringA11y': '{g}: תפוסה {p}, {note}',
   'ow.k.wait': 'רשימת המתנה', 'ow.k.waitUnit': 'משפחות', 'ow.k.waitPill': '+2 השבוע', 'ow.k.waitHint': 'כשמתפנה מקום, ההצעה יוצאת לבד.', 'ow.k.waitHow': 'איך זה עובד', 'ow.k.waitA11y': '{n} משפחות ברשימת ההמתנה',
-  'ow.k.tours': 'סיורים השבוע', 'ow.k.toursNext': 'הבא', 'ow.k.toursWhen': 'מחר ב-09:30', 'ow.k.weekA11y': 'סיורים לפי יום: {list}',
+  'ow.k.tours': 'סיורים השבוע', 'ow.k.toursNext': 'הבא', 'ow.k.toursWhen': 'מחר ב-09:30', 'ow.k.toursSun': 'ביום א׳ ב-09:30', 'ow.k.weekA11y': 'סיורים לפי יום: {list}',
   'ow.k.src': 'פניות לפי מקור', 'ow.k.srcPill': '{n} החודש', 'ow.k.src.site': 'אתר', 'ow.k.src.fb': 'Facebook', 'ow.k.src.ru': 'פורטל ברוסית',
   'ow.k.pay': 'תשלומים', 'ow.k.paid': 'שולם', 'ow.k.pending': 'ממתין', 'ow.k.payPill': 'ממתינים: {n}', 'ow.k.payUnit': 'משפחות', 'ow.k.payA11y': '{a} משפחות שילמו, {b} ממתינות',
   'ow.k.shift': 'מי במשמרת', 'ow.k.shiftPill': 'צוות מלא', 'ow.k.role.carers': 'מטפלות', 'ow.k.role.kitchen': 'מטבח', 'ow.k.shiftA11y': '{role}: {n} מתוך {m}',
@@ -79,13 +79,13 @@ const RU = {
   'ow.status.early': 'Тихое утро. Сад открывается в 07:00, всё готово.',
   'ow.status.closed': 'День закончился. Сводки отправлены, к завтра всё готово.',
   'ow.status.weekend': 'Шабат шалом. Сад отдыхает, а система следит за порядком.',
-  'ow.dial.open': 'открыто', 'ow.dial.closed': 'закрыто', 'ow.dial.a11y': 'Часы работы сегодня {hrs}. Сейчас {now}, {state}.', 'ow.dial.sat': 'сегодня закрыто',
+  'ow.dial.open': 'открыто', 'ow.dial.closed': 'закрыто', 'ow.dial.a11y': 'Часы работы сегодня {hrs}. Сейчас {now}, {state}.', 'ow.dial.sat': 'выходной',
   'ow.quick': 'Быстрые переходы', 'ow.q.funnel': 'От сайта до записи', 'ow.q.auto': 'За кулисами', 'ow.q.pay': 'Оплаты', 'ow.q.wait': 'Лист ожидания',
   'ow.kpis.h': 'Цифры дня',
-  'ow.k.kids': 'Дети сегодня', 'ow.k.kidsPill': 'Пришли {p}', 'ow.k.kidsSub': 'Записано {n} · сегодня нет {m}', 'ow.k.arr': 'Приход по часам', 'ow.k.peak': 'Пик: {t}, детей: {n}', 'ow.k.arrA11y': 'Приход по часам: {list}',
+  'ow.k.kids': 'Дети сегодня', 'ow.k.kidsY': 'Дети вчера', 'ow.k.kidsFri': 'Дети в пятницу', 'ow.k.kidsPill': 'Пришли {p}', 'ow.k.kidsSub': 'Записано {n} · не пришли {m}', 'ow.k.arr': 'Приход по часам', 'ow.k.peak': 'Пик: в {t} пришли {n} детей', 'ow.k.arrA11y': 'Приход по часам: {list}',
   'ow.k.groups': 'Заполненность групп', 'ow.k.groupsPill': 'Свободно мест: {n}', 'ow.k.free': 'свободно {n}', 'ow.k.last': 'последнее место', 'ow.k.full': 'мест нет', 'ow.k.ringA11y': '{g}: заполнено {p}, {note}',
   'ow.k.wait': 'Лист ожидания', 'ow.k.waitUnit': 'семей', 'ow.k.waitPill': '+2 за неделю', 'ow.k.waitHint': 'Когда освобождается место, предложение уходит само.', 'ow.k.waitHow': 'Как это работает', 'ow.k.waitA11y': 'В листе ожидания семей: {n}',
-  'ow.k.tours': 'Экскурсии на неделе', 'ow.k.toursNext': 'Ближайшая', 'ow.k.toursWhen': 'завтра 09:30', 'ow.k.weekA11y': 'Экскурсии по дням: {list}',
+  'ow.k.tours': 'Экскурсии на неделе', 'ow.k.toursNext': 'Ближайшая', 'ow.k.toursWhen': 'завтра 09:30', 'ow.k.toursSun': 'в воскресенье 09:30', 'ow.k.weekA11y': 'Экскурсии по дням: {list}',
   'ow.k.src': 'Заявки по источникам', 'ow.k.srcPill': '{n} за месяц', 'ow.k.src.site': 'Сайт', 'ow.k.src.fb': 'Facebook', 'ow.k.src.ru': 'Русский портал',
   'ow.k.pay': 'Оплаты', 'ow.k.paid': 'Оплачено', 'ow.k.pending': 'Ждут', 'ow.k.payPill': 'Ждут оплаты: {n}', 'ow.k.payUnit': 'семей', 'ow.k.payA11y': 'Оплатили семей: {a}, ждут: {b}',
   'ow.k.shift': 'Кто на смене', 'ow.k.shiftPill': 'Все на месте', 'ow.k.role.carers': 'Воспитательницы', 'ow.k.role.kitchen': 'Кухня', 'ow.k.shiftA11y': '{role}: {n} из {m}',
@@ -251,7 +251,7 @@ const AUTOS = [
   },
   {
     id: 'shabbat', icon: 'candle', tint: 'peach', sch: { trig: 'calendar', acts: ['bell'] },
-    last: P('ביום ד׳, 10:00', 'в ср, 10:00'),
+    last: P('ביום ד׳, 10:00', 'ср, 10:00'),
     stage: {
       time: '10:00',
       trig: { icon: 'candle', t: P('קבלת שבת ביום שישי', 'Встреча шабата в пятницу'), v: P('ד׳ 10:00', 'ср 10:00'), sub: P('השבוע: ההורים של מאיה', 'На этой неделе: родители Майи') },
@@ -306,7 +306,7 @@ const AUTOS = [
   },
   {
     id: 'allergies', icon: 'plate', tint: 'peach', sch: { trig: 'list', acts: ['chef'] },
-    last: P('ביום א׳, 06:30', 'в вс, 06:30'),
+    last: P('ביום א׳, 06:30', 'вс, 06:30'),
     stage: {
       time: '06:30',
       trig: { icon: 'plate', t: P('בדיקת תפריט השבוע', 'Проверка меню недели'), v: P('א׳ 06:30', 'вс 06:30') },
@@ -359,6 +359,17 @@ function freshState() {
    HERO · greeting, date, calm status, day dial
    ===================================================================== */
 const hoursFor = d => (d.getDay() === 6 ? null : d.getDay() === 5 ? [7, 13] : [7, 17]);
+/* open · early (before opening) · closed (after closing) · weekend (Saturday) */
+function dayMode(d = new Date()) {
+  const hrs = hoursFor(d), hr = d.getHours() + d.getMinutes() / 60;
+  return !hrs ? 'weekend' : hr < hrs[0] ? 'early' : hr >= hrs[1] ? 'closed' : 'open';
+}
+/* the kids card shows the last day the gan was open: today, yesterday, or Friday (after Shabbat / early Sunday) */
+function kidsKey(d = new Date()) {
+  const m = dayMode(d);
+  if (m === 'open' || m === 'closed') return 'ow.k.kids';
+  return d.getDay() === 6 || d.getDay() === 0 ? 'ow.k.kidsFri' : 'ow.k.kidsY';
+}
 const hh = n => String(n).padStart(2, '0') + ':00';
 function renderHero() {
   if (!root) return;
@@ -381,7 +392,8 @@ function renderHero() {
   dial.setAttribute('role', 'img');
   dial.setAttribute('aria-label', t('ow.dial.a11y', { hrs: hrsTxt, now: App.fmt.time(now), state }));
   dial.classList.toggle('is-open', open);
-  dial.innerHTML = `<svg viewBox="0 0 100 100" aria-hidden="true" focusable="false">
+  // only the inner part is rebuilt, so the twinkles around the dial keep their rhythm
+  $('[data-ow-dial-in]', dial).innerHTML = `<svg viewBox="0 0 100 100" aria-hidden="true" focusable="false">
       <circle class="ow-dial__face" cx="50" cy="50" r="49"/>
       <g class="ow-dial__ticks">${ticks}</g>
       <circle class="ow-dial__tr" cx="50" cy="50" r="40"/>
@@ -423,9 +435,10 @@ function renderBento() {
   const maxS = Math.max(...k.sources.map(s => s.n));
   const srcTotal = k.sources.reduce((s, x) => s + x.n, 0);
   const days = DAYS[lang()] || DAYS.he;
+  S.bentoKey = kidsKey() + today;
   el.innerHTML = `
   <article class="ow-card ow-k ow-k--kids" data-ow-kpi="kids" style="--ow-n:0">
-    ${kHead('users', 'ow.k.kids', `<span class="tag tag--ok ow-k__pill">${ic('check-circle')}${esc(t('ow.k.kidsPill', { p: att }))}</span>`)}
+    ${kHead('users', kidsKey(), `<span class="tag tag--ok ow-k__pill">${ic('check-circle')}${esc(t('ow.k.kidsPill', { p: att }))}</span>`)}
     <p class="ow-big"><span class="ow-frac" dir="ltr">${CU(k.present, 'ow-big__n')}<span class="ow-big__of">/${num(k.registered)}</span></span></p>
     <p class="ow-k__sub">${esc(t('ow.k.kidsSub', { n: num(k.registered), m: num(k.registered - k.present) }))}</p>
     <p class="ow-peak" aria-hidden="true">${ic('sun')}<span>${esc(t('ow.k.peak', { t: k.arrivals.find(a => a[1] === maxA)[0], n: maxA }))}</span></p>
@@ -451,7 +464,7 @@ function renderBento() {
     ${kHead('walk', 'ow.k.tours')}
     <p class="ow-big">${CU(tourTotal, 'ow-big__n')}</p>
     <div class="ow-week" role="img" aria-label="${esc(t('ow.k.weekA11y', { list: k.tourDays.map((n, i) => `${days[i]} ${n}`).join(', ') }))}">${k.tourDays.map((n, i) => `<span class="ow-week__d ${i < today ? 'is-past' : ''} ${i === today ? 'is-today' : ''} ${i === today + 1 ? 'is-next' : ''}" aria-hidden="true"><span class="ow-week__dots">${Array.from({ length: n }, (_, j) => `<i style="--ow-i:${i * 2 + j}"></i>`).join('')}</span><span class="ow-week__l">${esc(days[i])}</span></span>`).join('')}</div>
-    <p class="ow-next">${ic('clock')}<span>${esc(t('ow.k.toursNext'))}: <b>${esc(t('ow.k.toursWhen'))}</b></span></p>
+    <p class="ow-next">${ic('clock')}<span>${esc(t('ow.k.toursNext'))}: <b>${esc(t(today === 4 || today === 5 ? 'ow.k.toursSun' : 'ow.k.toursWhen'))}</b></span></p>
   </article>
   <article class="ow-card ow-k ow-k--src" data-ow-kpi="src" style="--ow-n:4">
     ${kHead('trend', 'ow.k.src', `<span class="tag ow-k__pill">${esc(t('ow.k.srcPill', { n: srcTotal }))}</span>`)}
@@ -474,6 +487,8 @@ function introKpis() {
   const el = $('[data-ow-bento]', root); if (!el) return;
   clearTimeout(S.introT);
   el.classList.remove('is-on'); reflow(el);
+  // numbers restart from zero right away (no blink of the final value before the count-up)
+  $$('[data-ow-cu]', el).forEach(c => { c.textContent = num(0); });
   const go = () => {
     el.classList.add('is-on');
     $$('[data-ow-cu]', el).forEach(c => App.countUp(c, +c.dataset.owCu, { duration: 1150 }));
@@ -495,6 +510,8 @@ function kpiBump(key, d) {
 function renderFunnel() {
   const v = FUN[S.period], max = v[0];
   const list = $('[data-ow-stages]', root), side = $('[data-ow-fside]', root); if (!list) return;
+  // zeros until the funnel pours, so the numbers never show final, drop to 0 and count again
+  const card = $('.ow-fun', root), shown = !card || card.classList.contains('is-on');
   const conv = i => Math.round((v[i] / v[i - 1]) * 100);
   list.innerHTML = STAGES.map(([k, icn], i) => {
     const w = v[i] / max, pw = i ? v[i - 1] / max : 0;
@@ -502,7 +519,7 @@ function renderFunnel() {
       <span class="ow-fs__conv" aria-hidden="true">${ic('chevron-down')}<span class="tnum">${conv(i)}%</span></span>` : '';
     return `<li class="ow-fs__st" style="--ow-w:${w.toFixed(4)};--ow-i:${i}">
       ${pour}
-      <div class="ow-fs__row"><span class="ow-fs__ic" aria-hidden="true">${ic(icn)}</span><span class="ow-fs__name">${esc(t('ow.fun.s.' + k))}</span><b class="ow-fs__v" data-ow-cu="${v[i]}">${num(v[i])}</b></div>
+      <div class="ow-fs__row"><span class="ow-fs__ic" aria-hidden="true">${ic(icn)}</span><span class="ow-fs__name">${esc(t('ow.fun.s.' + k))}</span><b class="ow-fs__v tnum" data-ow-cu="${v[i]}">${num(shown ? v[i] : 0)}</b></div>
       <div class="ow-fs__track" aria-hidden="true"><i class="ow-fs__bar"></i></div>
       ${i ? `<span class="sr-only">${esc(t('ow.fun.convA11y', { p: conv(i) + '%' }))}</span>` : ''}
     </li>`;
@@ -579,8 +596,16 @@ function updLastRuns() {
 }
 function renderFeed() {
   const f = $('[data-ow-feed]', root); if (!f) return;
-  f.innerHTML = S.feed.map(x => `<li class="ow-feed__it ${x.isNew ? 'is-new' : ''}"><span class="ow-feed__ic" aria-hidden="true">${ic(BY[x.id].icon)}</span><span class="ow-feed__m"><b>${esc(t(`ow.a.${x.id}.log`))}</b><span class="tnum">${esc(x.ts ? relTime(x.ts) : L(x.when))}</span></span></li>`).join('');
+  const fresh = S.feed.some(x => x.isNew);
+  f.innerHTML = S.feed.map(x => `<li class="ow-feed__it ${x.isNew ? 'is-new' : ''}"><span class="ow-feed__ic" aria-hidden="true">${ic(BY[x.id].icon)}</span><span class="ow-feed__m"><b>${esc(t(`ow.a.${x.id}.log`))}</b><span class="tnum" data-ow-fwhen>${esc(feedWhen(x))}</span></span></li>`).join('');
   S.feed.forEach(x => { x.isNew = false; });
+  // a new run lands at the start of the strip: bring the strip back to its start so it is seen
+  if (fresh) f.scrollLeft = 0;
+}
+const feedWhen = x => (x.ts ? relTime(x.ts) : L(x.when));
+/* the 30 s tick only refreshes the times (rebuilding the strip would jolt a strip the user is swiping) */
+function updFeedTimes() {
+  $$('[data-ow-fwhen]', root).forEach((el, i) => { const x = S.feed[i]; if (x) el.textContent = feedWhen(x); });
 }
 function toggle(id) {
   S.on[id] = !S.on[id];
@@ -593,8 +618,12 @@ function toggle(id) {
 }
 function offNudge(id) {
   App.ui.toast({ he: HE['ow.a.offToast'], ru: RU['ow.a.offToast'] }, { icon: 'info' });
-  const sw = $(`[data-ow-a="${id}"] [data-ow-sw]`, root);
-  if (sw) { sw.classList.remove('is-nudge'); reflow(sw); sw.classList.add('is-nudge'); }
+  const card = $(`[data-ow-a="${id}"]`, root), sw = card && $('[data-ow-sw]', card);
+  if (!sw) return;
+  const nudge = () => { sw.classList.remove('is-nudge'); reflow(sw); sw.classList.add('is-nudge'); };
+  // the toast sits at the top of the screen: make sure the switch it talks about is in sight, below it
+  const r = sw.getBoundingClientRect();
+  if (r.top < 150 || r.bottom > innerHeight - 110) App.scrollTo(card, { offset: 150 }).then(nudge); else nudge();
 }
 
 /* =====================================================================
@@ -764,13 +793,29 @@ function tabAdd(F, s) {
   const d = F.devs[s.lane]; if (!d) return;
   const list = $('.ow-tab__list', d.el), empty = $('.ow-tab__empty', d.el);
   if (empty) empty.hidden = true;
+  // compact card: [avatar with the alert/cake badge] title, then the line below at full width (fits two cards on a 150px tablet)
   const c = h(`<div class="ow-tcard ow-tcard--${s.tone || 'warn'} is-new">
-    <span class="ow-tcard__ic">${s.kid ? App.avatar(App.data.kid(s.kid), { label: '' }) : ic(s.icon)}</span>
-    <span class="ow-tcard__m"><b>${ic(s.icon)}<span></span></b><span class="ow-tcard__x"></span></span></div>`);
-  $('b span', c).textContent = L(s.title); $('.ow-tcard__x', c).textContent = L(s.text);
+    <span class="ow-tcard__top"><span class="ow-tcard__ic">${s.kid ? App.avatar(App.data.kid(s.kid), { label: '' }) : ic(s.icon)}${s.kid ? `<span class="ow-tcard__badge">${ic(s.icon)}</span>` : ''}</span><b class="ow-tcard__t"></b></span>
+    <span class="ow-tcard__x"></span></div>`);
+  $('.ow-tcard__t', c).textContent = L(s.title); $('.ow-tcard__x', c).textContent = L(s.text);
   list.append(c);
   while (list.children.length > 2) list.firstElementChild.remove();
 }
+/* phone layout: the film plays in a scrolling sheet with a sticky caption bar at the bottom.
+   Like a camera, keep the part that is acting (devices / trigger card) in sight above that bar. */
+function follow(F, el) {
+  const body = PL.s && PL.F === F && PL.s.body; if (!body || !el) return;
+  const side = $('.ow-stage__side', F.stage);
+  if (!side || getComputedStyle(side).position !== 'sticky') return;
+  const br = body.getBoundingClientRect(), sr = side.getBoundingClientRect(), r = el.getBoundingClientRect();
+  const top = br.top + 6, bottom = Math.min(br.bottom, sr.top) - 6;
+  let d = r.bottom > bottom ? r.bottom - bottom : 0;
+  if (r.top - d < top) d = r.top - top;          // taller than the window: its top wins
+  if (Math.abs(d) < 3) return;
+  const to = Math.max(0, body.scrollTop + d);
+  if (reduced() || !body.scrollTo) body.scrollTop = to; else body.scrollTo({ top: to, behavior: 'smooth' });
+}
+const lanesEl = F => $('.ow-lanes', F.stage);
 function setProp(F, id, s) {
   const p = $(`[data-p="${id}"]`, F.stage); if (!p) return;
   p.dataset.s = s || '';
@@ -806,20 +851,21 @@ async function runFilm(F) {
     if (F.signal.aborted) throw abortErr();
     switch (s.t) {
       case 'trig': lightTrig(F); logLine(F, s.log); await W(650); break;
-      case 'phase': phase(F, s); logLine(F, s.log); await W(750); break;
+      case 'phase': follow(F, $('[data-ow-trig]', F.stage)); phase(F, s); logLine(F, s.log); await W(750); break;
       case 'prop': setProp(F, s.id, s.s); logLine(F, s.log); await W(380); break;
       case 'scan':
         for (const id of s.ids) { setProp(F, id, 'scan'); await W(250); setProp(F, id, s.end[id] || ''); }
         logLine(F, s.log); await W(420); break;
       case 'go': {
         if (s.count) { const c = $('[data-ow-cnt]', F.stage); if (c) App.countUp(c, s.count, { duration: Math.max(300, 1500 * F.speed) }); }
+        follow(F, lanesEl(F));
         await Promise.all(s.lanes.map(id => travel(F, id))); break;
       }
-      case 'type': s.lanes.forEach(id => typing(F.devs[id], true)); await W(s.ms || 780); break;
-      case 'msg': { const n = bubble(F, s, false); logLine(F, s.log); await W(s.ms != null ? s.ms : 600 + Math.min(950, n * 8)); break; }
+      case 'type': follow(F, lanesEl(F)); s.lanes.forEach(id => typing(F.devs[id], true)); await W(s.ms || 780); break;
+      case 'msg': { follow(F, lanesEl(F)); const n = bubble(F, s, false); logLine(F, s.log); await W(s.ms != null ? s.ms : 600 + Math.min(950, n * 8)); break; }
       case 'reply': { await W(380); bubble(F, s, true); logLine(F, s.log); await W(750); break; }
-      case 'notify': { const d = F.devs[s.lane]; if (d && d.el.notify) d.el.notify({ title: s.title, text: s.text }); logLine(F, s.log); await W(1050); break; }
-      case 'tab': tabAdd(F, s); logLine(F, s.log); await W(s.ms || 1050); break;
+      case 'notify': { follow(F, lanesEl(F)); const d = F.devs[s.lane]; if (d && d.el.notify) d.el.notify({ title: s.title, text: s.text }); logLine(F, s.log); await W(1050); break; }
+      case 'tab': follow(F, lanesEl(F)); tabAdd(F, s); logLine(F, s.log); await W(s.ms || 1050); break;
       case 'kpi': kpiBump(s.key, s.d); break;
     }
   }
@@ -831,13 +877,15 @@ function finishFilm(F) {
     if (!reduced()) App.fx.burstAt($('.ic', done), { count: 26, speed: [120, 340], size: [8, 20], life: [600, 1100], gravity: 200 });
   }
   $$('.ow-log li', F.stage).forEach(li => li.classList.remove('is-cur'));
+  F.stage.classList.add('is-done');
   App.haptic(14);
-  // keep "done" in sight on short screens
+  // keep "done" + the buttons in sight on short screens (phone layout: the caption bar grows into them)
   const body = PL.s && PL.s.body;
   if (body && done) {
+    const side = $('.ow-stage__side', F.stage), sticky = side && getComputedStyle(side).position === 'sticky';
     const br = body.getBoundingClientRect(), dr = $('.ow-stage__btns', F.stage).getBoundingClientRect();
-    if (dr.bottom > br.bottom - 4) {
-      const to = body.scrollTop + dr.bottom - br.bottom + 16;
+    const to = sticky ? body.scrollHeight - body.clientHeight : body.scrollTop + dr.bottom - br.bottom + 16;
+    if (to > body.scrollTop + 2) {
       if (reduced() || !body.scrollTo) body.scrollTop = to; else body.scrollTo({ top: to, behavior: 'smooth' });
     }
   }
@@ -908,7 +956,10 @@ function renderAll() {
 }
 function startClock() {
   stopClock();
-  S.clock = setInterval(() => { renderHero(); updLastRuns(); renderFeed(); }, 30000);
+  S.clock = setInterval(() => {
+    renderHero(); updLastRuns(); updFeedTimes();
+    if (S.bentoKey !== kidsKey() + new Date().getDay()) renderBento();   // the day turned over or the gan opened
+  }, 30000);
 }
 function stopClock() { if (S.clock) { clearInterval(S.clock); S.clock = 0; } }
 function observe() {

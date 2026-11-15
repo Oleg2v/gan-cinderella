@@ -18,6 +18,8 @@ const digits = s => String(s || '').replace(/\D/g, '');
 const phoneOk = s => { const d = digits(s); return /^05\d{8}$/.test(d) || /^9725\d{8}$/.test(d); };
 const phoneFmt = s => { let d = digits(s); if (d.startsWith('972')) d = '0' + d.slice(3); return d.length === 10 ? `${d.slice(0, 3)}-${d.slice(3, 6)}-${d.slice(6)}` : s; };
 const lang = () => App.i18n.lang;
+/* delayed bursts must not fire from (0,0) when their sheet was closed in the meantime */
+const burstAt = (el, o) => { if (el && el.isConnected && el.getClientRects().length) App.fx.burstAt(el, o); };
 const groupName = id => { const g = App.data.groups.find(x => x.id === id); return g ? App.L(g) : ''; };
 
 /* ---------- i18n: Hebrew for markup is harvested from the HTML; dynamic strings live here ---------- */
@@ -28,7 +30,7 @@ const HE = {
   'pb.name': 'שם', 'pb.phone': 'טלפון נייד', 'pb.phonePh': '050-000-0000', 'pb.msgLang': 'שפת ההודעות',
   'pb.rvf.title': 'המלצה על הגן', 'pb.rvf.who': 'מי כותב', 'pb.rvf.mom': 'אמא', 'pb.rvf.dad': 'אבא', 'pb.rvf.gp': 'סבא או סבתא',
   'pb.rvf.group': 'קבוצה', 'pb.rvf.text': 'כמה מילים על הגן', 'pb.rvf.ph': 'מה הכי אהבתם?', 'pb.rvf.err': 'כתבו לפחות כמה מילים',
-  'pb.rvf.send': 'שליחה', 'pb.rvf.doneT': 'תודה, {name}!', 'pb.rvf.doneP': 'ההמלצה תופיע באתר אחרי שהגן יאשר אותה.', 'pb.rvf.anon': 'הורה',
+  'pb.rvf.send': 'שליחה', 'pb.rvf.doneT': 'תודה, {name}!', 'pb.rvf.doneT0': 'תודה רבה!', 'pb.rvf.doneP': 'ההמלצה תופיע באתר אחרי שהגן יאשר אותה.', 'pb.rvf.anon': 'הורה',
   'pb.dateFmt': 'יום / חודש / שנה', 'pb.errName': 'איך קוראים לכם?', 'pb.errPhone': 'מספר נייד: 10 ספרות, מתחיל ב-05', 'pb.example': 'לדוגמה',
   'pb.kw.holTile': 'חג', 'pb.kw.openTile': 'חול המועד, פתוחים',
   'pb.kw.m.sukkot': 'תשרי', 'pb.kw.m.pesach': 'ניסן', 'pb.kw.range': '{a}–{b} ב{m}', 'pb.kw.dayA11y': '{d} ב{m}: {s}',
@@ -60,7 +62,7 @@ const HE = {
   'pb.rg.pname': 'שם ההורה', 'pb.rg.pphone': 'טלפון נייד (וואטסאפ)',
   'pb.rg.docsP': 'צילום מהטלפון מספיק. בדמו אפשר לבחור קובץ לדוגמה.',
   'pb.rg.d1': 'ספח תעודת זהות עם פרטי הילד', 'pb.rg.d2': 'פנקס חיסונים', 'pb.rg.d3': 'אישור זכאות לסבסוד, אם יש', 'pb.rg.opt': 'לא חובה',
-  'pb.rg.up': 'העלאה', 'pb.rg.sampleFile': 'קובץ לדוגמה', 'pb.rg.uploaded': 'הועלה', 'pb.rg.need': 'PDF או תמונה', 'pb.rg.send': 'שליחת ההרשמה',
+  'pb.rg.errDob': 'בחרו תאריך לידה', 'pb.rg.needDoc': 'צריך לצרף את המסמך הזה', 'pb.rg.up': 'העלאה', 'pb.rg.sampleFile': 'קובץ לדוגמה', 'pb.rg.uploaded': 'הועלה', 'pb.rg.need': 'PDF או תמונה', 'pb.rg.send': 'שליחת ההרשמה',
   'pb.rg.doneT': 'ההרשמה נשלחה', 'pb.rg.doneP': 'תודה, {name}! ומה עכשיו?', 'pb.rg.n1': 'עוברים על הפרטים והמסמכים', 'pb.rg.n2': 'חוזרים אליכם בוואטסאפ', 'pb.rg.n3': 'מתאמים יחד את היום הראשון בגן',
   'pb.rg.sampleName': 'יעל', 'pb.rg.sampleParent': 'מיכל',
   /* chat */
@@ -117,7 +119,7 @@ const RU = {
   'pb.rv.demo': 'демо', 'pb.rv.note': 'В полной версии родители получают короткую просьбу написать пару слов после первого месяца в саду. На сайте появляются только отзывы, которые одобрил сад.',
   'pb.rv.cta': 'Написать отзыв', 'pb.rvf.title': 'Отзыв о саде', 'pb.rvf.who': 'Кто пишет', 'pb.rvf.mom': 'Мама', 'pb.rvf.dad': 'Папа', 'pb.rvf.gp': 'Бабушка или дедушка',
   'pb.rvf.group': 'Группа', 'pb.rvf.text': 'Пара слов о саде', 'pb.rvf.ph': 'Что вам больше всего нравится?', 'pb.rvf.err': 'Напишите хотя бы пару слов',
-  'pb.rvf.send': 'Отправить', 'pb.rvf.doneT': 'Спасибо, {name}!', 'pb.rvf.doneP': 'Отзыв появится на сайте после одобрения сада.', 'pb.rvf.anon': 'Родитель',
+  'pb.rvf.send': 'Отправить', 'pb.rvf.doneT': 'Спасибо, {name}!', 'pb.rvf.doneT0': 'Большое спасибо!', 'pb.rvf.doneP': 'Отзыв появится на сайте после одобрения сада.', 'pb.rvf.anon': 'Родитель',
   'pb.ask.eye': 'Есть вопрос?', 'pb.ask.h': 'Спросите нас', 'pb.ask.lead': 'Быстрые ответы про часы работы, еду, кружки и скидку. На иврите и по-русски.',
   'pb.ask.btn': 'Открыть чат', 'pb.ask.demoQ': 'До скольки вы работаете?', 'pb.ask.demoA': 'Вс–чт до 17:00, можно продлить до 18:00.',
   'pb.ft.name': 'Сад «Синдерелла»', 'pb.ft.slogan': 'Детский сад из сказки', 'pb.ft.addrH': 'Адрес', 'pb.ft.addr': 'ул. ха-Ацмаут 58, Ашдод',
@@ -150,7 +152,7 @@ const RU = {
   'pb.rg.pname': 'Имя родителя', 'pb.rg.pphone': 'Мобильный (WhatsApp)',
   'pb.rg.docsP': 'Хватит фото с телефона. В демо можно выбрать пример файла.',
   'pb.rg.d1': 'Приложение к теудат зеут с данными ребёнка', 'pb.rg.d2': 'Книжка прививок', 'pb.rg.d3': 'Подтверждение права на субсидию, если есть', 'pb.rg.opt': 'по желанию',
-  'pb.rg.up': 'Загрузить', 'pb.rg.sampleFile': 'Пример файла', 'pb.rg.uploaded': 'Загружено', 'pb.rg.need': 'PDF или фото', 'pb.rg.send': 'Отправить заявку',
+  'pb.rg.errDob': 'Укажите дату рождения', 'pb.rg.needDoc': 'Нужно приложить этот документ', 'pb.rg.up': 'Загрузить', 'pb.rg.sampleFile': 'Пример файла', 'pb.rg.uploaded': 'Загружено', 'pb.rg.need': 'PDF или фото', 'pb.rg.send': 'Отправить заявку',
   'pb.rg.doneT': 'Заявка отправлена', 'pb.rg.doneP': 'Спасибо, {name}! Что будет дальше:', 'pb.rg.n1': 'Проверим данные и документы', 'pb.rg.n2': 'Ответим вам в WhatsApp', 'pb.rg.n3': 'Вместе договоримся о первом дне в саду',
   'pb.rg.sampleName': 'Яэль', 'pb.rg.sampleParent': 'Михаль',
   'pb.ch.title': 'Спросите нас', 'pb.ch.sub': 'Отвечаем на иврите и по-русски', 'pb.ch.ph': 'Напишите вопрос…', 'pb.ch.send': 'Отправить',
@@ -176,12 +178,30 @@ const RU = {
 
 let root = null;
 const mine = new Map(); // type -> sheet api
+/* A quick double tap is two clicks on iPhone. Whenever a sheet footer is (re)drawn, its buttons ignore taps for a
+   moment, so the second tap of "Send" can't land on the "Done" that just took its place (or on the next step's
+   "Next"). Programmatic .click() (guided tour) is not affected. */
+const ARM_MS = 450;
+function armFoot(f) { f.classList.add('is-arming'); clearTimeout(f._arm); f._arm = setTimeout(() => f.classList.remove('is-arming'), ARM_MS); }
 function openSheet(type, o) {
   const prev = mine.get(type); if (prev && !prev.closed) prev.close('replace');
+  let mo = null;
   const s = App.ui.sheet(Object.assign({}, o, {
     className: `pb-sh pb-sh--${type} ${o.className || ''}`,
-    onClose: r => { if (mine.get(type) === s) mine.delete(type); o.onClose && o.onClose(r); setTimeout(() => Fab.schedule(), 560); }
+    onClose: r => { if (mo) mo.disconnect(); if (mine.get(type) === s) mine.delete(type); o.onClose && o.onClose(r); setTimeout(() => Fab.schedule(), 560); }
   }));
+  // the second tap of a double tap on the opener must not hit the fresh backdrop and close the sheet again
+  const t0 = performance.now();
+  s.root.addEventListener('click', e => {
+    if (performance.now() - t0 < ARM_MS + 150 && e.target.classList && e.target.classList.contains('sheet-backdrop')) e.stopImmediatePropagation();
+  }, true);
+  $$('.pb-sfoot', s.body).forEach(armFoot);
+  if ('MutationObserver' in window) {
+    mo = new MutationObserver(recs => recs.forEach(r => r.addedNodes.forEach(n => {
+      if (n.nodeType !== 1) return; if (n.matches('.pb-sfoot')) armFoot(n); else $$('.pb-sfoot', n).forEach(armFoot);
+    })));
+    mo.observe(s.body, { childList: true, subtree: true });
+  }
   mine.set(type, s); return s;
 }
 const closeMine = () => Array.from(mine.values()).forEach(s => s.close('reset'));
@@ -210,10 +230,14 @@ function phoneChat(text, o = {}) {
 }
 function groupFor(months) { if (months == null || isNaN(months)) return null; if (months < 0) return 'future'; if (months < 12) return 'baby'; if (months < 24) return 'young'; if (months < 36) return 'big'; return 'older'; }
 function monthsSince(iso) { if (!iso) return null; const d = new Date(iso + 'T12:00:00'); if (isNaN(d)) return null; const n = new Date(); return (n.getFullYear() - d.getFullYear()) * 12 + (n.getMonth() - d.getMonth()) - (n.getDate() < d.getDate() ? 1 : 0); }
-const isoMonthsAgo = m => { const d = new Date(); d.setMonth(d.getMonth() - m); d.setDate(Math.min(d.getDate(), 26)); return d.toISOString().slice(0, 10); };
-const todayIso = () => new Date().toISOString().slice(0, 10);
-/* iOS renders an empty <input type=date> as a blank box: show the format under it while it is empty */
-const dateHint = (id, v) => `<span class="hint pb-datehint" id="${id}" ${v ? 'hidden' : ''}>${icon('calendar')}${T('pb.dateFmt')}</span>`;
+const isoLocal = d => `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
+const isoMonthsAgo = m => { const d = new Date(); d.setDate(Math.min(d.getDate(), 26)); d.setMonth(d.getMonth() - m); return isoLocal(d); };
+const todayIso = () => isoLocal(new Date());
+/* iOS renders an empty <input type=date> as a blank box: show the format under it while it is empty.
+   Other browsers draw their own placeholder (e.g. mm/dd/yyyy), so a second, different format would only confuse. */
+const IOS = /iP(hone|ad|od)/.test(navigator.userAgent) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+const dateHint = (id, v) => (IOS ? `<span class="hint pb-datehint" id="${id}" ${v ? 'hidden' : ''}>${icon('calendar')}${T('pb.dateFmt')}</span>` : '');
+const dateDesc = id => (IOS ? `aria-describedby="${id}"` : '');
 const syncDateHint = inp => { const hn = inp && document.getElementById(inp.getAttribute('aria-describedby')); if (hn) hn.hidden = !!inp.value; };
 
 /* =====================================================================
@@ -234,7 +258,7 @@ const Plate = {
       el.classList.toggle('pb-on', vis);
       if (vis && !this.served) { this.served = true; this.play(); }
     }, { threshold: .35 });
-    $('[data-pb-plate]', root).addEventListener('click', () => { this.play(); App.fx.burstAt(this.svg, { count: 14, speed: [80, 220] }); });
+    $('[data-pb-plate]', root).addEventListener('click', () => { this.play(); burstAt(this.svg, { count: 14, speed: [80, 220] }); });
     $$('.pb-meals .chip', root).forEach(c => c.addEventListener('click', () => this.switchTo(c.dataset.meal)));
   },
   items(m) { return $$(`.pb-food[data-meal="${m}"] .pb-fi`, this.svg); },
@@ -275,7 +299,7 @@ function initClubs() {
   cards.forEach(c => c.addEventListener('click', () => {
     c.classList.remove('pb-boost'); void c.offsetWidth; c.classList.add('pb-boost', 'pb-on');
     clearTimeout(c._bt); c._bt = setTimeout(() => c.classList.remove('pb-boost'), 2200);
-    App.fx.burstAt($('.pb-club__art', c), { count: 16, speed: [90, 240], colors: c.dataset.club === 'music' ? ['magenta', 'gold', 'blue'] : c.dataset.club === 'sport' ? ['gold', 'blue', 'white'] : ['gold', 'pink', 'white'] });
+    burstAt($('.pb-club__art', c), { count: 16, speed: [90, 240], colors: c.dataset.club === 'music' ? ['magenta', 'gold', 'blue'] : c.dataset.club === 'sport' ? ['gold', 'blue', 'white'] : ['gold', 'pink', 'white'] });
     App.haptic(10);
   }));
 }
@@ -315,7 +339,7 @@ const Hol = {
     if (force) { this.strip.classList.remove('is-lit'); void this.strip.offsetWidth; }
     if (this.strip.classList.contains('is-lit')) return;
     this.strip.classList.add('is-lit');
-    if (!App.motion.reduced) setTimeout(() => App.fx.burstAt($$('.pb-day.is-open', this.strip)[2], { count: 14, speed: [60, 180], colors: ['gold', 'magenta', 'white'] }), 700);
+    if (!App.motion.reduced) setTimeout(() => burstAt($$('.pb-day.is-open', this.strip)[2], { count: 14, speed: [60, 180], colors: ['gold', 'magenta', 'white'] }), 700);
   }
 };
 
@@ -356,6 +380,8 @@ function initArt() {
    Whenever text, a button, a field or an illustration would sit under it, it steps aside. */
 const FAB_HIT = 'a[href],button,input,select,textarea,label,summary,[role="button"],[role="switch"],[role="tab"],[tabindex]:not([tabindex="-1"])';
 const FAB_TEXT = 'h1,h2,h3,h4,h5,p,li,dt,dd,small,b,strong,.bubble,.tag,.demo-tag,.chip,.eyebrow,.lead';
+/* boxed surfaces: covering even their empty corner looks like a mistake */
+const FAB_BOX = '.card,.pb-seats,.pb-discount,.pb-steps3 li,.pb-askcard,.pb-rv__cap,.arch-frame,.pb-seal,.pb-rg__art';
 const Fab = {
   el: null, shown: false, last: 0, tmo: 0, showTmo: 0,
   init() {
@@ -365,6 +391,10 @@ const Fab = {
     App.onScroll(() => this.schedule());
     addEventListener('resize', () => this.schedule(), { passive: true });
     App.on('lang', () => this.schedule());
+    // reveal-on-scroll grows cards/seats after the spot was judged clear: look again once they settle
+    const again = () => { if (this.shown) this.schedule(); };
+    root.addEventListener('transitionend', again, { passive: true });
+    root.addEventListener('animationend', again, { passive: true });
   },
   /* throttled (~10/s) with a trailing check after scrolling settles */
   schedule() {
@@ -377,7 +407,7 @@ const Fab = {
     if (el.closest('.dock,.topbar,.pb-fab')) return false;
     if (el.closest(FAB_HIT)) return true;
     if (el.closest('svg') || /^(IMG|CANVAS|VIDEO)$/.test(el.tagName)) return true;
-    if (el.matches(FAB_TEXT) || el.closest(FAB_TEXT)) return true;
+    if (el.matches(FAB_TEXT) || el.closest(FAB_TEXT) || el.closest(FAB_BOX)) return true;
     for (const n of el.childNodes) if (n.nodeType === 3 && n.textContent.trim()) return true;
     return false;
   },
@@ -429,18 +459,20 @@ function openEligibility() {
 function elRender(s) {
   const box = $('.pb-el', s.body); if (!box) return;
   if (EL.step < 3) {
-    const Q = EL_Q[EL.step], a = EL.ans[EL.step];
+    const a = EL.ans[EL.step];
+    /* all three questions share one grid cell, so the sheet keeps the height of the tallest and never jumps between steps */
     box.innerHTML = `${progressBar(EL.step, 3)}
-      ${EL.step === 0 ? `<p class="muted small pb-el__intro">${T('pb.el.intro')}</p>` : ''}
-      <div class="pb-q pb-anim-in">
+      <p class="muted small pb-el__intro">${T('pb.el.intro')}</p>
+      <div class="pb-qstack">${EL_Q.map((Q, qi) => `<div class="pb-q ${qi === EL.step ? 'pb-anim-in' : 'is-off'}" ${qi === EL.step ? '' : 'aria-hidden="true" inert'}>
         <span class="icon-bubble icon-bubble--pink">${icon(Q.ic)}</span>
         <h3 class="h3">${T(Q.q)}</h3>
-        <div class="pb-opts" role="group" aria-label="${esc(t(Q.q))}">${Q.o.map((k, i) => `<button type="button" class="pb-opt" data-i="${i}" aria-pressed="${a === i}"><span class="pb-opt__dot" aria-hidden="true">${icon('check')}</span>${T(k)}</button>`).join('')}</div>
-      </div>
+        <div class="pb-opts" role="group" aria-label="${esc(t(Q.q))}">${Q.o.map((k, i) => `<button type="button" class="pb-opt" data-i="${i}" aria-pressed="${EL.ans[qi] === i}" ${qi === EL.step ? '' : 'tabindex="-1"'}><span class="pb-opt__dot" aria-hidden="true">${icon('check')}</span>${T(k)}</button>`).join('')}</div>
+      </div>`).join('')}</div>
       ${sfoot(`${EL.step ? `<button type="button" class="btn btn--ghost" data-back>${icon('back', 'ic--dir')}${T('pb.back')}</button>` : ''}
         <button type="button" class="btn btn--primary pb-grow" data-next ${a == null ? 'disabled' : ''}>${EL.step === 2 ? icon('send', 'pb-ic-send') + T('pb.el.send') : T('pb.next') + icon('arrow', 'ic--dir')}</button>`)}`;
-    $$('.pb-opt', box).forEach(b => b.addEventListener('click', () => {
-      EL.ans[EL.step] = +b.dataset.i; $$('.pb-opt', box).forEach(x => x.setAttribute('aria-pressed', x === b));
+    const cur = $$('.pb-q', box)[EL.step];
+    $$('.pb-opt', cur).forEach(b => b.addEventListener('click', () => {
+      EL.ans[EL.step] = +b.dataset.i; $$('.pb-opt', cur).forEach(x => x.setAttribute('aria-pressed', x === b));
       $('[data-next]', box).disabled = false; App.haptic(8);
     }));
     const back = $('[data-back]', box); back && back.addEventListener('click', () => { EL.step--; elRender(s); });
@@ -459,7 +491,7 @@ function elDone(s) {
     ${sfoot(`<button type="button" class="btn btn--ghost pb-grow" data-book>${icon('calendar')}${T('pb.ch.act.book')}</button><button type="button" class="btn btn--primary pb-grow" data-close-sheet>${T('pb.done')}</button>`)}`;
   const ph = phoneChat(msg); $('.pb-phonecrop', box).append(ph);
   const stamp = $('.pb-stamp', box); stamp.classList.add('is-in');
-  setTimeout(() => App.fx.burstAt(stamp, { count: 34 }), App.motion.reduced ? 0 : 380);
+  setTimeout(() => burstAt(stamp, { count: 34 }), App.motion.reduced ? 0 : 380);
   ph.pbRun();
   $('[data-close-sheet]', box).addEventListener('click', () => s.close());
   $('[data-book]', box).addEventListener('click', () => { s.close(); setTimeout(() => openBooking(), 260); });
@@ -480,35 +512,36 @@ function queueHTML(pos) {
   return out + '</div>';
 }
 function openWaitlist(group = 'big') {
-  WL.group = group;
+  let sel = group;
   const s = openSheet('wait', { titleKey: 'pb.wl.title', content: '<div class="pb-wl"></div>' });
   const box = $('.pb-wl', s.body);
   box.innerHTML = `<form class="stack pb-form" style="--gap:16px" novalidate>
       <p class="muted small">${T('pb.wl.intro')}</p>
       <div class="field"><label for="pb-wl-n">${T('pb.wl.child')}</label><input class="input" id="pb-wl-n" autocomplete="off" required><span class="pb-err" hidden>${T('pb.wl.errChild')}</span></div>
-      <div class="field"><label for="pb-wl-d">${T('pb.wl.dob')}</label><input class="input" id="pb-wl-d" type="date" max="${todayIso()}" aria-describedby="pb-wl-dh">${dateHint('pb-wl-dh', '')}</div>
-      <div class="field"><span class="label">${T('pb.wl.group')}</span><div class="chips" role="group">${App.data.groups.map(g => `<button type="button" class="chip" data-g="${g.id}" aria-pressed="${g.id === WL.group}">${T('pb.g.' + g.id)}</button>`).join('')}</div></div>
+      <div class="field"><label for="pb-wl-d">${T('pb.wl.dob')}</label><input class="input" id="pb-wl-d" type="date" max="${todayIso()}" ${dateDesc('pb-wl-dh')}>${dateHint('pb-wl-dh', '')}</div>
+      <div class="field"><span class="label">${T('pb.wl.group')}</span><div class="chips" role="group" aria-label="${esc(t('pb.wl.group'))}">${App.data.groups.map(g => `<button type="button" class="chip" data-g="${g.id}" aria-pressed="${g.id === sel}">${T('pb.g.' + g.id)}</button>`).join('')}</div></div>
       ${sfoot(`<button type="submit" class="btn btn--primary btn--block">${icon('hourglass')}${T('pb.wl.submit')}</button>`)}
     </form>`;
   const form = $('form', box);
-  const pickG = id => { WL.group = id; $$('[data-g]', box).forEach(b => b.setAttribute('aria-pressed', b.dataset.g === id)); };
+  const pickG = id => { sel = id; $$('[data-g]', box).forEach(b => b.setAttribute('aria-pressed', b.dataset.g === id)); };
   $$('[data-g]', box).forEach(b => b.addEventListener('click', () => pickG(b.dataset.g)));
-  const wd = $('#pb-wl-d', box);
+  const wd = $('#pb-wl-d', box), wn = $('#pb-wl-n', box);
+  wn.addEventListener('input', () => { if (wn.value.trim().length > 1) { wn.removeAttribute('aria-invalid'); $('.pb-err', box).hidden = true; } });
   const onDob = () => { syncDateHint(wd); const g = groupFor(monthsSince(wd.value)); if (['baby', 'young', 'big'].includes(g)) pickG(g); };
   wd.addEventListener('change', onDob); wd.addEventListener('input', onDob);
   form.addEventListener('submit', e => {
     e.preventDefault();
-    const n = $('#pb-wl-n', box); const ok = n.value.trim().length > 1;
-    n.setAttribute('aria-invalid', !ok); $('.pb-err', box).hidden = ok;
-    if (!ok) { n.focus(); return; }
-    WL.name = n.value.trim(); WL.ref = 'CN-' + (4000 + Math.floor(Math.random() * 5000));
-    queueResult(s, box, 3, 'pb.wl.wa');
+    const ok = wn.value.trim().length > 1;
+    wn.setAttribute('aria-invalid', String(!ok)); $('.pb-err', box).hidden = ok;
+    if (!ok) { wn.focus(); return; }
+    WL.name = wn.value.trim(); WL.group = sel; WL.ref = 'CN-' + (4000 + Math.floor(Math.random() * 5000));
+    queueResult(s, box, 3, 'pb.wl.wa', { group: WL.group, name: WL.name });
   });
   return s;
 }
-function queueResult(s, box, pos, noteKey) {
+function queueResult(s, box, pos, noteKey, who) {
   box.innerHTML = `<div class="pb-done pb-anim-in">
-      <span class="tag tag--pink">${icon('hourglass')}${T('pb.g.' + WL.group)}${WL.name ? ' · ' + esc(WL.name) : ''}</span>
+      <span class="tag tag--pink">${icon('hourglass')}${T('pb.g.' + who.group)}${who.name ? ' · ' + esc(who.name) : ''}</span>
       <h3 class="pb-place">${esc(t('pb.wl.place', { n: pos }))}</h3>
       ${queueHTML(pos)}
       <p class="pb-note">${icon('chat-text')}${T(noteKey)}</p>
@@ -520,7 +553,7 @@ function queueResult(s, box, pos, noteKey) {
   const cp = $('[data-copy]', box);
   cp && cp.addEventListener('click', async () => { try { await navigator.clipboard.writeText(WL.ref); } catch (e) { /* demo */ } App.ui.toast(t('pb.wl.copied'), { icon: 'copy' }); });
   const q = $('.pb-queue', box); requestAnimationFrame(() => q.classList.add('is-go'));
-  setTimeout(() => App.fx.burstAt($('.pb-queue__p.is-me', box), { count: 30 }), App.motion.reduced ? 0 : 200 + pos * 220);
+  setTimeout(() => burstAt($('.pb-queue__p.is-me', box), { count: 30 }), App.motion.reduced ? 0 : 200 + pos * 220);
   s.body.scrollTop = 0;
 }
 /* =====================================================================
@@ -529,12 +562,12 @@ function queueResult(s, box, pos, noteKey) {
 function openReview() {
   const s = openSheet('review', { titleKey: 'pb.rvf.title', content: '<div class="pb-wl"></div>' });
   const box = $('.pb-wl', s.body);
-  const chips = (name, items, sel) => `<div class="chips" role="group">${items.map(([v, k]) => `<button type="button" class="chip" data-${name}="${v}" aria-pressed="${v === sel}">${T(k)}</button>`).join('')}</div>`;
+  const chips = (name, items, sel, lk) => `<div class="chips" role="group" aria-label="${esc(t(lk))}">${items.map(([v, k]) => `<button type="button" class="chip" data-${name}="${v}" aria-pressed="${v === sel}">${T(k)}</button>`).join('')}</div>`;
   box.innerHTML = `<form class="stack pb-form" style="--gap:14px" novalidate>
       <div class="field"><label for="pb-rv-n">${T('pb.name')}</label><input class="input" id="pb-rv-n" autocomplete="given-name"></div>
-      <div class="field"><span class="label">${T('pb.rvf.who')}</span>${chips('who', [['mom', 'pb.rvf.mom'], ['dad', 'pb.rvf.dad'], ['gp', 'pb.rvf.gp']], 'mom')}</div>
-      <div class="field"><span class="label">${T('pb.rvf.group')}</span>${chips('grp', App.data.groups.map(g => [g.id, 'pb.g.' + g.id]), 'young')}</div>
-      <div class="field"><label for="pb-rv-t">${T('pb.rvf.text')}</label><textarea class="input" id="pb-rv-t" rows="4" data-i18n-attr="placeholder:pb.rvf.ph" placeholder="${esc(t('pb.rvf.ph'))}"></textarea><span class="hint pb-rv-err" hidden>${T('pb.rvf.err')}</span></div>
+      <div class="field"><span class="label">${T('pb.rvf.who')}</span>${chips('who', [['mom', 'pb.rvf.mom'], ['dad', 'pb.rvf.dad'], ['gp', 'pb.rvf.gp']], 'mom', 'pb.rvf.who')}</div>
+      <div class="field"><span class="label">${T('pb.rvf.group')}</span>${chips('grp', App.data.groups.map(g => [g.id, 'pb.g.' + g.id]), 'young', 'pb.rvf.group')}</div>
+      <div class="field"><label for="pb-rv-t">${T('pb.rvf.text')}</label><textarea class="input" id="pb-rv-t" rows="4" data-i18n-attr="placeholder:pb.rvf.ph" placeholder="${esc(t('pb.rvf.ph'))}"></textarea><span class="pb-err pb-rv-err" hidden>${T('pb.rvf.err')}</span></div>
       ${sfoot(`<button type="submit" class="btn btn--primary btn--block">${icon('send')}${T('pb.rvf.send')}</button>`)}
     </form>`;
   box.addEventListener('click', e => {
@@ -545,18 +578,20 @@ function openReview() {
   $('form', box).addEventListener('submit', e => {
     e.preventDefault();
     const txt = $('#pb-rv-t', box), msg = txt.value.trim(), err = $('.pb-rv-err', box);
-    if (msg.length < 4) { err.hidden = false; txt.setAttribute('aria-invalid', 'true'); txt.focus(); return; }
-    const name = $('#pb-rv-n', box).value.trim() || t('pb.rvf.anon');
+    if (msg.length < 4) { err.hidden = false; txt.setAttribute('aria-invalid', 'true'); scrollSheetTo(s, txt.closest('.field')); try { txt.focus({ preventScroll: true }); } catch (e2) { } return; }
+    const typed = $('#pb-rv-n', box).value.trim(), name = typed || t('pb.rvf.anon');
     const who = $('[data-who][aria-pressed="true"]', box), grp = $('[data-grp][aria-pressed="true"]', box);
     const sub = [who && who.textContent, grp && grp.textContent].filter(Boolean).join(' · ');
     box.innerHTML = `<div class="pb-done pb-anim-in">
-        <div class="pb-done__head"><span class="pb-stamp pb-stamp--sm">${icon('heart', 'ic--fill')}</span><div><h3 class="h3">${esc(t('pb.rvf.doneT', { name }))}</h3><p class="muted small">${T('pb.rvf.doneP')}</p></div></div>
+        <div class="pb-done__head"><span class="pb-stamp pb-stamp--sm">${icon('heart', 'ic--fill')}</span><div><h3 class="h3">${esc(typed ? t('pb.rvf.doneT', { name: typed }) : t('pb.rvf.doneT0'))}</h3><p class="muted small">${T('pb.rvf.doneP')}</p></div></div>
         <div class="pb-rv pb-rv--mine card"><span class="pb-rv__q"></span><p class="pb-rv__txt"></p><span class="pb-rv__who"><span class="pb-rv__av"></span><span><b class="pb-rv__name"></b><br><span class="tiny muted pb-rv__sub"></span></span></span></div>
-        ${sfoot(`<button type="button" class="btn btn--ghost btn--block" data-close>${T('pb.close')}</button>`)}
-      </div>`;
+      </div>
+      ${sfoot(`<button type="button" class="btn btn--primary btn--block" data-close>${T('pb.done')}</button>`)}`;
+    s.body.scrollTop = 0;
     $('.pb-rv__txt', box).textContent = msg; $('.pb-rv__name', box).textContent = name; $('.pb-rv__sub', box).textContent = sub;
     $('[data-close]', box).addEventListener('click', () => s.close());
-    App.fx.burstAt($('.pb-stamp', box), { count: 26 }); App.haptic(14);
+    $('.pb-stamp', box).classList.add('is-in');
+    setTimeout(() => burstAt($('.pb-stamp', box), { count: 26 }), App.motion.reduced ? 0 : 380); App.haptic(14);
   });
   return s;
 }
@@ -582,9 +617,11 @@ function openCheck() {
       ${sfoot(`<button type="submit" class="btn btn--primary btn--block">${icon('search')}${T('pb.ck.btn')}</button>`)}
     </form>`;
   $('form', box).addEventListener('submit', e => {
-    e.preventDefault(); const v = $('#pb-ck-r', box).value.trim();
-    WL.ref = v ? v.toUpperCase() : 'CN-4827';
-    queueResult(s, box, 2, 'pb.ck.moved');
+    e.preventDefault(); const v = $('#pb-ck-r', box).value.trim().toUpperCase() || 'CN-4827';
+    // the child's name is shown only for the request made in this visit; any other number is a generic example
+    const known = !!WL.name && v === WL.ref;
+    if (!known) { WL.ref = v; WL.name = ''; WL.group = 'big'; }
+    queueResult(s, box, 2, 'pb.ck.moved', { group: WL.group, name: WL.name });
   });
   return s;
 }
@@ -595,7 +632,7 @@ function openCheck() {
 const SLOTS = ['09:00', '10:30', '15:30'];
 const FULL = new Set([2, 6]);
 const slotTaken = (di, si) => (di * 5 + si * 7) % 6 === 1;
-const BK = { s: null, day: null, slot: null, name: '', phone: '', lang: 'he', done: false, days: [] };
+const BK = { s: null, day: null, slot: null, name: '', phone: '', lang: 'he', done: false, days: [], err: false };
 function bkDays() {
   const days = []; const d = new Date(); d.setHours(12, 0, 0, 0); d.setDate(d.getDate() + 1);
   while (days.length < 10) { if (d.getDay() <= 4) days.push(new Date(d)); d.setDate(d.getDate() + 1); }
@@ -603,7 +640,7 @@ function bkDays() {
 }
 const cap = s => s.charAt(0).toUpperCase() + s.slice(1);
 function openBooking(opts = {}) {
-  Object.assign(BK, { day: null, slot: null, name: '', phone: '', lang: lang(), done: false, days: bkDays() });
+  Object.assign(BK, { day: null, slot: null, name: '', phone: '', lang: lang(), done: false, days: bkDays(), err: false });
   if (opts.day != null) BK.day = opts.day;
   const s = openSheet('book', { titleKey: 'pb.bk.title', content: '<div class="pb-bk"></div>' });
   BK.s = s; bkRender(); return s;
@@ -679,12 +716,17 @@ function bkBind(box) {
   p.addEventListener('blur', () => { if (phoneOk(p.value)) { p.value = phoneFmt(p.value); BK.phone = p.value; } });
   $$('[data-l]', box).forEach(b => b.addEventListener('click', () => { BK.lang = b.dataset.l; $$('[data-l]', box).forEach(x => x.setAttribute('aria-pressed', x === b)); }));
   $('form', box).addEventListener('submit', e => { e.preventDefault(); go.click(); });
-  go.addEventListener('click', async () => {
-    if (BK.day == null || BK.slot == null) return;
+  const check = () => {
     const okN = n.value.trim().length > 1, okP = phoneOk(p.value);
     n.setAttribute('aria-invalid', String(!okN)); n.nextElementSibling.hidden = okN;
     p.setAttribute('aria-invalid', String(!okP)); p.nextElementSibling.hidden = okP;
-    if (!okN || !okP) { const bad = !okN ? n : p; scrollSheetTo(s, bad.closest('.field')); try { bad.focus({ preventScroll: true }); } catch (e) { } return; }
+    return okN ? (okP ? null : p) : n;
+  };
+  if (BK.err && BK.slot != null) check(); // re-drawn (language switch): keep the messages the user already saw
+  go.addEventListener('click', async () => {
+    if (BK.day == null || BK.slot == null || BK.done) return;
+    const bad = check(); BK.err = !!bad;
+    if (bad) { scrollSheetTo(s, bad.closest('.field')); try { bad.focus({ preventScroll: true }); } catch (e) { } App.haptic(20); return; }
     BK.name = n.value.trim(); BK.phone = phoneFmt(p.value);
     go.disabled = true; go.classList.add('is-busy'); go.innerHTML = `${sp()}<span>${esc(t('pb.bk.sending'))}</span>`;
     await App.sleep(App.motion.reduced ? 0 : 650);
@@ -720,7 +762,7 @@ function bkDone() {
   const ph = phoneChat(bkMessage(), { size: 232 });
   $('.pb-phonecrop', box).append(ph);
   const stamp = $('.pb-stamp', box); stamp.classList.add('is-in');
-  setTimeout(() => App.fx.burstAt(stamp, { count: 40, speed: [140, 420] }), App.motion.reduced ? 0 : 420);
+  setTimeout(() => burstAt(stamp, { count: 40, speed: [140, 420] }), App.motion.reduced ? 0 : 420);
   ph.pbRun();
   $('[data-close-sheet]', box).addEventListener('click', () => s.close());
   s.body.scrollTop = 0;
@@ -769,8 +811,8 @@ function rgRender() {
   if (RG.step === 0) {
     body.innerHTML = `<div class="stack pb-anim-in" style="--gap:16px">
       ${RG.pre ? `<span class="tag tag--pink pb-self-start">${icon('star')}${esc(t('pb.rg.reserve', { g: groupName(RG.pre) }))}</span>` : ''}
-      <div class="field"><label for="pb-rg-n">${T('pb.rg.cname')}</label><input class="input" id="pb-rg-n" autocomplete="off" value="${esc(RG.name)}"></div>
-      <div class="field"><label for="pb-rg-d">${T('pb.rg.dob')}</label><input class="input" id="pb-rg-d" type="date" max="${todayIso()}" value="${esc(RG.dob)}" aria-describedby="pb-rg-dh">${dateHint('pb-rg-dh', RG.dob)}</div>
+      <div class="field"><label for="pb-rg-n">${T('pb.rg.cname')}</label><input class="input" id="pb-rg-n" autocomplete="off" value="${esc(RG.name)}"><span class="pb-err" hidden>${T('pb.wl.errChild')}</span></div>
+      <div class="field"><label for="pb-rg-d">${T('pb.rg.dob')}</label><input class="input" id="pb-rg-d" type="date" max="${todayIso()}" value="${esc(RG.dob)}" ${dateDesc('pb-rg-dh')}>${dateHint('pb-rg-dh', RG.dob)}<span class="pb-err pb-err--dob" hidden>${T('pb.rg.errDob')}</span></div>
       <button type="button" class="link-btn pb-self-start pb-sample" data-sample>${icon('wand')}${T('pb.rg.sample')}</button>
       <div class="pb-gpick-wrap">
         <div class="pb-gpick-h"><span class="label">${T('pb.rg.groupH')}</span><span class="demo-tag">${esc(t('core.example'))}</span></div>
@@ -790,13 +832,26 @@ function rgRender() {
       note.className = 'pb-gnote small' + (g === 'older' || g === 'future' ? ' is-warn' : '');
       note.textContent = g === 'older' ? t('pb.rg.older') : g === 'future' ? t('pb.rg.future') : RG.group ? t('pb.rg.age', { m: RG.months }) + ' · ' + (RG.pre && RG.pre !== RG.group ? t('pb.rg.mismatch', { g: lang() === 'ru' ? groupName(RG.group).toLowerCase() : groupName(RG.group) }) : t('pb.rg.auto')) : '';
       rgPick(body, animate);
-      $('[data-next]', foot).disabled = !(RG.name.trim().length > 1 && RG.group);
+      // a fixed field drops its error at once
+      if (RG.name.trim().length > 1) { n.removeAttribute('aria-invalid'); n.nextElementSibling.hidden = true; }
+      if (d.value) { d.removeAttribute('aria-invalid'); $('.pb-err--dob', body).hidden = true; }
     };
     n.addEventListener('input', () => upd(false));
     d.addEventListener('input', () => upd(true)); d.addEventListener('change', () => upd(true));
     $('[data-sample]', body).addEventListener('click', () => { n.value = t('pb.rg.sampleName'); d.value = isoMonthsAgo(15); upd(true); });
     RG.lastGroup = null; upd(false); RG.lastGroup = RG.group; rgPick(body, false);
-    $('[data-next]', foot).addEventListener('click', () => { RG.step = 1; rgRender(); });
+    // "Next" always answers: it either moves on or says what is missing
+    $('[data-next]', foot).addEventListener('click', () => {
+      const okN = RG.name.trim().length > 1, okD = !!d.value;
+      n.setAttribute('aria-invalid', String(!okN)); n.nextElementSibling.hidden = okN;
+      d.setAttribute('aria-invalid', String(!okD)); $('.pb-err--dob', body).hidden = okD;
+      if (okN && okD && RG.group) { RG.step = 1; rgRender(); return; }
+      const bad = !okN ? n : d;
+      if (okN && okD) { const note = $('.pb-gnote', body); note.classList.remove('pb-shake'); void note.offsetWidth; note.classList.add('pb-shake'); }
+      scrollSheetTo(s, okN && okD ? $('.pb-gpick-wrap', body) : bad.closest('.field'));
+      try { bad.focus({ preventScroll: true }); } catch (e) { }
+      App.haptic(20);
+    });
   } else if (RG.step === 1) {
     body.innerHTML = `<div class="stack pb-anim-in" style="--gap:16px">
       <div class="field"><label for="pb-rg-pn">${T('pb.rg.pname')}</label><input class="input" id="pb-rg-pn" autocomplete="name" value="${esc(RG.pname)}"><span class="pb-err" hidden>${T('pb.errName')}</span></div>
@@ -806,17 +861,20 @@ function rgRender() {
     </div>`;
     foot.innerHTML = sfoot(`<button type="button" class="btn btn--ghost" data-back>${icon('back', 'ic--dir')}${T('pb.back')}</button><button type="button" class="btn btn--primary pb-grow" data-next>${T('pb.next')}${icon('arrow', 'ic--dir')}</button>`);
     const pn = $('#pb-rg-pn', body), pp = $('#pb-rg-pp', body);
-    pn.addEventListener('input', () => { RG.pname = pn.value; });
-    pp.addEventListener('input', () => { RG.phone = pp.value; });
+    pn.addEventListener('input', () => { RG.pname = pn.value; if (pn.value.trim().length > 1) { pn.removeAttribute('aria-invalid'); pn.nextElementSibling.hidden = true; } });
+    pp.addEventListener('input', () => { RG.phone = pp.value; if (phoneOk(pp.value)) { pp.removeAttribute('aria-invalid'); pp.nextElementSibling.hidden = true; } });
     pp.addEventListener('blur', () => { if (phoneOk(pp.value)) { pp.value = phoneFmt(pp.value); RG.phone = pp.value; } });
     $$('[data-l]', body).forEach(b => b.addEventListener('click', () => { RG.lang = b.dataset.l; $$('[data-l]', body).forEach(x => x.setAttribute('aria-pressed', x === b)); }));
-    $('[data-sample]', body).addEventListener('click', () => { pn.value = RG.pname = t('pb.rg.sampleParent'); pp.value = RG.phone = '052-123-4567'; });
+    $('[data-sample]', body).addEventListener('click', () => {
+      pn.value = RG.pname = t('pb.rg.sampleParent'); pp.value = RG.phone = '052-123-4567';
+      [pn, pp].forEach(x => { x.removeAttribute('aria-invalid'); x.nextElementSibling.hidden = true; });
+    });
     $('[data-back]', foot).addEventListener('click', () => { RG.step = 0; rgRender(); });
     $('[data-next]', foot).addEventListener('click', () => {
       const okN = pn.value.trim().length > 1, okP = phoneOk(pp.value);
       pn.setAttribute('aria-invalid', String(!okN)); pn.nextElementSibling.hidden = okN;
       pp.setAttribute('aria-invalid', String(!okP)); pp.nextElementSibling.hidden = okP;
-      if (!okN || !okP) { (okN ? pp : pn).focus(); return; }
+      if (!okN || !okP) { const bad = okN ? pp : pn; scrollSheetTo(s, bad.closest('.field')); try { bad.focus({ preventScroll: true }); } catch (e) { } App.haptic(20); return; }
       RG.step = 2; rgRender();
     });
   } else {
@@ -833,21 +891,28 @@ function rgRender() {
       </div>`;
     foot.innerHTML = sfoot(`<button type="button" class="btn btn--ghost" data-back>${icon('back', 'ic--dir')}${T('pb.back')}</button><button type="button" class="btn btn--primary pb-grow" data-send>${icon('send', 'pb-ic-send')}${T('pb.rg.send')}</button>`);
     const send = $('[data-send]', foot);
-    const refresh = () => { send.disabled = !(RG.docs[0] && RG.docs[1]); };
     $$('.pb-doc', body).forEach(row => {
       const i = +row.dataset.i;
       const take = name => {
-        RG.docs[i] = name; row.classList.remove('is-ok'); row.classList.add('is-up');
+        RG.docs[i] = name; row.classList.remove('is-ok', 'is-miss'); row.classList.add('is-up');
         $('.pb-doc__s', row).innerHTML = `<bdi>${esc(name)}</bdi>`;
-        setTimeout(() => { row.classList.remove('is-up'); row.classList.add('is-ok'); App.fx.burstAt($('.pb-doc__ic', row), { count: 12, speed: [60, 180] }); App.haptic(10); refresh(); }, App.motion.reduced ? 0 : 750);
-        refresh();
+        setTimeout(() => { row.classList.remove('is-up'); row.classList.add('is-ok'); burstAt($('.pb-doc__ic', row), { count: 12, speed: [60, 180] }); App.haptic(10); }, App.motion.reduced ? 0 : 750);
       };
       $('input[type=file]', row).addEventListener('change', e => { const f = e.target.files && e.target.files[0]; if (f) take(f.name); });
       $('[data-sample]', row).addEventListener('click', () => take(['teudat-zehut-sefach.pdf', 'pinkas-hisunim.jpg', 'ishur-zakaut.pdf'][i]));
     });
-    refresh();
     $('[data-back]', foot).addEventListener('click', () => { RG.step = 1; rgRender(); });
-    send.addEventListener('click', () => { if (!send.disabled) rgDone(); });
+    send.addEventListener('click', () => {
+      const miss = [0, 1].filter(i => !RG.docs[i]);
+      if (!miss.length) { rgDone(); return; }
+      // say which documents are still missing instead of a silent, greyed-out button
+      miss.forEach(i => {
+        const row = $(`.pb-doc[data-i="${i}"]`, body);
+        row.classList.remove('is-miss'); void row.offsetWidth; row.classList.add('is-miss');
+        $('.pb-doc__s', row).textContent = t('pb.rg.needDoc');
+      });
+      scrollSheetTo(s, $(`.pb-doc[data-i="${miss[0]}"]`, body)); App.haptic(20);
+    });
   }
   s.body.scrollTop = 0;
 }
@@ -861,20 +926,20 @@ function rgPick(body, animate) {
     wand.style.setProperty('--x', (chosen.offsetLeft + chosen.offsetWidth / 2) + 'px');
     if (animate && RG.group !== RG.lastGroup) {
       chosen.classList.remove('is-pop'); void chosen.offsetWidth; chosen.classList.add('is-pop');
-      setTimeout(() => App.fx.burstAt(chosen, { count: 22, speed: [90, 260] }), App.motion.reduced ? 0 : 260);
+      setTimeout(() => burstAt(chosen, { count: 22, speed: [90, 260] }), App.motion.reduced ? 0 : 260);
       App.haptic(14);
     }
   }
   RG.lastGroup = RG.group;
 }
 function rgDone() {
-  const s = RG.s; RG.done = true;
+  const s = RG.s; if (!s || s.closed || RG.done) return; RG.done = true;
   const svg = $('.pb-slipper', s.body);
   $('.pb-rg', s.body).classList.add('is-done');
   rgLevel(1); svg.classList.add('is-full');
   $('.pb-rg__prog', s.body).innerHTML = `<div class="pb-prog"><span class="pb-prog__t">${T('pb.rg.doneT')}</span><span class="pb-prog__dots" aria-hidden="true"><i class="is-done"></i><i class="is-done"></i><i class="is-done"></i></span></div>`;
   $('.pb-rg__title', s.body).innerHTML = '';
-  setTimeout(() => { App.fx.burstAt(svg, { count: 60, speed: [160, 480], life: [800, 1500] }); App.haptic(20); }, App.motion.reduced ? 0 : 700);
+  setTimeout(() => { burstAt(svg, { count: 60, speed: [160, 480], life: [800, 1500] }); App.haptic(20); }, App.motion.reduced ? 0 : 700);
   $('.pb-rg__body', s.body).innerHTML = `<div class="pb-done pb-anim-in">
       <h3 class="pb-place">${T('pb.rg.doneT')}</h3>
       <p class="muted">${esc(t('pb.rg.doneP', { name: RG.pname || RG.name }))}</p>
@@ -913,7 +978,7 @@ function matchTopic(text) {
   for (const [k, words] of KW) if (words.some(w => s.includes(w))) return k;
   return null;
 }
-const CH = { s: null, log: [], busy: Promise.resolve() };
+const CH = { s: null, log: [], busy: Promise.resolve(), gen: 0, greeted: false };
 function chatShell() {
   return `<div class="pb-chat">
     <div class="pb-chat__hello"><span class="brand__logo pb-chat__logo" data-logo></span><div><p class="pb-chat__name">${T('pb.ft.name')}</p><p class="tiny muted"><span class="pb-online"></span>${T('pb.ch.sub')}</p></div></div>
@@ -946,31 +1011,38 @@ function chatAct(a) {
   else if (a === 'avail') { close(); setTimeout(() => App.scrollTo('#availability'), 300); }
 }
 function botSay(key, acts, animate = true) {
+  const gen = CH.gen;
   CH.busy = CH.busy.then(async () => {
-    if (!CH.s || CH.s.closed) return;
-    const log = $('.pb-chat__log', CH.s.body); let tb = null;
-    if (animate && !App.motion.reduced) { tb = typingBubble(); log.append(tb); chatScroll(); await App.sleep(650 + Math.random() * 450); tb.remove(); }
+    if (gen !== CH.gen) return;
+    const open = () => CH.s && !CH.s.closed;
+    if (open() && animate && !App.motion.reduced) {
+      const log = $('.pb-chat__log', CH.s.body), tb = typingBubble();
+      log.append(tb); chatScroll(); await App.sleep(650 + Math.random() * 450); tb.remove();
+      if (gen !== CH.gen) return;
+    }
+    // logged even if the chat was closed meanwhile, so reopening shows the answer to every question
     const m = { text: t(key), acts: acts || [] }; CH.log.push(m); chatAppend(m, animate);
   });
   return CH.busy;
 }
 function ask(topic, userText) {
-  const text = userText || t('pb.ch.q.' + topic);
-  const m = { text, out: true }; CH.log.push(m); chatAppend(m, true);
+  const text = userText || t('pb.ch.q.' + topic), gen = CH.gen;
+  // questions wait their turn: a reply that is still "typing" lands before the next question, never after it
+  CH.busy = CH.busy.then(() => { if (gen !== CH.gen) return; const m = { text, out: true }; CH.log.push(m); chatAppend(m, true); });
   return botSay('pb.ch.a.' + (topic || 'fallback'), ACTS[topic || 'fallback']);
 }
 function openAssistant(topic) {
   const s = openSheet('chat', { titleKey: 'pb.ch.title', content: chatShell(), onClose: () => { CH.s = null; } });
   CH.s = s; App.ui.fillLogos(s.body);
-  if (!CH.log.length) botSay('pb.ch.hi', [], true);
-  else CH.log.forEach(m => chatAppend(m, false));
+  CH.log.forEach(m => chatAppend(m, false));
+  if (!CH.greeted) { CH.greeted = true; botSay('pb.ch.hi', [], true); }
   $$('[data-q]', s.body).forEach(b => b.addEventListener('click', () => { ask(b.dataset.q); App.haptic(8); }));
   const form = $('.pb-chat__form', s.body), inp = $('.pb-chat__in', s.body);
   form.addEventListener('submit', e => {
     e.preventDefault(); const v = inp.value.trim(); if (!v) return;
     inp.value = ''; ask(matchTopic(v), v);
   });
-  if (topic) setTimeout(() => ask(topic), CH.log.length > 1 ? 200 : 900);
+  if (topic) setTimeout(() => ask(topic), 250);
   return s;
 }
 
@@ -1009,7 +1081,7 @@ const M = App.module('pubBottom', {
   onEnter() { root && root.classList.remove('pb-paused'); Fab.schedule(); Shuffle.start(); },
   onLeave() { root && root.classList.add('pb-paused'); clearTimeout(Fab.showTmo); Fab.set(false); Shuffle.stop(); },
   reset() {
-    closeMine(); CH.log = []; CH.busy = Promise.resolve();
+    closeMine(); CH.log = []; CH.busy = Promise.resolve(); CH.gen++; CH.greeted = false;
     WL.ref = null; Plate.reset();
   },
   openBooking, openEligibility, openRegistration, openAssistant, openWaitlist, openCheck,
