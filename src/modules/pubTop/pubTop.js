@@ -339,26 +339,32 @@ function layout() {
   if (S.introDone) declutter();
 }
 /* night stars and sparkles must never sit on text (they read as stray glyphs): switch off the ones that would */
-function declutter() {
-  if (!hero || hero.offsetParent === null) return;
-  const moved = [...layers.map(l => l.el), content];
-  const saved = moved.map(el => el.style.translate);
-  moved.forEach(el => { el.style.translate = '0px 0px'; });
-  const boxes = [];
-  const add = (r, p) => { if (r && r.width) boxes.push([r.left - p, r.top - p, r.right + p, r.bottom + p]); };
-  $$('.pt-w', content).forEach(w => add(w.getBoundingClientRect(), 8));
-  const lead = $('.pt-lead', content);
-  if (lead) { const rg = document.createRange(); rg.selectNodeContents(lead); [...rg.getClientRects()].forEach(r => add(r, 8)); }
-  ['.pt-eyebrow', '.pt-cta'].forEach(sel => $$(sel, content).forEach(el => add(el.getBoundingClientRect(), 6)));
-  const logo = $('.pt-logo', content); if (logo) add(logo.getBoundingClientRect(), 4);
-  [$('.pt-mode', hero), $('.pt-cue', hero)].forEach(el => el && add(el.getBoundingClientRect(), 6));
-  $$('.pt-star, .pt-sp', hero).forEach(el => {
+function hideOver(items, boxes) {
+  items.forEach(el => {
     el.classList.toggle('pt-hid', false);
     const r = el.getBoundingClientRect(), cx = (r.left + r.right) / 2, cy = (r.top + r.bottom) / 2;
     const rad = (parseFloat(el.style.getPropertyValue('--s')) || r.width) / 2;
     if (boxes.some(b => cx + rad > b[0] && cx - rad < b[2] && cy + rad > b[1] && cy - rad < b[3])) el.classList.add('pt-hid');
   });
+}
+function boxesOf(els, p, out = []) {
+  els.forEach(el => { const r = el && el.getBoundingClientRect(); if (r && r.width) out.push([r.left - p, r.top - p, r.right + p, r.bottom + p]); });
+  return out;
+}
+function declutter() {
+  if (!hero || hero.offsetParent === null) return;
+  // measure the scene at rest (no parallax offsets), then put everything back within the same frame
+  const moved = [...layers.map(l => l.el), content], saved = moved.map(el => el.style.translate), sda = html.classList.contains('pt-sda');
+  if (sda) html.classList.toggle('pt-sda', false);
+  moved.forEach(el => { el.style.translate = '0px 0px'; });
+  const boxes = boxesOf($$('.pt-w', content), 8);
+  const lead = $('.pt-lead', content);
+  if (lead) { const rg = document.createRange(); rg.selectNodeContents(lead); [...rg.getClientRects()].forEach(r => boxes.push([r.left - 8, r.top - 8, r.right + 8, r.bottom + 8])); }
+  boxesOf([...$$('.pt-eyebrow, .pt-cta', content), $('.pt-mode', hero), $('.pt-cue', hero)], 6, boxes);
+  boxesOf([$('.pt-logo', content)], 4, boxes);
+  hideOver($$('.pt-star, .pt-sp', hero), boxes);
   moved.forEach((el, i) => { el.style.translate = saved[i]; });
+  if (sda) html.classList.add('pt-sda');
 }
 function measureTrail() {
   if (!trailPath || !trailPath.getTotalLength) return;
@@ -460,6 +466,7 @@ function measureRuler() {
   S.stW = stage.offsetWidth; S.stH = stage.offsetHeight;
   S.dcy = dial.offsetTop + dial.offsetHeight * .525; S.dr = dial.offsetWidth / 2;
   S.ckey = '';
+  hideOver($$('.pt-nstars .pt-star', stage), boxesOf([$('.pt-stage__title', stage), ...$$('.pt-stage__sub > *', stage), ...R.beads], 6));
 }
 /* the dial takes whatever height the stage has left (tour captions / floating buttons reserve the bottom) */
 function sizeDial() {
@@ -636,7 +643,7 @@ App.module('pubTop', {
     layers = $$('.pt-L', hero).map(el => { const sp = +el.dataset.sp || 0; el.style.setProperty('--sp', sp); return { el, sp, pd: +el.dataset.pd || 0 }; });
     // shared symbols + generated art
     $('.pt-defs defs', r).insertAdjacentHTML('beforeend', faceSymbol());
-    makeStars($('.pt-stars', hero), 34, 7, [3, 92]);
+    makeStars($('.pt-stars', hero), 64, 7, [3, 92]); // generous: the ones that would land on text are switched off (declutter)
     makeStars($('.pt-nstars', stage), 12, 11, [8, 92]);
     $$('.pt-sc__art', stage).forEach((el, i) => { el.style.setProperty('--pt-art-bg', SCENES[i].bg); el.innerHTML = ART[el.dataset.art](); });
     splitTitle(); cacheClock(); buildBeads();
