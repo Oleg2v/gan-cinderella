@@ -1,0 +1,95 @@
+<!-- owner · the owner's dashboard (view: owner). Dynamic parts are rendered by owner.js -->
+<svg class="ow-defs" width="0" height="0" aria-hidden="true" focusable="false">
+  <defs>
+    <linearGradient id="ow-pourg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#E8048C" stop-opacity=".16"/>
+      <stop offset="1" stop-color="#E8048C" stop-opacity=".07"/>
+    </linearGradient>
+    <pattern id="ow-valance" width="44" height="34" patternUnits="userSpaceOnUse">
+      <path d="M0 0h44v14c0 9.4-4.9 15-11 15S22 23.4 22 14c0 9.4-4.9 15-11 15S0 23.4 0 14Z" fill="#A3026A"/>
+      <path d="M0 0h44v10c0 9.4-4.9 15-11 15S22 19.4 22 10c0 9.4-4.9 15-11 15S0 19.4 0 10Z" fill="#D1037D"/>
+      <circle cx="11" cy="21" r="2" fill="#FFD27A"/><circle cx="33" cy="21" r="2" fill="#FFD27A"/>
+    </pattern>
+  </defs>
+</svg>
+
+<div class="ow view-pad-top" id="ow-root">
+
+  <!-- ============ HERO ============ -->
+  <section class="ow-hero" aria-labelledby="ow-hi">
+    <div class="ow-hero__sky" aria-hidden="true">
+      <svg class="ow-cloud ow-cloud--a" viewBox="0 0 120 50"><path d="M18 46c-9 0-15-6-15-13s6-13 14-13c2-9 10-15 20-15 9 0 16 5 19 12 3-2 6-3 10-3 9 0 16 6 17 14 9 0 16 6 16 13s-6 13-14 13Z" fill="#fff"/></svg>
+      <svg class="ow-cloud ow-cloud--b" viewBox="0 0 120 50"><path d="M18 46c-9 0-15-6-15-13s6-13 14-13c2-9 10-15 20-15 9 0 16 5 19 12 3-2 6-3 10-3 9 0 16 6 17 14 9 0 16 6 16 13s-6 13-14 13Z" fill="#fff"/></svg>
+      <svg class="ic ic--fill ow-twk ow-twk--1"><use href="#i-sparkle"/></svg>
+      <svg class="ic ic--fill ow-twk ow-twk--2"><use href="#i-sparkle"/></svg>
+      <svg class="ic ic--fill ow-twk ow-twk--3"><use href="#i-sparkle"/></svg>
+    </div>
+    <div class="wrap ow-hero__in">
+      <div class="ow-hero__text">
+        <p class="ow-hero__meta"><span class="ow-date" data-ow-date></span><span class="demo-tag" data-i18n="ow.demo">נתונים לדוגמה</span></p>
+        <h1 class="ow-hi" id="ow-hi"><span class="ow-hi__greet" data-ow-greet>שלום</span><span class="ow-hi__sub" data-i18n="ow.hero.sub">ככה נראה הגן שלך היום</span></h1>
+        <p class="ow-status" data-ow-statusline><i aria-hidden="true"></i><span data-ow-status>יום רגוע. 38 ילדים בגן, ושום דבר לא דחוף.</span></p>
+      </div>
+      <div class="ow-dial" data-ow-dial></div>
+    </div>
+    <div class="wrap">
+      <div class="ow-quick" role="group" aria-label="קיצורי דרך" data-i18n-attr="aria-label:ow.quick">
+        <button type="button" class="chip" data-ow-go="#ow-funnel"><svg class="ic" aria-hidden="true"><use href="#i-funnel"/></svg><span data-i18n="ow.q.funnel">מהאתר להרשמה</span></button>
+        <button type="button" class="chip" data-ow-go="#ow-auto"><svg class="ic" aria-hidden="true"><use href="#i-wand"/></svg><span data-i18n="ow.q.auto">מאחורי הקלעים</span></button>
+        <button type="button" class="chip" data-ow-go="[data-ow-kpi=pay]"><svg class="ic" aria-hidden="true"><use href="#i-card"/></svg><span data-i18n="ow.q.pay">תשלומים</span></button>
+        <button type="button" class="chip" data-ow-go="[data-ow-kpi=wait]"><svg class="ic" aria-hidden="true"><use href="#i-hourglass"/></svg><span data-i18n="ow.q.wait">רשימת המתנה</span></button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ KPI BENTO ============ -->
+  <section class="ow-sec ow-kpis" id="ow-kpis" aria-labelledby="ow-kpis-h">
+    <div class="wrap">
+      <h2 class="sr-only" id="ow-kpis-h" data-i18n="ow.kpis.h">המספרים של היום</h2>
+      <div class="ow-bento" data-ow-bento></div>
+    </div>
+  </section>
+
+  <!-- ============ FUNNEL ============ -->
+  <section class="ow-sec ow-funsec" id="ow-funnel" aria-labelledby="ow-fun-h">
+    <div class="wrap">
+      <div class="ow-card ow-fun" data-reveal>
+        <header class="ow-fun__head">
+          <div class="ow-fun__titles">
+            <p class="eyebrow"><svg class="ic" aria-hidden="true"><use href="#i-funnel"/></svg><span data-i18n="ow.fun.eyebrow">המשפך</span><span class="demo-tag" data-i18n="ow.example">לדוגמה</span></p>
+            <h2 class="h3 ow-fun__h" id="ow-fun-h" data-i18n="ow.fun.h">מהאתר ועד ההרשמה</h2>
+          </div>
+          <div class="seg ow-period" role="group" aria-label="תקופה" data-i18n-attr="aria-label:ow.fun.period">
+            <button type="button" aria-pressed="true" data-ow-period="week" data-i18n="ow.fun.week">שבוע</button>
+            <button type="button" aria-pressed="false" data-ow-period="month" data-i18n="ow.fun.month">חודש</button>
+          </div>
+        </header>
+        <div class="ow-fun__body">
+          <ol class="ow-fs" data-ow-stages></ol>
+          <aside class="ow-fun__side" data-ow-fside></aside>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ BEHIND THE SCENES ============ -->
+  <section class="ow-auto" id="ow-auto" aria-labelledby="ow-auto-h">
+    <svg class="ow-valance" aria-hidden="true" focusable="false"><rect width="100%" height="34" fill="url(#ow-valance)"/></svg>
+    <div class="ow-auto__stars" aria-hidden="true">
+      <svg class="ic ic--fill"><use href="#i-sparkle"/></svg><svg class="ic ic--fill"><use href="#i-sparkle"/></svg><svg class="ic ic--fill"><use href="#i-sparkle"/></svg><svg class="ic ic--fill"><use href="#i-sparkle"/></svg>
+    </div>
+    <div class="wrap">
+      <div class="section-head ow-auto__head">
+        <p class="eyebrow"><svg class="ic ic--fill" aria-hidden="true"><use href="#i-sparkle"/></svg><span data-i18n="ow.auto.eyebrow">מאחורי הקלעים</span></p>
+        <h2 class="h2" id="ow-auto-h" data-i18n="ow.auto.h">המערכת עובדת בשבילך</h2>
+        <p class="lead" data-i18n="ow.auto.lead">תשע עבודות קטנות שקורות לבד, כל יום. נגיעה בכרטיס מראה בדיוק איך.</p>
+        <p class="ow-auto__count" aria-live="polite"><span class="ow-live" aria-hidden="true"></span><span data-ow-active>9 מתוך 9 פועלות</span></p>
+      </div>
+      <div class="ow-feed">
+        <p class="ow-feed__h"><svg class="ic" aria-hidden="true"><use href="#i-bolt"/></svg><span data-i18n="ow.auto.feed">הפעלות אחרונות</span><span class="demo-tag" data-i18n="ow.example">לדוגמה</span></p>
+        <ol class="ow-feed__list" data-ow-feed data-allow-overflow aria-live="polite"></ol>
+      </div>
+      <div class="ow-grid" data-ow-grid></div>
+    </div>
+  </section>
+</div>
