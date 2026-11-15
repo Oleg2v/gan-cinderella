@@ -753,7 +753,8 @@ function sideTop() {
   const side = q('.pa-today__side'); if (!side) return;
   if (innerWidth < 1000 || !side.offsetHeight) { side.style.removeProperty('--pa-side-top'); return; }
   const base = barH() + 78, h = side.offsetHeight;
-  side.style.setProperty('--pa-side-top', Math.round(Math.min(base, innerHeight - h - 24)) + 'px');
+  const gap = Math.max(24, innerHeight - dockTop() + 16); /* keep the phone above the floating dock */
+  side.style.setProperty('--pa-side-top', Math.round(Math.min(base, innerHeight - h - gap)) + 'px');
 }
 const lenisResize = () => { try { App.lenis && App.lenis.resize && App.lenis.resize(); } catch (e) { } };
 const barH = () => { const tb = $('.topbar'); return tb ? tb.getBoundingClientRect().height : 60; };
