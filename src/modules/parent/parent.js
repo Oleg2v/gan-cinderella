@@ -1070,7 +1070,7 @@ function openReceipt(no) {
   const r = receipts().find(x => x.no === no) || receipts()[0];
   const node = App.h(`<div class="pa-sheet stack" style="--gap:16px">
     <article class="pa-rcpt" aria-label="${esc(t('pa.pay.rcptNo', { n: r.no }))}">
-      <header class="pa-rcpt__h"><span class="brand__logo" data-logo style="width:52px;height:52px"></span><div><p class="pa-rcpt__brand">${esc(t('core.brand'))}</p><p class="tiny muted">${esc(t('pa.pay.rcptNo', { n: r.no }))}</p></div></header>
+      <header class="pa-rcpt__h"><span class="brand__logo" data-logo style="width:52px;height:52px"></span><div><p class="pa-rcpt__brand">${esc(t('core.brand'))}</p><p class="tiny muted">${esc(t('pa.pay.rcptNo', { n: r.no }))}</p></div><div class="pa-rcpt__stamp" aria-hidden="true">${icon('check')}<span>${esc(t('pa.pay.paid'))}</span></div></header>
       <dl class="pa-lines pa-lines--rcpt">
         <div class="pa-line"><dt>${esc(t('pa.pay.date'))}</dt><dd>${esc(dayMonth(r.paidOn))} ${r.paidOn.getFullYear()}</dd></div>
         <div class="pa-line"><dt>${esc(t('pa.pay.forWho'))}</dt><dd>${esc(App.kidName('noa'))} · ${esc(L(GROUP()))}</dd></div>
@@ -1080,7 +1080,6 @@ function openReceipt(no) {
         <div class="pa-line pa-line--total"><dt>${esc(t('pa.pay.totalPaid'))}</dt><dd class="tnum">${App.fmt.money(PAY_TOTAL)}</dd></div>
         <div class="pa-line"><dt>${esc(t('pa.pay.method'))}</dt><dd><bdi dir="ltr">•••• 4242</bdi></dd></div>
       </dl>
-      <div class="pa-rcpt__stamp" aria-hidden="true">${icon('check')}<span>${esc(t('pa.pay.paid'))}</span></div>
       <p class="pa-rcpt__foot">${demoTag()}</p>
     </article>
     <button type="button" class="btn btn--soft btn--block" data-share>${icon('send', 'ic--dir')}<span>${esc(t('pa.pay.share'))}</span></button>

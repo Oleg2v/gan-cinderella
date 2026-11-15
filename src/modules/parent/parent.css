@@ -331,7 +331,7 @@
 .pa-lines--rcpt .pa-line--disc dt { color: var(--ok); padding-inline-start: 0; }
 .pa-lines--rcpt .pa-line--total dt { color: var(--ink); }
 .pa-lines--rcpt .pa-line--total dd { font-size: 1.6rem; }
-.pa-rcpt__stamp { position: absolute; top: 22px; inset-inline-end: 16px; display: inline-flex; align-items: center; gap: 6px; padding: 6px 14px; border-radius: 12px; border: 2.5px solid var(--ok); color: var(--ok); font-weight: 800; font-size: 1rem; transform: rotate(-10deg); opacity: .85; pointer-events: none; }
+.pa-rcpt__stamp { flex: none; display: inline-flex; align-items: center; gap: 6px; padding: 6px 14px; border-radius: 12px; border: 2.5px solid var(--ok); color: var(--ok); font-weight: 800; font-size: .9375rem; transform: rotate(-8deg); opacity: .9; pointer-events: none; white-space: nowrap; }
 .pa-rcpt__stamp .ic { width: 18px; height: 18px; }
 
 /* =====================================================================
