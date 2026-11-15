@@ -44,6 +44,7 @@ const TRUSTED = () => App.data.trusted.noa;
 const TRUST_SEX = { mom: 'f', dad: 'm', grandma: 'f', aunt: 'f' };
 const firstName = p => String(L(p)).split(' · ').pop();
 const momName = () => firstName(TRUSTED()[0]);
+const personName = p => { const s = String(L(p)).replace(' · ', ' '); return lang() === 'ru' ? s.charAt(0).toLowerCase() + s.slice(1) : s; };
 
 const FEED = [
   { time: '07:48', ic: 'door', tone: 'sky', title: { he: 'הגיעה לגן', ru: 'Пришла в сад' }, text: { he: 'נכנסה עם חיוך גדול ונפרדה מאבא בקלות.', ru: 'Пришла с широкой улыбкой и легко попрощалась с папой.' } },
@@ -545,7 +546,7 @@ async function sendCode(again = false) {
   fieldErr(err, '');
   const seq = ++S.loginSeq;
   const btn = q('[data-pa="sendCode"]');
-  if (!again) await busyBtn(btn, 650, 'pa.login.sending');
+  if (!again) await busyBtn(btn, 520, 'pa.login.sending');
   if (seq !== S.loginSeq) return;
   S.codeSent = true;
   const step = q('[data-pa="otpStep"]');
@@ -555,13 +556,13 @@ async function sendCode(again = false) {
   if (!reduced() && step.animate) step.animate([{ opacity: 0, transform: 'translateY(-8px)' }, { opacity: 1, transform: 'none' }], { duration: 420, easing: 'cubic-bezier(.22,1,.36,1)' });
   updateEnter();
   if (!App.tour.running) {
-    const r = step.getBoundingClientRect(), lim = innerHeight - 100;
-    if (r.bottom > lim) App.scrollTo(App.scrollY() + r.bottom - lim + 12, { duration: 500 });
+    const r = q('.pa-otp').getBoundingClientRect();
+    if (r.bottom > innerHeight * .62) App.scrollTo(App.scrollY() + r.top - innerHeight * .36, { duration: 520 });
   }
-  await sleep(App.tour.running ? 450 : 750);
+  await sleep(App.tour.running ? 380 : 520);
   if (seq !== S.loginSeq) return;
   showSms(seq);
-  await sleep(App.tour.running ? 380 : 650);
+  await sleep(App.tour.running ? 380 : 480);
   if (seq !== S.loginSeq) return;
   autofill(seq);
 }
@@ -583,7 +584,7 @@ async function autofill(seq) {
     boxes[i].value = code[i];
     boxes[i].classList.remove('is-pop'); void boxes[i].offsetWidth; boxes[i].classList.add('is-pop');
     if (!reduced()) { const r = boxes[i].getBoundingClientRect(); App.fx.burst(r.left + r.width / 2, r.top + r.height / 2, { count: 6, speed: [40, 120], size: [5, 11], life: [300, 600], gravity: 60 }); }
-    await sleep(reduced() ? 0 : App.tour.running ? 110 : 150);
+    await sleep(reduced() ? 0 : App.tour.running ? 110 : 130);
   }
   updateEnter();
 }
@@ -828,7 +829,7 @@ function openPickup() {
         <p class="pa-code__until">${icon('clock', 'ic--sm')} ${esc(t('pa.pick.until', { time: until }))}</p></div>
       <p class="pa-center muted">${esc(t('pa.pick.staff'))}</p>
       <div class="pa-share"><button type="button" class="btn btn--soft btn--block" data-share>${icon('send', 'ic--dir')}<span>${esc(t('pa.pick.send', { name: nm }))}</span></button></div>`;
-    showDone(sh, { title: t(sex === 'm' ? 'pa.pick.doneM' : 'pa.pick.doneF', { name: L(p) }), text: '', extra });
+    showDone(sh, { title: t(sex === 'm' ? 'pa.pick.doneM' : 'pa.pick.doneF', { name: personName(p) }), text: '', extra });
     $('[data-share]', sh.body).addEventListener('click', async ev => {
       const box = $('.pa-share', sh.body);
       await busyBtn(ev.currentTarget, 500);
@@ -866,7 +867,7 @@ function openMsg() {
     const staffBubble = tr.lang === 'he'
       ? `<div class="bubble is-new" lang="he" dir="rtl"><span class="bubble__t">${esc(text)}</span><span class="bubble__meta"><span class="tnum">${App.fmt.time(new Date())}</span></span></div><p class="pa-tr">${icon('check', 'ic--sm')}<span>${esc(t('pa.msg.asIs'))}</span></p>`
       : tr.ok
-        ? `<div class="bubble is-new" lang="he" dir="rtl"><span class="bubble__t">${esc(tr.he)}</span><span class="bubble__meta"><span class="tnum">${App.fmt.time(new Date())}</span></span></div><p class="pa-tr">${icon('translate', 'ic--sm')}<span>${esc(t('pa.msg.translated'))}</span></p><p class="tiny muted" lang="ru" dir="ltr">${esc(t('pa.msg.orig'))} ${esc(text)}</p>`
+        ? `<div class="bubble is-new" lang="he" dir="rtl"><span class="bubble__t">${esc(tr.he)}</span><span class="bubble__meta"><span class="tnum">${App.fmt.time(new Date())}</span></span></div><p class="pa-tr">${icon('translate', 'ic--sm')}<span>${esc(t('pa.msg.translated'))}</span></p><p class="tiny muted">${esc(t('pa.msg.orig'))} <bdi lang="ru">${esc(text)}</bdi></p>`
         : `<div class="bubble is-new" lang="ru" dir="ltr"><span class="bubble__t">${esc(text)}</span><span class="bubble__meta"><span class="tnum">${App.fmt.time(new Date())}</span></span></div><p class="pa-tr">${icon('translate', 'ic--sm')}<span>${esc(t('pa.msg.demoOnly'))}</span></p>`;
     const extra = `<div class="pa-staffview"><p class="pa-staffview__l">${icon('tablet', 'ic--sm')} ${esc(t('pa.msg.staffSees'))}</p><div class="pa-bubbles">${staffBubble}</div><div class="pa-reply" aria-live="polite"><div class="bubble bubble--out pa-typing"><span class="typing"><i></i><i></i><i></i></span></div></div></div>`;
     showDone(sh, { title: t('pa.msg.doneT'), text: '', extra });
@@ -874,7 +875,7 @@ function openMsg() {
     await sleep(reduced() ? 300 : 1500);
     if (sh.closed || !rep) return;
     const ru = tr.lang === 'ru';
-    rep.innerHTML = `<p class="pa-staffview__l pa-staffview__l--you">${icon('home-heart', 'ic--sm')} ${esc(t('pa.msg.youSee'))}</p><div class="bubble is-new" lang="${ru ? 'ru' : 'he'}" dir="${ru ? 'ltr' : 'rtl'}"><span class="bubble__t">${esc(ru ? 'Спасибо, что написали! Обязательно учтём.' : 'תודה שעדכנתם! נשים לב.')}</span><span class="bubble__meta"><span class="tnum">${App.fmt.time(new Date())}</span></span></div>${ru ? `<p class="pa-tr">${icon('translate', 'ic--sm')}<span>${esc(t('pa.msg.replyTr'))}</span></p>` : ''}`;
+    rep.innerHTML = `<p class="pa-staffview__l pa-staffview__l--you">${icon('home-heart', 'ic--sm')} ${esc(t('pa.msg.youSee'))}</p><div class="pa-bubbles"><div class="bubble is-new" lang="${ru ? 'ru' : 'he'}" dir="${ru ? 'ltr' : 'rtl'}"><span class="bubble__t">${esc(ru ? 'Спасибо, что написали! Обязательно учтём.' : 'תודה שעדכנתם! נשים לב.')}</span><span class="bubble__meta"><span class="tnum">${App.fmt.time(new Date())}</span></span></div></div>${ru ? `<p class="pa-tr">${icon('translate', 'ic--sm')}<span>${esc(t('pa.msg.replyTr'))}</span></p>` : ''}`;
   });
 }
 
@@ -1046,7 +1047,7 @@ function openReceipt(no) {
   const r = receipts().find(x => x.no === no) || receipts()[0];
   const node = App.h(`<div class="pa-sheet stack" style="--gap:16px">
     <article class="pa-rcpt" aria-label="${esc(t('pa.pay.rcptNo', { n: r.no }))}">
-      <header class="pa-rcpt__h"><span class="brand__logo" data-logo style="width:52px;height:52px"></span><div><p class="pa-rcpt__brand">${esc(t('core.brand'))}</p><p class="tiny muted">${esc(t('pa.pay.rcptNo', { n: r.no }))}</p></div>${demoTag()}</header>
+      <header class="pa-rcpt__h"><span class="brand__logo" data-logo style="width:52px;height:52px"></span><div><p class="pa-rcpt__brand">${esc(t('core.brand'))}</p><p class="tiny muted">${esc(t('pa.pay.rcptNo', { n: r.no }))}</p></div></header>
       <dl class="pa-lines pa-lines--rcpt">
         <div class="pa-line"><dt>${esc(t('pa.pay.date'))}</dt><dd>${esc(dayMonth(r.paidOn))} ${r.paidOn.getFullYear()}</dd></div>
         <div class="pa-line"><dt>${esc(t('pa.pay.forWho'))}</dt><dd>${esc(App.kidName('noa'))} · ${esc(L(GROUP()))}</dd></div>
@@ -1057,6 +1058,7 @@ function openReceipt(no) {
         <div class="pa-line"><dt>${esc(t('pa.pay.method'))}</dt><dd><bdi dir="ltr">•••• 4242</bdi></dd></div>
       </dl>
       <div class="pa-rcpt__stamp" aria-hidden="true">${icon('check')}<span>${esc(t('pa.pay.paid'))}</span></div>
+      <p class="pa-rcpt__foot">${demoTag()}</p>
     </article>
     <button type="button" class="btn btn--soft btn--block" data-share>${icon('send', 'ic--dir')}<span>${esc(t('pa.pay.share'))}</span></button>
   </div>`);
@@ -1201,7 +1203,7 @@ function renderMenu() {
         <p class="small"><span class="tag tag--ok">${icon('check')}${esc(t('pa.menu.none'))}</span></p>
         <p class="small muted" id="pa-al-l">${esc(t('pa.menu.try'))}</p>
         <div class="chips pa-al-chips" role="group" aria-labelledby="pa-al-l">${keys.map(k => `<button type="button" class="chip chip--sm" aria-pressed="${al === k}" data-al="${k}">${esc(L(App.data.allergens[k]))}</button>`).join('')}</div>
-        <p class="small pa-allergy__res" aria-live="polite">${al ? esc(t('pa.menu.count', { n: count, a: L(App.data.allergens[al]) })) : ''}</p>
+        <p class="small pa-allergy__res" aria-live="polite">${al ? esc(t(count === 1 ? 'pa.menu.count1' : 'pa.menu.count', { n: count, a: L(App.data.allergens[al]) })) : ''}</p>
       </div>
     </div>
     <div class="pa-days" role="tablist" aria-label="${esc(t('pa.menu.days'))}">${MENU.map((d, i) => { const dt = addDays(ws, i); return `<button type="button" class="pa-day" role="tab" id="pa-md-${i}" aria-controls="pa-mp-${i}" aria-selected="${i === S.menuDay}" tabindex="${i === S.menuDay ? 0 : -1}" data-day="${i}"><b>${esc(App.fmt.weekday(dt))}</b><small class="tnum">${shortNum(dt)}</small>${sameDay(dt, today0()) ? `<i class="pa-day__today" aria-hidden="true"></i>` : ''}</button>`; }).join('')}</div>
@@ -1322,7 +1324,7 @@ function albumPages() {
   const y0 = schoolYear();
   const P = [];
   P.push({ cls: 'pa-pg--cover', html: `<div class="pa-cover"><span class="pa-cover__frame">${App.avatar(NOA())}</span><p class="pa-cover__k">${esc(t('pa.album.coverK'))}</p><h3 class="pa-cover__t">${esc(t('pa.album.title'))}</h3><p class="pa-cover__y tnum">${y0}–${y0 + 1}</p>${sp(30, 30, 7, '#FFD27A').replace('<path', '<svg class="pa-cover__sp" viewBox="0 0 60 60" aria-hidden="true"><path') + '</svg>'}</div>` });
-  P.push({ html: `<div class="pa-intro"><div class="pa-intro__stack" aria-hidden="true"><i></i><i></i><i></i></div><p class="pa-intro__t">${esc(t('pa.album.introT'))}</p><p class="pa-intro__x">${esc(t('pa.album.auto'))}</p><p class="pa-intro__n">${esc(t('pa.album.count', { n: ALBUM.length }))}</p></div>` });
+  P.push({ html: `<div class="pa-intro"><div class="pa-intro__stack" aria-hidden="true"><i></i><i></i><b>${App.avatar(NOA(), { label: '' })}</b></div><p class="pa-intro__t">${esc(t('pa.album.introT'))}</p><p class="pa-intro__x">${esc(t('pa.album.auto'))}</p><p class="pa-intro__n">${esc(t('pa.album.count', { n: ALBUM.length }))}</p></div>` });
   ALBUM.forEach((a, i) => {
     const d = new Date(a.m >= 8 ? y0 : y0 + 1, a.m, 1);
     P.push({ html: `<p class="pa-pg__m">${esc(monthName(d))}</p><figure class="pa-pg__ph"><span class="pa-pg__tape" aria-hidden="true"></span>${scene(a.scene, L(a.cap))}</figure><p class="pa-pg__cap">${esc(L(a.cap))}</p>` });
@@ -1524,7 +1526,7 @@ const I18N = {
     'pa.shab.eyebrow': 'קבלת שבת בגן', 'pa.shab.title': 'השבוע אתם הורי שבת', 'pa.shab.when': 'ב{date}. מה להביא:', 'pa.shab.count': '{n} מתוך {t} מוכנים', 'pa.shab.ready': 'הכול מוכן. שבת שלום!',
     'pa.menu.title': 'תפריט השבוע', 'pa.menu.fact': 'מבשלים כל יום במטבח של הגן. התפריט מאושר על ידי דיאטנית.', 'pa.menu.example': 'תפריט לדוגמה',
     'pa.menu.toggle': 'סימון לפי האלרגיות של נועה', 'pa.menu.none': 'אין אלרגיות רשומות', 'pa.menu.try': 'רוצים לראות איך זה עובד? בחרו אלרגן:',
-    'pa.menu.count': 'השבוע {n} מנות עם {a}', 'pa.menu.days': 'ימי השבוע', 'pa.menu.b': 'ארוחת בוקר', 'pa.menu.l': 'ארוחת צהריים', 'pa.menu.s': 'מנחה',
+    'pa.menu.count': 'השבוע {n} מנות עם {a}', 'pa.menu.count1': 'השבוע מנה אחת עם {a}', 'pa.menu.days': 'ימי השבוע', 'pa.menu.b': 'ארוחת בוקר', 'pa.menu.l': 'ארוחת צהריים', 'pa.menu.s': 'מנחה',
     'pa.menu.noAl': 'בלי אלרגנים נפוצים', 'pa.menu.contains': 'מכיל {a}',
     'pa.docs.title': 'מסמכים', 'pa.docs.count': '{n} מתוך {t} מסמכים מוכנים', 'pa.docs.health': 'הצהרת בריאות', 'pa.docs.healthSub': 'פעם בשנה, לפני החורף',
     'pa.docs.waiting': 'ממתין לחתימה', 'pa.docs.signedToday': 'נחתם היום',
@@ -1565,7 +1567,7 @@ const I18N = {
     'pa.pick.lead': 'Только взрослые из вашего списка доверенных. Каждый получает код на один раз.', 'pa.pick.make': 'Создать код', 'pa.pick.making': 'Создаём код…',
     'pa.pick.only': 'Воспитатели видят список и спрашивают код', 'pa.pick.pick': 'Выберите, кто заберёт сегодня', 'pa.pick.codeA': 'Код для забора: {code}',
     'pa.pick.until': 'Действует сегодня до {time}', 'pa.pick.staff': 'Воспитатели спросят этот код, когда будут отдавать Ноа.', 'pa.pick.send': 'Отправить код: {name}', 'pa.pick.sent': 'Код отправлен: {name}',
-    'pa.pick.doneM': 'Сегодня забирает {name}', 'pa.pick.doneF': 'Сегодня забирает {name}',
+    'pa.pick.doneM': 'Сегодня Ноа забирает {name}', 'pa.pick.doneF': 'Сегодня Ноа забирает {name}',
     'pa.msg.lead': 'Пишите по-русски или на иврите. Воспитатели получат на иврите.', 'pa.msg.examples': 'Готовые примеры', 'pa.msg.label': 'Ваше сообщение', 'pa.msg.ph': 'Что хотите рассказать воспитателям?',
     'pa.msg.send': 'Отправить', 'pa.msg.empty': 'Напишите пару слов или выберите пример', 'pa.msg.asIs': 'Отправлено на иврите, перевод не нужен', 'pa.msg.translated': 'Автоматически переведено на иврит для воспитателей',
     'pa.msg.orig': 'Оригинал:', 'pa.msg.demoOnly': 'В живой системе сообщение переводится на иврит автоматически. В демо переводятся только примеры.', 'pa.msg.staffSees': 'Так его увидят воспитатели',
@@ -1588,7 +1590,7 @@ const I18N = {
     'pa.shab.eyebrow': 'Встречаем шабат в саду', 'pa.shab.title': 'На этой неделе вы — шабатные родители', 'pa.shab.when': '{date}. Что принести:', 'pa.shab.count': 'Готово {n} из {t}', 'pa.shab.ready': 'Всё готово. Шабат шалом!',
     'pa.menu.title': 'Меню недели', 'pa.menu.fact': 'Готовим каждый день на кухне сада. Меню утверждено диетологом.', 'pa.menu.example': 'пример меню',
     'pa.menu.toggle': 'Отметить аллергены Ноа', 'pa.menu.none': 'Аллергий не записано', 'pa.menu.try': 'Хотите посмотреть, как это работает? Выберите аллерген:',
-    'pa.menu.count': '{a}: блюд на этой неделе — {n}', 'pa.menu.days': 'Дни недели', 'pa.menu.b': 'Завтрак', 'pa.menu.l': 'Обед', 'pa.menu.s': 'Полдник',
+    'pa.menu.count': '{a}: блюд на этой неделе — {n}', 'pa.menu.count1': '{a}: одно блюдо на этой неделе', 'pa.menu.days': 'Дни недели', 'pa.menu.b': 'Завтрак', 'pa.menu.l': 'Обед', 'pa.menu.s': 'Полдник',
     'pa.menu.noAl': 'Без частых аллергенов', 'pa.menu.contains': 'Содержит: {a}',
     'pa.docs.title': 'Документы', 'pa.docs.count': 'Готово документов: {n} из {t}', 'pa.docs.health': 'Декларация о здоровье', 'pa.docs.healthSub': 'Раз в год, перед зимой',
     'pa.docs.waiting': 'Ждёт подписи', 'pa.docs.signedToday': 'Подписано сегодня',

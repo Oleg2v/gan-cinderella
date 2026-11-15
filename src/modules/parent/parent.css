@@ -307,6 +307,7 @@
 .pa-rcpt::after { content: ""; position: absolute; inset-inline: 0; bottom: -10px; height: 12px; background: radial-gradient(circle at 8px 0, #fff 8px, transparent 8.6px) 0 0 / 16px 12px repeat-x; }
 .pa-rcpt__h { display: flex; align-items: center; gap: 12px; padding-bottom: 14px; border-bottom: 1.5px dashed var(--line-2); }
 .pa-rcpt__h > div { flex: 1; min-width: 0; }
+.pa-rcpt__foot { margin-top: 14px; display: flex; justify-content: center; }
 .pa-rcpt__brand { font-family: var(--font-display); font-weight: 600; font-size: 1.15rem; }
 .pa-lines--rcpt { margin: 6px 0 0; }
 .pa-lines--rcpt .pa-line { padding: 10px 2px; border-bottom-style: solid; border-bottom-width: 1px; border-bottom-color: var(--line); }
@@ -315,7 +316,7 @@
 .pa-lines--rcpt .pa-line--disc dt { color: var(--ok); padding-inline-start: 0; }
 .pa-lines--rcpt .pa-line--total dt { color: var(--ink); }
 .pa-lines--rcpt .pa-line--total dd { font-size: 1.6rem; }
-.pa-rcpt__stamp { position: absolute; bottom: 64px; inset-inline-start: 22px; display: inline-flex; align-items: center; gap: 6px; padding: 6px 14px; border-radius: 12px; border: 2.5px solid var(--ok); color: var(--ok); font-weight: 800; font-size: 1rem; transform: rotate(-10deg); opacity: .85; pointer-events: none; }
+.pa-rcpt__stamp { position: absolute; top: 22px; inset-inline-end: 16px; display: inline-flex; align-items: center; gap: 6px; padding: 6px 14px; border-radius: 12px; border: 2.5px solid var(--ok); color: var(--ok); font-weight: 800; font-size: 1rem; transform: rotate(-10deg); opacity: .85; pointer-events: none; }
 .pa-rcpt__stamp .ic { width: 18px; height: 18px; }
 
 /* =====================================================================
@@ -526,7 +527,7 @@
 .pa-album__auto { display: inline-flex; align-items: center; gap: 6px; color: var(--magenta-700); font-weight: 700; }
 .pa-album__auto .ic { width: 17px; height: 17px; }
 .pa-album__auto.is-on .ic { animation: pa-wand 1s var(--ease-spring); }
-.pa-album__stage { position: relative; padding: 22px 0 6px; }
+.pa-album__stage { position: relative; padding: 22px 0 6px; overflow-x: clip; }
 .pa-fly { position: absolute; inset: 0; overflow: hidden; pointer-events: none; z-index: 5; }
 .pa-fly__c { position: absolute; top: 0; left: 0; width: 88px; height: 64px; padding: 4px; border-radius: 8px; background: #fff; box-shadow: 0 10px 22px -10px rgba(27,26,75,.55); opacity: 0; will-change: transform, opacity; }
 .pa-fly__c svg { display: block; width: 100%; height: 100%; border-radius: 5px; }
@@ -542,6 +543,7 @@
 .is-rtl .pa-leaf { left: 0; transform-origin: 100% 50%; }
 .is-rtl .pa-leaf.is-turned { transform: rotateY(180deg); }
 .pa-face { position: absolute; inset: 0; overflow: hidden; -webkit-backface-visibility: hidden; backface-visibility: hidden; background: #FFFDF7; box-shadow: 0 16px 30px -18px rgba(27,26,75,.5), inset 0 0 0 1px rgba(27,26,75,.06); }
+.pa-leaf[aria-hidden="true"] .pa-face { box-shadow: inset 0 0 0 1px rgba(27,26,75,.06); }
 .pa-face--back { transform: rotateY(180deg); }
 .is-ltr .pa-face--front, .is-rtl .pa-face--back { border-radius: 4px 16px 16px 4px; }
 .is-ltr .pa-face--back, .is-rtl .pa-face--front { border-radius: 16px 4px 4px 16px; }
@@ -573,7 +575,9 @@ html[lang="ru"] .pa-pg__cap { font-weight: 700; }
 .pa-backc__t { font-family: var(--font-display); font-size: clamp(14px, 3.4cqw, 26px); font-weight: 700; color: #fff; }
 .pa-backc__x { font-size: clamp(10px, 2.2cqw, 16px); font-weight: 600; color: #fff; }
 .pa-intro, .pa-endp { display: flex; flex-direction: column; align-items: center; gap: 2cqw; }
-.pa-intro__stack { position: relative; width: 22cqw; height: 18cqw; margin-bottom: 2cqw; }
+.pa-intro__stack { position: relative; width: 22cqw; height: 22cqw; margin-bottom: 2cqw; }
+.pa-intro__stack > b { position: absolute; inset: 6%; z-index: 1; border-radius: 999px 999px 6px 6px; overflow: hidden; box-shadow: 0 0 0 1.2cqw #fff, 0 8px 16px -8px rgba(27,26,75,.5); }
+.pa-intro__stack > b svg { display: block; width: 100%; height: 100%; }
 .pa-intro__stack i { position: absolute; inset: 0; border-radius: 6px; background: #fff; box-shadow: 0 6px 14px -8px rgba(27,26,75,.5), inset 0 0 0 1.4cqw #fff, inset 0 0 0 30cqw var(--sky); }
 .pa-intro__stack i:nth-child(1) { transform: rotate(-12deg) translateX(-14%); box-shadow: 0 6px 14px -8px rgba(27,26,75,.5), inset 0 0 0 1.4cqw #fff, inset 0 0 0 30cqw var(--blush); }
 .pa-intro__stack i:nth-child(2) { transform: rotate(8deg) translateX(14%); box-shadow: 0 6px 14px -8px rgba(27,26,75,.5), inset 0 0 0 1.4cqw #fff, inset 0 0 0 30cqw #FDE8C8; }

@@ -50,12 +50,13 @@ function joinNames(arr, lg = lang()) {
 const who = ids => (ids.length <= 3 ? joinNames(ids.map(nm)) : kidsN(ids.length));
 const famN = n => (lang() === 'ru' ? `${n} ${pluralRu(n, ['семья', 'семьи', 'семей'])}` : `${n} משפחות`);
 const dateStr = (lg, d) => { try { return new Intl.DateTimeFormat(lg === 'ru' ? 'ru-RU' : 'he-IL', { weekday: 'long', day: 'numeric', month: 'long' }).format(d); } catch (e) { return ''; } };
+const lc = txt => (lang() === 'ru' ? txt.toLowerCase() : txt);
 function today() { const d = new Date(); if (d.getDay() === 6) d.setDate(d.getDate() + 1); return d; }
 
 /* ---------- i18n ---------- */
 const I18N = {
   he: {
-    'st.tabletMode': 'מצב טאבלט', 'st.role': 'מטפלת בוגרים', 'st.group': 'קבוצת בוגרים',
+    'st.tabletMode': 'מצב טאבלט', 'st.role': 'מטפלת בוגרים', 'st.roleS': 'מטפלת בוגרים', 'st.group': 'קבוצת בוגרים',
     'st.synced': 'מסונכרן', 'st.syncing': 'שומר…', 'st.side': 'חשוב היום ויומן',
     'st.stat.present': 'נוכחים', 'st.stat.sleep': 'ישנים', 'st.stat.meal': 'ארוחה',
     'st.btn.inbox': 'הודעות מההורים', 'st.btn.inboxS': 'הודעות', 'st.btn.photo': 'צילום', 'st.btn.incident': 'דיווח אירוע', 'st.btn.incidentS': 'אירוע', 'st.btn.eod': 'סיום יום',
@@ -95,7 +96,7 @@ const I18N = {
     'st.inc.edit': 'עריכה', 'st.inc.send': 'שליחה להורים ולמנהלת', 'st.inc.sent': 'הדיווח נשלח',
     'st.inc.parentPhone': 'ההורים · {lang}', 'st.inc.ownerPhone': 'המנהלת · בעברית', 'st.inc.close': 'סגירה',
     'st.eod.title': 'סיום יום', 'st.eod.writing': 'המערכת כותבת סיכומים', 'st.eod.sub': 'מהסימונים של היום, לכל משפחה בשפה שלה',
-    'st.eod.ready': '{n} סיכומים מוכנים', 'st.eod.readySub': 'אפשר לפתוח כל שורה ולקרוא לפני השליחה',
+    'st.eod.ready': 'הסיכומים מוכנים', 'st.eod.readySub': 'אפשר לפתוח כל שורה ולקרוא לפני השליחה',
     'st.eod.send': 'שלח לכולם', 'st.eod.sending': 'שולחים להורים…', 'st.eod.sentSub': 'כל משפחה מקבלת סיכום לטלפון',
     'st.eod.done': 'כל המשפחות קיבלו סיכום', 'st.eod.doneSub': '{he} בעברית, {ru} ברוסית. כל משפחה בשפה שלה.',
     'st.eod.tap': 'נגיעה בטלפון מציגה את ההודעה', 'st.eod.close': 'סגירה', 'st.eod.inUi': 'בעברית:', 'st.eod.toast': 'נשלחו {n}/{n} סיכומים',
@@ -109,7 +110,7 @@ const I18N = {
     'st.log.reply': 'נשלחה תשובה ל{who}', 'st.log.incident': 'דיווח אירוע: {name}', 'st.log.eod': 'סיכומי יום נשלחו ל-{n} משפחות'
   },
   ru: {
-    'st.tabletMode': 'Режим планшета', 'st.role': 'Воспитательница старшей группы', 'st.group': 'Старшая группа',
+    'st.tabletMode': 'Режим планшета', 'st.role': 'Воспитательница старшей группы', 'st.roleS': 'воспитательница', 'st.group': 'Старшая группа',
     'st.synced': 'Сохранено', 'st.syncing': 'Сохраняем…', 'st.side': 'Важно сегодня и журнал',
     'st.stat.present': 'Пришли', 'st.stat.sleep': 'Спят', 'st.stat.meal': 'Еда',
     'st.btn.inbox': 'Сообщения от родителей', 'st.btn.inboxS': 'Сообщения', 'st.btn.photo': 'Фото', 'st.btn.incident': 'Сообщить о происшествии', 'st.btn.incidentS': 'Случай', 'st.btn.eod': 'Конец дня',
@@ -149,7 +150,7 @@ const I18N = {
     'st.inc.edit': 'Изменить', 'st.inc.send': 'Отправить родителям и руководителю', 'st.inc.sent': 'Отчёт отправлен',
     'st.inc.parentPhone': 'Родители · {lang}', 'st.inc.ownerPhone': 'Руководитель · на иврите', 'st.inc.close': 'Закрыть',
     'st.eod.title': 'Конец дня', 'st.eod.writing': 'Система пишет сводки', 'st.eod.sub': 'Из сегодняшних отметок, каждой семье на её языке',
-    'st.eod.ready': 'Сводки готовы: {n}', 'st.eod.readySub': 'Нажмите на строку, чтобы прочитать перед отправкой',
+    'st.eod.ready': 'Сводки готовы', 'st.eod.readySub': 'Нажмите на строку, чтобы прочитать перед отправкой',
     'st.eod.send': 'Отправить всем', 'st.eod.sending': 'Отправляем родителям…', 'st.eod.sentSub': 'Каждая семья получает сводку на телефон',
     'st.eod.done': 'Все семьи получили сводку', 'st.eod.doneSub': '{he} на иврите, {ru} по-русски. Каждой семье на её языке.',
     'st.eod.tap': 'Нажмите на телефон, чтобы прочитать', 'st.eod.close': 'Закрыть', 'st.eod.inUi': 'По-русски:', 'st.eod.toast': 'Отправлено сводок: {n}/{n}',
@@ -301,7 +302,7 @@ function buildGrid() {
 function chipsOf(id) {
   const ks = S.kids[id], out = [];
   const lm = MEALS.slice().reverse().find(m => ks.meals[m]);
-  if (lm) out.push(['meal', sic('pie-' + ks.meals[lm].amt), `${t('st.meal.' + lm)}: ${t('st.amt.' + ks.meals[lm].amt)}`]);
+  if (lm) out.push(['meal', sic('pie-' + ks.meals[lm].amt), `${t('st.meal.' + lm)}: ${lc(t('st.amt.' + ks.meals[lm].amt))}`]);
   if (ks.sleeps.length) { const s = ks.sleeps[ks.sleeps.length - 1]; out.push(['sleep', icon('moon'), t('st.si.sleep', { d: dur(s.end - s.start) })]); }
   if (ks.diapers.length) out.push(['diaper', icon('diaper') + (ks.diapers.length > 1 ? `<b>${ks.diapers.length}</b>` : ''), t('st.si.diaper', { n: ks.diapers.length })]);
   if (ks.photos) out.push(['photo', icon('camera'), t('st.si.photo')]);
@@ -456,9 +457,9 @@ function recordMeal(meal, amt) {
   ids.forEach(id => { S.kids[id].meals[meal] = { amt, t: tm, checked }; });
   S.lastMeal = meal;
   const w = ids.slice();
-  log('plate', () => t('st.log.meal', { meal: t('st.meal.' + meal), amt: t('st.amt.' + amt), who: who(w) }) + (checked ? ' · ' + t('st.al.checked') : ''), tm);
-  A.ui.toast(`${t('st.meal.' + meal)} · ${t('st.amt.' + amt)} · ${who(ids)}`, { icon: 'check-circle', tone: 'ok' });
-  say(`${t('st.meal.' + meal)} · ${t('st.amt.' + amt)} · ${who(ids)}`);
+  log('plate', () => t('st.log.meal', { meal: t('st.meal.' + meal), amt: lc(t('st.amt.' + amt)), who: who(w) }) + (checked ? ' · ' + t('st.al.checked') : ''), tm);
+  A.ui.toast(`${t('st.meal.' + meal)} · ${lc(t('st.amt.' + amt))} · ${who(ids)}`, { icon: 'check-circle', tone: 'ok' });
+  say(`${t('st.meal.' + meal)} · ${lc(t('st.amt.' + amt))} · ${who(ids)}`);
   ids.forEach(id => { if (!reduced()) A.fx.burstAt(E.st[id], { count: 5, speed: [50, 140], size: [5, 11], life: [350, 650], gravity: 120, colors: ['magenta', 'pink', 'gold'] }); });
   finish(ids, 'meal');
 }
@@ -484,8 +485,8 @@ function recordDiaper(type) {
   const tm = S.clock; advance(1);
   ids.forEach(id => S.kids[id].diapers.push({ type, t: tm }));
   const w = ids.slice();
-  log('diaper', () => t('st.log.diaper', { type: t('st.dia.' + type), who: who(w) }), tm);
-  A.ui.toast(`${t('st.act.diaper')} · ${t('st.dia.' + type)} · ${who(ids)}`, { icon: 'check-circle', tone: 'ok' });
+  log('diaper', () => t('st.log.diaper', { type: lc(t('st.dia.' + type)), who: who(w) }), tm);
+  A.ui.toast(`${t('st.act.diaper')} · ${lc(t('st.dia.' + type))} · ${who(ids)}`, { icon: 'check-circle', tone: 'ok' });
   finish(ids, 'diaper');
 }
 
@@ -755,6 +756,9 @@ function openCamera(pre = []) {
 function bubbleHTML(text, lg, out, time) {
   return `<div class="bubble${out ? ' bubble--out is-new' : ''}" dir="${lg === 'ru' ? 'ltr' : 'rtl'}" lang="${lg}"><span class="bubble__t">${esc(text)}</span><span class="bubble__meta"><span class="tnum">${esc(time || '')}</span>${out ? icon('checks') : ''}</span></div>`;
 }
+function origLine(lg, txt) {
+  return esc(t('st.in.orig', { text: '\u0000' })).replace('\u0000', `<bdi dir="${lg === 'ru' ? 'ltr' : 'rtl'}" lang="${lg}">${esc(txt[lg])}</bdi>`);
+}
 function trHTML(m) {
   const ui = lang();
   if (m.orig === 'ru') return `<div class="st-tr" dir="rtl" lang="he"><span class="st-tr__l">${icon('translate')}${esc(t('st.in.trHe'))}</span><p>${esc(m.text.he)}</p></div>`;
@@ -779,7 +783,7 @@ function openInbox(focusId) {
     }).join('')}</ul>`;
   const detail = m => {
     const k = kid(m.kid), famLang = m.orig;
-    const reply = m.sent ? `${bubbleHTML(m.sent[famLang], famLang, true, m.sentTime)}<p class="st-orig">${esc(t(famLang === 'ru' ? 'st.in.sentRu' : 'st.in.sentHe'))}${famLang !== lang() || famLang === 'ru' ? ' · ' + esc(t('st.in.orig', { text: lang() === 'ru' && famLang === 'he' ? m.sent.ru : m.sent.he })) : ''}</p>` : '';
+    const reply = m.sent ? `${bubbleHTML(m.sent[famLang], famLang, true, m.sentTime)}<p class="st-orig">${esc(t(famLang === 'ru' ? 'st.in.sentRu' : 'st.in.sentHe'))}${famLang !== lang() || famLang === 'ru' ? ' · ' + origLine(lang() === 'ru' && famLang === 'he' ? 'ru' : 'he', m.sent) : ''}</p>` : '';
     let tail = '';
     if (m.pickup) {
       const tr = A.data.trusted.daniel;
@@ -1065,8 +1069,8 @@ function openEod() {
           <span class="st-mph__body"><span class="st-mph__scr"><span class="st-mph__island"></span><span class="st-mph__clock tnum" aria-hidden="true">${hm(S.sentAt)}</span>
             <span class="st-mph__av">${A.avatarEl(kid(it.id), 40, { label: '' })}</span>
             <span class="st-mph__notif" dir="${dirOf(it.lg)}" lang="${it.lg}" aria-hidden="true"><span class="st-mph__app"><i></i>${esc(appT[it.lg])}</span><span class="st-mph__txt">${esc(it.text[it.lg])}</span></span>
-          </span></span>
-          <span class="st-mph__cap"><span class="st-mph__name">${esc(nm(it.id))}</span>${langBadge(it.lg)}</span>
+          </span>${langBadge(it.lg)}</span>
+          <span class="st-mph__cap"><span class="st-mph__name">${esc(nm(it.id))}</span></span>
         </button></li>`).join('')}</ul>
       <div class="st-send__fly" aria-hidden="true"></div>
     </div>`);
