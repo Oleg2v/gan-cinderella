@@ -587,7 +587,8 @@ html[lang="ru"] .logo-ph span { font-size: 12.5cqw; }
 }
 .pixie__ring {
   position: absolute; left: 0; top: 0; border-radius: 50%;
-  box-shadow: 0 0 0 3px rgba(255,210,122,.9), 0 0 0 9px rgba(232,4,140,.28), 0 0 40px 14px rgba(255,255,255,.75);
+  /* drawn at 240px and scaled ~6–8x by JS, so the strokes are thin here */
+  box-shadow: 0 0 0 .5px rgba(255,210,122,.95), 0 0 0 1.4px rgba(232,4,140,.28), 0 0 6px 2px rgba(255,255,255,.75);
   transform: scale(0); will-change: transform, opacity;
 }
 .fx-canvas { position: fixed; inset: 0; z-index: 600; width: 100%; height: 100%; pointer-events: none; }

@@ -617,8 +617,10 @@
     const box = $('.pixie'), bloom = $('.pixie__bloom'), ring = $('.pixie__ring');
     const { x, y } = originOf(origin);
     const R = Math.hypot(Math.max(x, innerWidth - x), Math.max(y, innerHeight - y)) + 40;
-    Object.assign(bloom.style, { width: R * 2 + 'px', height: R * 2 + 'px', left: x - R + 'px', top: y - R + 'px' });
-    if (ring) Object.assign(ring.style, { width: R * 2 + 'px', height: R * 2 + 'px', left: x - R + 'px', top: y - R + 'px' });
+    // a small element scaled up (soft gradients scale cleanly) instead of a ~1700px layer: far lighter for phone GPUs
+    const B = 240, K = (R * 2) / B;
+    Object.assign(bloom.style, { width: B + 'px', height: B + 'px', left: x - B / 2 + 'px', top: y - B / 2 + 'px' });
+    if (ring) Object.assign(ring.style, { width: B + 'px', height: B + 'px', left: x - B / 2 + 'px', top: y - B / 2 + 'px' });
     box.hidden = false;
     // ring of dust riding the bloom edge
     const T1 = 560, t0 = performance.now();
@@ -632,12 +634,12 @@
     };
     FX.burst(x, y, { count: isTouch ? 34 : 60, speed: [180, 620], life: [700, 1300], gravity: 120, size: [10, 28] });
     requestAnimationFrame(ringLoop);
-    if (ring) ring.animate([{ transform: 'scale(0)', opacity: 1 }, { transform: 'scale(1.02)', opacity: .9 }, { transform: 'scale(1.1)', opacity: 0 }], { duration: T1 + 260, easing: 'cubic-bezier(.62,0,.32,1)', fill: 'forwards' });
-    await bloom.animate([{ transform: 'scale(0)', opacity: 1 }, { transform: 'scale(1)', opacity: 1 }], { duration: T1, easing: 'cubic-bezier(.62,0,.32,1)', fill: 'forwards' }).finished.catch(() => { });
+    if (ring) ring.animate([{ transform: 'scale(0)', opacity: 1 }, { transform: `scale(${K * 1.02})`, opacity: .9 }, { transform: `scale(${K * 1.1})`, opacity: 0 }], { duration: T1 + 260, easing: 'cubic-bezier(.62,0,.32,1)', fill: 'forwards' });
+    await bloom.animate([{ transform: 'scale(0)', opacity: 1 }, { transform: `scale(${K})`, opacity: 1 }], { duration: T1, easing: 'cubic-bezier(.62,0,.32,1)', fill: 'forwards' }).finished.catch(() => { });
     alive = false;
     swap();
     FX.rain(isTouch ? 44 : 80, { colors: ['magenta', 'gold', 'gold', 'white', 'blue', 'pink'], size: [10, 26] });
-    await bloom.animate([{ transform: 'scale(1)', opacity: 1 }, { transform: 'scale(1.08)', opacity: 0 }], { duration: 620, easing: 'cubic-bezier(.22,1,.36,1)', fill: 'forwards' }).finished.catch(() => { });
+    await bloom.animate([{ transform: `scale(${K})`, opacity: 1 }, { transform: `scale(${K * 1.08})`, opacity: 0 }], { duration: 620, easing: 'cubic-bezier(.22,1,.36,1)', fill: 'forwards' }).finished.catch(() => { });
     box.hidden = true; [bloom, ring].forEach(el => el && el.getAnimations && el.getAnimations().forEach(a => a.cancel()));
   }
 
