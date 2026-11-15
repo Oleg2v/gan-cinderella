@@ -3,3 +3,5 @@ dist/
 tools/tmp-*
 node_modules/
 *.tmp*
+deploy/public/
+deploy/.wrangler/

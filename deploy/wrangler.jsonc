@@ -1,0 +1,9 @@
+{
+  // Static-assets Worker served at https://cinderella.kikkey.com (same pattern as the other kikkey.com demos)
+  "name": "cinderella",
+  "compatibility_date": "2026-10-01",
+  "assets": { "directory": "./public", "not_found_handling": "single-page-application" },
+  "routes": [{ "pattern": "cinderella.kikkey.com", "custom_domain": true }],
+  "workers_dev": false,
+  "observability": { "enabled": false }
+}
