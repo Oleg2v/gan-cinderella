@@ -376,10 +376,10 @@ function loginArt() {
       <linearGradient id="pa-lg-sky" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#BFE6FC"/><stop offset="1" stop-color="#FDEAF2"/></linearGradient>
       <radialGradient id="pa-lg-glow" cx=".5" cy=".75" r=".75"><stop offset="0" stop-color="#FFF6DC"/><stop offset=".55" stop-color="#FFE4A3"/><stop offset="1" stop-color="#FFC979"/></radialGradient>
       <radialGradient id="pa-lg-halo"><stop offset="0" stop-color="#FFE4A3" stop-opacity=".9"/><stop offset="1" stop-color="#FFE4A3" stop-opacity="0"/></radialGradient>
-      <clipPath id="pa-lg-arch"><path d="M24 250V140C24 66 94 14 180 14s156 52 156 126v110Z"/></clipPath>
+      <clipPath id="pa-lg-arch"><path d="M24 228V140C24 66 94 14 180 14s156 52 156 126v88a14 14 0 0 1-14 14H38a14 14 0 0 1-14-14Z"/></clipPath>
     </defs>
-    <path d="M18 250V140C18 62 92 8 180 8s162 54 162 132v110Z" fill="#F6B0C6" opacity=".55" transform="translate(5 6)"/>
-    <path d="M18 250V140C18 62 92 8 180 8s162 54 162 132v110Z" fill="#fff"/>
+    <path d="M18 230V140C18 62 92 8 180 8s162 54 162 132v90a18 18 0 0 1-18 18H36a18 18 0 0 1-18-18Z" fill="#F6B0C6" opacity=".55" transform="translate(5 6)"/>
+    <path d="M18 230V140C18 62 92 8 180 8s162 54 162 132v90a18 18 0 0 1-18 18H36a18 18 0 0 1-18-18Z" fill="#fff"/>
     <g clip-path="url(#pa-lg-arch)">
       <rect width="360" height="250" fill="url(#pa-lg-sky)"/>
       ${sunG(180, 58, 15)}
@@ -411,22 +411,40 @@ function loginArt() {
   </svg>`;
 }
 
-/* header banner art (mirrored in LTR via CSS) */
+/* header banner art: wide canvas, sliced from the start edge (mirrored in LTR via CSS) */
 function headArt() {
   const id = uid('hd');
-  return `<svg class="pa-head__art" viewBox="0 0 400 170" preserveAspectRatio="xMinYMax slice" aria-hidden="true" focusable="false">
+  const carriage = `<g class="pa-head__wide" transform="translate(330 120)">
+      <ellipse cx="40" cy="44" rx="40" ry="5" fill="rgba(27,26,75,.08)"/>
+      <path d="M8 26C8 8 22 0 40 0s32 8 32 26c0 10-6 15-14 15H22C14 41 8 36 8 26Z" fill="#F29A1F"/>
+      <path d="M8 24C9 7 22 1 34 1c-6 6-8 14-8 24 0 8 2 13 4 16h-8C14 41 8 34 8 24Z" fill="#FFB547"/>
+      <path d="M40 1c6 6 8 15 8 24s-2 13-4 16" stroke="#E08A10" stroke-width="2" fill="none"/>
+      <path d="M28 22a12 12 0 0 1 24 0v6H28Z" fill="#FFE4A3"/>
+      <path d="M40 0c0-6 4-9 9-8" stroke="#5DB58F" stroke-width="3" fill="none" stroke-linecap="round"/>
+      <circle cx="18" cy="42" r="9" fill="#fff"/><circle cx="18" cy="42" r="9" fill="none" stroke="#C98E4A" stroke-width="3"/><circle cx="18" cy="42" r="2.4" fill="#C98E4A"/>
+      <circle cx="64" cy="42" r="9" fill="#fff"/><circle cx="64" cy="42" r="9" fill="none" stroke="#C98E4A" stroke-width="3"/><circle cx="64" cy="42" r="2.4" fill="#C98E4A"/>
+      ${sp(84, 6, 5, MAG, 'pa-a pa-a-tw')}</g>`;
+  return `<svg class="pa-head__art" viewBox="0 0 1000 200" preserveAspectRatio="xMinYMax slice" aria-hidden="true" focusable="false">
     <defs><linearGradient id="${id}" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#D0EDFD"/><stop offset="1" stop-color="#FDEAF2"/></linearGradient></defs>
-    <rect width="400" height="170" fill="url(#${id})"/>
-    ${cloud(150, 18, .7)}${cloud(300, 40, .55)}
-    ${sp(98, 42, 4.2, '#FFC24D', 'pa-a pa-a-tw')}${sp(44, 30, 3.2, MAG, 'pa-a pa-a-tw')}${sp(270, 14, 3, '#01AEF2', 'pa-a pa-a-tw')}
-    <g transform="translate(16 76)">
+    <rect width="1000" height="200" fill="url(#${id})"/>
+    ${cloud(150, 26, .7)}${cloud(380, 56, .55)}${cloud(590, 22, .7)}${cloud(800, 46, .5)}
+    ${sp(96, 44, 4.2, '#FFC24D', 'pa-a pa-a-tw')}${sp(44, 30, 3.2, MAG, 'pa-a pa-a-tw')}${sp(300, 26, 3.4, '#01AEF2', 'pa-a pa-a-tw')}${sp(500, 96, 4, '#FFC24D', 'pa-a pa-a-tw')}${sp(700, 70, 3.4, MAG, 'pa-a pa-a-tw')}
+    <path d="M0 162C160 142 330 148 470 154S760 172 1000 152V200H0Z" fill="#F7DCE8"/>
+    <path d="M120 186C200 176 280 170 340 166" stroke="#fff" stroke-width="3.4" stroke-dasharray="0 10" stroke-linecap="round" fill="none" class="pa-head__wide"/>
+    ${carriage}
+    <g class="pa-head__narrow" transform="translate(16 104)">
       <rect x="6" y="34" width="22" height="64" fill="#F3DCE8"/><rect x="3" y="30" width="22" height="66" fill="#fff"/>
-      <path d="M-2 33L14 6l16 27Z" fill="#F49BB6"/><path d="M14 6V-6" stroke="#2D2B6B" stroke-width="1.6"/><path d="M15-6c5-1.4 7 2 12 .8-3 3.6-7 4.2-12 5.6Z" fill="${MAG}"/>
+      <path d="M-2 33L14 6l16 27Z" fill="#F49BB6"/><path d="M14 6V-6" stroke="#2D2B6B" stroke-width="1.6"/><path class="pa-a pa-a-flag" d="M15-6c5-1.4 7 2 12 .8-3 3.6-7 4.2-12 5.6Z" fill="${MAG}"/>
       <rect x="28" y="52" width="58" height="46" fill="#fff"/><path d="M28 52a6 6 0 0 1 12 0 6 6 0 0 1 12 0 6 6 0 0 1 12 0 6 6 0 0 1 12 0 6 6 0 0 1 10 0" fill="#fff"/>
       <path d="M48 98V82a9 9 0 0 1 18 0v16Z" fill="#A3026A"/><circle cx="14" cy="50" r="4" fill="#FFD27A"/>
     </g>
-    <path d="M0 140C80 124 160 128 230 136S340 150 400 138V170H0Z" fill="#F7DCE8"/>
-    <path d="M0 154C90 144 190 146 260 152S360 160 400 154V170H0Z" fill="#FFFAFC"/>
+    <g class="pa-head__wide" transform="translate(64 66) scale(1.36)">
+      <rect x="6" y="34" width="22" height="64" fill="#F3DCE8"/><rect x="3" y="30" width="22" height="66" fill="#fff"/>
+      <path d="M-2 33L14 6l16 27Z" fill="#F49BB6"/><path d="M14 6V-6" stroke="#2D2B6B" stroke-width="1.6"/><path class="pa-a pa-a-flag" d="M15-6c5-1.4 7 2 12 .8-3 3.6-7 4.2-12 5.6Z" fill="${MAG}"/>
+      <rect x="28" y="52" width="58" height="46" fill="#fff"/><path d="M28 52a6 6 0 0 1 12 0 6 6 0 0 1 12 0 6 6 0 0 1 12 0 6 6 0 0 1 12 0 6 6 0 0 1 10 0" fill="#fff"/>
+      <path d="M48 98V82a9 9 0 0 1 18 0v16Z" fill="#A3026A"/><circle cx="14" cy="50" r="4" fill="#FFD27A"/>
+    </g>
+    <path d="M0 180C180 168 380 172 560 176S840 186 1000 174V200H0Z" fill="#FFFAFC"/>
   </svg>`;
 }
 
@@ -470,7 +488,7 @@ async function busyBtn(btn, ms = 700, labelKey = 'pa.sending') {
   if (!btn) return sleep(ms);
   const html = btn.innerHTML; btn.disabled = true; btn.classList.add('is-busy');
   btn.innerHTML = `<span class="pa-spin" aria-hidden="true">${icon('sparkle', 'ic--fill')}</span><span>${esc(t(labelKey))}</span>`;
-  await sleep(App.tour.running || reduced() ? Math.min(ms, 380) : ms);
+  await sleep(App.tour.running || reduced() ? Math.min(ms, 300) : ms);
   btn.disabled = false; btn.classList.remove('is-busy'); btn.innerHTML = html;
 }
 function doneView({ title, text, extra = '', closeKey = 'pa.close' }) {
@@ -559,10 +577,10 @@ async function sendCode(again = false) {
     const r = q('.pa-otp').getBoundingClientRect();
     if (r.bottom > innerHeight * .62) App.scrollTo(App.scrollY() + r.top - innerHeight * .36, { duration: 520 });
   }
-  await sleep(App.tour.running ? 380 : 520);
+  await sleep(App.tour.running ? 300 : 520);
   if (seq !== S.loginSeq) return;
   showSms(seq);
-  await sleep(App.tour.running ? 380 : 480);
+  await sleep(App.tour.running ? 260 : 480);
   if (seq !== S.loginSeq) return;
   autofill(seq);
 }
@@ -584,7 +602,7 @@ async function autofill(seq) {
     boxes[i].value = code[i];
     boxes[i].classList.remove('is-pop'); void boxes[i].offsetWidth; boxes[i].classList.add('is-pop');
     if (!reduced()) { const r = boxes[i].getBoundingClientRect(); App.fx.burst(r.left + r.width / 2, r.top + r.height / 2, { count: 6, speed: [40, 120], size: [5, 11], life: [300, 600], gravity: 60 }); }
-    await sleep(reduced() ? 0 : App.tour.running ? 110 : 130);
+    await sleep(reduced() ? 0 : App.tour.running ? 95 : 130);
   }
   updateEnter();
 }
@@ -598,7 +616,7 @@ async function enter() {
   const login = q('.pa-login');
   if (!reduced()) {
     login.classList.add('is-opening');
-    await sleep(App.tour.running ? 420 : 560);
+    await sleep(App.tour.running ? 380 : 560);
     if (seq !== S.loginSeq) return;
     await login.animate([{ opacity: 1, transform: 'none' }, { opacity: 0, transform: 'scale(.97) translateY(-8px)' }], { duration: 320, easing: 'ease-in', fill: 'forwards' }).finished.catch(() => { });
     if (seq !== S.loginSeq) return;
@@ -620,6 +638,7 @@ function showApp({ animate }) {
   login.hidden = true; app.hidden = false;
   renderAll();
   selectTab('today', { animate: false, scroll: false });
+  lenisResize();
   if (App.lenis) App.lenis.scrollTo(0, { immediate: true, force: true }); else window.scrollTo(0, 0);
   app.classList.remove('is-entering'); void app.offsetWidth;
   if (animate) {
@@ -636,6 +655,7 @@ function logout({ instant = false } = {}) {
   q('[data-pa="app"]').hidden = true;
   const login = q('.pa-login'); login.hidden = false;
   resetLogin();
+  lenisResize();
   if (!instant && !reduced() && login.animate) login.animate([{ opacity: 0, transform: 'translateY(10px)' }, { opacity: 1, transform: 'none' }], { duration: 420, easing: 'cubic-bezier(.22,1,.36,1)' });
   if (App.lenis) App.lenis.scrollTo(0, { immediate: true, force: true }); else window.scrollTo(0, 0);
 }
@@ -690,6 +710,7 @@ function selectTab(id, { animate = true, scroll = true, focus = false } = {}) {
   const next = q('#pa-p-' + id);
   panels.forEach(p => { if (p !== next) p.hidden = true; });
   next.hidden = false;
+  lenisResize();
   onPanelShown(id);
   if (animate && !reduced() && prev !== id && next.animate) {
     const dir = (TABS.indexOf(id) > TABS.indexOf(prev) ? 1 : -1) * (lang() === 'he' ? -1 : 1);
@@ -704,6 +725,7 @@ function selectTab(id, { animate = true, scroll = true, focus = false } = {}) {
     }
   }
 }
+const lenisResize = () => { try { App.lenis && App.lenis.resize && App.lenis.resize(); } catch (e) { } };
 const barH = () => { const tb = $('.topbar'); return tb ? tb.getBoundingClientRect().height : 60; };
 function bindTabs() {
   const tl = q('.pa-tabs');
@@ -994,6 +1016,7 @@ function renderPay() {
       <p class="tiny muted">${esc(t('pa.pay.auto'))}</p>
     </section></div>`;
   App.reveal(box);
+  renderMore();
 }
 function bindPay() {
   q('#pa-p-pay').addEventListener('click', e => {
@@ -1172,6 +1195,7 @@ function bindCal() {
     $('.progress i', card).style.setProperty('--p', done / total * 100 + '%');
     $('.pa-shab__count', card).textContent = done === total ? t('pa.shab.ready') : t('pa.shab.count', { n: done, t: total });
     card.classList.toggle('is-ready', done === total);
+    renderMore();
     if (c.checked) { const bx = c.parentElement.querySelector('.pa-check__box'); burst(bx, { count: done === total ? 40 : 8, speed: done === total ? [120, 380] : [40, 140], size: [6, 16] }); }
     if (done === total) App.haptic(20);
   });
@@ -1315,6 +1339,7 @@ function renderDocs() {
   q('.pa-docs__count').textContent = t('pa.docs.count', { n, t: 4 });
   q('.pa-docs__sum').classList.toggle('is-done', n === 4);
   qq('[data-consent]').forEach(b => b.setAttribute('aria-checked', String(!!S.consent[b.dataset.consent])));
+  renderMore();
 }
 
 /* =====================================================================
@@ -1323,7 +1348,7 @@ function renderDocs() {
 function albumPages() {
   const y0 = schoolYear();
   const P = [];
-  P.push({ cls: 'pa-pg--cover', html: `<div class="pa-cover"><span class="pa-cover__frame">${App.avatar(NOA())}</span><p class="pa-cover__k">${esc(t('pa.album.coverK'))}</p><h3 class="pa-cover__t">${esc(t('pa.album.title'))}</h3><p class="pa-cover__y tnum">${y0}–${y0 + 1}</p>${sp(30, 30, 7, '#FFD27A').replace('<path', '<svg class="pa-cover__sp" viewBox="0 0 60 60" aria-hidden="true"><path') + '</svg>'}</div>` });
+  P.push({ cls: 'pa-pg--cover', html: `<div class="pa-cover"><span class="pa-cover__frame">${App.avatar(NOA())}</span><p class="pa-cover__k">${esc(t('pa.album.coverK'))}</p><h3 class="pa-cover__t">${esc(t('pa.album.title'))}</h3><p class="pa-cover__y tnum" dir="ltr">${y0}–${y0 + 1}</p>${sp(30, 30, 7, '#FFD27A').replace('<path', '<svg class="pa-cover__sp" viewBox="0 0 60 60" aria-hidden="true"><path') + '</svg>'}</div>` });
   P.push({ html: `<div class="pa-intro"><div class="pa-intro__stack" aria-hidden="true"><i></i><i></i><b>${App.avatar(NOA(), { label: '' })}</b></div><p class="pa-intro__t">${esc(t('pa.album.introT'))}</p><p class="pa-intro__x">${esc(t('pa.album.auto'))}</p><p class="pa-intro__n">${esc(t('pa.album.count', { n: ALBUM.length }))}</p></div>` });
   ALBUM.forEach((a, i) => {
     const d = new Date(a.m >= 8 ? y0 : y0 + 1, a.m, 1);
@@ -1360,7 +1385,7 @@ function applyBook(instant) {
     if (!lf.classList.contains('is-flipping')) lf.style.zIndex = turned ? i + 1 : n - i;
     const vis = (turned && i === cur - 1) || (!turned && i === cur);
     lf.setAttribute('aria-hidden', String(!vis));
-    $$('.pa-face', lf).forEach(f => { f.inert = !vis; });
+    $$('.pa-face', lf).forEach(f => { f.inert = !vis; f.classList.toggle('pa-live', vis && f.classList.contains(turned ? 'pa-face--back' : 'pa-face--front')); });
     if (instant) { void lf.offsetWidth; lf.style.transition = ''; }
   });
   book.classList.toggle('is-closed-front', cur === 0);
@@ -1459,7 +1484,20 @@ function observeLive(root = R) {
    RENDER ALL + RESET
    ===================================================================== */
 function renderAll() {
-  renderHeader(); renderTiles(); renderFeed(); renderSummary(); renderPay(); renderCal(); renderMenu(); renderDocs(); renderAlbum();
+  renderHeader(); renderTiles(); renderFeed(); renderSummary(); renderPay(); renderCal(); renderMenu(); renderDocs(); renderAlbum(); renderMore();
+}
+/* shortcuts under the summary: what is waiting in the other tabs */
+function renderMore() {
+  const box = q('.pa-more__list'); if (!box) return;
+  const done = S.shabbat.size, total = SHABBAT_LIST.length;
+  const m = monthName(new Date());
+  const items = [
+    { tab: 'pay', ic: 'card', tone: S.paid ? 'mint' : 'sun', t: t('pa.more.pay', { m: lang() === 'ru' ? m.toLowerCase() : m }), s: S.paid ? t('pa.more.paid') : t('pa.more.due', { sum: App.fmt.money(PAY_TOTAL) }) },
+    { tab: 'cal', ic: 'candle', tone: done === total ? 'mint' : 'pink', t: t('pa.shab.title'), s: done === total ? t('pa.shab.ready') : t('pa.shab.count', { n: done, t: total }) },
+    { tab: 'docs', ic: 'pen', tone: S.signed ? 'mint' : 'sky', t: t('pa.docs.health'), s: S.signed ? t('pa.docs.signedToday') : t('pa.docs.waiting') },
+    { tab: 'album', ic: 'book', tone: 'lilac', t: t('pa.album.title'), s: t('pa.album.auto') }
+  ];
+  box.innerHTML = items.map(it => `<button type="button" class="pa-more__i" data-goto="${it.tab}"><span class="pa-more__ic pa-tone-${it.tone}" aria-hidden="true">${icon(it.ic)}</span><span class="rowi__main"><span class="rowi__title">${esc(it.t)}</span><span class="rowi__sub">${esc(it.s)}</span></span>${icon('chevron', 'ic--dir ic--sm pa-more__chev')}</button>`).join('');
 }
 function resetState() {
   S.sent = { absent: null, late: null, pickup: null, msg: null };
@@ -1487,7 +1525,7 @@ const I18N = {
     'pa.login.d1': 'ספרה 1 מתוך 4', 'pa.login.d2': 'ספרה 2 מתוך 4', 'pa.login.d3': 'ספרה 3 מתוך 4', 'pa.login.d4': 'ספרה 4 מתוך 4', 'pa.login.demo': 'דמו: כל מספר נייד עובד, ושום הודעה לא נשלחת באמת.',
     'pa.login.smsApp': 'הודעות', 'pa.login.smsNow': 'עכשיו', 'pa.login.smsText': 'גן סינדרלה: קוד הכניסה שלכם הוא 4815',
     'pa.hi.morning': 'בוקר טוב, {name}', 'pa.hi.day': 'צהריים טובים, {name}', 'pa.hi.evening': 'ערב טוב, {name}', 'pa.hi.night': 'לילה טוב, {name}',
-    'pa.group': 'קבוצת {g}', 'pa.status.in': 'בגן מ-07:48', 'pa.status.home': 'היום בגן: 07:48–16:50',
+    'pa.group': 'קבוצת {g}', 'pa.status.in': 'בגן מ-07:48', 'pa.status.home': 'היום בגן: \u206607:48–16:50\u2069',
     'pa.trust': 'התמונות של נועה רק אצלכם, לא בקבוצות', 'pa.onlyYou': 'רק אצלכם',
     'pa.menuBtn': 'תפריט חשבון', 'pa.notifs': 'התראות לטלפון', 'pa.logout': 'התנתקות', 'pa.loggedOut': 'התנתקתם. להתראות!',
     'pa.tabs': 'אזורים באזור ההורים', 'pa.tab.today': 'היום', 'pa.tab.pay': 'תשלומים', 'pa.tab.cal': 'לוח שנה', 'pa.tab.menu': 'תפריט', 'pa.tab.docs': 'מסמכים', 'pa.tab.album': 'אלבום',
@@ -1509,6 +1547,7 @@ const I18N = {
     'pa.msg.orig': 'המקור:', 'pa.msg.demoOnly': 'במערכת החיה ההודעה מתורגמת לעברית לצוות. בדמו מתורגמות רק הדוגמאות.', 'pa.msg.staffSees': 'כך זה מגיע לצוות',
     'pa.msg.doneT': 'נשלח לצוות', 'pa.msg.youSee': 'התשובה אליכם', 'pa.msg.replyTr': 'התשובה תורגמה אוטומטית לרוסית',
     'pa.feed.title': 'היום של נועה', 'pa.like': 'אהבתי',
+    'pa.more.title': 'עוד באזור האישי', 'pa.more.pay': 'תשלום ל{m}', 'pa.more.due': 'ממתין לתשלום · {sum}', 'pa.more.paid': 'שולם, הקבלה מוכנה',
     'pa.sum.eyebrow': 'נשלח אליכם ב-17:30', 'pa.sum.title': 'סיכום היום', 'pa.sum.auto': 'נכתב אוטומטית מהסימונים של הצוות', 'pa.sum.lang': 'שפת הסיכום',
     'pa.sum.phone': 'הטלפון שלכם', 'pa.sum.phoneSub': 'ההתראה מגיעה לבד, בשפה שבחרתם',
     'pa.pay.month': 'החשבון החודשי', 'pa.pay.paid': 'שולם', 'pa.pay.due': 'ממתין לתשלום', 'pa.pay.tuition': 'שכר לימוד · {g}',
@@ -1528,7 +1567,7 @@ const I18N = {
     'pa.menu.toggle': 'סימון לפי האלרגיות של נועה', 'pa.menu.none': 'אין אלרגיות רשומות', 'pa.menu.try': 'רוצים לראות איך זה עובד? בחרו אלרגן:',
     'pa.menu.count': 'השבוע {n} מנות עם {a}', 'pa.menu.count1': 'השבוע מנה אחת עם {a}', 'pa.menu.days': 'ימי השבוע', 'pa.menu.b': 'ארוחת בוקר', 'pa.menu.l': 'ארוחת צהריים', 'pa.menu.s': 'מנחה',
     'pa.menu.noAl': 'בלי אלרגנים נפוצים', 'pa.menu.contains': 'מכיל {a}',
-    'pa.docs.title': 'מסמכים', 'pa.docs.count': '{n} מתוך {t} מסמכים מוכנים', 'pa.docs.health': 'הצהרת בריאות', 'pa.docs.healthSub': 'פעם בשנה, לפני החורף',
+    'pa.docs.title': 'מסמכים', 'pa.docs.count': '{n} מתוך {t} מסמכים מוכנים', 'pa.docs.health': 'הצהרת בריאות', 'pa.docs.healthSub': 'לשנת הלימודים הנוכחית',
     'pa.docs.waiting': 'ממתין לחתימה', 'pa.docs.signedToday': 'נחתם היום',
     'pa.docs.healthText': 'אני מצהיר/ה שנועה בריאה ויכולה להשתתף בכל הפעילויות בגן, ושאעדכן את הצוות בכל שינוי בבריאות שלה.',
     'pa.docs.sigLabel': 'החתימה שלכם', 'pa.docs.sigPh': 'חתמו כאן באצבע', 'pa.docs.clear': 'ניקוי', 'pa.docs.sign': 'חתימה ושליחה', 'pa.docs.typed': 'לחתום בשם מוקלד',
@@ -1539,7 +1578,7 @@ const I18N = {
     'pa.docs.pick': 'רשימת מבוגרים לאיסוף', 'pa.docs.pickSub': 'אמא, אבא, סבתא ודודה', 'pa.docs.people': '4 אנשים',
     'pa.album.title': 'האלבום של נועה', 'pa.album.auto': 'נבנה לבד מהתמונות של השנה', 'pa.album.coverK': 'קבוצת בוגרים',
     'pa.album.introT': 'שנה שלמה של רגעים קטנים', 'pa.album.count': '{n} רגעים מספטמבר עד יוני', 'pa.album.endT': 'איזו שנה, נועה!', 'pa.album.endX': 'ממשיכים לאסוף רגעים גם בשנה הבאה',
-    'pa.album.slogan': 'גן ילדים מהאגדות', 'pa.album.book': 'ספר', 'pa.album.cover': 'כריכה', 'pa.album.backCover': 'כריכה אחורית', 'pa.album.pages': 'עמודים {a}–{b} מתוך {t}',
+    'pa.album.slogan': 'גן ילדים מהאגדות', 'pa.album.book': 'ספר', 'pa.album.cover': 'כריכה', 'pa.album.backCover': 'כריכה אחורית', 'pa.album.pages': 'עמודים \u2066{a}–{b}\u2069 מתוך {t}',
     'pa.album.prev': 'הדף הקודם', 'pa.album.next': 'הדף הבא', 'pa.album.hint': 'מדפדפים בהחלקה, בנגיעה בדף או בחצים במקלדת'
   },
   ru: {
@@ -1573,6 +1612,7 @@ const I18N = {
     'pa.msg.orig': 'Оригинал:', 'pa.msg.demoOnly': 'В живой системе сообщение переводится на иврит автоматически. В демо переводятся только примеры.', 'pa.msg.staffSees': 'Так его увидят воспитатели',
     'pa.msg.doneT': 'Отправлено воспитателям', 'pa.msg.youSee': 'Ответ вам', 'pa.msg.replyTr': 'Ответ автоматически переведён на русский',
     'pa.feed.title': 'День Ноа', 'pa.like': 'Нравится',
+    'pa.more.title': 'Ещё в кабинете', 'pa.more.pay': 'Оплата за {m}', 'pa.more.due': 'Ждёт оплаты · {sum}', 'pa.more.paid': 'Оплачено, квитанция готова',
     'pa.sum.eyebrow': 'Пришло вам в 17:30', 'pa.sum.title': 'Итоги дня', 'pa.sum.auto': 'Написано автоматически по отметкам воспитателей', 'pa.sum.lang': 'Язык сводки',
     'pa.sum.phone': 'Ваш телефон', 'pa.sum.phoneSub': 'Уведомление приходит само, на выбранном языке',
     'pa.pay.month': 'Счёт за месяц', 'pa.pay.paid': 'Оплачено', 'pa.pay.due': 'Ждёт оплаты', 'pa.pay.tuition': 'Оплата за месяц · {g}',
@@ -1592,7 +1632,7 @@ const I18N = {
     'pa.menu.toggle': 'Отметить аллергены Ноа', 'pa.menu.none': 'Аллергий не записано', 'pa.menu.try': 'Хотите посмотреть, как это работает? Выберите аллерген:',
     'pa.menu.count': '{a}: блюд на этой неделе — {n}', 'pa.menu.count1': '{a}: одно блюдо на этой неделе', 'pa.menu.days': 'Дни недели', 'pa.menu.b': 'Завтрак', 'pa.menu.l': 'Обед', 'pa.menu.s': 'Полдник',
     'pa.menu.noAl': 'Без частых аллергенов', 'pa.menu.contains': 'Содержит: {a}',
-    'pa.docs.title': 'Документы', 'pa.docs.count': 'Готово документов: {n} из {t}', 'pa.docs.health': 'Декларация о здоровье', 'pa.docs.healthSub': 'Раз в год, перед зимой',
+    'pa.docs.title': 'Документы', 'pa.docs.count': 'Готово документов: {n} из {t}', 'pa.docs.health': 'Декларация о здоровье', 'pa.docs.healthSub': 'На этот учебный год',
     'pa.docs.waiting': 'Ждёт подписи', 'pa.docs.signedToday': 'Подписано сегодня',
     'pa.docs.healthText': 'Подтверждаю, что Ноа здорова и может участвовать во всех занятиях в саду, и обещаю сообщать воспитателям о любых изменениях в её здоровье.',
     'pa.docs.sigLabel': 'Ваша подпись', 'pa.docs.sigPh': 'Распишитесь здесь пальцем', 'pa.docs.clear': 'Стереть', 'pa.docs.sign': 'Подписать и отправить', 'pa.docs.typed': 'Подписать напечатанным именем',
@@ -1625,6 +1665,7 @@ App.module('parent', {
     document.addEventListener('keydown', e => { if (e.key === 'Escape' && q('#pa-menu') && !q('#pa-menu').hidden) { closeMenu(); q('[data-pa="menuBtn"]').focus(); } });
     qq('.pa-tile').forEach(b => b.addEventListener('click', () => ({ absent: openAbsent, late: openLate, pickup: openPickup, msg: openMsg })[b.dataset.qa]()));
     bindTabs(); bindFeed(); bindSummary(); bindPay(); bindCal(); bindMenu(); bindDocs();
+    q('.pa-more__list').addEventListener('click', e => { const b = e.target.closest('[data-goto]'); if (b) selectTab(b.dataset.goto); });
     q('[data-book="prev"]').addEventListener('click', () => flip(-1));
     q('[data-book="next"]').addEventListener('click', () => flip(1));
     App.on('lang', () => {
@@ -1658,13 +1699,13 @@ App.module('parent', {
       if (S.logged || q('.pa-login').hidden) logout({ instant: true });
       resetState(); resetLogin();
       await ctx.scrollTo(0, { duration: 200 });
-      await ctx.type('#pa-phone', '0501234567', { cps: ctx.fast ? 60 : 22, after: 150 });
-      await ctx.tap('[data-pa="sendCode"]', { after: 200 });
+      await ctx.type('#pa-phone', '0501234567', { cps: ctx.fast ? 60 : 30, after: 120 });
+      await ctx.tap('[data-pa="sendCode"]', { after: 150 });
       await ctx.waitFor(() => otpValue().length === 4 && !q('[data-pa="enter"]').disabled, 3500);
-      await ctx.wait(ctx.fast ? 100 : 280);
+      await ctx.wait(ctx.fast ? 80 : 200);
       await ctx.tap('[data-pa="enter"]', { after: 0 });
       await ctx.waitFor(() => S.logged, 2500);
-      await ctx.wait(ctx.fast ? 200 : 700);
+      await ctx.wait(ctx.fast ? 150 : 450);
     },
     async feed(ctx) {
       closeSheets();
@@ -1687,16 +1728,25 @@ App.module('parent', {
       const base = S.sumLang, other = base === 'he' ? 'ru' : 'he';
       if (S.phone) $('.phone__notifs', S.phone).innerHTML = '';
       S.sumNotified = true;
-      const sum = q('.pa-sum');
       const wide = innerWidth >= 1000;
-      await ctx.scrollTo(wide ? sum : q('.pa-sum__card'), { offset: barH() + 66, duration: 800 });
-      await ctx.wait(ctx.fast ? 100 : 350);
+      /* phones: the caption card covers the bottom, so frame the night panel in the free zone */
+      const toPhone = dur => {
+        const r = q('.pa-sum__night').getBoundingClientRect();
+        const zoneTop = barH() + 60, zoneBot = innerHeight - 210;
+        return ctx.scrollTo(App.scrollY() + r.top + r.height / 2 - (zoneTop + zoneBot) / 2, { duration: dur });
+      };
+      if (wide) await ctx.scrollTo(q('.pa-sum'), { offset: barH() + 66, duration: 800 });
+      else await toPhone(750);
+      await ctx.wait(ctx.fast ? 80 : 250);
       dropNotif(base, true);
-      await ctx.wait(ctx.fast ? 200 : 1300);
-      await ctx.tap(`.pa-sum__lang button[data-l="${other}"]`, { after: ctx.fast ? 300 : 1100 });
-      if (!wide) { await ctx.scrollTo(q('.pa-sum__night'), { center: true, duration: 600 }); await ctx.wait(ctx.fast ? 200 : 1300); }
+      await ctx.wait(ctx.fast ? 200 : 1150);
+      const toCard = () => (wide ? Promise.resolve() : ctx.scrollTo(q('.pa-sum__card'), { offset: barH() + 74, duration: 550 }));
+      await toCard();
+      await ctx.tap(`.pa-sum__lang button[data-l="${other}"]`, { after: ctx.fast ? 250 : 950 });
+      if (!wide) { await toPhone(550); await ctx.wait(ctx.fast ? 200 : 1000); }
       else await ctx.wait(ctx.fast ? 200 : 900);
-      await ctx.tap(`.pa-sum__lang button[data-l="${base}"]`, { after: ctx.fast ? 300 : 1100 });
+      await toCard();
+      await ctx.tap(`.pa-sum__lang button[data-l="${base}"]`, { after: ctx.fast ? 250 : 650 });
     }
   }
 });
