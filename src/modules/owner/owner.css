@@ -10,7 +10,6 @@
   background: linear-gradient(180deg, #D3EEFD 0px, #E7F5FE 200px, var(--paper) 460px);
 }
 .ow-defs { position: absolute; width: 0; height: 0; overflow: hidden; }
-.ow .ic--sm { width: 16px; height: 16px; }
 
 /* ---------- hero ---------- */
 .ow-hero { position: relative; padding: 10px 0 2px; }
@@ -58,8 +57,9 @@
 .ow-dial.is-open .ow-dial__c span { color: var(--ok); }
 .ow-dial__hrs { font-size: .6875rem; font-weight: 600; color: var(--ink-2); direction: ltr; unicode-bidi: isolate; white-space: nowrap; }
 
-.ow-quick { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 16px; }
-.ow-quick .chip { min-height: 44px; padding: 0 14px; font-size: .875rem; font-weight: 600; background: rgba(255,255,255,.9); }
+.ow-quick { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; margin-top: 16px; }
+.ow-quick .chip { min-height: 44px; padding: 0 14px; font-size: .875rem; font-weight: 600; line-height: 1.2; text-align: start; background: rgba(255,255,255,.9); }
+@media (min-width: 640px) { .ow-quick { display: flex; flex-wrap: wrap; } }
 .ow-quick .chip .ic { width: 17px; height: 17px; color: var(--magenta-700); }
 
 /* ---------- cards + KPI bento ---------- */
@@ -96,6 +96,8 @@ html[lang="ru"] .ow-k__label { font-weight: 600; letter-spacing: 0; }
 .ow-big__unit { font-size: 1rem; font-weight: 500; color: var(--ink-2); letter-spacing: 0; margin-inline-start: 6px; }
 
 /* arrivals by hour */
+.ow-peak { display: none; align-self: flex-start; align-items: center; gap: 8px; margin-top: 6px; padding: 8px 14px; border-radius: var(--r-pill); background: var(--blush); font-size: var(--fs-sm); font-weight: 600; }
+.ow-peak .ic { width: 17px; height: 17px; color: var(--magenta-700); }
 .ow-arr { margin: 2px 0 0; }
 .ow-arr__plot { display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); }
 .ow-arr__col { display: flex; flex-direction: column; align-items: center; }
@@ -180,7 +182,7 @@ html[lang="ru"] .ow-k__label { font-weight: 600; letter-spacing: 0; }
 
 /* shift (roles only, no names) */
 .ow-shift { list-style: none; display: flex; flex-direction: column; gap: 12px; }
-.ow-shift__top { display: flex; justify-content: space-between; align-items: baseline; gap: 6px; font-size: .8125rem; font-weight: 600; color: var(--ink-2); }
+.ow-shift__top { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: baseline; gap: 2px 6px; min-width: 0; font-size: .8125rem; font-weight: 600; color: var(--ink-2); }
 .ow-shift__top b { color: var(--ink); font-size: .9375rem; }
 .ow-avs { position: relative; display: flex; margin-top: 6px; padding-inline-start: 2px; }
 .ow-avs .av { --s: 27px !important; margin-inline-end: -9px; box-shadow: 0 0 0 2px #fff; transform: scale(.4); opacity: 0; transition: transform .5s var(--ease-spring) calc(var(--ow-i) * 60ms + 300ms), opacity .3s calc(var(--ow-i) * 60ms + 300ms); }
@@ -206,7 +208,6 @@ html[lang="ru"] .ow-k__label { font-weight: 600; letter-spacing: 0; }
 .ow-fun.is-on.is-vis .ow-drop { animation: ow-drip 2.1s ease-in infinite; }
 .ow-fun.is-on.is-vis .ow-drop:nth-of-type(2) { animation-delay: .7s; }
 .ow-fun.is-on.is-vis .ow-drop:nth-of-type(3) { animation-delay: 1.4s; }
-.ow-fs__st:nth-child(2) .ow-drop { --ow-dy: 62px; }
 @keyframes ow-drip { 0% { transform: translateY(14px) scale(.5); opacity: 0; } 20% { opacity: .75; } 80% { opacity: .6; } 100% { transform: translateY(62px) scale(1); opacity: 0; } }
 .ow-fs__conv {
   position: absolute; z-index: 2; top: 3px; left: 50%; transform: translateX(-50%) scale(.6); opacity: 0;
@@ -239,10 +240,12 @@ html[lang="ru"] .ow-k__label { font-weight: 600; letter-spacing: 0; }
 
 /* ---------- backstage (night band under a theatre valance) ---------- */
 .ow-auto {
-  position: relative; margin-top: 48px; padding: 72px 0 60px; overflow: clip;
+  position: relative; margin-top: 48px; padding: 72px 0 72px; overflow: clip;
   background: radial-gradient(120% 70% at 50% 0%, #2A3184 0%, var(--night) 62%) var(--night); color: #fff;
 }
 .ow-valance { position: absolute; top: 0; left: 0; width: 100%; height: 34px; display: block; }
+.ow-auto::after { content: ""; position: absolute; left: 0; right: 0; bottom: -1px; height: 18px; pointer-events: none;
+  background: radial-gradient(circle at 50% 100%, var(--paper) 16.5px, transparent 17.5px) center bottom / 36px 18px repeat-x; }
 .ow-auto__stars .ic { position: absolute; width: 14px; height: 14px; color: var(--gold); opacity: .8; animation: ow-twinkle 3.4s ease-in-out infinite; }
 .ow-auto__stars .ic:nth-child(1) { top: 70px; inset-inline-end: 9%; }
 .ow-auto__stars .ic:nth-child(2) { top: 150px; inset-inline-end: 22%; width: 9px; height: 9px; animation-delay: -1.4s; }
@@ -392,7 +395,7 @@ html[lang="ru"] .ow-k__label { font-weight: 600; letter-spacing: 0; }
 .ow-stage[data-lanes="2"] .ow-lanes { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 .ow-stage[data-lanes="3"] .ow-lanes { grid-template-columns: repeat(3, minmax(0, 1fr)); }
 .ow-lane { display: flex; flex-direction: column; align-items: center; gap: 10px; min-width: 0; }
-.ow-lane__chip { display: inline-flex; align-items: center; gap: 5px; max-width: 100%; padding: 5px 11px; border-radius: var(--r-pill); background: #fff; box-shadow: inset 0 0 0 1.5px var(--line-2); font-size: .75rem; font-weight: 600; white-space: nowrap; transition: background-color .3s, color .3s, box-shadow .3s; }
+.ow-lane__chip { display: inline-flex; align-items: center; gap: 5px; max-width: 100%; padding: 5px 11px; border-radius: var(--r-pill); background: #fff; box-shadow: inset 0 0 0 1.5px var(--line-2); font-size: .75rem; font-weight: 600; line-height: 1.25; text-align: center; transition: background-color .3s, color .3s; }
 .ow-lane__chip .ic { width: 14px; height: 14px; flex: none; color: var(--magenta-700); }
 .ow-lane__chip.is-lit { background: var(--magenta-600); color: #fff; box-shadow: none; animation: ow-pop .55s var(--ease-spring); }
 .ow-lane__chip.is-lit .ic { color: #fff; }
@@ -493,6 +496,7 @@ html[lang="ru"] .ow-k__label { font-weight: 600; letter-spacing: 0; }
   .ow-card, .ow-k { padding: 20px; }
   .ow-k--kids .ow-big { font-size: 4rem; }
   .ow-k--kids .ow-arr { margin-top: auto; }
+  .ow-k--kids .ow-peak { display: inline-flex; }
   .ow-k--kids .ow-arr__zone { height: 196px; }
   .ow-k--kids .ow-arr__bar { height: calc(var(--ow-h) * 160px); width: min(24px, 46%); }
   .ow-k--kids .ow-arr__v { font-size: .8125rem; }

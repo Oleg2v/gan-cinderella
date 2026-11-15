@@ -38,7 +38,7 @@ const HE = {
   'ow.quick': 'קיצורי דרך', 'ow.q.funnel': 'מהאתר להרשמה', 'ow.q.auto': 'מאחורי הקלעים', 'ow.q.pay': 'תשלומים', 'ow.q.wait': 'רשימת המתנה',
   'ow.kpis.h': 'המספרים של היום',
   /* KPI */
-  'ow.k.kids': 'ילדים היום', 'ow.k.kidsPill': '{p} נוכחות', 'ow.k.kidsSub': 'מתוך {n} רשומים · {m} לא הגיעו היום', 'ow.k.arr': 'הגעות לפי שעה', 'ow.k.arrA11y': 'הגעות לפי שעה: {list}',
+  'ow.k.kids': 'ילדים היום', 'ow.k.kidsPill': '{p} נוכחות', 'ow.k.kidsSub': 'מתוך {n} רשומים · {m} לא הגיעו היום', 'ow.k.arr': 'הגעות לפי שעה', 'ow.k.peak': 'שעת השיא: {t}, {n} ילדים', 'ow.k.arrA11y': 'הגעות לפי שעה: {list}',
   'ow.k.groups': 'תפוסת קבוצות', 'ow.k.groupsPill': 'מקומות פנויים: {n}', 'ow.k.free': '{n} פנויים', 'ow.k.last': 'מקום אחרון', 'ow.k.full': 'מלא', 'ow.k.ringA11y': '{g}: תפוסה {p}, {note}',
   'ow.k.wait': 'רשימת המתנה', 'ow.k.waitUnit': 'משפחות', 'ow.k.waitPill': '+2 השבוע', 'ow.k.waitHint': 'כשמתפנה מקום, ההצעה יוצאת לבד.', 'ow.k.waitHow': 'איך זה עובד', 'ow.k.waitA11y': '{n} משפחות ברשימת ההמתנה',
   'ow.k.tours': 'סיורים השבוע', 'ow.k.toursNext': 'הבא', 'ow.k.toursWhen': 'מחר 09:30', 'ow.k.weekA11y': 'סיורים לפי יום: {list}',
@@ -82,7 +82,7 @@ const RU = {
   'ow.dial.open': 'открыто', 'ow.dial.closed': 'закрыто', 'ow.dial.a11y': 'Часы работы сегодня {hrs}. Сейчас {now}, {state}.', 'ow.dial.sat': 'сегодня закрыто',
   'ow.quick': 'Быстрые переходы', 'ow.q.funnel': 'От сайта до записи', 'ow.q.auto': 'За кулисами', 'ow.q.pay': 'Оплаты', 'ow.q.wait': 'Лист ожидания',
   'ow.kpis.h': 'Цифры дня',
-  'ow.k.kids': 'Дети сегодня', 'ow.k.kidsPill': 'Пришли {p}', 'ow.k.kidsSub': 'Записано {n} · сегодня нет {m}', 'ow.k.arr': 'Приход по времени', 'ow.k.arrA11y': 'Приход по времени: {list}',
+  'ow.k.kids': 'Дети сегодня', 'ow.k.kidsPill': 'Пришли {p}', 'ow.k.kidsSub': 'Записано {n} · сегодня нет {m}', 'ow.k.arr': 'Приход по времени', 'ow.k.peak': 'Пик: {t}, детей: {n}', 'ow.k.arrA11y': 'Приход по времени: {list}',
   'ow.k.groups': 'Заполненность групп', 'ow.k.groupsPill': 'Свободно мест: {n}', 'ow.k.free': 'свободно {n}', 'ow.k.last': 'последнее место', 'ow.k.full': 'мест нет', 'ow.k.ringA11y': '{g}: заполнено {p}, {note}',
   'ow.k.wait': 'Лист ожидания', 'ow.k.waitUnit': 'семей', 'ow.k.waitPill': '+2 за неделю', 'ow.k.waitHint': 'Когда освобождается место, предложение уходит само.', 'ow.k.waitHow': 'Как это работает', 'ow.k.waitA11y': 'В листе ожидания семей: {n}',
   'ow.k.tours': 'Экскурсии на неделе', 'ow.k.toursNext': 'Ближайшая', 'ow.k.toursWhen': 'завтра 09:30', 'ow.k.weekA11y': 'Экскурсии по дням: {list}',
@@ -428,6 +428,7 @@ function renderBento() {
     ${kHead('users', 'ow.k.kids', `<span class="tag tag--ok ow-k__pill">${ic('check-circle')}${esc(t('ow.k.kidsPill', { p: att }))}</span>`)}
     <p class="ow-big"><span class="ow-frac" dir="ltr">${CU(k.present, 'ow-big__n')}<span class="ow-big__of">/${num(k.registered)}</span></span></p>
     <p class="ow-k__sub">${esc(t('ow.k.kidsSub', { n: num(k.registered), m: num(k.registered - k.present) }))}</p>
+    <p class="ow-peak" aria-hidden="true">${ic('sun')}<span>${esc(t('ow.k.peak', { t: k.arrivals.find(a => a[1] === maxA)[0], n: maxA }))}</span></p>
     <figure class="ow-arr" role="img" aria-label="${esc(t('ow.k.arrA11y', { list: k.arrivals.map(a => `${a[0]} ${a[1]}`).join(', ') }))}">
       <figcaption class="ow-k__cap" aria-hidden="true">${esc(t('ow.k.arr'))}</figcaption>
       <div class="ow-arr__plot" aria-hidden="true">${k.arrivals.map((a, i) => `<div class="ow-arr__col ${a[1] === maxA ? 'is-peak' : ''}" style="--ow-h:${(a[1] / maxA).toFixed(3)};--ow-i:${i}"><span class="ow-arr__zone"><span class="ow-arr__v tnum">${a[1]}</span><i class="ow-arr__bar"></i></span><span class="ow-arr__t tnum">${a[0]}</span></div>`).join('')}</div>

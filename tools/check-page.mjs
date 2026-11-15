@@ -4,9 +4,9 @@
 export default async (page, h) => {
   const lang = await page.evaluate(() => App.i18n.lang);
   const W = await page.evaluate(() => innerWidth);
-  const dir = `shots/page/${lang}-${W}`;
+  const view = await page.evaluate(() => App.state.view); const dir = `shots/page/${view}-${lang}-${W}`;
   const total = await page.evaluate(() => document.documentElement.scrollHeight);
-  const [ta, tb] = await page.evaluate(() => { const t = document.querySelector('.pt-track'); const a = t.getBoundingClientRect().top + scrollY; return [a, a + t.offsetHeight - innerHeight]; });
+  const [ta, tb] = await page.evaluate(() => { const t = document.querySelector('.view:not([hidden]) .pt-track'); if (!t) return [1e9, -1]; const a = t.getBoundingClientRect().top + scrollY; return [a, a + t.offsetHeight - innerHeight]; });
   const vh = await page.evaluate(() => innerHeight);
   let y = 0, n = 0; const problems = [];
   while (y < total) {
@@ -16,7 +16,7 @@ export default async (page, h) => {
       const vw = document.documentElement.clientWidth, out = [];
       document.querySelectorAll('.view:not([hidden]) *').forEach(el => {
         const r = el.getBoundingClientRect(); if (!r.width || r.bottom < 0 || r.top > innerHeight) return;
-        if (el.closest('svg,[aria-hidden="true"],.pt-hero__scene,.pixie')) return;
+        if (el.closest('svg,[aria-hidden="true"],.pt-hero__scene,.pixie,.sr-only')) return;
         const cs = getComputedStyle(el); if (cs.visibility === 'hidden' || +cs.opacity === 0) return;
         if ((r.left < -1 || r.right > vw + 1) && !el.closest('[data-allow-overflow]')) {
           let a = el.parentElement, clipped = false; while (a && a !== document.body) { const s = getComputedStyle(a); if (/(hidden|clip|auto|scroll)/.test(s.overflowX)) { const ar = a.getBoundingClientRect(); if (ar.left >= -1 && ar.right <= vw + 1) { clipped = true; break; } } a = a.parentElement; }

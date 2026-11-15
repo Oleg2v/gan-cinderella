@@ -1897,6 +1897,525 @@ html.a11y-motion [data-module="pubBottom"] *, html.a11y-motion [data-module="pub
 html.a11y-motion .pb-sh *, html.a11y-motion .pb-sh *::before, html.a11y-motion .pb-sh *::after { transition-delay: 0s !important; animation-delay: 0s !important; }
 
 </style>
+<style data-mod="owner">
+/* =====================================================================
+   owner · the owner's dashboard. Prefix: ow-
+   Brand accent (magenta/blue) for marks; semantic colors only for states.
+   ===================================================================== */
+.ow {
+  --ow-paid: #0B7A55;     /* validated pair (dataviz validator): paid / pending */
+  --ow-pend: #D07A1C;
+  --ow-dial: 104px;
+  position: relative;
+  background: linear-gradient(180deg, #D3EEFD 0px, #E7F5FE 200px, var(--paper) 460px);
+}
+.ow-defs { position: absolute; width: 0; height: 0; overflow: hidden; }
+
+/* ---------- hero ---------- */
+.ow-hero { position: relative; padding: 10px 0 2px; }
+.ow-hero__sky { position: absolute; inset: calc(-1 * (var(--bar-h) + var(--safe-t) + 12px)) 0 -30px; overflow: hidden; pointer-events: none; }
+.ow-cloud { position: absolute; height: auto; }
+.ow-cloud--a { width: 132px; top: 70px; inset-inline-start: 44%; opacity: .95; animation: ow-drift 17s ease-in-out infinite alternate; }
+.ow-cloud--b { width: 96px; top: 230px; inset-inline-end: -34px; opacity: .85; animation: ow-drift 21s ease-in-out infinite alternate-reverse; }
+.ow-twk { position: absolute; width: 14px; height: 14px; color: var(--magenta); opacity: .75; animation: ow-twinkle 3.2s ease-in-out infinite; }
+.ow-twk--1 { top: 96px; inset-inline-start: 38%; }
+.ow-twk--2 { top: 150px; inset-inline-start: 8%; color: var(--blue); width: 11px; height: 11px; animation-delay: -1.2s; }
+.ow-twk--3 { top: 250px; inset-inline-start: 62%; width: 10px; height: 10px; color: var(--gold); animation-delay: -2.1s; }
+@keyframes ow-drift { from { transform: translateX(-14px); } to { transform: translateX(14px); } }
+@keyframes ow-twinkle { 0%, 100% { transform: scale(.55) rotate(0); opacity: .35; } 50% { transform: scale(1) rotate(45deg); opacity: .9; } }
+
+.ow-hero__in {
+  position: relative; display: grid; grid-template-columns: minmax(0, 1fr) auto;
+  grid-template-areas: "meta dial" "hi dial" "status status"; column-gap: 14px; row-gap: 8px; align-items: center;
+}
+.ow-hero__text { display: contents; }
+.ow-hero__meta { grid-area: meta; align-self: end; display: flex; flex-wrap: wrap; align-items: center; gap: 6px 8px; font-size: var(--fs-sm); font-weight: 600; color: var(--ink-2); }
+.ow-hi { grid-area: hi; align-self: start; display: flex; flex-direction: column; gap: 6px; font-size: clamp(2rem, 9.2vw, 3.4rem); line-height: 1; }
+.ow-hi__sub { font-family: var(--font-body); font-size: clamp(1rem, 3.9vw, 1.3rem); font-weight: 500; color: var(--ink-2); line-height: 1.3; letter-spacing: 0; }
+.ow-status {
+  grid-area: status; justify-self: start; display: inline-flex; align-items: center; gap: 10px; margin-top: 8px;
+  padding: 10px 16px; border-radius: 18px; background: #fff; box-shadow: var(--shadow-1); font-size: .9375rem; font-weight: 500; line-height: 1.35;
+}
+.ow-status i { position: relative; width: 10px; height: 10px; border-radius: 50%; flex: none; background: #12A873; }
+.ow-status i::after { content: ""; position: absolute; inset: -5px; border-radius: 50%; border: 2px solid #12A873; opacity: 0; animation: ow-ripple 2.4s var(--ease-out) infinite; }
+.ow-status.is-closed i { background: var(--blue-700); }
+.ow-status.is-closed i::after { display: none; }
+@keyframes ow-ripple { 0% { transform: scale(.4); opacity: .8; } 100% { transform: scale(1.5); opacity: 0; } }
+
+.ow-dial { grid-area: dial; position: relative; width: var(--ow-dial); display: flex; flex-direction: column; align-items: center; gap: 6px; }
+.ow-dial::before { content: ""; position: absolute; top: 0; inset-inline-start: 0; width: var(--ow-dial); height: var(--ow-dial); border-radius: 50%; box-shadow: 0 14px 30px -14px rgba(27,26,75,.45), 0 2px 0 rgba(27,26,75,.05); }
+.ow-dial svg { position: relative; width: var(--ow-dial); height: var(--ow-dial); display: block; overflow: visible; }
+.ow-dial__face { fill: #fff; }
+.ow-dial__ticks line { stroke: var(--ink-3); stroke-width: 1.4; stroke-linecap: round; opacity: .5; }
+.ow-dial__tr { fill: none; stroke: var(--sky); stroke-width: 7; }
+.ow-dial__fg { fill: none; stroke: var(--magenta-600); stroke-width: 7; stroke-linecap: round; transition: stroke-dashoffset 1.2s var(--ease-out); }
+.ow-dial__dot { fill: #fff; stroke: var(--magenta-600); stroke-width: 2; }
+.ow-dial__mk { color: var(--magenta); }
+.ow-dial__c { position: absolute; top: 0; inset-inline-start: 0; width: var(--ow-dial); height: var(--ow-dial); display: flex; flex-direction: column; align-items: center; justify-content: center; line-height: 1.1; gap: 2px; }
+.ow-dial__c b { font-size: 1.2rem; font-weight: 700; direction: ltr; }
+.ow-dial__c span { font-size: .6875rem; font-weight: 700; color: var(--ink-2); }
+.ow-dial.is-open .ow-dial__c span { color: var(--ok); }
+.ow-dial__hrs { font-size: .6875rem; font-weight: 600; color: var(--ink-2); direction: ltr; unicode-bidi: isolate; white-space: nowrap; }
+
+.ow-quick { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; margin-top: 16px; }
+.ow-quick .chip { min-height: 44px; padding: 0 14px; font-size: .875rem; font-weight: 600; line-height: 1.2; text-align: start; background: rgba(255,255,255,.9); }
+@media (min-width: 640px) { .ow-quick { display: flex; flex-wrap: wrap; } }
+.ow-quick .chip .ic { width: 17px; height: 17px; color: var(--magenta-700); }
+
+/* ---------- cards + KPI bento ---------- */
+.ow-card { position: relative; background: #fff; border-radius: var(--r-lg); box-shadow: var(--shadow-1); padding: 16px; min-width: 0; }
+.ow-kpis { padding-top: 18px; }
+.ow-bento {
+  display: grid; gap: 12px; grid-template-columns: repeat(2, minmax(0, 1fr));
+  grid-template-areas: "kids kids" "groups groups" "wait tours" "src src" "pay shift";
+}
+.ow-k--kids { grid-area: kids; } .ow-k--groups { grid-area: groups; } .ow-k--wait { grid-area: wait; } .ow-k--tours { grid-area: tours; }
+.ow-k--src { grid-area: src; } .ow-k--pay { grid-area: pay; } .ow-k--shift { grid-area: shift; }
+.ow-k { display: flex; flex-direction: column; gap: 10px; }
+.ow-bento .ow-k { opacity: 0; transform: translate3d(0, 16px, 0) scale(.985); transition: opacity .55s var(--ease-out), transform .75s var(--ease-out); transition-delay: calc(var(--ow-n) * 55ms); }
+.ow-bento.is-on .ow-k { opacity: 1; transform: none; }
+.ow-k.is-bump { animation: ow-bump .7s var(--ease-spring); }
+.ow-k.is-ping::after { content: ""; position: absolute; inset: -4px; border-radius: calc(var(--r-lg) + 4px); border: 2.5px solid var(--magenta); opacity: 0; animation: ow-ping 1.4s var(--ease-out) .35s; pointer-events: none; }
+@keyframes ow-bump { 30% { transform: scale(1.03); } }
+@keyframes ow-ping { 0% { opacity: 0; transform: scale(.97); } 25% { opacity: 1; transform: scale(1); } 100% { opacity: 0; transform: scale(1.02); } }
+
+.ow-k__head { display: flex; align-items: center; flex-wrap: wrap; gap: 8px; }
+.ow-k__ic { width: 30px; height: 30px; border-radius: 10px; flex: none; display: grid; place-items: center; background: var(--sky); color: var(--ink); }
+.ow-k__ic .ic { width: 17px; height: 17px; }
+.ow-k__label { flex: 1; min-width: 0; font-family: var(--font-body); font-size: .9375rem; font-weight: 600; letter-spacing: 0; line-height: 1.25; }
+html[lang="ru"] .ow-k__label { font-weight: 600; letter-spacing: 0; }
+.ow-k__pill { margin-inline-start: auto; }
+.ow-k--wait .ow-k__label, .ow-k--tours .ow-k__label, .ow-k--pay .ow-k__label, .ow-k--shift .ow-k__label { flex-basis: calc(100% - 38px); }
+.ow-k--wait .ow-k__pill, .ow-k--pay .ow-k__pill, .ow-k--shift .ow-k__pill { margin-inline-start: 0; }
+.ow-k__sub { font-size: var(--fs-sm); color: var(--ink-2); line-height: 1.4; }
+.ow-k__cap { font-size: var(--fs-xs); font-weight: 600; color: var(--ink-3); margin-bottom: 8px; }
+
+.ow-big { display: flex; align-items: baseline; gap: 6px; font-family: var(--font-body); font-weight: 600; font-size: 2.75rem; line-height: 1; letter-spacing: -.02em; }
+.ow-frac { direction: ltr; unicode-bidi: isolate; display: inline-flex; align-items: baseline; }
+.ow-big__of { font-size: 1.3rem; font-weight: 500; color: var(--ink-3); letter-spacing: 0; margin-inline-start: 2px; }
+.ow-big__unit { font-size: 1rem; font-weight: 500; color: var(--ink-2); letter-spacing: 0; margin-inline-start: 6px; }
+
+/* arrivals by hour */
+.ow-peak { display: none; align-self: flex-start; align-items: center; gap: 8px; margin-top: 6px; padding: 8px 14px; border-radius: var(--r-pill); background: var(--blush); font-size: var(--fs-sm); font-weight: 600; }
+.ow-peak .ic { width: 17px; height: 17px; color: var(--magenta-700); }
+.ow-arr { margin: 2px 0 0; }
+.ow-arr__plot { display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); }
+.ow-arr__col { display: flex; flex-direction: column; align-items: center; }
+.ow-arr__zone { width: 100%; height: 76px; display: flex; flex-direction: column; align-items: center; justify-content: flex-end; gap: 4px; border-bottom: 1px solid var(--line-2); }
+.ow-arr__bar { display: block; width: min(24px, 58%); height: calc(var(--ow-h) * 50px); border-radius: 4px 4px 0 0; background: #F49BB6; transform: scaleY(0); transform-origin: 50% 100%; transition: transform .9s var(--ease-spring) calc(var(--ow-i) * 70ms + 220ms); }
+.ow-arr__col.is-peak .ow-arr__bar { background: var(--magenta-600); }
+.ow-arr__v { font-size: .75rem; font-weight: 600; color: var(--ink-2); opacity: 0; transition: opacity .4s calc(var(--ow-i) * 70ms + 600ms); }
+.ow-arr__col.is-peak .ow-arr__v { color: var(--ink); font-weight: 700; }
+.ow-arr__t { margin-top: 6px; font-size: .6875rem; color: var(--ink-3); font-weight: 500; direction: ltr; }
+.is-on .ow-arr__bar { transform: none; }
+.is-on .ow-arr__v { opacity: 1; }
+
+/* group rings */
+.ow-rings { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; }
+.ow-ring { margin: 0; display: flex; flex-direction: column; align-items: center; gap: 8px; text-align: center; min-width: 0; }
+.ow-ring__art { position: relative; width: 78px; height: 78px; }
+.ow-ring__art svg { width: 100%; height: 100%; display: block; }
+.ow-ring__tr { fill: none; stroke: var(--sky); stroke-width: 8; }
+.ow-ring__fg { fill: none; stroke: var(--blue-700); stroke-width: 8; stroke-linecap: round; stroke-dasharray: var(--ow-c); stroke-dashoffset: var(--ow-c); transition: stroke-dashoffset 1.3s var(--ease-out) calc(var(--ow-i) * 130ms + 200ms); }
+.is-on .ow-ring__fg { stroke-dashoffset: var(--ow-off); }
+.ow-ring__v { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; font-size: 1.15rem; font-weight: 700; direction: ltr; }
+.ow-ring__v small { font-size: .7rem; font-weight: 600; color: var(--ink-2); margin-inline-start: 1px; }
+.ow-ring figcaption { display: flex; flex-direction: column; align-items: center; gap: 4px; line-height: 1.2; }
+.ow-ring figcaption b { font-size: .875rem; font-weight: 600; }
+.ow-ring__note { font-size: .75rem; color: var(--ink-2); padding: 1px 8px; border-radius: var(--r-pill); background: var(--mist); white-space: nowrap; }
+.ow-ring__note.is-full { background: var(--blush); color: var(--ink); font-weight: 600; }
+
+/* waitlist unit dots */
+.ow-dots { display: flex; flex-wrap: wrap; gap: 5px; max-width: 118px; }
+.ow-dots i { width: 13px; height: 13px; border-radius: 50%; background: var(--pink); transform: scale(0); transition: transform .5s var(--ease-spring) calc(var(--ow-i) * 35ms + 260ms); }
+.ow-dots i.is-next { background: var(--magenta-600); box-shadow: 0 0 0 2px #fff, 0 0 0 3.5px var(--magenta-600); }
+.is-on .ow-dots i { transform: none; }
+.ow-k__link { align-self: flex-start; text-align: start; display: inline-flex; align-items: center; gap: 8px; min-height: 44px; margin: -6px 0 -8px; padding: 0 2px; color: var(--magenta-700); font-weight: 600; font-size: var(--fs-sm); }
+.ow-k__link .ic { width: 22px; height: 22px; padding: 5px; border-radius: 50%; background: var(--magenta-600); color: #fff; }
+.ow-k__link:hover span { text-decoration: underline; text-underline-offset: .2em; }
+
+/* tours week */
+.ow-week { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 2px; align-items: end; }
+.ow-week__d { display: flex; flex-direction: column; align-items: center; gap: 5px; }
+.ow-week__dots { display: flex; flex-direction: column-reverse; align-items: center; gap: 3px; min-height: 23px; }
+.ow-week__dots i { width: 10px; height: 10px; border-radius: 50%; background: var(--magenta-600); transform: scale(0); transition: transform .5s var(--ease-spring) calc(var(--ow-i) * 45ms + 280ms); }
+.ow-week__d.is-past .ow-week__dots i { background: var(--pink); }
+.ow-week__d.is-next .ow-week__dots i:first-child { box-shadow: 0 0 0 2px #fff, 0 0 0 3.5px var(--magenta-600); }
+.is-on .ow-week__dots i { transform: none; }
+.ow-week__l { font-size: .6875rem; font-weight: 600; color: var(--ink-3); padding: 1px 5px; border-radius: var(--r-pill); }
+.ow-week__d.is-today .ow-week__l { color: var(--ink); background: var(--sky); }
+.ow-next { display: flex; align-items: center; gap: 6px; font-size: var(--fs-sm); color: var(--ink-2); line-height: 1.3; }
+.ow-next .ic { width: 16px; height: 16px; color: var(--magenta-700); }
+.ow-next b { color: var(--ink); font-weight: 600; white-space: nowrap; }
+
+/* sources */
+.ow-src { list-style: none; display: flex; flex-direction: column; gap: 12px; }
+.ow-src__row { display: flex; align-items: center; gap: 10px; font-size: .9375rem; }
+.ow-src__ic { width: 28px; height: 28px; border-radius: 9px; flex: none; display: grid; place-items: center; background: var(--mist); color: var(--ink-2); box-shadow: inset 0 0 0 1px var(--line); }
+.ow-src__ic .ic { width: 16px; height: 16px; }
+.ow-src__n { flex: 1; min-width: 0; }
+.ow-src__v { font-weight: 700; }
+.ow-src__track { display: block; height: 10px; margin-top: 7px; border-radius: 3px; background: rgba(27,26,75,.06); }
+.ow-src__track i { display: block; height: 100%; width: calc(var(--ow-w) * 100%); background: var(--blue-700);
+  border-start-start-radius: 0; border-end-start-radius: 0; border-start-end-radius: 4px; border-end-end-radius: 4px;
+  transform: scaleX(0); transform-origin: left center; transition: transform .9s var(--ease-out) calc(var(--ow-i) * 110ms + 250ms); }
+[dir="rtl"] .ow-src__track i { transform-origin: right center; }
+.is-on .ow-src__track i { transform: none; }
+
+/* payments */
+.ow-pay { display: flex; align-items: center; justify-content: center; flex-wrap: wrap; gap: 10px 14px; }
+.ow-pay__art { position: relative; width: 86px; height: 86px; flex: none; }
+.ow-pay__svg { width: 100%; height: 100%; display: block; transform: rotate(-80deg) scale(.82); opacity: 0; transition: transform 1s var(--ease-out) .25s, opacity .5s .25s; }
+.is-on .ow-pay__svg { transform: none; opacity: 1; }
+.ow-pay__a, .ow-pay__b { fill: none; stroke-width: 9; }
+.ow-pay__a { stroke: var(--ow-paid); }
+.ow-pay__b { stroke: var(--ow-pend); }
+.ow-pay__c { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; font-size: 1.2rem; font-weight: 700; direction: ltr; }
+.ow-pay__c small { font-size: .75rem; font-weight: 600; color: var(--ink-3); }
+.ow-legend { list-style: none; display: flex; flex-direction: column; gap: 4px; font-size: .8125rem; }
+.ow-legend li { display: flex; align-items: center; gap: 6px; }
+.ow-legend i { width: 10px; height: 10px; border-radius: 3px; flex: none; }
+.ow-legend i.is-a { background: var(--ow-paid); }
+.ow-legend i.is-b { background: var(--ow-pend); }
+.ow-legend span { color: var(--ink-2); }
+.ow-legend b { margin-inline-start: auto; padding-inline-start: 6px; }
+
+/* shift (roles only, no names) */
+.ow-shift { list-style: none; display: flex; flex-direction: column; gap: 12px; }
+.ow-shift__top { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: baseline; gap: 2px 6px; min-width: 0; font-size: .8125rem; font-weight: 600; color: var(--ink-2); }
+.ow-shift__top b { color: var(--ink); font-size: .9375rem; }
+.ow-avs { position: relative; display: flex; margin-top: 6px; padding-inline-start: 2px; }
+.ow-avs .av { --s: 27px !important; margin-inline-end: -9px; box-shadow: 0 0 0 2px #fff; transform: scale(.4); opacity: 0; transition: transform .5s var(--ease-spring) calc(var(--ow-i) * 60ms + 300ms), opacity .3s calc(var(--ow-i) * 60ms + 300ms); }
+.is-on .ow-avs .av { transform: none; opacity: 1; }
+.ow-avs__badge { position: relative; z-index: 1; align-self: flex-end; width: 18px; height: 18px; margin-inline-start: 0; border-radius: 50%; display: grid; place-items: center; background: var(--ink); color: #fff; box-shadow: 0 0 0 2px #fff; }
+.ow-avs__badge .ic { width: 11px; height: 11px; }
+
+/* ---------- funnel ---------- */
+.ow-funsec { padding-top: 14px; }
+.ow-fun { padding: 18px 16px 16px; }
+.ow-fun__head { display: flex; align-items: flex-end; justify-content: space-between; flex-wrap: wrap; gap: 12px; margin-bottom: 14px; }
+.ow-fun__titles { display: flex; flex-direction: column; gap: 6px; }
+.ow-fun__h { font-size: var(--fs-xl); }
+.ow-fun .eyebrow .demo-tag { margin-inline-start: 4px; }
+.ow-period button { min-height: 44px; padding: 0 18px; }
+.ow-fun__body { display: grid; gap: 16px; }
+.ow-fs { list-style: none; display: flex; flex-direction: column; }
+.ow-fs__st { position: relative; }
+.ow-fs__st + .ow-fs__st { padding-top: 36px; }
+.ow-fs__pour { position: absolute; top: 0; inset-inline: 0; bottom: 26px; pointer-events: none; }
+.ow-fs__pour svg { display: block; width: 100%; height: 100%; transform: scaleY(0); transform-origin: 50% 0; transition: transform .6s var(--ease-out) calc(var(--ow-i) * 240ms + 120ms); }
+.ow-drop { position: absolute; top: 0; left: 50%; width: 5px; height: 5px; margin-left: -2.5px; border-radius: 50%; background: var(--magenta); opacity: 0; }
+.ow-fun.is-on.is-vis .ow-drop { animation: ow-drip 2.1s ease-in infinite; }
+.ow-fun.is-on.is-vis .ow-drop:nth-of-type(2) { animation-delay: .7s; }
+.ow-fun.is-on.is-vis .ow-drop:nth-of-type(3) { animation-delay: 1.4s; }
+@keyframes ow-drip { 0% { transform: translateY(14px) scale(.5); opacity: 0; } 20% { opacity: .75; } 80% { opacity: .6; } 100% { transform: translateY(62px) scale(1); opacity: 0; } }
+.ow-fs__conv {
+  position: absolute; z-index: 2; top: 3px; left: 50%; transform: translateX(-50%) scale(.6); opacity: 0;
+  display: inline-flex; align-items: center; gap: 1px; padding: 2px 9px 2px 5px; border-radius: var(--r-pill);
+  background: #fff; color: var(--magenta-700); font-size: .75rem; font-weight: 700; direction: ltr;
+  box-shadow: inset 0 0 0 1.5px rgba(232,4,140,.3), var(--shadow-cut);
+  transition: transform .5s var(--ease-spring) calc(var(--ow-i) * 240ms + 380ms), opacity .3s calc(var(--ow-i) * 240ms + 380ms);
+}
+.ow-fs__conv .ic { width: 15px; height: 15px; }
+.ow-fs__row { position: relative; z-index: 1; display: flex; align-items: center; gap: 10px; padding-bottom: 7px; }
+.ow-fs__ic { width: 30px; height: 30px; border-radius: 10px; flex: none; display: grid; place-items: center; background: var(--blush); color: var(--ink); }
+.ow-fs__ic .ic { width: 17px; height: 17px; }
+.ow-fs__name { flex: 1; min-width: 0; font-weight: 600; font-size: .9375rem; }
+.ow-fs__v { font-size: 1.3rem; font-weight: 700; letter-spacing: -.01em; }
+.ow-fs__track { position: relative; z-index: 1; height: 26px; border-radius: 13px; background: rgba(232,4,140,.07); display: flex; justify-content: center; }
+.ow-fs__bar { display: block; height: 100%; width: max(12px, calc(var(--ow-w) * 100%)); border-radius: 13px; background: var(--magenta-600); box-shadow: inset 0 -3px 0 rgba(0,0,0,.12), inset 0 2px 0 rgba(255,255,255,.22); transform: scaleX(0); transition: transform .85s var(--ease-out) calc(var(--ow-i) * 240ms); }
+.is-on .ow-fs__bar, .is-on .ow-fs__pour svg { transform: none; }
+.is-on .ow-fs__conv { transform: translateX(-50%); opacity: 1; }
+.ow-conv { list-style: none; display: none; }
+.ow-conv li { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 6px 10px; align-items: baseline; font-size: .9375rem; }
+.ow-conv__l { color: var(--ink-2); }
+.ow-conv b { font-size: 1.15rem; }
+.ow-conv__bar { grid-column: 1 / -1; display: block; height: 6px; border-radius: 3px; background: rgba(27,26,75,.07); }
+.ow-conv__bar i { display: block; height: 100%; width: calc(var(--ow-w) * 100%); border-start-end-radius: 3px; border-end-end-radius: 3px; background: var(--magenta-600); transform: scaleX(0); transform-origin: left center; transition: transform .8s var(--ease-out) calc(var(--ow-i) * 150ms + 300ms); }
+[dir="rtl"] .ow-conv__bar i { transform-origin: right center; }
+.is-on .ow-conv__bar i { transform: none; }
+.ow-insight { display: flex; align-items: flex-start; gap: 10px; padding: 12px 14px; border-radius: var(--r-md); background: var(--sky); font-weight: 500; line-height: 1.45; font-size: .9375rem; }
+.ow-insight .ic { width: 20px; height: 20px; color: var(--magenta); margin-top: 1px; }
+.ow-scale { font-size: var(--fs-xs); color: var(--ink-3); margin-top: -6px; padding-inline-start: 4px; }
+
+/* ---------- backstage (night band under a theatre valance) ---------- */
+.ow-auto {
+  position: relative; margin-top: 48px; padding: 72px 0 72px; overflow: clip;
+  background: radial-gradient(120% 70% at 50% 0%, #2A3184 0%, var(--night) 62%) var(--night); color: #fff;
+}
+.ow-valance { position: absolute; top: 0; left: 0; width: 100%; height: 34px; display: block; }
+.ow-auto::after { content: ""; position: absolute; left: 0; right: 0; bottom: -1px; height: 18px; pointer-events: none;
+  background: radial-gradient(circle at 50% 100%, var(--paper) 16.5px, transparent 17.5px) center bottom / 36px 18px repeat-x; }
+.ow-auto__stars .ic { position: absolute; width: 14px; height: 14px; color: var(--gold); opacity: .8; animation: ow-twinkle 3.4s ease-in-out infinite; }
+.ow-auto__stars .ic:nth-child(1) { top: 70px; inset-inline-end: 9%; }
+.ow-auto__stars .ic:nth-child(2) { top: 150px; inset-inline-end: 22%; width: 9px; height: 9px; animation-delay: -1.4s; }
+.ow-auto__stars .ic:nth-child(3) { top: 92px; inset-inline-start: 6%; width: 10px; height: 10px; animation-delay: -2.2s; }
+.ow-auto__stars .ic:nth-child(4) { top: 46%; inset-inline-start: 3%; width: 8px; height: 8px; animation-delay: -.6s; }
+.ow-auto .eyebrow, .ow-auto .eyebrow .ic { color: var(--gold); }
+.ow-auto .h2 { color: #fff; }
+.ow-auto .lead { color: #C9CCF2; }
+.ow-auto__head { margin-bottom: 22px; }
+.ow-auto__count { display: inline-flex; align-self: flex-start; align-items: center; gap: 8px; margin-top: 6px; padding: 7px 14px; border-radius: var(--r-pill); background: rgba(255,255,255,.08); box-shadow: inset 0 0 0 1px rgba(255,255,255,.16); font-size: var(--fs-sm); font-weight: 600; }
+.ow-live { position: relative; width: 9px; height: 9px; border-radius: 50%; background: #3DDC97; }
+.ow-live::after { content: ""; position: absolute; inset: -5px; border-radius: 50%; border: 2px solid #3DDC97; opacity: 0; animation: ow-ripple 2s var(--ease-out) infinite; }
+.ow-auto__count.is-partial .ow-live { background: var(--gold); }
+.ow-auto__count.is-partial .ow-live::after { border-color: var(--gold); }
+
+.ow-feed { margin-bottom: 22px; }
+.ow-feed__h { display: flex; align-items: center; gap: 8px; margin-bottom: 10px; font-size: var(--fs-sm); font-weight: 600; }
+.ow-feed__h .ic { width: 17px; height: 17px; color: var(--gold); }
+.ow-feed__list {
+  list-style: none; display: flex; gap: 10px; overflow-x: auto; overscroll-behavior-x: contain; scroll-snap-type: x proximity;
+  margin-left: calc(-1 * var(--gutter-l)); margin-right: calc(-1 * var(--gutter-r)); padding: 2px var(--gutter-r) 8px var(--gutter-l);
+  scrollbar-width: none;
+}
+.ow-feed__list::-webkit-scrollbar { display: none; }
+.ow-feed__list { -webkit-mask-image: linear-gradient(to left, transparent 0, #000 56px); mask-image: linear-gradient(to left, transparent 0, #000 56px); }
+[dir="rtl"] .ow-feed__list { -webkit-mask-image: linear-gradient(to right, transparent 0, #000 56px); mask-image: linear-gradient(to right, transparent 0, #000 56px); }
+.ow-feed__it { flex: none; display: flex; align-items: center; gap: 10px; max-width: 264px; padding: 10px 14px 10px 10px; border-radius: 16px; background: rgba(255,255,255,.07); box-shadow: inset 0 0 0 1px rgba(255,255,255,.13); scroll-snap-align: start; }
+[dir="rtl"] .ow-feed__it { padding: 10px 10px 10px 14px; }
+.ow-feed__ic { width: 34px; height: 34px; border-radius: 50%; flex: none; display: grid; place-items: center; background: rgba(255,255,255,.1); color: var(--gold); }
+.ow-feed__ic .ic { width: 17px; height: 17px; }
+.ow-feed__m { display: flex; flex-direction: column; min-width: 0; line-height: 1.3; }
+.ow-feed__m b { font-weight: 500; font-size: .8125rem; color: #fff; }
+.ow-feed__m span { font-size: .75rem; color: #C9CCF2; }
+.ow-feed__it.is-new { background: rgba(232,4,140,.26); box-shadow: inset 0 0 0 1px rgba(246,176,198,.5); animation: ow-feedIn .8s var(--ease-spring) both; }
+@keyframes ow-feedIn { from { opacity: 0; transform: translateX(-24px) scale(.92); } }
+[dir="rtl"] .ow-feed__it.is-new { animation-name: ow-feedInR; }
+@keyframes ow-feedInR { from { opacity: 0; transform: translateX(24px) scale(.92); } }
+
+.ow-grid { display: grid; gap: 14px; grid-template-columns: minmax(0, 1fr); }
+.ow-a {
+  position: relative; display: flex; flex-direction: column; gap: 12px; padding: 16px; min-width: 0;
+  border-radius: var(--r-lg); background: #fff; color: var(--ink); cursor: pointer;
+  box-shadow: 0 22px 44px -24px rgba(0,0,0,.7), 0 2px 0 rgba(255,255,255,.04);
+}
+.ow-a.is-in { transition: opacity .7s var(--ease-out), transform .45s var(--ease-spring); }
+@media (hover: hover) { .ow-a.is-in:hover { transform: translateY(-4px); } }
+.ow-a__top { display: flex; align-items: center; gap: 12px; }
+.ow-a__ic { width: 44px; height: 44px; border-radius: 14px; flex: none; display: grid; place-items: center; background: var(--ow-tint); color: var(--ink); }
+.ow-a__ic.is-ink { color: #fff; }
+.ow-a__ic.is-ink .ic { color: var(--pink); }
+.ow-a__t { flex: 1; min-width: 0; font-size: var(--fs-lg); line-height: 1.2; }
+.ow-sw { position: relative; }
+.ow-sw::before { content: ""; position: absolute; inset: -9px -6px; }
+.ow-sw.is-nudge { animation: ow-nudge .6s var(--ease-out); }
+@keyframes ow-nudge { 20%, 60% { transform: translateX(-4px); } 40%, 80% { transform: translateX(4px); } }
+.ow-a__d { font-size: var(--fs-sm); color: var(--ink-2); line-height: 1.45; }
+.ow-sch { display: flex; align-items: center; padding: 10px; border-radius: var(--r-md); background: var(--mist); box-shadow: inset 0 0 0 1px var(--line); transition: opacity .3s; }
+.ow-sch .ic { width: 15px; height: 15px; flex: none; color: var(--magenta-700); }
+.ow-sch__trig { flex: none; max-width: 44%; display: inline-flex; align-items: center; gap: 6px; padding: 6px 10px; border-radius: 12px; background: #fff; font-size: .8125rem; font-weight: 600; line-height: 1.25; box-shadow: inset 0 0 0 1.5px rgba(232,4,140,.35); }
+.ow-sch__wire { position: relative; flex: 1 1 auto; align-self: stretch; min-width: 22px; max-width: 64px; }
+.ow-sch__wire svg { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; }
+[dir="rtl"] .ow-sch__wire svg { transform: scaleX(-1); }
+.ow-sch__wire path { fill: none; stroke: var(--magenta); stroke-width: 2.6; stroke-linecap: round; stroke-dasharray: 0 6.5; vector-effect: non-scaling-stroke; animation: ow-march 1.1s linear infinite; }
+@keyframes ow-march { to { stroke-dashoffset: -6.5; } }
+.ow-sch__acts { flex: 0 1 auto; min-width: 0; display: flex; flex-direction: column; gap: 6px; }
+.ow-sch__act { display: inline-flex; align-items: center; gap: 6px; padding: 5px 10px; border-radius: 10px; background: #fff; font-size: .8125rem; font-weight: 500; line-height: 1.25; box-shadow: inset 0 0 0 1px var(--line), var(--shadow-cut); }
+.ow-auto:not(.is-vis) .ow-sch__wire path, .ow-a:not(.is-vis) .ow-sch__wire path, .ow.is-paused .ow-sch__wire path { animation-play-state: paused; }
+.ow-a__foot { margin-top: auto; display: flex; align-items: center; justify-content: space-between; gap: 8px; }
+.ow-a__last, .ow-a__off { display: inline-flex; align-items: center; gap: 6px; font-size: .8125rem; color: var(--ink-3); min-width: 0; line-height: 1.3; }
+.ow-a__last .ic, .ow-a__off .ic { width: 15px; height: 15px; flex: none; }
+.ow-a__off { display: none; padding: 3px 10px; border-radius: var(--r-pill); background: rgba(27,26,75,.07); color: var(--ink-2); font-weight: 600; }
+.ow-a__play { flex: none; display: inline-flex; align-items: center; gap: 6px; min-height: 44px; padding: 0 16px 0 14px; border-radius: var(--r-pill); background: var(--ink); color: #fff; font-weight: 600; font-size: .875rem; transition: transform .3s var(--ease-spring); }
+[dir="rtl"] .ow-a__play { padding: 0 14px 0 16px; }
+.ow-a__play .ic { width: 15px; height: 15px; color: var(--pink); }
+.ow-a__play:active { transform: scale(.94); }
+.ow-a.is-off .ow-a__ic, .ow-a.is-off .ow-sch { opacity: .42; }
+.ow-a.is-off .ow-sch__wire path { animation: none; stroke: var(--ink-3); }
+.ow-a.is-off .ow-a__t { color: var(--ink-2); }
+.ow-a.is-off .ow-a__last { display: none; }
+.ow-a.is-off .ow-a__off { display: inline-flex; }
+.ow-a.is-off .ow-a__play { background: rgba(27,26,75,.08); color: var(--ink-2); }
+.ow-a.is-off .ow-a__play .ic { color: var(--ink-3); }
+.ow-a.is-fresh .ow-a__last { animation: ow-fresh 2.2s var(--ease-out); }
+@keyframes ow-fresh { 0%, 40% { color: var(--ok); transform: scale(1.06); } 100% { transform: none; } }
+.ow.is-paused *, .ow.is-paused *::before, .ow.is-paused *::after { animation-play-state: paused !important; }
+
+/* ---------- the player (sheet) ---------- */
+.ow-sheet .sheet__body { padding: 0 16px 16px; }
+.ow-stage { display: flex; flex-direction: column; gap: 12px; }
+.ow-stage__main { display: flex; flex-direction: column; gap: 10px; min-width: 0; }
+.ow-stage__desc { font-size: var(--fs-sm); color: var(--ink-2); line-height: 1.45; }
+.ow-flow { position: relative; padding: 12px 10px 14px; border-radius: 22px; background: radial-gradient(ellipse 90% 60% at 50% 0%, #fff 0%, var(--mist) 75%); box-shadow: inset 0 0 0 1px var(--line); }
+.ow-flow__svg { position: absolute; left: 0; top: 0; overflow: visible; pointer-events: none; z-index: 0; }
+.ow-flow__wire { fill: none; stroke: rgba(27,26,75,.22); stroke-width: 3; stroke-linecap: round; stroke-dasharray: 0 8; }
+.ow-flow__lit { fill: none; stroke: var(--magenta-600); stroke-width: 3; stroke-linecap: round; }
+.ow-token { position: absolute; left: 0; top: 0; z-index: 3; width: 22px; height: 22px; margin: -11px 0 0 -11px; border-radius: 50%; pointer-events: none; will-change: transform;
+  background: radial-gradient(circle, #fff 0 26%, #FF6CC0 42%, rgba(232,4,140,.55) 58%, rgba(232,4,140,0) 72%); }
+
+.ow-trig { position: relative; z-index: 1; padding: 10px 12px; border-radius: 18px; background: #fff; box-shadow: var(--shadow-1), inset 0 0 0 1.5px var(--line); }
+.ow-trig::after { content: ""; position: absolute; inset: -5px; border-radius: 23px; border: 2.5px solid var(--magenta); opacity: 0; pointer-events: none; }
+.ow-trig.is-lit { box-shadow: var(--shadow-1), inset 0 0 0 2px var(--magenta-600); }
+.ow-trig.is-lit::after { animation: ow-ping 1s var(--ease-out); }
+.ow-trig.is-flip [data-ow-tt], .ow-trig.is-flip [data-ow-tv] { animation: ow-flip .55s var(--ease-spring); }
+@keyframes ow-flip { from { opacity: 0; transform: translateY(8px); } }
+.ow-trig__row { display: flex; align-items: center; gap: 10px; }
+.ow-trig__ic { width: 44px; height: 44px; border-radius: 14px; flex: none; display: grid; place-items: center; background: var(--blush); color: var(--ink); overflow: hidden; }
+.ow-trig__ic.is-av { border-radius: 50%; }
+.ow-trig__ic.is-av svg { width: 100%; height: 100%; display: block; }
+.ow-trig__ic .ic { width: 22px; height: 22px; }
+.ow-trig__main { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 1px; line-height: 1.25; }
+.ow-trig__k { display: inline-flex; align-items: center; gap: 4px; font-size: .6875rem; font-weight: 700; color: var(--magenta-700); letter-spacing: .02em; }
+.ow-trig__k .ic { width: 12px; height: 12px; }
+.ow-trig__t { font-size: .9375rem; font-weight: 600; }
+.ow-trig__sub { font-size: .75rem; color: var(--ink-2); }
+.ow-trig__side { display: flex; flex-direction: column; align-items: flex-end; gap: 4px; flex: none; }
+.ow-trig__v { display: inline-block; padding: 3px 10px; border-radius: var(--r-pill); background: var(--ink); color: #fff; font-size: .75rem; font-weight: 700; white-space: nowrap; }
+.ow-trig__count { display: inline-flex; align-items: baseline; gap: 5px; font-size: .6875rem; color: var(--ink-2); white-space: nowrap; }
+.ow-trig__count b { font-size: 1rem; color: var(--ink); margin-inline-end: 1px; }
+
+.ow-props { list-style: none; display: grid; gap: 6px; margin-top: 10px; }
+.ow-props[data-n="3"] { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+.ow-props[data-n="5"] { grid-template-columns: repeat(5, minmax(0, 1fr)); }
+.ow-prop { position: relative; display: flex; flex-direction: column; align-items: center; gap: 2px; padding: 6px 3px 5px; border-radius: 12px; background: var(--mist); text-align: center; font-size: .6875rem; line-height: 1.15; transition: transform .3s var(--ease-spring), background-color .2s, color .2s, opacity .3s; }
+.ow-prop__ic { width: 26px; height: 26px; border-radius: 50%; display: grid; place-items: center; overflow: hidden; color: var(--ink-2); }
+.ow-prop__ic svg:not(.ic) { width: 100%; height: 100%; display: block; }
+.ow-prop__ic .ic { width: 16px; height: 16px; }
+.ow-prop__l { font-weight: 600; }
+.ow-prop__s { font-size: .625rem; color: var(--ink-2); }
+.ow-prop__kid { position: absolute; top: -7px; inset-inline-end: -3px; width: 22px; height: 22px; border-radius: 50%; overflow: hidden; box-shadow: 0 0 0 2px #fff; transform: scale(0); transition: transform .45s var(--ease-spring); }
+.ow-prop__kid svg { width: 100%; height: 100%; display: block; }
+.ow-prop__st { position: absolute; top: -6px; inset-inline-start: -3px; width: 18px; height: 18px; border-radius: 50%; display: grid; place-items: center; background: var(--ok); color: #fff; box-shadow: 0 0 0 2px #fff; transform: scale(0); transition: transform .4s var(--ease-spring); }
+.ow-prop__st .ic { width: 11px; height: 11px; stroke-width: 3; }
+.ow-prop[data-s="scan"] { transform: scale(1.08); background: #fff; box-shadow: inset 0 0 0 2px var(--magenta-600); }
+.ow-prop[data-s="ok"] .ow-prop__st, .ow-prop[data-s="done"] .ow-prop__st { transform: none; }
+.ow-prop[data-s="done"] { opacity: .65; }
+.ow-prop[data-s="hit"] { background: var(--danger-bg); color: var(--danger); box-shadow: inset 0 0 0 2px var(--danger); }
+.ow-prop[data-s="hit"] .ow-prop__s, .ow-prop[data-s="hit"] .ow-prop__ic { color: var(--danger); }
+.ow-prop[data-s="hit"] .ow-prop__kid { transform: none; }
+.ow-prop[data-s="pick"] { background: var(--magenta-600); color: #fff; }
+.ow-prop[data-s="on"] { background: var(--ink); color: #fff; }
+.ow-prop[data-s="on"] .ow-prop__ic { color: var(--pink); }
+.ow-prop.is-pop { animation: ow-pop .55s var(--ease-spring); }
+@keyframes ow-pop { 40% { transform: scale(1.14); } }
+
+.ow-lanes { position: relative; z-index: 1; display: grid; gap: 12px; margin-top: 42px; }
+.ow-stage[data-lanes="1"] .ow-lanes { grid-template-columns: minmax(0, 1fr); }
+.ow-stage[data-lanes="2"] .ow-lanes { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.ow-stage[data-lanes="3"] .ow-lanes { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+.ow-lane { display: flex; flex-direction: column; align-items: center; gap: 10px; min-width: 0; }
+.ow-lane__chip { display: inline-flex; align-items: center; gap: 5px; max-width: 100%; padding: 5px 11px; border-radius: var(--r-pill); background: #fff; box-shadow: inset 0 0 0 1.5px var(--line-2); font-size: .75rem; font-weight: 600; line-height: 1.25; text-align: center; transition: background-color .3s, color .3s; }
+.ow-lane__chip .ic { width: 14px; height: 14px; flex: none; color: var(--magenta-700); }
+.ow-lane__chip.is-lit { background: var(--magenta-600); color: #fff; box-shadow: none; animation: ow-pop .55s var(--ease-spring); }
+.ow-lane__chip.is-lit .ic { color: #fff; }
+.ow-lane__dev { width: 100%; display: flex; justify-content: center; }
+
+/* device tuning inside the stage: legible bubbles on small phones */
+.ow-stage .phone { aspect-ratio: 9 / 16.4; box-shadow: 0 20px 40px -20px rgba(18,22,74,.6), inset 0 0 0 2px rgba(255,255,255,.1); }
+.ow-stage .chatv .bubble { --bfs: clamp(10.5px, calc(var(--pw) * .061), 12.5px); max-width: 90%; }
+.ow-stage .chatv__head { font-size: clamp(10.5px, calc(var(--pw) * .06), 12.5px); }
+.ow-stage .chatv__body { padding: 5% 5% 6%; }
+.ow-stage .notif { font-size: clamp(10px, calc(var(--pw) * .057), 12px); }
+.ow-stage .notif__text { -webkit-line-clamp: 5; }
+.ow-stage .phone__date { font-size: clamp(9.5px, calc(var(--pw) * .055), 12px); }
+.ow-stage .phone__notifs { top: 37%; }
+.ow-stage[data-props] .phone { aspect-ratio: 9 / 15; }
+.ow-stage[data-props] .ow-tab { aspect-ratio: 9 / 13.2; }
+.ow-typing { padding: 2px 4px; }
+.ow-typing .typing { padding: 6px 6px; }
+.ow-blink { display: flex; align-items: center; gap: 5px; margin-top: 6px; padding: 5px 8px; border-radius: 9px; background: rgba(2,112,168,.1); color: var(--blue-700); font-weight: 600; white-space: nowrap; }
+.ow-blink .ic { width: 1.15em; height: 1.15em; }
+
+.ow-tab { --pw: 200px; width: var(--pw); max-width: 100%; aspect-ratio: 9 / 14; padding: 7px; border-radius: 20px; background: linear-gradient(145deg, #2C2B5E, #12123A); box-shadow: 0 20px 40px -20px rgba(18,22,74,.6), inset 0 0 0 2px rgba(255,255,255,.1); }
+.ow-tab__screen { height: 100%; border-radius: 14px; overflow: hidden; background: var(--paper); color: var(--ink); display: flex; flex-direction: column; }
+.ow-tab__bar { display: flex; justify-content: space-between; align-items: center; gap: 6px; padding: 9px 10px; background: #fff; box-shadow: 0 1px 0 var(--line); font-size: .6875rem; font-weight: 600; }
+.ow-tab__bar .tnum { direction: ltr; color: var(--ink-2); }
+.ow-tab__who { display: inline-flex; align-items: center; gap: 5px; min-width: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.ow-tab__who .ic { width: 14px; height: 14px; color: var(--magenta-700); flex: none; }
+.ow-tab__list { display: flex; flex-direction: column; gap: 8px; padding: 10px 8px; overflow: hidden; }
+.ow-tab__list:empty { display: none; }
+.ow-tab__empty { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 6px; padding: 10px; text-align: center; font-size: .6875rem; color: var(--ink-3); }
+.ow-tab__empty .ic { width: 22px; height: 22px; color: var(--ok); }
+.ow-tcard { display: flex; align-items: flex-start; gap: 7px; padding: 8px; border-radius: 12px; background: #fff; font-size: clamp(10.5px, calc(var(--pw) * .058), 12px); line-height: 1.35; box-shadow: var(--shadow-1); }
+.ow-tcard--warn { background: var(--warn-bg); box-shadow: inset 0 0 0 1.5px rgba(154,74,0,.32); }
+.ow-tcard--warn b { color: var(--warn); }
+.ow-tcard--pink { background: var(--blush); }
+.ow-tcard__ic { width: 28px; height: 28px; border-radius: 50%; overflow: hidden; flex: none; display: grid; place-items: center; background: #fff; }
+.ow-tcard__ic svg:not(.ic) { width: 100%; height: 100%; display: block; }
+.ow-tcard__m { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+.ow-tcard b { display: flex; align-items: flex-start; gap: 4px; font-weight: 700; }
+.ow-tcard b .ic { width: 1.1em; height: 1.1em; margin-top: .1em; }
+.ow-tcard.is-new { animation: ow-tcIn .65s var(--ease-spring) both; }
+@keyframes ow-tcIn { from { opacity: 0; transform: translateY(-14px) scale(.94); } }
+
+.ow-stage__side { display: flex; flex-direction: column; gap: 10px; min-width: 0; }
+.ow-stage__k { display: none; font-size: var(--fs-xs); font-weight: 700; color: var(--ink-3); letter-spacing: .03em; }
+.ow-log { list-style: none; display: flex; flex-direction: column; gap: 8px; min-height: 24px; }
+.ow-log__i { display: flex; align-items: flex-start; gap: 8px; font-size: .875rem; line-height: 1.4; color: var(--ink-2); animation: ow-logIn .45s var(--ease-out) both; }
+.ow-log__i .ic { width: 20px; height: 20px; flex: none; padding: 3px; border-radius: 50%; background: var(--ok-bg); color: var(--ok); stroke-width: 3; }
+.ow-log__i.is-cur { color: var(--ink); font-weight: 500; }
+.ow-log__i:not(:last-child) { display: none; }
+@keyframes ow-logIn { from { opacity: 0; transform: translateY(6px); } }
+.ow-done { display: flex; align-items: center; flex-wrap: wrap; gap: 4px 8px; padding: 10px 14px; border-radius: 16px; background: var(--ok-bg); color: var(--ok); font-size: .875rem; }
+.ow-done .ic { width: 22px; height: 22px; }
+.ow-done b { font-size: 1.05rem; }
+.ow-done span { color: var(--ink-2); }
+.ow-done.is-in { animation: ow-doneIn .6s var(--ease-spring) both; }
+@keyframes ow-doneIn { from { opacity: 0; transform: scale(.9); } }
+.ow-stage__btns { display: flex; gap: 10px; }
+.ow-stage__btns .btn { flex: 1; --bh: 46px; }
+.ow-stage__desc .demo-tag { margin-inline-start: 4px; }
+.ow-sec:focus, .ow-auto:focus, .ow-k:focus { outline: none; }
+.ow-k:focus-visible { outline: 3px solid var(--blue-700); outline-offset: 3px; }
+
+/* ---------- breakpoints ---------- */
+@media (max-width: 374px) {
+  .ow { --ow-dial: 92px; }
+  .ow-big { font-size: 2.4rem; }
+  .ow-ring__art { width: 70px; height: 70px; }
+  .ow-k { padding: 14px 12px; }
+  .ow-avs .av { --s: 24px !important; }
+  .ow-sheet .sheet__body { padding: 0 12px 14px; }
+  .ow-lanes { gap: 8px; }
+}
+@media (min-width: 640px) {
+  .ow-sch__trig { max-width: 40%; }
+}
+@media (min-width: 700px) {
+  .ow-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }
+}
+@media (min-width: 760px) {
+  .ow-sheet .sheet__body { padding: 4px 24px 24px; }
+  .ow-stage { display: grid; grid-template-columns: minmax(0, 1fr) 236px; gap: 24px; align-items: start; }
+  .ow-stage__side { position: sticky; top: 0; padding-top: 2px; }
+  .ow-stage__k { display: block; }
+  .ow-log__i:not(:last-child) { display: flex; }
+  .ow-stage__btns { flex-direction: column; }
+  .ow-lanes { gap: 18px; }
+}
+@media (min-width: 900px) {
+  .ow { --ow-dial: 136px; }
+  .ow-hero { padding-top: 26px; }
+  .ow-hero__in { grid-template-areas: "meta dial" "hi dial" "status dial"; row-gap: 10px; }
+  .ow-dial__c b { font-size: 1.5rem; }
+  .ow-dial__c span, .ow-dial__hrs { font-size: .75rem; }
+  .ow-quick { margin-top: 20px; }
+  .ow-kpis { padding-top: 24px; }
+  .ow-bento { gap: 16px; grid-template-columns: repeat(4, minmax(0, 1fr)); grid-template-areas: "kids kids groups groups" "kids kids wait tours" "src src pay shift"; }
+  .ow-card, .ow-k { padding: 20px; }
+  .ow-k--kids .ow-big { font-size: 4rem; }
+  .ow-k--kids .ow-arr { margin-top: auto; }
+  .ow-k--kids .ow-peak { display: inline-flex; }
+  .ow-k--kids .ow-arr__zone { height: 196px; }
+  .ow-k--kids .ow-arr__bar { height: calc(var(--ow-h) * 160px); width: min(24px, 46%); }
+  .ow-k--kids .ow-arr__v { font-size: .8125rem; }
+  .ow-avs .av { --s: 30px !important; }
+  .ow-funsec { padding-top: 20px; }
+  .ow-fun { padding: 24px 28px 26px; }
+  .ow-fun__body { grid-template-columns: minmax(0, 1.6fr) minmax(0, 1fr); gap: 40px; align-items: center; }
+  .ow-conv { display: flex; flex-direction: column; gap: 16px; margin-bottom: 18px; }
+  .ow-fs__track { height: 30px; border-radius: 15px; }
+  .ow-fs__bar { border-radius: 15px; }
+  .ow-fs__pour { bottom: 30px; }
+  .ow-auto { margin-top: 64px; padding: 84px 0 72px; }
+  .ow-auto__head { max-width: 680px; }
+}
+@media (min-width: 1040px) {
+  .ow-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+}
+
+</style>
 </head>
 <body>
 <script>(function(){var l='he';try{var s=localStorage.getItem('gc:lang');if(s&&JSON.parse(s)==='ru')l='ru';}catch(e){}var d=document.documentElement;d.lang=l;d.dir=l==='he'?'rtl':'ltr';})();</script>
@@ -2823,7 +3342,102 @@ html.a11y-motion .pb-sh *, html.a11y-motion .pb-sh *::before, html.a11y-motion .
     <div data-module="staff"></div>
   </section>
   <section class="view" data-view="owner" aria-label="הנהלה" data-i18n-attr="aria-label:core.dock.owner" hidden>
-    <div data-module="owner"></div>
+    <div data-module="owner"><!-- owner · the owner's dashboard (view: owner). Dynamic parts are rendered by owner.js -->
+<svg class="ow-defs" width="0" height="0" aria-hidden="true" focusable="false">
+  <defs>
+    <linearGradient id="ow-pourg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#E8048C" stop-opacity=".16"/>
+      <stop offset="1" stop-color="#E8048C" stop-opacity=".07"/>
+    </linearGradient>
+    <pattern id="ow-valance" width="44" height="34" patternUnits="userSpaceOnUse">
+      <path d="M0 0h44v14c0 9.4-4.9 15-11 15S22 23.4 22 14c0 9.4-4.9 15-11 15S0 23.4 0 14Z" fill="#A3026A"/>
+      <path d="M0 0h44v10c0 9.4-4.9 15-11 15S22 19.4 22 10c0 9.4-4.9 15-11 15S0 19.4 0 10Z" fill="#D1037D"/>
+      <circle cx="11" cy="21" r="2" fill="#FFD27A"/><circle cx="33" cy="21" r="2" fill="#FFD27A"/>
+    </pattern>
+  </defs>
+</svg>
+
+<div class="ow view-pad-top" id="ow-root">
+
+  <!-- ============ HERO ============ -->
+  <section class="ow-hero" aria-labelledby="ow-hi">
+    <div class="ow-hero__sky" aria-hidden="true">
+      <svg class="ow-cloud ow-cloud--a" viewBox="0 0 120 50"><path d="M18 46c-9 0-15-6-15-13s6-13 14-13c2-9 10-15 20-15 9 0 16 5 19 12 3-2 6-3 10-3 9 0 16 6 17 14 9 0 16 6 16 13s-6 13-14 13Z" fill="#fff"/></svg>
+      <svg class="ow-cloud ow-cloud--b" viewBox="0 0 120 50"><path d="M18 46c-9 0-15-6-15-13s6-13 14-13c2-9 10-15 20-15 9 0 16 5 19 12 3-2 6-3 10-3 9 0 16 6 17 14 9 0 16 6 16 13s-6 13-14 13Z" fill="#fff"/></svg>
+      <svg class="ic ic--fill ow-twk ow-twk--1"><use href="#i-sparkle"/></svg>
+      <svg class="ic ic--fill ow-twk ow-twk--2"><use href="#i-sparkle"/></svg>
+      <svg class="ic ic--fill ow-twk ow-twk--3"><use href="#i-sparkle"/></svg>
+    </div>
+    <div class="wrap ow-hero__in">
+      <div class="ow-hero__text">
+        <p class="ow-hero__meta"><span class="ow-date" data-ow-date></span><span class="demo-tag" data-i18n="ow.demo">נתונים לדוגמה</span></p>
+        <h1 class="ow-hi" id="ow-hi"><span class="ow-hi__greet" data-ow-greet>שלום</span><span class="ow-hi__sub" data-i18n="ow.hero.sub">ככה נראה הגן שלך היום</span></h1>
+        <p class="ow-status" data-ow-statusline><i aria-hidden="true"></i><span data-ow-status>יום רגוע. 38 ילדים בגן, ושום דבר לא דחוף.</span></p>
+      </div>
+      <div class="ow-dial" data-ow-dial></div>
+    </div>
+    <div class="wrap">
+      <div class="ow-quick" role="group" aria-label="קיצורי דרך" data-i18n-attr="aria-label:ow.quick">
+        <button type="button" class="chip" data-ow-go="#ow-funnel"><svg class="ic" aria-hidden="true"><use href="#i-funnel"/></svg><span data-i18n="ow.q.funnel">מהאתר להרשמה</span></button>
+        <button type="button" class="chip" data-ow-go="#ow-auto"><svg class="ic" aria-hidden="true"><use href="#i-wand"/></svg><span data-i18n="ow.q.auto">מאחורי הקלעים</span></button>
+        <button type="button" class="chip" data-ow-go="[data-ow-kpi=pay]"><svg class="ic" aria-hidden="true"><use href="#i-card"/></svg><span data-i18n="ow.q.pay">תשלומים</span></button>
+        <button type="button" class="chip" data-ow-go="[data-ow-kpi=wait]"><svg class="ic" aria-hidden="true"><use href="#i-hourglass"/></svg><span data-i18n="ow.q.wait">רשימת המתנה</span></button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ KPI BENTO ============ -->
+  <section class="ow-sec ow-kpis" id="ow-kpis" aria-labelledby="ow-kpis-h">
+    <div class="wrap">
+      <h2 class="sr-only" id="ow-kpis-h" data-i18n="ow.kpis.h">המספרים של היום</h2>
+      <div class="ow-bento" data-ow-bento></div>
+    </div>
+  </section>
+
+  <!-- ============ FUNNEL ============ -->
+  <section class="ow-sec ow-funsec" id="ow-funnel" aria-labelledby="ow-fun-h">
+    <div class="wrap">
+      <div class="ow-card ow-fun" data-reveal>
+        <header class="ow-fun__head">
+          <div class="ow-fun__titles">
+            <p class="eyebrow"><svg class="ic" aria-hidden="true"><use href="#i-funnel"/></svg><span data-i18n="ow.fun.eyebrow">המשפך</span><span class="demo-tag" data-i18n="ow.example">לדוגמה</span></p>
+            <h2 class="h3 ow-fun__h" id="ow-fun-h" data-i18n="ow.fun.h">מהאתר ועד ההרשמה</h2>
+          </div>
+          <div class="seg ow-period" role="group" aria-label="תקופה" data-i18n-attr="aria-label:ow.fun.period">
+            <button type="button" aria-pressed="true" data-ow-period="week" data-i18n="ow.fun.week">שבוע</button>
+            <button type="button" aria-pressed="false" data-ow-period="month" data-i18n="ow.fun.month">חודש</button>
+          </div>
+        </header>
+        <div class="ow-fun__body">
+          <ol class="ow-fs" data-ow-stages></ol>
+          <aside class="ow-fun__side" data-ow-fside></aside>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ BEHIND THE SCENES ============ -->
+  <section class="ow-auto" id="ow-auto" aria-labelledby="ow-auto-h">
+    <svg class="ow-valance" aria-hidden="true" focusable="false"><rect width="100%" height="34" fill="url(#ow-valance)"/></svg>
+    <div class="ow-auto__stars" aria-hidden="true">
+      <svg class="ic ic--fill"><use href="#i-sparkle"/></svg><svg class="ic ic--fill"><use href="#i-sparkle"/></svg><svg class="ic ic--fill"><use href="#i-sparkle"/></svg><svg class="ic ic--fill"><use href="#i-sparkle"/></svg>
+    </div>
+    <div class="wrap">
+      <div class="section-head ow-auto__head">
+        <p class="eyebrow"><svg class="ic ic--fill" aria-hidden="true"><use href="#i-sparkle"/></svg><span data-i18n="ow.auto.eyebrow">מאחורי הקלעים</span></p>
+        <h2 class="h2" id="ow-auto-h" data-i18n="ow.auto.h">המערכת עובדת בשבילך</h2>
+        <p class="lead" data-i18n="ow.auto.lead">תשע עבודות קטנות שקורות לבד, כל יום. נגיעה בכרטיס מראה בדיוק איך.</p>
+        <p class="ow-auto__count" aria-live="polite"><span class="ow-live" aria-hidden="true"></span><span data-ow-active>9 מתוך 9 פועלות</span></p>
+      </div>
+      <div class="ow-feed">
+        <p class="ow-feed__h"><svg class="ic" aria-hidden="true"><use href="#i-bolt"/></svg><span data-i18n="ow.auto.feed">הפעלות אחרונות</span><span class="demo-tag" data-i18n="ow.example">לדוגמה</span></p>
+        <ol class="ow-feed__list" data-ow-feed data-allow-overflow></ol>
+      </div>
+      <div class="ow-grid" data-ow-grid></div>
+    </div>
+  </section>
+</div>
+</div>
   </section>
 </main>
 
@@ -5535,6 +6149,1038 @@ const M = App.module('pubBottom', {
 });
 
 } catch (e) { console.error('[module pubBottom] failed to load', e); }
+})();
+</script>
+<script data-mod="owner">
+/* ===== module: owner ===== */
+;(function(){
+try {
+/* =====================================================================
+   owner · the owner's dashboard ("הנהלה")
+   Hero (greeting, date, calm status, day dial, quick chips) · KPI bento ·
+   funnel "מהאתר ועד ההרשמה" · "מאחורי הקלעים": 9 automations, each a small film.
+   Public: play(id) → Promise<boolean>, reset()
+   Tour:   tour.kpis(ctx), tour.automations(ctx)
+   All numbers are fictional (marked "נתונים לדוגמה"); no staff names, no prices.
+   ===================================================================== */
+const { $, $$, h, esc, icon, t } = App;
+const L = o => App.L(o);
+const lang = () => App.i18n.lang;
+const reduced = () => App.motion.reduced;
+const num = n => App.fmt.num(n);
+const P = (he, ru) => ({ he, ru });
+const ic = (n, c = '') => icon(n, c);
+const inLang = (o, lg) => (o == null ? '' : typeof o === 'string' ? o : (o[lg] != null ? o[lg] : (o.he != null ? o.he : o.ru)));
+const abortErr = () => { const e = new Error('aborted'); e.name = 'AbortError'; return e; };
+const sleep = (ms, signal) => new Promise((res, rej) => {
+  if (signal && signal.aborted) return rej(abortErr());
+  const id = setTimeout(res, ms);
+  if (signal) signal.addEventListener('abort', () => { clearTimeout(id); rej(abortErr()); }, { once: true });
+});
+const ease = x => (x < .5 ? 4 * x * x * x : 1 - Math.pow(-2 * x + 2, 3) / 2);
+const reflow = el => void el.offsetWidth;
+
+/* =====================================================================
+   I18N
+   ===================================================================== */
+const HE = {
+  'ow.demo': 'נתונים לדוגמה', 'ow.example': 'לדוגמה',
+  'ow.hero.sub': 'ככה נראה הגן שלך היום',
+  'ow.greet.morning': 'בוקר טוב', 'ow.greet.noon': 'צהריים טובים', 'ow.greet.eve': 'ערב טוב', 'ow.greet.night': 'לילה טוב',
+  'ow.status.open': 'יום רגוע. {n} ילדים בגן, ושום דבר לא דחוף.',
+  'ow.status.early': 'בוקר שקט. הגן נפתח ב-07:00, והכול מוכן.',
+  'ow.status.closed': 'היום הסתיים. הסיכומים נשלחו, והכול מוכן למחר.',
+  'ow.status.weekend': 'שבת שלום. הגן נח, והמערכת שומרת על הסדר.',
+  'ow.dial.open': 'פתוח', 'ow.dial.closed': 'סגור', 'ow.dial.a11y': 'שעות הגן היום {hrs}. עכשיו {now}, {state}.', 'ow.dial.sat': 'סגור היום',
+  'ow.quick': 'קיצורי דרך', 'ow.q.funnel': 'מהאתר להרשמה', 'ow.q.auto': 'מאחורי הקלעים', 'ow.q.pay': 'תשלומים', 'ow.q.wait': 'רשימת המתנה',
+  'ow.kpis.h': 'המספרים של היום',
+  /* KPI */
+  'ow.k.kids': 'ילדים היום', 'ow.k.kidsPill': '{p} נוכחות', 'ow.k.kidsSub': 'מתוך {n} רשומים · {m} לא הגיעו היום', 'ow.k.arr': 'הגעות לפי שעה', 'ow.k.peak': 'שעת השיא: {t}, {n} ילדים', 'ow.k.arrA11y': 'הגעות לפי שעה: {list}',
+  'ow.k.groups': 'תפוסת קבוצות', 'ow.k.groupsPill': 'מקומות פנויים: {n}', 'ow.k.free': '{n} פנויים', 'ow.k.last': 'מקום אחרון', 'ow.k.full': 'מלא', 'ow.k.ringA11y': '{g}: תפוסה {p}, {note}',
+  'ow.k.wait': 'רשימת המתנה', 'ow.k.waitUnit': 'משפחות', 'ow.k.waitPill': '+2 השבוע', 'ow.k.waitHint': 'כשמתפנה מקום, ההצעה יוצאת לבד.', 'ow.k.waitHow': 'איך זה עובד', 'ow.k.waitA11y': '{n} משפחות ברשימת ההמתנה',
+  'ow.k.tours': 'סיורים השבוע', 'ow.k.toursNext': 'הבא', 'ow.k.toursWhen': 'מחר 09:30', 'ow.k.weekA11y': 'סיורים לפי יום: {list}',
+  'ow.k.src': 'פניות לפי מקור', 'ow.k.srcPill': '{n} החודש', 'ow.k.src.site': 'אתר', 'ow.k.src.fb': 'Facebook', 'ow.k.src.ru': 'פורטל בשפה הרוסית',
+  'ow.k.pay': 'תשלומים', 'ow.k.paid': 'שולם', 'ow.k.pending': 'ממתין', 'ow.k.payPill': 'ממתינים: {n}', 'ow.k.payUnit': 'משפחות', 'ow.k.payA11y': '{a} משפחות שילמו, {b} ממתינות',
+  'ow.k.shift': 'מי במשמרת', 'ow.k.shiftPill': 'צוות מלא', 'ow.k.role.carers': 'מטפלות', 'ow.k.role.kitchen': 'מטבח', 'ow.k.shiftA11y': '{role}: {n} מתוך {m}',
+  /* funnel */
+  'ow.fun.eyebrow': 'המשפך', 'ow.fun.h': 'מהאתר ועד ההרשמה', 'ow.fun.period': 'תקופה', 'ow.fun.week': 'שבוע', 'ow.fun.month': 'חודש',
+  'ow.fun.s.visits': 'ביקורים באתר', 'ow.fun.s.tours': 'סיורים', 'ow.fun.s.regs': 'הרשמות', 'ow.fun.s.pays': 'תשלומים',
+  'ow.fun.c.tours': 'מביקור לסיור', 'ow.fun.c.regs': 'מסיור להרשמה', 'ow.fun.c.pays': 'מהרשמה לתשלום',
+  'ow.fun.convA11y': '{p} עברו מהשלב הקודם', 'ow.fun.insight': 'מכל 100 ביקורים באתר, בערך {n} משפחות נרשמות ומשלמות.', 'ow.fun.scale': 'הפסים בקנה מידה אמיתי',
+  /* automations */
+  'ow.auto.eyebrow': 'מאחורי הקלעים', 'ow.auto.h': 'המערכת עובדת בשבילך', 'ow.auto.lead': 'תשע עבודות קטנות שקורות לבד, כל יום. נגיעה בכרטיס מראה בדיוק איך.',
+  'ow.auto.active': '{n} מתוך 9 פועלות', 'ow.auto.feed': 'הפעלות אחרונות',
+  'ow.a.last': 'הפעלה אחרונה: {when}', 'ow.a.now': 'עכשיו', 'ow.a.min': 'לפני {n} דק׳', 'ow.a.off': 'כבוי', 'ow.a.demo': 'הדגמה',
+  'ow.a.offToast': 'האוטומציה כבויה. אפשר להדליק אותה במתג.', 'ow.a.schemaA11y': 'מה מפעיל: {trig}. מה קורה: {acts}.',
+  /* stage */
+  'ow.st.when': 'מה מפעיל', 'ow.st.log': 'מה קורה עכשיו', 'ow.st.again': 'מההתחלה', 'ow.st.close': 'סגירה',
+  'ow.st.done': 'בוצע', 'ow.st.doneSub': 'בלי אף נגיעה שלך.',
+  'ow.st.parent': 'הורה', 'ow.st.inHe': 'בעברית', 'ow.st.inRu': 'ברוסית', 'ow.st.owner': 'הטלפון שלך', 'ow.st.kitchen': 'טאבלט המטבח', 'ow.st.staff': 'טאבלט הצוות',
+  'ow.st.sent': 'נשלחו', 'ow.st.tabKitchen': 'המטבח', 'ow.st.tabStaff': 'צוות בוגרים', 'ow.st.tabEmpty': 'אין התראות חדשות',
+  /* the nine */
+  'ow.a.lead.t': 'פנייה חדשה מהאתר', 'ow.a.lead.d': 'ההורה מקבל מיד מועדים לסיור, ואת מקבלת התראה.', 'ow.a.lead.trig': 'טופס באתר', 'ow.a.lead.act1': 'מועדים לסיור', 'ow.a.lead.act2': 'התראה אלייך', 'ow.a.lead.log': 'פנייה מהאתר · נשלחו מועדים לסיור',
+  'ow.a.visit.t': 'תזכורת לסיור', 'ow.a.visit.d': 'יום לפני הסיור ההורה מקבל תזכורת, ואחריו קישור להרשמה.', 'ow.a.visit.trig': 'סיור מחר', 'ow.a.visit.act1': 'תזכורת', 'ow.a.visit.act2': 'קישור להרשמה', 'ow.a.visit.log': 'תזכורת לסיור של מחר',
+  'ow.a.seat.t': 'התפנה מקום', 'ow.a.seat.d': 'המקום מוצע מיד למשפחה הבאה ברשימת ההמתנה.', 'ow.a.seat.trig': 'מקום פנוי', 'ow.a.seat.act1': 'הצעה למשפחה הבאה', 'ow.a.seat.log': 'מקום בצעירים הוצע למשפחה הבאה',
+  'ow.a.billing.t': 'חשבון חודשי', 'ow.a.billing.d': 'ב-1 בחודש חשבון, ב-5 תזכורת עדינה, והקבלה יוצאת לבד.', 'ow.a.billing.trig': '1 בחודש', 'ow.a.billing.act1': 'חשבון', 'ow.a.billing.act2': 'תזכורת ב-5', 'ow.a.billing.act3': 'קבלה', 'ow.a.billing.log': 'חשבון, תזכורת וקבלה יצאו לבד',
+  'ow.a.summaries.t': 'סיכומי ערב', 'ow.a.summaries.d': 'ב-17:30 כל הורה מקבל סיכום חם של היום, בשפה שלו.', 'ow.a.summaries.trig': '17:30', 'ow.a.summaries.act1': 'סיכום לכל הורה', 'ow.a.summaries.log': '38 סיכומי ערב נשלחו',
+  'ow.a.shabbat.t': 'הורי שבת', 'ow.a.shabbat.d': 'ביום רביעי ההורים של השבוע מקבלים תזכורת מה להביא.', 'ow.a.shabbat.trig': 'יום רביעי', 'ow.a.shabbat.act1': 'תזכורת להורים', 'ow.a.shabbat.log': 'תזכורת להורי השבת',
+  'ow.a.docs.t': 'מסמך חסר', 'ow.a.docs.d': 'כשחסר מסמך בתיק, ההורה מקבל תזכורת עם קישור לחתימה.', 'ow.a.docs.trig': 'חסר מסמך', 'ow.a.docs.act1': 'תזכורת להורה', 'ow.a.docs.log': 'תזכורת על הצהרת בריאות',
+  'ow.a.birthday.t': 'יום הולדת מחר', 'ow.a.birthday.d': 'יום לפני, הצוות מקבל תזכורת להכין חגיגה קטנה.', 'ow.a.birthday.trig': 'מחר יום הולדת', 'ow.a.birthday.act1': 'תזכורת לצוות', 'ow.a.birthday.log': 'תזכורת יום הולדת לצוות',
+  'ow.a.allergies.t': 'אלרגיות מול התפריט', 'ow.a.allergies.d': 'התפריט של השבוע נבדק מול האלרגיות של הילדים, והמטבח מקבל התראה.', 'ow.a.allergies.trig': 'תפריט השבוע', 'ow.a.allergies.act1': 'התראה למטבח', 'ow.a.allergies.log': 'שתי התאמות בתפריט, המטבח עודכן'
+};
+const RU = {
+  'ow.demo': 'примерные данные', 'ow.example': 'пример',
+  'ow.hero.sub': 'Вот как выглядит ваш сад сегодня',
+  'ow.greet.morning': 'Доброе утро', 'ow.greet.noon': 'Добрый день', 'ow.greet.eve': 'Добрый вечер', 'ow.greet.night': 'Доброй ночи',
+  'ow.status.open': 'Спокойный день. В саду {n} детей, ничего срочного.',
+  'ow.status.early': 'Тихое утро. Сад открывается в 07:00, всё готово.',
+  'ow.status.closed': 'День закончился. Сводки отправлены, к завтра всё готово.',
+  'ow.status.weekend': 'Шабат шалом. Сад отдыхает, а система следит за порядком.',
+  'ow.dial.open': 'открыто', 'ow.dial.closed': 'закрыто', 'ow.dial.a11y': 'Часы работы сегодня {hrs}. Сейчас {now}, {state}.', 'ow.dial.sat': 'сегодня закрыто',
+  'ow.quick': 'Быстрые переходы', 'ow.q.funnel': 'От сайта до записи', 'ow.q.auto': 'За кулисами', 'ow.q.pay': 'Оплаты', 'ow.q.wait': 'Лист ожидания',
+  'ow.kpis.h': 'Цифры дня',
+  'ow.k.kids': 'Дети сегодня', 'ow.k.kidsPill': 'Пришли {p}', 'ow.k.kidsSub': 'Записано {n} · сегодня нет {m}', 'ow.k.arr': 'Приход по времени', 'ow.k.peak': 'Пик: {t}, детей: {n}', 'ow.k.arrA11y': 'Приход по времени: {list}',
+  'ow.k.groups': 'Заполненность групп', 'ow.k.groupsPill': 'Свободно мест: {n}', 'ow.k.free': 'свободно {n}', 'ow.k.last': 'последнее место', 'ow.k.full': 'мест нет', 'ow.k.ringA11y': '{g}: заполнено {p}, {note}',
+  'ow.k.wait': 'Лист ожидания', 'ow.k.waitUnit': 'семей', 'ow.k.waitPill': '+2 за неделю', 'ow.k.waitHint': 'Когда освобождается место, предложение уходит само.', 'ow.k.waitHow': 'Как это работает', 'ow.k.waitA11y': 'В листе ожидания семей: {n}',
+  'ow.k.tours': 'Экскурсии на неделе', 'ow.k.toursNext': 'Ближайшая', 'ow.k.toursWhen': 'завтра 09:30', 'ow.k.weekA11y': 'Экскурсии по дням: {list}',
+  'ow.k.src': 'Заявки по источникам', 'ow.k.srcPill': '{n} за месяц', 'ow.k.src.site': 'Сайт', 'ow.k.src.fb': 'Facebook', 'ow.k.src.ru': 'Русскоязычный портал',
+  'ow.k.pay': 'Оплаты', 'ow.k.paid': 'Оплачено', 'ow.k.pending': 'Ждут', 'ow.k.payPill': 'Ждут оплаты: {n}', 'ow.k.payUnit': 'семей', 'ow.k.payA11y': 'Оплатили семей: {a}, ждут: {b}',
+  'ow.k.shift': 'Кто на смене', 'ow.k.shiftPill': 'Все на месте', 'ow.k.role.carers': 'Воспитательницы', 'ow.k.role.kitchen': 'Кухня', 'ow.k.shiftA11y': '{role}: {n} из {m}',
+  'ow.fun.eyebrow': 'Воронка', 'ow.fun.h': 'От сайта до записи', 'ow.fun.period': 'Период', 'ow.fun.week': 'Неделя', 'ow.fun.month': 'Месяц',
+  'ow.fun.s.visits': 'Визиты на сайт', 'ow.fun.s.tours': 'Экскурсии', 'ow.fun.s.regs': 'Регистрации', 'ow.fun.s.pays': 'Оплаты',
+  'ow.fun.c.tours': 'Из визита в экскурсию', 'ow.fun.c.regs': 'Из экскурсии в регистрацию', 'ow.fun.c.pays': 'Из регистрации в оплату',
+  'ow.fun.convA11y': 'дошли с прошлого шага: {p}', 'ow.fun.insight': 'Из каждых 100 визитов на сайт примерно {n} семьи записываются и платят.', 'ow.fun.scale': 'Полосы в реальном масштабе',
+  'ow.auto.eyebrow': 'За кулисами', 'ow.auto.h': 'Система работает за вас', 'ow.auto.lead': 'Девять небольших дел, которые происходят сами, каждый день. Нажмите на карточку и посмотрите, как именно.',
+  'ow.auto.active': 'Работают {n} из 9', 'ow.auto.feed': 'Последние запуски',
+  'ow.a.last': 'Последний запуск: {when}', 'ow.a.now': 'только что', 'ow.a.min': '{n} мин назад', 'ow.a.off': 'Выключено', 'ow.a.demo': 'Показать',
+  'ow.a.offToast': 'Автоматизация выключена. Её можно включить переключателем.', 'ow.a.schemaA11y': 'Запуск: {trig}. Что происходит: {acts}.',
+  'ow.st.when': 'Запуск', 'ow.st.log': 'Что происходит', 'ow.st.again': 'Сначала', 'ow.st.close': 'Закрыть',
+  'ow.st.done': 'Готово', 'ow.st.doneSub': 'Вам не пришлось ничего делать.',
+  'ow.st.parent': 'Родитель', 'ow.st.inHe': 'на иврите', 'ow.st.inRu': 'по-русски', 'ow.st.owner': 'Ваш телефон', 'ow.st.kitchen': 'Планшет кухни', 'ow.st.staff': 'Планшет команды',
+  'ow.st.sent': 'отправлено', 'ow.st.tabKitchen': 'Кухня', 'ow.st.tabStaff': 'Старшая группа', 'ow.st.tabEmpty': 'Новых уведомлений нет',
+  'ow.a.lead.t': 'Новая заявка с сайта', 'ow.a.lead.d': 'Родитель сразу получает время экскурсии, а вам приходит уведомление.', 'ow.a.lead.trig': 'Форма на сайте', 'ow.a.lead.act1': 'Время экскурсии', 'ow.a.lead.act2': 'Уведомление вам', 'ow.a.lead.log': 'Заявка с сайта · отправлено время экскурсии',
+  'ow.a.visit.t': 'Напоминание об экскурсии', 'ow.a.visit.d': 'Накануне экскурсии родитель получает напоминание, а после неё ссылку на регистрацию.', 'ow.a.visit.trig': 'Экскурсия завтра', 'ow.a.visit.act1': 'Напоминание', 'ow.a.visit.act2': 'Ссылка на регистрацию', 'ow.a.visit.log': 'Напоминание о завтрашней экскурсии',
+  'ow.a.seat.t': 'Освободилось место', 'ow.a.seat.d': 'Место сразу предлагается следующей семье из листа ожидания.', 'ow.a.seat.trig': 'Свободное место', 'ow.a.seat.act1': 'Предложение следующей семье', 'ow.a.seat.log': 'Место в младшей группе предложено следующей семье',
+  'ow.a.billing.t': 'Ежемесячный счёт', 'ow.a.billing.d': '1-го числа счёт, 5-го мягкое напоминание, а квитанция уходит сама.', 'ow.a.billing.trig': '1-е число', 'ow.a.billing.act1': 'Счёт', 'ow.a.billing.act2': 'Напоминание 5-го', 'ow.a.billing.act3': 'Квитанция', 'ow.a.billing.log': 'Счёт, напоминание и квитанция ушли сами',
+  'ow.a.summaries.t': 'Вечерние сводки', 'ow.a.summaries.d': 'В 17:30 каждый родитель получает тёплую сводку дня на своём языке.', 'ow.a.summaries.trig': '17:30', 'ow.a.summaries.act1': 'Сводка каждой семье', 'ow.a.summaries.log': 'Отправлено 38 вечерних сводок',
+  'ow.a.shabbat.t': 'Шабатные родители', 'ow.a.shabbat.d': 'В среду родители недели получают напоминание, что принести.', 'ow.a.shabbat.trig': 'Среда', 'ow.a.shabbat.act1': 'Напоминание родителям', 'ow.a.shabbat.log': 'Напоминание шабатным родителям',
+  'ow.a.docs.t': 'Не хватает документа', 'ow.a.docs.d': 'Если в папке не хватает документа, родитель получает напоминание со ссылкой на подпись.', 'ow.a.docs.trig': 'Нет документа', 'ow.a.docs.act1': 'Напоминание родителю', 'ow.a.docs.log': 'Напоминание о декларации здоровья',
+  'ow.a.birthday.t': 'Завтра день рождения', 'ow.a.birthday.d': 'Накануне команда получает напоминание подготовить маленький праздник.', 'ow.a.birthday.trig': 'Завтра день рождения', 'ow.a.birthday.act1': 'Напоминание команде', 'ow.a.birthday.log': 'Напоминание команде о дне рождения',
+  'ow.a.allergies.t': 'Аллергии и меню', 'ow.a.allergies.d': 'Меню недели сверяется с аллергиями детей, и кухня получает предупреждение.', 'ow.a.allergies.trig': 'Меню недели', 'ow.a.allergies.act1': 'Предупреждение кухне', 'ow.a.allergies.log': 'Два совпадения в меню, кухня предупреждена'
+};
+
+/* =====================================================================
+   DATA (fictional)
+   ===================================================================== */
+const KPI0 = {
+  present: 38, registered: 41,
+  arrivals: [['07:00', 5], ['07:30', 9], ['08:00', 11], ['08:30', 7], ['09:00', 4], ['09:30', 2]],
+  groups: [{ id: 'baby', p: 75, free: 2 }, { id: 'young', p: 90, free: 1 }, { id: 'big', p: 100, free: 0 }],
+  wait: 12, tourDays: [1, 2, 1, 1, 1],
+  sources: [{ id: 'site', n: 14, ic: 'globe' }, { id: 'fb', n: 9, ic: 'users' }, { id: 'ru', n: 7, ic: 'translate' }],
+  paid: 36, families: 41
+};
+const FUN = { week: [72, 6, 3, 2], month: [296, 26, 12, 10] };
+const STAGES = [['visits', 'globe'], ['tours', 'walk'], ['regs', 'pen'], ['pays', 'card']];
+const DAYS = { he: ['א׳', 'ב׳', 'ג׳', 'ד׳', 'ה׳'], ru: ['вс', 'пн', 'вт', 'ср', 'чт'] };
+const STAFF = [
+  { adult: true, skin: 1, hair: 'bun', hc: 1, bg: 1, shirt: '#E8048C' },
+  { adult: true, skin: 2, hair: 'long', hc: 0, bg: 0, shirt: '#01AEF2' },
+  { adult: true, skin: 0, hair: 'bob', hc: 4, bg: 2, shirt: '#7FC8A9' },
+  { adult: true, skin: 3, hair: 'curly', hc: 0, bg: 3, shirt: '#FFB547' },
+  { adult: true, skin: 1, hair: 'long', hc: 5, bg: 4, shirt: '#9B8CE8' },
+  { adult: true, skin: 4, hair: 'bun', hc: 0, bg: 5, shirt: '#2D2B6B' }
+];
+const COOK = { adult: true, skin: 2, hair: 'short', hc: 2, bg: 3, shirt: '#F49BB6', glasses: true };
+const FAM = [
+  { adult: true, skin: 0, hair: 'long', hc: 3, bg: 1, shirt: '#9B8CE8' },
+  { adult: true, skin: 2, hair: 'short', hc: 0, bg: 0, shirt: '#2D2B6B', beard: true },
+  { adult: true, skin: 1, hair: 'bob', hc: 1, bg: 2, shirt: '#FFB547' }
+];
+const TINT = { blush: '#F3CFDF', sky: '#D0EDFD', lilac: '#E7E0FB', peach: '#FDE8C8', ink: '#1B1A4B' };
+const MSG_TITLE = { he: 'גן סינדרלה', ru: 'Сад «Синдерелла»' };
+
+/* The nine automations. Each `stage` is a little film:
+   trig = what fires it · lanes = who receives (parent phone in a language / your phone / a tablet) · steps = the script */
+const AUTOS = [
+  {
+    id: 'lead', icon: 'globe', tint: 'blush', sch: { trig: 'globe', acts: ['chat', 'bell'] },
+    last: P('היום 09:14', 'сегодня 09:14'),
+    stage: {
+      time: 'now',
+      trig: { icon: 'globe', t: P('נשלח טופס באתר', 'Заполнена форма на сайте'), v: P('עכשיו', 'сейчас'), sub: P('מרינה · בן שנה וחצי · ברוסית', 'Марина · сыну полтора года · по-русски') },
+      lanes: [{ id: 'p', kind: 'parent', lang: 'ru' }, { id: 'o', kind: 'owner' }],
+      steps: [
+        { t: 'trig', log: P('נכנסה פנייה חדשה מהאתר', 'Пришла новая заявка с сайта') },
+        { t: 'go', lanes: ['p'] },
+        { t: 'type', lanes: ['p'] },
+        { t: 'msg', lane: 'p', text: P('שלום מרינה! תודה על הפנייה. אפשר לבוא לסיור: ב׳ 09:30, ד׳ 16:00 או ה׳ 10:00. מה נוח לך?', 'Здравствуйте, Марина! Спасибо за заявку. Приглашаем на экскурсию: пн 09:30, ср 16:00 или чт 10:00. Когда вам удобно?'), log: P('מרינה קיבלה מועדים לסיור, ברוסית', 'Марина получила время экскурсии по-русски') },
+        { t: 'reply', lane: 'p', text: P('ד׳ 16:00 מתאים. תודה!', 'Ср 16:00 подходит. Спасибо!'), log: P('מרינה בחרה: ד׳ 16:00', 'Марина выбрала ср 16:00') },
+        { t: 'go', lanes: ['o'] },
+        { t: 'notify', lane: 'o', title: P('פנייה חדשה מהאתר', 'Новая заявка с сайта'), text: P('מרינה, בן שנה וחצי. בחרה סיור ביום ד׳ 16:00, וזה כבר ביומן.', 'Марина, сыну полтора года. Выбрала экскурсию в ср 16:00, она уже в календаре.'), log: P('התראה נשלחה אלייך', 'Вам пришло уведомление') }
+      ]
+    }
+  },
+  {
+    id: 'visit', icon: 'calendar', tint: 'sky', sch: { trig: 'calendar', acts: ['bell', 'link'] },
+    last: P('היום 08:30', 'сегодня 08:30'),
+    stage: {
+      time: '18:00',
+      trig: { icon: 'calendar', t: P('מחר סיור ב-09:30', 'Завтра экскурсия в 09:30'), v: P('ב׳ 18:00', 'пн 18:00'), sub: P('רותם · בת שנתיים', 'Ротем · дочке 2 года') },
+      lanes: [{ id: 'p', kind: 'parent', lang: 'he' }, { id: 'o', kind: 'owner' }],
+      steps: [
+        { t: 'trig', log: P('ערב לפני הסיור', 'Вечер накануне экскурсии') },
+        { t: 'go', lanes: ['p'] },
+        { t: 'type', lanes: ['p'] },
+        { t: 'msg', lane: 'p', text: P('היי רותם, מזכירים: מחר ב-09:30 סיור בגן סינדרלה, העצמאות 58, אשדוד. מחכים לך!', 'Ротем, напоминаем: завтра в 09:30 экскурсия в «Синдерелле», ул. ха-Ацмаут 58, Ашдод. Ждём вас!'), log: P('תזכורת נשלחה להורה', 'Родителю ушло напоминание') },
+        { t: 'reply', lane: 'p', text: P('נהיה שם. תודה!', 'Будем. Спасибо!') },
+        { t: 'phase', tt: P('הסיור הסתיים', 'Экскурсия закончилась'), v: P('ג׳ 10:30', 'вт 10:30'), time: '10:30', log: P('למחרת, אחרי הסיור', 'На следующий день, после экскурсии') },
+        { t: 'go', lanes: ['p'] },
+        { t: 'msg', lane: 'p', text: P('היה כיף להכיר! אם מתאים לך, ממשיכים להרשמה כאן:', 'Было приятно познакомиться! Если вам подходит, регистрация здесь:'), link: P('הרשמה לגן', 'Регистрация'), log: P('נשלח קישור להרשמה', 'Ушла ссылка на регистрацию') },
+        { t: 'go', lanes: ['o'] },
+        { t: 'notify', lane: 'o', title: P('הסיור הסתיים', 'Экскурсия прошла'), text: P('רותם קיבלה קישור להרשמה. נעדכן אותך כשהיא ממלאת.', 'Ротем получила ссылку на регистрацию. Сообщим, когда заполнит.'), log: P('עדכון נשלח אלייך', 'Вам пришло обновление') }
+      ]
+    }
+  },
+  {
+    id: 'seat', icon: 'sofa', tint: 'lilac', sch: { trig: 'sofa', acts: ['send'] },
+    last: P('אתמול 11:20', 'вчера 11:20'),
+    stage: {
+      time: 'now',
+      trig: { icon: 'sofa', t: P('התפנה מקום בצעירים', 'Освободилось место в младшей группе'), v: P('עכשיו', 'сейчас') },
+      props: [{ id: 'w1', av: FAM[0], label: P('1 בתור', '№1') }, { id: 'w2', av: FAM[1], label: P('2 בתור', '№2') }, { id: 'w3', av: FAM[2], label: P('3 בתור', '№3') }],
+      lanes: [{ id: 'p', kind: 'parent', lang: 'ru' }, { id: 'o', kind: 'owner' }],
+      steps: [
+        { t: 'trig', log: P('התפנה מקום בקבוצת צעירים', 'Освободилось место в младшей группе') },
+        { t: 'scan', ids: ['w3', 'w2', 'w1'], end: { w1: 'pick', w2: '', w3: '' }, log: P('המשפחה הראשונה בתור נבחרה', 'Выбрана первая семья в очереди') },
+        { t: 'go', lanes: ['p'] },
+        { t: 'type', lanes: ['p'] },
+        { t: 'msg', lane: 'p', text: P('אנה, בשורה טובה! התפנה מקום בקבוצת צעירים. הוא שלך אם תאשרי עד יום חמישי.', 'Анна, хорошая новость! В младшей группе освободилось место. Оно ваше, если подтвердите до четверга.'), log: P('נשלחה הצעה, ברוסית', 'Предложение ушло по-русски') },
+        { t: 'reply', lane: 'p', text: P('כן, מאשרים! תודה ענקית!', 'Да, подтверждаем! Огромное спасибо!') },
+        { t: 'kpi', key: 'wait', d: -1 },
+        { t: 'go', lanes: ['o'] },
+        { t: 'notify', lane: 'o', title: P('המקום נתפס', 'Место занято'), text: P('המשפחה הראשונה בתור אישרה. רשימת ההמתנה התעדכנה.', 'Первая семья в очереди подтвердила. Лист ожидания обновлён.'), log: P('רשימת ההמתנה התעדכנה', 'Лист ожидания обновлён') }
+      ]
+    }
+  },
+  {
+    id: 'billing', icon: 'receipt', tint: 'peach', sch: { trig: 'calendar', acts: ['receipt', 'bell', 'check-circle'] },
+    last: P('ב-5 בחודש, 10:00', '5-го числа, 10:00'),
+    stage: {
+      time: '08:00',
+      trig: { icon: 'receipt', t: P('התחיל חודש חדש', 'Начался новый месяц'), v: P('1 בחודש', '1-е число'), sub: P('בלי סכומים בדמו', 'В демо без сумм') },
+      props: [{ id: 'b1', icon: 'receipt', label: P('1 בחודש', '1-е') }, { id: 'b5', icon: 'bell', label: P('5 בחודש', '5-е') }, { id: 'bp', icon: 'check-circle', label: P('שולם', 'Оплачено') }],
+      lanes: [{ id: 'p', kind: 'parent', lang: 'he' }, { id: 'o', kind: 'owner' }],
+      steps: [
+        { t: 'trig' },
+        { t: 'prop', id: 'b1', s: 'on', log: P('1 בחודש · יוצאים חשבונות', '1-е число · уходят счета') },
+        { t: 'go', lanes: ['p'] },
+        { t: 'type', lanes: ['p'] },
+        { t: 'msg', lane: 'p', text: P('בוקר טוב מיכל! החשבון של החודש מחכה לך באזור האישי.', 'Доброе утро, Михаль! Счёт за месяц ждёт вас в личном кабинете.'), link: P('לתשלום', 'Оплатить'), log: P('החשבון נשלח', 'Счёт отправлен') },
+        { t: 'phase', v: P('5 בחודש', '5-е число'), time: '10:00', prop: ['b1', 'done', 'b5', 'on'], log: P('5 בחודש · החשבון עוד פתוח', '5-е число · счёт ещё открыт') },
+        { t: 'go', lanes: ['p'] },
+        { t: 'msg', lane: 'p', text: P('תזכורת קטנה: החשבון של החודש עדיין פתוח. אם כבר שילמת, אפשר להתעלם.', 'Небольшое напоминание: счёт за месяц ещё открыт. Если уже оплатили, просто не обращайте внимания.'), log: P('יצאה תזכורת עדינה', 'Ушло мягкое напоминание') },
+        { t: 'reply', lane: 'p', text: P('שילמתי עכשיו, תודה!', 'Оплатила, спасибо!') },
+        { t: 'phase', tt: P('התשלום התקבל', 'Оплата получена'), v: P('5 בחודש', '5-е число'), time: '10:04', prop: ['b5', 'done', 'bp', 'ok'] },
+        { t: 'go', lanes: ['p'] },
+        { t: 'msg', lane: 'p', text: P('התשלום התקבל, תודה! הקבלה כבר באזור האישי.', 'Оплата получена, спасибо! Квитанция уже в личном кабинете.'), link: P('קבלה', 'Квитанция'), log: P('הקבלה יצאה לבד', 'Квитанция ушла сама') },
+        { t: 'kpi', key: 'paid', d: 1 },
+        { t: 'go', lanes: ['o'] },
+        { t: 'notify', lane: 'o', title: P('תשלום התקבל', 'Оплата получена'), text: P('מיכל שילמה. הקבלה נשלחה אליה אוטומטית.', 'Михаль оплатила. Квитанция отправлена ей автоматически.') }
+      ]
+    }
+  },
+  {
+    id: 'summaries', icon: 'chat-text', tint: 'ink', sch: { trig: 'clock', acts: ['chat-text'] },
+    last: P('אתמול 17:30', 'вчера 17:30'),
+    stage: {
+      time: '17:30',
+      trig: { icon: 'clock', t: P('סוף היום בגן', 'Конец дня в саду'), v: P('17:30', '17:30'), sub: P('נכתב מהסימונים של הצוות', 'Собрано из отметок воспитателей'), counter: 38 },
+      lanes: [{ id: 'a', kind: 'parent', lang: 'he' }, { id: 'b', kind: 'parent', lang: 'ru' }],
+      steps: [
+        { t: 'trig', log: P('17:30 · כל סיכום נכתב מהסימונים של היום', '17:30 · каждая сводка собирается из отметок за день') },
+        { t: 'go', lanes: ['a', 'b'], count: 38 },
+        { t: 'type', lanes: ['a', 'b'], ms: 650 },
+        { t: 'msg', lane: 'a', text: P('ערב טוב! נועה אכלה הכל בצהריים, ישנה 12:30–14:10 ונהנתה מאוד בחוג מוזיקה.', 'Добрый вечер! Ноа съела весь обед, спала с 12:30 до 14:10 и с удовольствием пела на музыке.'), ms: 300 },
+        { t: 'msg', lane: 'b', text: P('ערב טוב! דניאל אכל יפה בצהריים, ישן 12:40–14:20 ובנה בחצר טירה מחול.', 'Добрый вечер! Даниэль хорошо пообедал, спал с 12:40 до 14:20 и строил во дворе замок из песка.'), log: P('38 סיכומים יצאו: 27 בעברית, 11 ברוסית', 'Ушло 38 сводок: 27 на иврите, 11 по-русски') }
+      ]
+    }
+  },
+  {
+    id: 'shabbat', icon: 'candle', tint: 'peach', sch: { trig: 'calendar', acts: ['bell'] },
+    last: P('ביום ד׳, 10:00', 'в ср, 10:00'),
+    stage: {
+      time: '10:00',
+      trig: { icon: 'candle', t: P('קבלת שבת ביום שישי', 'Встреча шабата в пятницу'), v: P('ד׳ 10:00', 'ср 10:00'), sub: P('השבוע: ההורים של מאיה', 'На этой неделе: родители Майи') },
+      lanes: [{ id: 'p', kind: 'parent', lang: 'ru' }, { id: 'o', kind: 'owner' }],
+      steps: [
+        { t: 'trig', log: P('יום רביעי · מי הורי השבת?', 'Среда · кто шабатные родители?') },
+        { t: 'go', lanes: ['p'] },
+        { t: 'type', lanes: ['p'] },
+        { t: 'msg', lane: 'p', text: P('אירינה, השבוע אתם הורי השבת! ביום שישי מביאים חלה ומיץ ענבים. תודה!', 'Ирина, на этой неделе вы шабатные родители! В пятницу принесите, пожалуйста, халу и виноградный сок.'), log: P('תזכורת נשלחה, ברוסית', 'Напоминание ушло по-русски') },
+        { t: 'reply', lane: 'p', text: P('בשמחה! מאיה כבר מחכה.', 'С радостью! Майя уже ждёт.') },
+        { t: 'go', lanes: ['o'] },
+        { t: 'notify', lane: 'o', title: P('הורי שבת', 'Шабатные родители'), text: P('ההורים של מאיה אישרו: חלה ומיץ ענבים ביום שישי.', 'Родители Майи подтвердили: хала и сок в пятницу.'), log: P('ההורים אישרו', 'Родители подтвердили') }
+      ]
+    }
+  },
+  {
+    id: 'docs', icon: 'doc', tint: 'lilac', sch: { trig: 'doc', acts: ['pen'] },
+    last: P('היום 07:40', 'сегодня 07:40'),
+    stage: {
+      time: '07:40',
+      trig: { kid: 'itai', t: P('בדיקת התיק של איתי', 'Проверка папки Итая'), v: P('07:40', '07:40') },
+      props: [{ id: 'd1', icon: 'heart', label: P('הצהרת בריאות', 'Здоровье') }, { id: 'd2', icon: 'camera', label: P('אישור צילום', 'Фото') }, { id: 'd3', icon: 'pen', label: P('טופס הרשמה', 'Анкета') }],
+      lanes: [{ id: 'p', kind: 'parent', lang: 'he' }, { id: 'o', kind: 'owner' }],
+      steps: [
+        { t: 'trig' },
+        { t: 'scan', ids: ['d3', 'd2', 'd1'], end: { d1: 'hit', d2: 'ok', d3: 'ok' }, log: P('חסרה הצהרת בריאות', 'Не хватает декларации здоровья') },
+        { t: 'go', lanes: ['p'] },
+        { t: 'type', lanes: ['p'] },
+        { t: 'msg', lane: 'p', text: P('בוקר טוב! חסרה לנו הצהרת בריאות של איתי. חותמים באצבע, זה לוקח דקה.', 'Доброе утро! Нам не хватает декларации здоровья Итая. Подписать можно пальцем, это минута.'), link: P('לחתימה', 'Подписать'), log: P('נשלחה תזכורת עם קישור לחתימה', 'Ушло напоминание со ссылкой на подпись') },
+        { t: 'reply', lane: 'p', text: P('חתמתי!', 'Подписала!') },
+        { t: 'prop', id: 'd1', s: 'ok' },
+        { t: 'go', lanes: ['o'] },
+        { t: 'notify', lane: 'o', title: P('התיק של איתי מלא', 'Папка Итая собрана'), text: P('הצהרת הבריאות נחתמה. כל המסמכים אצלך.', 'Декларация подписана. Все документы у вас.'), log: P('כל המסמכים התקבלו', 'Все документы получены') }
+      ]
+    }
+  },
+  {
+    id: 'birthday', icon: 'cake', tint: 'blush', sch: { trig: 'cake', acts: ['tablet'] },
+    last: P('אתמול 16:00', 'вчера 16:00'),
+    stage: {
+      time: '16:00',
+      trig: { kid: 'eitan', t: P('מחר איתן חוגג 3', 'Завтра Эйтану 3 года'), v: P('16:00', '16:00'), sub: P('קבוצת בוגרים', 'Старшая группа') },
+      lanes: [{ id: 's', kind: 'tablet', role: 'staff' }, { id: 'o', kind: 'owner' }],
+      steps: [
+        { t: 'trig', log: P('מחר יום הולדת בבוגרים', 'Завтра день рождения в старшей группе') },
+        { t: 'go', lanes: ['s'] },
+        { t: 'tab', lane: 's', icon: 'cake', tone: 'pink', kid: 'eitan', title: P('מחר יום הולדת לאיתן', 'Завтра день рождения Эйтана'), text: P('כדאי להכין כתר ושיר לבוקר.', 'Подготовьте корону и песню на утро.'), log: P('תזכורת הופיעה בטאבלט של הצוות', 'Напоминание появилось на планшете команды') },
+        { t: 'go', lanes: ['o'] },
+        { t: 'notify', lane: 'o', title: P('יום הולדת מחר', 'Завтра день рождения'), text: P('איתן חוגג 3. הצוות קיבל תזכורת.', 'Эйтану 3 года. Команда получила напоминание.'), log: P('עדכון נשלח אלייך', 'Вам пришло обновление') }
+      ]
+    }
+  },
+  {
+    id: 'allergies', icon: 'plate', tint: 'peach', sch: { trig: 'list', acts: ['chef'] },
+    last: P('ביום א׳, 06:30', 'в вс, 06:30'),
+    stage: {
+      time: '06:30',
+      trig: { icon: 'plate', t: P('בדיקת תפריט השבוע', 'Проверка меню недели'), v: P('א׳ 06:30', 'вс 06:30') },
+      props: [
+        { id: 'm1', label: P('א׳', 'вс'), sub: P('פסטה', 'паста') },
+        { id: 'm2', label: P('ב׳', 'пн'), sub: P('עוף', 'курица') },
+        { id: 'm3', label: P('ג׳', 'вт'), sub: P('בוטנים', 'арахис'), kid: 'itai' },
+        { id: 'm4', label: P('ד׳', 'ср'), sub: P('אורז', 'рис') },
+        { id: 'm5', label: P('ה׳', 'чт'), sub: P('טחינה', 'тхина'), kid: 'tamar' }
+      ],
+      lanes: [{ id: 'k', kind: 'tablet', role: 'kitchen' }, { id: 'o', kind: 'owner' }],
+      steps: [
+        { t: 'trig', log: P('התפריט נבדק מול האלרגיות של כל הילדים', 'Меню сверяется с аллергиями всех детей') },
+        { t: 'scan', ids: ['m1', 'm2', 'm3', 'm4', 'm5'], end: { m1: 'ok', m2: 'ok', m3: 'hit', m4: 'ok', m5: 'hit' }, log: P('שתי התאמות: איתי (בוטנים), תמר (שומשום)', 'Два совпадения: Итай (арахис), Тамар (кунжут)') },
+        { t: 'go', lanes: ['k'] },
+        { t: 'tab', lane: 'k', icon: 'alert', tone: 'warn', kid: 'itai', title: P('ג׳ · מנחה עם בוטנים', 'Вт · полдник с арахисом'), text: P('לאיתי אלרגיה. להכין לו חלופה.', 'У Итая аллергия. Нужна замена.'), ms: 700 },
+        { t: 'tab', lane: 'k', icon: 'alert', tone: 'warn', kid: 'tamar', title: P('ה׳ · צהריים עם טחינה', 'Чт · обед с тхиной'), text: P('לתמר אלרגיה לשומשום. להכין לה חלופה.', 'У Тамар аллергия на кунжут. Нужна замена.'), log: P('המטבח קיבל שתי התראות', 'Кухня получила два предупреждения') },
+        { t: 'go', lanes: ['o'] },
+        { t: 'notify', lane: 'o', title: P('תפריט השבוע נבדק', 'Меню недели проверено'), text: P('שתי התאמות לאלרגיות. המטבח כבר מכין חלופות.', 'Два совпадения с аллергиями. Кухня уже готовит замену.') }
+      ]
+    }
+  }
+];
+const BY = Object.fromEntries(AUTOS.map(a => [a.id, a]));
+const FEED0 = [
+  { id: 'lead', when: P('09:14', '09:14') },
+  { id: 'visit', when: P('08:30', '08:30') },
+  { id: 'docs', when: P('07:40', '07:40') },
+  { id: 'summaries', when: P('אתמול 17:30', 'вчера 17:30') },
+  { id: 'birthday', when: P('אתמול 16:00', 'вчера 16:00') },
+  { id: 'allergies', when: P('א׳ 06:30', 'вс 06:30') }
+];
+
+/* =====================================================================
+   STATE
+   ===================================================================== */
+let root = null;
+const S = {
+  kpi: null, period: 'week', on: {}, last: {}, feed: [], speed: 1,
+  clock: 0, funIO: null, autoIO: null, active: false, funDone: false, introT: 0, fresh: null
+};
+function freshState() {
+  S.kpi = JSON.parse(JSON.stringify(KPI0));
+  S.period = 'week';
+  AUTOS.forEach(a => { S.on[a.id] = true; S.last[a.id] = null; });
+  S.feed = FEED0.map(x => Object.assign({}, x));
+}
+
+/* =====================================================================
+   HERO · greeting, date, calm status, day dial
+   ===================================================================== */
+const hoursFor = d => (d.getDay() === 6 ? null : d.getDay() === 5 ? [7, 13] : [7, 17]);
+const hh = n => String(n).padStart(2, '0') + ':00';
+function renderHero() {
+  if (!root) return;
+  const now = new Date(), hr = now.getHours() + now.getMinutes() / 60;
+  const g = hr >= 5 && hr < 12 ? 'morning' : hr >= 12 && hr < 17 ? 'noon' : hr >= 17 && hr < 22 ? 'eve' : 'night';
+  $('[data-ow-greet]', root).textContent = t('ow.greet.' + g) + ',';
+  $('[data-ow-date]', root).textContent = App.fmt.date(now, { weekday: 'long', day: 'numeric', month: 'long' });
+  const hrs = hoursFor(now), open = !!hrs && hr >= hrs[0] && hr < hrs[1];
+  const status = open ? t('ow.status.open', { n: num(S.kpi.present) }) : !hrs ? t('ow.status.weekend') : hr < hrs[0] ? t('ow.status.early') : t('ow.status.closed');
+  $('[data-ow-status]', root).textContent = status;
+  $('[data-ow-statusline]', root).classList.toggle('is-closed', !open);
+  // dial: the day as a ring, from opening to closing time (Cinderella's clock, minus the midnight drama)
+  const span = hrs || [7, 17];
+  const frac = hrs ? App.clamp((hr - span[0]) / (span[1] - span[0]), 0, 1) : 0;
+  const C = 2 * Math.PI * 40, n = span[1] - span[0];
+  const ticks = Array.from({ length: n }, (_, i) => `<line x1="50" y1="3.5" x2="50" y2="${i % 2 ? 6.5 : 8}" transform="rotate(${(i / n) * 360} 50 50)"/>`).join('');
+  const hrsTxt = hrs ? `${hh(span[0])}–${hh(span[1])}` : t('ow.dial.sat');
+  const state = open ? t('ow.dial.open') : t('ow.dial.closed');
+  const dial = $('[data-ow-dial]', root);
+  dial.setAttribute('role', 'img');
+  dial.setAttribute('aria-label', t('ow.dial.a11y', { hrs: hrsTxt, now: App.fmt.time(now), state }));
+  dial.classList.toggle('is-open', open);
+  dial.innerHTML = `<svg viewBox="0 0 100 100" aria-hidden="true" focusable="false">
+      <circle class="ow-dial__face" cx="50" cy="50" r="49"/>
+      <g class="ow-dial__ticks">${ticks}</g>
+      <circle class="ow-dial__tr" cx="50" cy="50" r="40"/>
+      <circle class="ow-dial__fg" cx="50" cy="50" r="40" transform="rotate(-90 50 50)" style="stroke-dasharray:${C.toFixed(2)};stroke-dashoffset:${(C * (1 - frac)).toFixed(2)}"/>
+      <g transform="rotate(${(frac * 360).toFixed(1)} 50 50)"><circle class="ow-dial__dot" cx="50" cy="10" r="6.5"/><use href="#i-sparkle" class="ow-dial__mk" x="44.5" y="4.5" width="11" height="11"/></g>
+    </svg>
+    <span class="ow-dial__c"><b class="tnum">${App.fmt.time(now)}</b><span>${esc(state)}</span></span>
+    <span class="ow-dial__hrs tnum">${esc(hrsTxt)}</span>`;
+}
+
+/* =====================================================================
+   KPI BENTO
+   ===================================================================== */
+const CU = (n, cls = '') => `<span class="${cls}" data-ow-cu="${n}">${num(n)}</span>`;
+function kHead(icn, key, pill) {
+  return `<div class="ow-k__head"><span class="ow-k__ic">${ic(icn)}</span><h3 class="ow-k__label">${esc(t(key))}</h3>${pill || ''}</div>`;
+}
+function ringSvg(p, i) {
+  const C = 2 * Math.PI * 30;
+  return `<svg viewBox="0 0 76 76" aria-hidden="true" focusable="false"><circle class="ow-ring__tr" cx="38" cy="38" r="30"/><circle class="ow-ring__fg" cx="38" cy="38" r="30" transform="rotate(-90 38 38)" style="--ow-c:${C.toFixed(2)};--ow-off:${(C * (1 - p / 100)).toFixed(2)};--ow-i:${i}"/></svg>`;
+}
+function payRing() {
+  const k = S.kpi, C = 2 * Math.PI * 30, gap = 3;
+  const a = (k.paid / k.families) * C, b = C - a;
+  return `<svg viewBox="0 0 76 76" aria-hidden="true" focusable="false" class="ow-pay__svg">
+    <circle class="ow-pay__a" cx="38" cy="38" r="30" transform="rotate(-90 38 38)" style="stroke-dasharray:${(a - gap).toFixed(2)} ${C.toFixed(2)};stroke-dashoffset:${(-gap / 2).toFixed(2)}"/>
+    <circle class="ow-pay__b" cx="38" cy="38" r="30" transform="rotate(-90 38 38)" style="stroke-dasharray:${Math.max(0, b - gap).toFixed(2)} ${C.toFixed(2)};stroke-dashoffset:${(-(a + gap / 2)).toFixed(2)}"/></svg>`;
+}
+function renderBento() {
+  const k = S.kpi, el = $('[data-ow-bento]', root); if (!el) return;
+  const maxA = Math.max(...k.arrivals.map(x => x[1]));
+  const att = Math.round((k.present / k.registered) * 100) + '%';
+  const groupName = id => L(App.data.groups.find(g => g.id === id));
+  const gNote = g => (g.p >= 100 ? t('ow.k.full') : g.free === 1 ? t('ow.k.last') : t('ow.k.free', { n: g.free }));
+  const freeTotal = k.groups.reduce((s, g) => s + g.free, 0);
+  const pend = k.families - k.paid;
+  const tourTotal = k.tourDays.reduce((s, n) => s + n, 0);
+  const today = new Date().getDay(); // 0 = Sunday
+  const maxS = Math.max(...k.sources.map(s => s.n));
+  const srcTotal = k.sources.reduce((s, x) => s + x.n, 0);
+  const days = DAYS[lang()] || DAYS.he;
+  el.innerHTML = `
+  <article class="ow-card ow-k ow-k--kids" data-ow-kpi="kids" style="--ow-n:0">
+    ${kHead('users', 'ow.k.kids', `<span class="tag tag--ok ow-k__pill">${ic('check-circle')}${esc(t('ow.k.kidsPill', { p: att }))}</span>`)}
+    <p class="ow-big"><span class="ow-frac" dir="ltr">${CU(k.present, 'ow-big__n')}<span class="ow-big__of">/${num(k.registered)}</span></span></p>
+    <p class="ow-k__sub">${esc(t('ow.k.kidsSub', { n: num(k.registered), m: num(k.registered - k.present) }))}</p>
+    <p class="ow-peak" aria-hidden="true">${ic('sun')}<span>${esc(t('ow.k.peak', { t: k.arrivals.find(a => a[1] === maxA)[0], n: maxA }))}</span></p>
+    <figure class="ow-arr" role="img" aria-label="${esc(t('ow.k.arrA11y', { list: k.arrivals.map(a => `${a[0]} ${a[1]}`).join(', ') }))}">
+      <figcaption class="ow-k__cap" aria-hidden="true">${esc(t('ow.k.arr'))}</figcaption>
+      <div class="ow-arr__plot" aria-hidden="true">${k.arrivals.map((a, i) => `<div class="ow-arr__col ${a[1] === maxA ? 'is-peak' : ''}" style="--ow-h:${(a[1] / maxA).toFixed(3)};--ow-i:${i}"><span class="ow-arr__zone"><span class="ow-arr__v tnum">${a[1]}</span><i class="ow-arr__bar"></i></span><span class="ow-arr__t tnum">${a[0]}</span></div>`).join('')}</div>
+    </figure>
+  </article>
+  <article class="ow-card ow-k ow-k--groups" data-ow-kpi="groups" style="--ow-n:1">
+    ${kHead('castle', 'ow.k.groups', `<span class="tag ow-k__pill">${esc(t('ow.k.groupsPill', { n: freeTotal }))}</span>`)}
+    <div class="ow-rings">${k.groups.map((g, i) => `<figure class="ow-ring" role="img" aria-label="${esc(t('ow.k.ringA11y', { g: groupName(g.id), p: g.p + '%', note: gNote(g) }))}">
+      <span class="ow-ring__art" aria-hidden="true">${ringSvg(g.p, i)}<span class="ow-ring__v">${CU(g.p)}<small>%</small></span></span>
+      <figcaption aria-hidden="true"><b>${esc(groupName(g.id))}</b><span class="ow-ring__note ${g.p >= 100 ? 'is-full' : ''}">${esc(gNote(g))}</span></figcaption></figure>`).join('')}</div>
+  </article>
+  <article class="ow-card ow-k ow-k--wait" data-ow-kpi="wait" style="--ow-n:2">
+    ${kHead('hourglass', 'ow.k.wait', `<span class="tag tag--pink ow-k__pill">${esc(t('ow.k.waitPill'))}</span>`)}
+    <p class="ow-big" role="img" aria-label="${esc(t('ow.k.waitA11y', { n: k.wait }))}"><span aria-hidden="true">${CU(k.wait, 'ow-big__n')}<span class="ow-big__unit">${esc(t('ow.k.waitUnit'))}</span></span></p>
+    <div class="ow-dots" aria-hidden="true">${Array.from({ length: k.wait }, (_, i) => `<i style="--ow-i:${i}" class="${i === 0 ? 'is-next' : ''}"></i>`).join('')}</div>
+    <p class="ow-k__sub">${esc(t('ow.k.waitHint'))}</p>
+    <button type="button" class="ow-k__link" data-ow-play="seat">${ic('play', 'ic--fill')}<span>${esc(t('ow.k.waitHow'))}</span></button>
+  </article>
+  <article class="ow-card ow-k ow-k--tours" data-ow-kpi="tours" style="--ow-n:3">
+    ${kHead('walk', 'ow.k.tours')}
+    <p class="ow-big">${CU(tourTotal, 'ow-big__n')}</p>
+    <div class="ow-week" role="img" aria-label="${esc(t('ow.k.weekA11y', { list: k.tourDays.map((n, i) => `${days[i]} ${n}`).join(', ') }))}">${k.tourDays.map((n, i) => `<span class="ow-week__d ${i < today ? 'is-past' : ''} ${i === today ? 'is-today' : ''} ${i === today + 1 ? 'is-next' : ''}" aria-hidden="true"><span class="ow-week__dots">${Array.from({ length: n }, (_, j) => `<i style="--ow-i:${i * 2 + j}"></i>`).join('')}</span><span class="ow-week__l">${esc(days[i])}</span></span>`).join('')}</div>
+    <p class="ow-next">${ic('clock')}<span>${esc(t('ow.k.toursNext'))}: <b>${esc(t('ow.k.toursWhen'))}</b></span></p>
+  </article>
+  <article class="ow-card ow-k ow-k--src" data-ow-kpi="src" style="--ow-n:4">
+    ${kHead('trend', 'ow.k.src', `<span class="tag ow-k__pill">${esc(t('ow.k.srcPill', { n: srcTotal }))}</span>`)}
+    <ul class="ow-src">${k.sources.map((s, i) => `<li class="ow-src__it"><span class="ow-src__row"><span class="ow-src__ic">${ic(s.ic)}</span><span class="ow-src__n">${esc(t('ow.k.src.' + s.id))}</span>${CU(s.n, 'ow-src__v')}</span><span class="ow-src__track" aria-hidden="true"><i style="--ow-w:${(s.n / maxS).toFixed(3)};--ow-i:${i}"></i></span></li>`).join('')}</ul>
+  </article>
+  <article class="ow-card ow-k ow-k--pay" data-ow-kpi="pay" style="--ow-n:5">
+    ${kHead('card', 'ow.k.pay', `<span class="tag tag--warn ow-k__pill" data-ow-paypill>${esc(t('ow.k.payPill', { n: pend }))}</span>`)}
+    <div class="ow-pay" role="img" aria-label="${esc(t('ow.k.payA11y', { a: k.paid, b: pend }))}"><span class="ow-pay__art" aria-hidden="true">${payRing()}<span class="ow-pay__c" dir="ltr">${CU(k.paid, 'ow-pay__n')}<small>/${num(k.families)}</small></span></span>
+      <ul class="ow-legend" aria-hidden="true"><li><i class="is-a"></i><span>${esc(t('ow.k.paid'))}</span><b class="tnum">${num(k.paid)}</b></li><li><i class="is-b"></i><span>${esc(t('ow.k.pending'))}</span><b class="tnum">${num(pend)}</b></li></ul></div>
+  </article>
+  <article class="ow-card ow-k ow-k--shift" data-ow-kpi="shift" style="--ow-n:6">
+    ${kHead('users', 'ow.k.shift', `<span class="tag tag--ok ow-k__pill">${ic('check')}${esc(t('ow.k.shiftPill'))}</span>`)}
+    <ul class="ow-shift">
+      <li role="img" aria-label="${esc(t('ow.k.shiftA11y', { role: t('ow.k.role.carers'), n: 6, m: 6 }))}"><span class="ow-shift__top" aria-hidden="true"><span>${esc(t('ow.k.role.carers'))}</span><b class="tnum">6/6</b></span><span class="ow-avs" aria-hidden="true">${STAFF.map((s, i) => `<span class="av" style="--s:30px;--ow-i:${i}">${App.avatar(s, { label: '' })}</span>`).join('')}</span></li>
+      <li role="img" aria-label="${esc(t('ow.k.shiftA11y', { role: t('ow.k.role.kitchen'), n: 1, m: 1 }))}"><span class="ow-shift__top" aria-hidden="true"><span>${esc(t('ow.k.role.kitchen'))}</span><b class="tnum">1/1</b></span><span class="ow-avs" aria-hidden="true"><span class="av" style="--s:30px;--ow-i:6">${App.avatar(COOK, { label: '' })}</span><span class="ow-avs__badge">${ic('chef')}</span></span></li>
+    </ul>
+  </article>`;
+}
+function introKpis() {
+  const el = $('[data-ow-bento]', root); if (!el) return;
+  clearTimeout(S.introT);
+  el.classList.remove('is-on'); reflow(el);
+  const go = () => {
+    el.classList.add('is-on');
+    $$('[data-ow-cu]', el).forEach(c => App.countUp(c, +c.dataset.owCu, { duration: 1150 }));
+  };
+  if (reduced()) go(); else S.introT = setTimeout(go, 60);
+}
+function kpiBump(key, d) {
+  const k = S.kpi;
+  if (key === 'wait') k.wait = Math.max(0, k.wait + d);
+  if (key === 'paid') k.paid = Math.min(k.families, k.paid + d);
+  renderBento();
+  const card = $(`[data-ow-kpi="${key === 'paid' ? 'pay' : key}"]`, root);
+  if (card) { card.classList.remove('is-bump'); reflow(card); card.classList.add('is-bump'); }
+}
+
+/* =====================================================================
+   FUNNEL
+   ===================================================================== */
+function renderFunnel() {
+  const v = FUN[S.period], max = v[0];
+  const list = $('[data-ow-stages]', root), side = $('[data-ow-fside]', root); if (!list) return;
+  const conv = i => Math.round((v[i] / v[i - 1]) * 100);
+  list.innerHTML = STAGES.map(([k, icn], i) => {
+    const w = v[i] / max, pw = i ? v[i - 1] / max : 0;
+    const pour = i ? `<div class="ow-fs__pour" aria-hidden="true"><svg viewBox="0 0 100 100" preserveAspectRatio="none" focusable="false"><path d="M${(50 - pw * 50).toFixed(2)} 0L${(50 + pw * 50).toFixed(2)} 0L${(50 + w * 50).toFixed(2)} 100L${(50 - w * 50).toFixed(2)} 100Z" fill="url(#ow-pourg)"/></svg><i class="ow-drop"></i><i class="ow-drop"></i><i class="ow-drop"></i></div>
+      <span class="ow-fs__conv" aria-hidden="true">${ic('chevron-down')}<span class="tnum">${conv(i)}%</span></span>` : '';
+    return `<li class="ow-fs__st" style="--ow-w:${w.toFixed(4)};--ow-i:${i}">
+      ${pour}
+      <div class="ow-fs__row"><span class="ow-fs__ic" aria-hidden="true">${ic(icn)}</span><span class="ow-fs__name">${esc(t('ow.fun.s.' + k))}</span><b class="ow-fs__v" data-ow-cu="${v[i]}">${num(v[i])}</b></div>
+      <div class="ow-fs__track" aria-hidden="true"><i class="ow-fs__bar"></i></div>
+      ${i ? `<span class="sr-only">${esc(t('ow.fun.convA11y', { p: conv(i) + '%' }))}</span>` : ''}
+    </li>`;
+  }).join('');
+  const per100 = Math.max(1, Math.round((v[3] / v[0]) * 100));
+  side.innerHTML = `<ul class="ow-conv">${STAGES.slice(1).map(([k], j) => { const i = j + 1, p = conv(i); return `<li><span class="ow-conv__l">${esc(t('ow.fun.c.' + k))}</span><b class="tnum">${p}%</b><span class="ow-conv__bar" aria-hidden="true"><i style="--ow-w:${(p / 100).toFixed(3)};--ow-i:${i}"></i></span></li>`; }).join('')}</ul>
+    <p class="ow-insight">${ic('sparkles', 'ic--fill')}<span>${esc(t('ow.fun.insight', { n: per100 }))}</span></p>
+    <p class="ow-scale">${esc(t('ow.fun.scale'))}</p>`;
+  $$('[data-ow-period]', root).forEach(b => b.setAttribute('aria-pressed', String(b.dataset.owPeriod === S.period)));
+}
+function introFunnel() {
+  const card = $('.ow-fun', root); if (!card) return;
+  card.classList.remove('is-on'); reflow(card);
+  card.classList.add('is-on');
+  $$('[data-ow-cu]', card).forEach((c, i) => App.countUp(c, +c.dataset.owCu, { duration: 900 + i * 120 }));
+}
+function setPeriod(p) {
+  if (p === S.period) return;
+  S.period = p; renderFunnel(); introFunnel(); App.haptic(8);
+}
+
+/* =====================================================================
+   AUTOMATION CARDS + ACTIVITY FEED
+   ===================================================================== */
+function relTime(ts) {
+  const m = Math.floor((Date.now() - ts) / 60000);
+  return m < 1 ? t('ow.a.now') : t('ow.a.min', { n: m });
+}
+const lastText = id => t('ow.a.last', { when: S.last[id] ? relTime(S.last[id]) : L(BY[id].last) });
+function schemaHtml(a) {
+  const n = a.sch.acts.length;
+  const acts = a.sch.acts.map((_, k) => t(`ow.a.${a.id}.act${k + 1}`));
+  const ys = a.sch.acts.map((_, k) => ((k + .5) / n) * 100);
+  const paths = ys.map(y => `<path d="M0 50C20 50 20 ${y} 40 ${y}"/>`).join('');
+  return `<div class="ow-sch" data-n="${n}" role="img" aria-label="${esc(t('ow.a.schemaA11y', { trig: t(`ow.a.${a.id}.trig`), acts: acts.join(', ') }))}">
+    <span class="ow-sch__trig" aria-hidden="true">${ic(a.sch.trig)}<span>${esc(t(`ow.a.${a.id}.trig`))}</span></span>
+    <span class="ow-sch__wire" aria-hidden="true"><svg viewBox="0 0 40 100" preserveAspectRatio="none" focusable="false">${paths}</svg></span>
+    <span class="ow-sch__acts" aria-hidden="true">${a.sch.acts.map((x, k) => `<span class="ow-sch__act">${ic(x)}<span>${esc(acts[k])}</span></span>`).join('')}</span>
+  </div>`;
+}
+function cardHtml(a, i) {
+  const on = S.on[a.id];
+  return `<article class="ow-a ${on ? '' : 'is-off'} ${S.cardsIn ? 'is-in' : ''}" data-ow-a="${a.id}" data-reveal style="--ow-tint:${TINT[a.tint]};--d:${(i % 3) * 70}ms">
+    <div class="ow-a__top">
+      <span class="ow-a__ic ${a.tint === 'ink' ? 'is-ink' : ''}" aria-hidden="true">${ic(a.icon)}</span>
+      <h3 class="ow-a__t" id="ow-a-${a.id}-t">${esc(t(`ow.a.${a.id}.t`))}</h3>
+      <button type="button" class="switch ow-sw" role="switch" aria-checked="${on}" aria-labelledby="ow-a-${a.id}-t" data-ow-sw="${a.id}"></button>
+    </div>
+    <p class="ow-a__d">${esc(t(`ow.a.${a.id}.d`))}</p>
+    ${schemaHtml(a)}
+    <div class="ow-a__foot">
+      <span class="ow-a__last">${ic('clock')}<span data-ow-last>${esc(lastText(a.id))}</span></span>
+      <span class="ow-a__off">${ic('pause')}<span>${esc(t('ow.a.off'))}</span></span>
+      <button type="button" class="ow-a__play" data-ow-play="${a.id}" aria-describedby="ow-a-${a.id}-t">${ic('play', 'ic--fill')}<span>${esc(t('ow.a.demo'))}</span></button>
+    </div>
+  </article>`;
+}
+function renderGrid() {
+  const g = $('[data-ow-grid]', root); if (!g) return;
+  g.innerHTML = AUTOS.map(cardHtml).join('');
+  if ('IntersectionObserver' in window) {
+    if (!S.cardIO) S.cardIO = new IntersectionObserver(es => es.forEach(en => en.target.classList.toggle('is-vis', en.isIntersecting)), { rootMargin: '40px 0px' });
+    $$('.ow-a', g).forEach(c => S.cardIO.observe(c));
+  } else $$('.ow-a', g).forEach(c => c.classList.add('is-vis'));
+  updActive();
+}
+function updActive() {
+  const n = AUTOS.filter(a => S.on[a.id]).length;
+  const el = $('[data-ow-active]', root); if (el) el.textContent = t('ow.auto.active', { n });
+  const c = $('.ow-auto__count', root); if (c) c.classList.toggle('is-partial', n < 9);
+}
+function updLastRuns() {
+  $$('[data-ow-a]', root).forEach(c => { const l = $('[data-ow-last]', c); if (l) l.textContent = lastText(c.dataset.owA); });
+}
+function renderFeed() {
+  const f = $('[data-ow-feed]', root); if (!f) return;
+  f.innerHTML = S.feed.map(x => `<li class="ow-feed__it ${x.isNew ? 'is-new' : ''}"><span class="ow-feed__ic" aria-hidden="true">${ic(BY[x.id].icon)}</span><span class="ow-feed__m"><b>${esc(t(`ow.a.${x.id}.log`))}</b><span class="tnum">${esc(x.ts ? relTime(x.ts) : L(x.when))}</span></span></li>`).join('');
+  S.feed.forEach(x => { x.isNew = false; });
+}
+function toggle(id) {
+  S.on[id] = !S.on[id];
+  const card = $(`[data-ow-a="${id}"]`, root); if (!card) return;
+  const sw = $('[data-ow-sw]', card);
+  sw.setAttribute('aria-checked', String(S.on[id]));
+  card.classList.toggle('is-off', !S.on[id]);
+  updActive(); App.haptic(10);
+  if (S.on[id]) App.fx.burstAt(sw, { count: 10, speed: [60, 170], size: [6, 14], life: [350, 700], gravity: 60, colors: ['magenta', 'gold', 'white'] });
+}
+function offNudge(id) {
+  App.ui.toast({ he: HE['ow.a.offToast'], ru: RU['ow.a.offToast'] }, { icon: 'info' });
+  const sw = $(`[data-ow-a="${id}"] [data-ow-sw]`, root);
+  if (sw) { sw.classList.remove('is-nudge'); reflow(sw); sw.classList.add('is-nudge'); }
+}
+
+/* =====================================================================
+   PLAYER · each automation as a short film
+   trigger lights → a token runs along the wire → lane lights → device receives
+   ===================================================================== */
+const PL = { s: null, ctrl: null, run: null, finished: false, a: null };
+function trigHtml(st) {
+  const tr = st.trig;
+  const art = tr.kid ? App.avatar(App.data.kid(tr.kid), { label: '' }) : ic(tr.icon);
+  const prop = p => `<li class="ow-prop" data-p="${p.id}">
+      <span class="ow-prop__ic">${p.av ? App.avatar(p.av, { label: '' }) : p.icon ? ic(p.icon) : ic('plate')}</span>
+      <span class="ow-prop__l">${esc(L(p.label))}</span>${p.sub ? `<span class="ow-prop__s">${esc(L(p.sub))}</span>` : ''}
+      ${p.kid ? `<span class="ow-prop__kid">${App.avatar(App.data.kid(p.kid), { label: '' })}</span>` : ''}
+      <span class="ow-prop__st">${ic('check')}</span></li>`;
+  return `<div class="ow-trig" data-ow-trig>
+    <div class="ow-trig__row">
+      <span class="ow-trig__ic ${tr.kid ? 'is-av' : ''}" aria-hidden="true">${art}</span>
+      <span class="ow-trig__main"><span class="ow-trig__k">${ic('bolt')}${esc(t('ow.st.when'))}</span><b class="ow-trig__t" data-ow-tt>${esc(L(tr.t))}</b>${tr.sub ? `<span class="ow-trig__sub">${esc(L(tr.sub))}</span>` : ''}</span>
+      <span class="ow-trig__side">
+        <span class="ow-trig__v tnum" data-ow-tv>${esc(L(tr.v))}</span>
+        ${tr.counter ? `<span class="ow-trig__count"><span class="ow-frac tnum" dir="ltr"><b data-ow-cnt>0</b>/${tr.counter}</span><span>${esc(t('ow.st.sent'))}</span></span>` : ''}
+      </span>
+    </div>
+    ${st.props ? `<ul class="ow-props" data-n="${st.props.length}" aria-hidden="true">${st.props.map(prop).join('')}</ul>` : ''}
+  </div>`;
+}
+function laneHtml(l) {
+  const lab = l.kind === 'parent' ? `${t('ow.st.parent')} · ${t(l.lang === 'ru' ? 'ow.st.inRu' : 'ow.st.inHe')}`
+    : t(l.kind === 'owner' ? 'ow.st.owner' : l.role === 'kitchen' ? 'ow.st.kitchen' : 'ow.st.staff');
+  const icn = l.kind === 'parent' ? 'user' : l.kind === 'owner' ? 'crown' : l.role === 'kitchen' ? 'chef' : 'tablet';
+  return `<div class="ow-lane" data-lane="${l.id}" data-kind="${l.kind}"><span class="ow-lane__chip">${ic(icn)}<span>${esc(lab)}</span></span><div class="ow-lane__dev" aria-hidden="true"></div></div>`;
+}
+function stageHtml(a) {
+  const st = a.stage;
+  return `<div class="ow-stage" data-lanes="${st.lanes.length}" data-auto="${a.id}"${st.props ? ' data-props' : ''}>
+    <div class="ow-stage__main">
+      <p class="ow-stage__desc">${esc(t(`ow.a.${a.id}.d`))} <span class="demo-tag">${esc(t('ow.example'))}</span></p>
+      <div class="ow-flow">
+        <svg class="ow-flow__svg" aria-hidden="true" focusable="false"></svg>
+        ${trigHtml(st)}
+        <div class="ow-lanes">${st.lanes.map(laneHtml).join('')}</div>
+      </div>
+    </div>
+    <div class="ow-stage__side">
+      <p class="ow-stage__k">${esc(t('ow.st.log'))}</p>
+      <ol class="ow-log" aria-live="polite"></ol>
+      <p class="ow-done" hidden>${ic('check-circle')}<b>${esc(t('ow.st.done'))}</b><span>${esc(t('ow.st.doneSub'))}</span></p>
+      <div class="ow-stage__btns">
+        <button type="button" class="btn btn--ghost btn--sm" data-ow-again>${ic('refresh')}<span>${esc(t('ow.st.again'))}</span></button>
+        <button type="button" class="btn btn--night btn--sm" data-ow-close>${esc(t('ow.st.close'))}</button>
+      </div>
+    </div>
+  </div>`;
+}
+function offIn(el, anc) { let x = 0, y = 0, e = el; while (e && e !== anc) { x += e.offsetLeft; y += e.offsetTop; e = e.offsetParent; } return { x, y }; }
+
+/* devices: parent phone (chat, in the family's language) · your phone (lock screen) · staff/kitchen tablet */
+function devWidth(box, n) {
+  const w = box.clientWidth || 160;
+  return Math.round(Math.min(w, n === 1 ? 230 : 214));
+}
+function makeTablet(l, tm, w) {
+  const el = h(`<div class="ow-tab" style="--pw:${w}px"><div class="ow-tab__screen">
+    <div class="ow-tab__bar"><span class="ow-tab__who">${ic(l.role === 'kitchen' ? 'chef' : 'users')}<span>${esc(t(l.role === 'kitchen' ? 'ow.st.tabKitchen' : 'ow.st.tabStaff'))}</span></span><span class="tnum" data-ow-tabtime>${esc(tm)}</span></div>
+    <div class="ow-tab__list"></div>
+    <div class="ow-tab__empty">${ic('check-circle')}<span>${esc(t('ow.st.tabEmpty'))}</span></div>
+  </div></div>`);
+  el.setTime = x => { $('[data-ow-tabtime]', el).textContent = x; };
+  return el;
+}
+function makeDevices(F) {
+  const st = F.a.stage, n = st.lanes.length;
+  const tm = st.time === 'now' ? App.fmt.time(new Date()) : st.time;
+  F.devs = {};
+  st.lanes.forEach(l => {
+    const box = $(`[data-lane="${l.id}"] .ow-lane__dev`, F.stage);
+    box.innerHTML = '';
+    const w = devWidth(box, n);
+    if (l.kind === 'tablet') { const tb = makeTablet(l, tm, w); box.append(tb); F.devs[l.id] = { kind: 'tablet', el: tb, l }; return; }
+    const ph = App.ui.phone({ time: tm, size: w, max: 2 });
+    ph.classList.add('ow-phone');
+    const nl = $('.phone__notifs', ph); if (nl) nl.setAttribute('aria-live', 'off');
+    if (l.kind === 'parent') {
+      ph.setAttribute('lang', l.lang); ph.setAttribute('dir', l.lang === 'ru' ? 'ltr' : 'rtl');
+      const chat = ph.chat({ title: MSG_TITLE[l.lang] });
+      F.devs[l.id] = { kind: 'parent', el: ph, chat, l };
+    } else {
+      F.devs[l.id] = { kind: 'owner', el: ph, l };
+    }
+    box.append(ph);
+  });
+}
+function sizeDevices(F) {
+  if (!F || !F.devs) return;
+  const n = F.a.stage.lanes.length;
+  Object.values(F.devs).forEach(d => { const w = devWidth(d.el.parentElement, n); d.el.style.setProperty('--pw', w + 'px'); });
+}
+function layoutPaths(F) {
+  const flow = F.flow, svg = $('.ow-flow__svg', flow); if (!flow || !svg) return;
+  const W = flow.clientWidth, H = flow.clientHeight;
+  svg.setAttribute('viewBox', `0 0 ${W} ${H}`); svg.setAttribute('width', W); svg.setAttribute('height', H);
+  const trig = $('[data-ow-trig]', flow), tp = offIn(trig, flow);
+  const x0 = tp.x + trig.offsetWidth / 2, y0 = tp.y + trig.offsetHeight;
+  let out = '';
+  F.a.stage.lanes.forEach(l => {
+    const chip = $(`[data-lane="${l.id}"] .ow-lane__chip`, flow), cp = offIn(chip, flow);
+    const x1 = cp.x + chip.offsetWidth / 2, y1 = cp.y + 1, my = (y0 + y1) / 2;
+    const d = `M${x0.toFixed(1)} ${y0.toFixed(1)}C${x0.toFixed(1)} ${my.toFixed(1)} ${x1.toFixed(1)} ${my.toFixed(1)} ${x1.toFixed(1)} ${y1.toFixed(1)}`;
+    out += `<path class="ow-flow__wire" data-wire="${l.id}" d="${d}"/><path class="ow-flow__lit" data-lit="${l.id}" d="${d}"/>`;
+  });
+  svg.innerHTML = out;
+  F.paths = {}; F.lits = {};
+  F.a.stage.lanes.forEach(l => {
+    const p = $(`[data-wire="${l.id}"]`, svg), lit = $(`[data-lit="${l.id}"]`, svg);
+    const len = p.getTotalLength();
+    lit.style.strokeDasharray = len; lit.style.strokeDashoffset = F.litOn[l.id] ? 0 : len;
+    F.paths[l.id] = p; F.lits[l.id] = lit;
+  });
+}
+function travel(F, id) {
+  const path = F.paths[id], lit = F.lits[id];
+  const chip = $(`[data-lane="${id}"] .ow-lane__chip`, F.stage);
+  const done = () => {
+    F.litOn[id] = true; if (lit) lit.style.strokeDashoffset = 0;
+    chip.classList.remove('is-lit'); reflow(chip); chip.classList.add('is-lit');
+    if (!reduced()) { const r = chip.getBoundingClientRect(); App.fx.burst(r.left + r.width / 2, r.top + r.height / 2, { count: 9, speed: [50, 170], size: [6, 14], life: [350, 700], gravity: 60, colors: ['magenta', 'gold', 'white', 'pink'] }); }
+  };
+  const dur = 760 * F.speed;
+  if (!path || reduced() || dur < 80) { done(); return Promise.resolve(); }
+  const len = path.getTotalLength();
+  const tok = h('<span class="ow-token" aria-hidden="true"></span>'); F.flow.append(tok);
+  return new Promise((res, rej) => {
+    const t0 = performance.now(); let n = 0;
+    const step = now => {
+      if (F.signal.aborted) { tok.remove(); rej(abortErr()); return; }
+      const k = Math.min(1, (now - t0) / dur), e = ease(k);
+      const pt = path.getPointAtLength(len * e);
+      tok.style.transform = `translate(${pt.x.toFixed(1)}px, ${pt.y.toFixed(1)}px)`;
+      lit.style.strokeDashoffset = (len * (1 - e)).toFixed(1);
+      if (++n % 3 === 0) { const r = F.flow.getBoundingClientRect(); App.fx.trail(r.left + pt.x, r.top + pt.y, { size: [6, 13], colors: ['magenta', 'gold', 'white'] }); }
+      if (k < 1) requestAnimationFrame(step); else { tok.remove(); done(); res(); }
+    };
+    requestAnimationFrame(step);
+  });
+}
+function typing(d, on) {
+  if (!d || d.kind !== 'parent') return;
+  const body = $('.chatv__body', d.el); if (!body) return;
+  let ty = $('.ow-typing', body);
+  if (on && !ty) { ty = h('<div class="bubble ow-typing is-new"><span class="typing"><i></i><i></i><i></i></span></div>'); body.append(ty); }
+  if (!on && ty) ty.remove();
+}
+function bubble(F, s, out) {
+  const d = F.devs[s.lane]; if (!d || !d.chat) return 0;
+  typing(d, false);
+  const text = inLang(s.text, d.l.lang);
+  const tm = $('.phone__status span', d.el);
+  const b = d.chat.add({ text, out, time: tm ? tm.textContent : '' });
+  if (s.link) {
+    const lk = h(`<span class="ow-blink">${ic('link')}<span>${esc(inLang(s.link, d.l.lang))}</span></span>`);
+    b.insertBefore(lk, $('.bubble__meta', b));
+  }
+  return text.length;
+}
+function tabAdd(F, s) {
+  const d = F.devs[s.lane]; if (!d) return;
+  const list = $('.ow-tab__list', d.el), empty = $('.ow-tab__empty', d.el);
+  if (empty) empty.hidden = true;
+  const c = h(`<div class="ow-tcard ow-tcard--${s.tone || 'warn'} is-new">
+    <span class="ow-tcard__ic">${s.kid ? App.avatar(App.data.kid(s.kid), { label: '' }) : ic(s.icon)}</span>
+    <span class="ow-tcard__m"><b>${ic(s.icon)}<span></span></b><span class="ow-tcard__x"></span></span></div>`);
+  $('b span', c).textContent = L(s.title); $('.ow-tcard__x', c).textContent = L(s.text);
+  list.append(c);
+  while (list.children.length > 2) list.firstElementChild.remove();
+}
+function setProp(F, id, s) {
+  const p = $(`[data-p="${id}"]`, F.stage); if (!p) return;
+  p.dataset.s = s || '';
+  if (s === 'hit' || s === 'pick') { p.classList.remove('is-pop'); reflow(p); p.classList.add('is-pop'); }
+}
+function logLine(F, text) {
+  const ol = $('.ow-log', F.stage); if (!ol || !text) return;
+  $$('li', ol).forEach(li => li.classList.remove('is-cur'));
+  const li = h(`<li class="ow-log__i is-cur">${ic('check')}<span></span></li>`);
+  $('span', li).textContent = L(text);
+  ol.append(li);
+}
+function lightTrig(F) {
+  const tr = $('[data-ow-trig]', F.stage); if (!tr) return;
+  tr.classList.remove('is-lit'); reflow(tr); tr.classList.add('is-lit');
+  if (!reduced()) App.fx.burstAt($('.ow-trig__ic', tr), { count: 14, speed: [80, 220], size: [7, 16], life: [400, 800], gravity: 80, colors: ['magenta', 'gold', 'white', 'blue'] });
+}
+function phase(F, s) {
+  const tr = $('[data-ow-trig]', F.stage);
+  if (s.tt) $('[data-ow-tt]', tr).textContent = L(s.tt);
+  if (s.v) $('[data-ow-tv]', tr).textContent = L(s.v);
+  if (s.time) Object.values(F.devs).forEach(d => (d.el.setTime ? d.el.setTime(s.time) : 0));
+  if (s.prop) for (let i = 0; i < s.prop.length; i += 2) setProp(F, s.prop[i], s.prop[i + 1]);
+  // the wires go dark again so the token visibly runs a second time
+  Object.keys(F.lits || {}).forEach(id => { const lit = F.lits[id]; F.litOn[id] = false; lit.style.strokeDashoffset = lit.getTotalLength(); });
+  $$('.ow-lane__chip', F.stage).forEach(c => c.classList.remove('is-lit'));
+  tr.classList.remove('is-flip'); reflow(tr); tr.classList.add('is-flip');
+  lightTrig(F);
+}
+async function runFilm(F) {
+  const W = ms => sleep(Math.max(0, ms * F.speed), F.signal);
+  for (const s of F.a.stage.steps) {
+    if (F.signal.aborted) throw abortErr();
+    switch (s.t) {
+      case 'trig': lightTrig(F); logLine(F, s.log); await W(650); break;
+      case 'phase': phase(F, s); logLine(F, s.log); await W(750); break;
+      case 'prop': setProp(F, s.id, s.s); logLine(F, s.log); await W(380); break;
+      case 'scan':
+        for (const id of s.ids) { setProp(F, id, 'scan'); await W(250); setProp(F, id, s.end[id] || ''); }
+        logLine(F, s.log); await W(420); break;
+      case 'go': {
+        if (s.count) { const c = $('[data-ow-cnt]', F.stage); if (c) App.countUp(c, s.count, { duration: Math.max(300, 1500 * F.speed) }); }
+        await Promise.all(s.lanes.map(id => travel(F, id))); break;
+      }
+      case 'type': s.lanes.forEach(id => typing(F.devs[id], true)); await W(s.ms || 780); break;
+      case 'msg': { const n = bubble(F, s, false); logLine(F, s.log); await W(s.ms != null ? s.ms : 600 + Math.min(950, n * 8)); break; }
+      case 'reply': { await W(380); bubble(F, s, true); logLine(F, s.log); await W(750); break; }
+      case 'notify': { const d = F.devs[s.lane]; if (d && d.el.notify) d.el.notify({ title: s.title, text: s.text }); logLine(F, s.log); await W(1050); break; }
+      case 'tab': tabAdd(F, s); logLine(F, s.log); await W(s.ms || 1050); break;
+      case 'kpi': kpiBump(s.key, s.d); break;
+    }
+  }
+}
+function finishFilm(F) {
+  const done = $('.ow-done', F.stage);
+  if (done) {
+    done.hidden = false; done.classList.remove('is-in'); reflow(done); done.classList.add('is-in');
+    if (!reduced()) App.fx.burstAt($('.ic', done), { count: 26, speed: [120, 340], size: [8, 20], life: [600, 1100], gravity: 200 });
+  }
+  $$('.ow-log li', F.stage).forEach(li => li.classList.remove('is-cur'));
+  App.haptic(14);
+  // keep "done" in sight on short screens
+  const body = PL.s && PL.s.body;
+  if (body && done) {
+    const br = body.getBoundingClientRect(), dr = $('.ow-stage__btns', F.stage).getBoundingClientRect();
+    if (dr.bottom > br.bottom - 4) {
+      const to = body.scrollTop + dr.bottom - br.bottom + 16;
+      if (reduced() || !body.scrollTo) body.scrollTop = to; else body.scrollTo({ top: to, behavior: 'smooth' });
+    }
+  }
+  // the dashboard reacts: last run → "now", a new line in the activity feed
+  const id = F.a.id;
+  S.last[id] = Date.now();
+  S.feed.unshift({ id, ts: S.last[id], isNew: true });
+  S.feed = S.feed.slice(0, 8);
+  renderFeed(); updLastRuns();
+  S.fresh = id;
+}
+function closePlayer() { if (PL.s && !PL.s.closed) PL.s.close('owner'); }
+function startFilm() {
+  if (!PL.s) return Promise.resolve(false);
+  if (PL.ctrl) PL.ctrl.abort();
+  const a = PL.a, body = PL.s.body;
+  body.innerHTML = stageHtml(a);
+  const ctrl = new AbortController(); PL.ctrl = ctrl; PL.finished = false;
+  const F = { a, stage: $('.ow-stage', body), signal: ctrl.signal, speed: reduced() ? .3 : S.speed, litOn: {}, devs: {} };
+  F.flow = $('.ow-flow', F.stage);
+  PL.F = F;
+  $('[data-ow-again]', F.stage).addEventListener('click', () => { startFilm(); });
+  $('[data-ow-close]', F.stage).addEventListener('click', () => closePlayer());
+  const run = (async () => {
+    try {
+      makeDevices(F);
+      await App.nextFrame();
+      layoutPaths(F);
+      await sleep(reduced() ? 60 : Math.round(380 * Math.max(.6, F.speed)), F.signal);
+      layoutPaths(F);
+      await runFilm(F);
+      if (F.signal.aborted) return false;
+      finishFilm(F);
+      PL.finished = true;
+      return true;
+    } catch (e) { if (!e || e.name !== 'AbortError') console.error('[owner] film', e); return false; }
+  })();
+  PL.run = run;
+  return run;
+}
+function play(id) {
+  const a = BY[id]; if (!a) return Promise.resolve(false);
+  closePlayer();
+  PL.a = a;
+  const s = App.ui.sheet({
+    titleKey: `ow.a.${id}.t`, size: 'full', className: 'ow-sheet',
+    onClose: () => {
+      if (PL.s !== s) return;
+      if (PL.ctrl) PL.ctrl.abort();
+      PL.s = null; PL.F = null;
+      const fid = S.fresh; S.fresh = null;
+      const card = fid && $(`[data-ow-a="${fid}"]`, root);
+      if (card) { card.classList.remove('is-fresh'); reflow(card); card.classList.add('is-fresh'); }
+    }
+  });
+  PL.s = s;
+  return startFilm();
+}
+function onResize() {
+  if (PL.F && PL.s && !PL.s.closed) { sizeDevices(PL.F); layoutPaths(PL.F); }
+}
+
+/* =====================================================================
+   RENDER ALL · LIFECYCLE
+   ===================================================================== */
+function renderAll() {
+  renderHero(); renderBento(); renderFunnel(); renderGrid(); renderFeed();
+}
+function startClock() {
+  stopClock();
+  S.clock = setInterval(() => { renderHero(); updLastRuns(); renderFeed(); }, 30000);
+}
+function stopClock() { if (S.clock) { clearInterval(S.clock); S.clock = 0; } }
+function observe() {
+  if (!('IntersectionObserver' in window)) { introFunnel(); return; }
+  const fun = $('.ow-fun', root);
+  if (!S.funIO) {
+    S.funIO = new IntersectionObserver(es => es.forEach(en => {
+      if (en.isIntersecting && S.active && !S.funDone) { S.funDone = true; introFunnel(); }
+      en.target.classList.toggle('is-vis', en.isIntersecting);
+    }), { threshold: .3 });
+  }
+  S.funIO.unobserve(fun); S.funIO.observe(fun);
+  const auto = $('.ow-auto', root);
+  if (!S.autoIO) S.autoIO = new IntersectionObserver(es => es.forEach(en => en.target.classList.toggle('is-vis', en.isIntersecting)), { threshold: 0 });
+  S.autoIO.unobserve(auto); S.autoIO.observe(auto);
+}
+
+App.module('owner', {
+  view: 'owner',
+  i18n: { he: HE, ru: RU },
+  init(r) {
+    root = r;
+    freshState();
+    renderAll();
+    S.cardsIn = true;
+    r.addEventListener('click', e => {
+      const sw = e.target.closest('[data-ow-sw]'); if (sw) { toggle(sw.dataset.owSw); return; }
+      const per = e.target.closest('[data-ow-period]'); if (per) { setPeriod(per.dataset.owPeriod); return; }
+      const go = e.target.closest('[data-ow-go]');
+      if (go) {
+        const el = $(go.dataset.owGo, root); if (!el) return;
+        App.scrollTo(el, { offset: 84 });
+        if (!el.hasAttribute('tabindex')) el.setAttribute('tabindex', '-1');
+        try { el.focus({ preventScroll: true }); } catch (err) { }
+        el.classList.remove('is-ping'); reflow(el); el.classList.add('is-ping');
+        return;
+      }
+      const pl = e.target.closest('[data-ow-play]'), card = e.target.closest('[data-ow-a]');
+      const id = pl ? pl.dataset.owPlay : card ? card.dataset.owA : null;
+      if (!id) return;
+      if (!S.on[id]) { offNudge(id); return; }
+      play(id);
+    });
+    App.on('lang', () => { renderAll(); if (PL.s && !PL.s.closed) startFilm(); });
+    App.on('motion', () => { const b = $('[data-ow-bento]', root); if (b) b.classList.add('is-on'); const f = $('.ow-fun', root); if (f) f.classList.add('is-on'); });
+    addEventListener('resize', onResize, { passive: true });
+  },
+  onEnter() {
+    S.active = true; S.funDone = false;
+    root.classList.remove('is-paused');
+    renderHero(); updLastRuns(); renderFeed(); startClock();
+    const f = $('.ow-fun', root); if (f && !reduced()) f.classList.remove('is-on');
+    if (reduced()) { introKpis(); introFunnel(); S.funDone = true; }
+    else { clearTimeout(S.introT); $('[data-ow-bento]', root).classList.remove('is-on'); S.introT = setTimeout(introKpis, 320); }
+    observe();
+  },
+  onLeave() {
+    S.active = false;
+    root.classList.add('is-paused');
+    stopClock(); clearTimeout(S.introT); closePlayer();
+  },
+  reset() {
+    closePlayer();
+    freshState();
+    renderAll();
+    const b = $('[data-ow-bento]', root); if (b) b.classList.add('is-on');
+    const f = $('.ow-fun', root); if (f) f.classList.add('is-on');
+  },
+  play,
+  tour: {
+    /* KPIs count up, then the funnel pours (≈ 5.5 s) */
+    async kpis(ctx) {
+      closePlayer();
+      const f = ctx.fast;
+      await ctx.scrollTo(0, { duration: f ? 0 : 420 });
+      introKpis();
+      await ctx.point($('[data-ow-kpi="kids"] .ow-big', root));
+      await ctx.wait(f ? 250 : 850);
+      await ctx.point($('[data-ow-kpi="groups"] .ow-rings', root));
+      await ctx.wait(f ? 250 : 700);
+      await ctx.scrollTo($('#ow-funnel'), { duration: f ? 0 : 650, offset: 72 });
+      S.funDone = true; introFunnel();
+      await ctx.point($('.ow-fs__st:nth-child(2) .ow-fs__track', root));
+      await ctx.wait(f ? 300 : 1300);
+    },
+    /* scroll backstage, play "new lead" and "17:30 summaries" by tapping their cards (≈ 9.5 s) */
+    async automations(ctx) {
+      closePlayer();
+      const f = ctx.fast, prev = S.speed;
+      AUTOS.forEach(a => { if (!S.on[a.id]) toggle(a.id); });
+      const onAbort = () => closePlayer();
+      ctx.signal.addEventListener('abort', onAbort, { once: true });
+      S.speed = f ? .3 : .42;
+      try {
+        await ctx.scrollTo($('#ow-auto .ow-auto__head'), { duration: f ? 0 : 650, offset: 70 });
+        for (const id of ['lead', 'summaries']) {
+          ctx.check();
+          await ctx.tap($(`[data-ow-a="${id}"] [data-ow-play]`, root), { after: 60 });
+          ctx.hideFinger();
+          const t0 = performance.now();
+          while (!PL.finished && performance.now() - t0 < 9000) await ctx.wait(80);
+          ctx.hideFinger();
+          await ctx.wait(f ? 250 : 650);
+          closePlayer();
+          await ctx.wait(f ? 120 : 380);
+        }
+      } finally {
+        S.speed = prev;
+        ctx.signal.removeEventListener('abort', onAbort);
+      }
+    }
+  }
+});
+
+} catch (e) { console.error('[module owner] failed to load', e); }
 })();
 </script>
 </body>
