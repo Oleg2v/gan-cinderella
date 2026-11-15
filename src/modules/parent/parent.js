@@ -717,13 +717,10 @@ function moveInd(instant) {
 /* soft fade on the physical side(s) where more tabs are hidden: tells the thumb "this row scrolls" */
 function tabFades() {
   const tl = q('.pa-tabs'), pill = q('.pa-tabs-pill'); if (!tl || !pill) return;
-  const max = tl.scrollWidth - tl.clientWidth, sl = tl.scrollLeft;
-  let l = false, r = false;
-  if (max > 2) {
-    if (getComputedStyle(tl).direction === 'rtl') { const off = Math.abs(sl); r = off > 2; l = off < max - 2; }
-    else { l = sl > 2; r = sl < max - 2; }
-  }
-  pill.classList.toggle('is-more-l', l); pill.classList.toggle('is-more-r', r);
+  /* measured from the tabs themselves (direction-agnostic; the springy indicator must not count as overflow) */
+  const tr = tl.getBoundingClientRect(); let minL = Infinity, maxR = -Infinity;
+  qq('.pa-tab').forEach(b => { const r = b.getBoundingClientRect(); minL = Math.min(minL, r.left); maxR = Math.max(maxR, r.right); });
+  pill.classList.toggle('is-more-l', minL < tr.left + 1); pill.classList.toggle('is-more-r', maxR > tr.right - 1);
 }
 function selectTab(id, { animate = true, scroll = true, focus = false } = {}) {
   if (!TABS.includes(id)) id = 'today';

@@ -232,7 +232,7 @@
 .pa-fi__time { font-size: var(--fs-sm); font-weight: 700; color: var(--ink-2); white-space: nowrap; }
 .pa-fi__tag { margin-top: 6px; }
 .pa-fi__text { color: var(--ink-2); margin-top: 5px; font-size: .9688rem; line-height: 1.5; }
-.pa-photo { position: relative; margin: 12px 0 0; aspect-ratio: 16 / 10.5; background: var(--sky); box-shadow: inset 0 0 0 1px var(--line); }
+.pa-photo { position: relative; touch-action: manipulation; margin: 12px 0 0; aspect-ratio: 16 / 10.5; background: var(--sky); box-shadow: inset 0 0 0 1px var(--line); }
 .pa-photo > svg { display: block; width: 100%; height: 100%; }
 .pa-like { position: absolute; bottom: 10px; inset-inline-end: 10px; width: 44px; height: 44px; border-radius: 50%; display: grid; place-items: center; background: rgba(255,255,255,.94); color: #BDBAD3; box-shadow: 0 8px 18px -8px rgba(27,26,75,.5); transition: transform .4s var(--ease-spring), color .2s; }
 .pa-like .ic { width: 22px; height: 22px; }
