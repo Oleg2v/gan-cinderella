@@ -25,8 +25,9 @@ const HE = {
   'pb.g.baby': 'תינוקייה', 'pb.g.young': 'צעירים', 'pb.g.big': 'בוגרים',
   'pb.next': 'המשך', 'pb.back': 'חזרה', 'pb.close': 'סגירה', 'pb.done': 'סיום', 'pb.stepOf': 'שלב {n} מתוך {m}',
   'pb.name': 'שם', 'pb.phone': 'טלפון נייד', 'pb.phonePh': '050-000-0000', 'pb.msgLang': 'שפת ההודעות',
-  'pb.errName': 'איך קוראים לכם?', 'pb.errPhone': 'מספר נייד: 10 ספרות, מתחיל ב-05', 'pb.example': 'לדוגמה',
+  'pb.dateFmt': 'יום / חודש / שנה', 'pb.errName': 'איך קוראים לכם?', 'pb.errPhone': 'מספר נייד: 10 ספרות, מתחיל ב-05', 'pb.example': 'לדוגמה',
   'pb.kw.holTile': 'חג', 'pb.kw.openTile': 'חול המועד, פתוחים',
+  'pb.kw.m.sukkot': 'תשרי', 'pb.kw.m.pesach': 'ניסן', 'pb.kw.range': '{a}–{b} ב{m}', 'pb.kw.dayA11y': '{d} ב{m}: {s}',
   /* eligibility */
   'pb.el.title': 'בדיקת זכאות', 'pb.el.intro': 'שלוש שאלות קצרות, בלי מספרים ובלי מסמכים.',
   'pb.el.q1': 'ההורים עובדים או לומדים?', 'pb.el.q1a': 'עובדים', 'pb.el.q1b': 'לומדים', 'pb.el.q1c': 'גם וגם', 'pb.el.q1d': 'מצב אחר',
@@ -90,11 +91,12 @@ const RU = {
   'pb.kw.nature': 'Природа и животные', 'pb.kw.natureP': 'Знакомимся с растениями и маленькими животными.',
   'pb.kw.hol': 'Работаем в холь а-моэд', 'pb.kw.holP': 'Каникул у нас меньше, чем по официальному календарю. В холь а-моэд Суккота и Песаха сад открыт.',
   'pb.kw.holSeg': 'Праздник', 'pb.kw.sukkot': 'Суккот', 'pb.kw.pesach': 'Песах', 'pb.kw.stripA11y': 'Холь а-моэд: сад открыт',
-  'pb.kw.legOn': 'Холь а-моэд · открыто', 'pb.kw.legOff': 'Праздник', 'pb.kw.holTile': 'Праздник', 'pb.kw.openTile': 'Холь а-моэд, открыто',
+  'pb.kw.legOn': 'Холь а-моэд · открыто', 'pb.kw.legOff': 'Праздник', 'pb.kw.holTile': 'праздник', 'pb.kw.openTile': 'холь а-моэд, открыто',
+  'pb.kw.m.sukkot': 'тишрея', 'pb.kw.m.pesach': 'нисана', 'pb.kw.range': '{a}–{b} {m}', 'pb.kw.dayA11y': '{d} {m}: {s}',
   'pb.rc.eye': 'Мэон для детей от рождения до 3 лет', 'pb.rc.h': 'Признанный мэон под надзором',
   'pb.rc.lead': '«Синдерелла» работает как признанный мэон (ясли-сад) под надзором, для детей от рождения до 3 лет.',
   'pb.rc.discT': 'Скидка для семей с правом на субсидию', 'pb.rc.discP': 'Семьи, у которых есть право на субсидию, получают у нас заметную скидку.',
-  'pb.rc.btn': 'Проверить право', 'pb.rc.hint': 'Три коротких вопроса и понятная инструкция в WhatsApp',
+  'pb.rc.btn': 'Проверить право на скидку', 'pb.rc.hint': 'Три коротких вопроса и понятная инструкция в WhatsApp',
   'pb.av.eye': 'Места в группах', 'pb.av.h': 'Свободные места', 'pb.av.lead': 'Так сейчас выглядят группы. Можно забронировать место или встать в лист ожидания.',
   'pb.g.baby': 'Младенческая группа', 'pb.g.young': 'Младшая группа', 'pb.g.big': 'Старшая группа',
   'pb.av.a11yBaby': 'Занято 6 мест из 8', 'pb.av.a11yYoung': 'Занято 9 мест из 10', 'pb.av.a11yBig': 'Все 12 мест заняты',
@@ -114,7 +116,7 @@ const RU = {
   'pb.fab': 'Спросите нас',
   'pb.next': 'Дальше', 'pb.back': 'Назад', 'pb.close': 'Закрыть', 'pb.done': 'Готово', 'pb.stepOf': 'Шаг {n} из {m}',
   'pb.name': 'Имя', 'pb.phone': 'Мобильный', 'pb.phonePh': '050-000-0000', 'pb.msgLang': 'Язык сообщений',
-  'pb.errName': 'Как вас зовут?', 'pb.errPhone': 'Мобильный номер: 10 цифр, начинается с 05', 'pb.example': 'пример',
+  'pb.dateFmt': 'дд.мм.гггг', 'pb.errName': 'Как вас зовут?', 'pb.errPhone': 'Мобильный номер: 10 цифр, начинается с 05', 'pb.example': 'пример',
   'pb.el.title': 'Проверка права на скидку', 'pb.el.intro': 'Три коротких вопроса, без цифр и документов.',
   'pb.el.q1': 'Родители работают или учатся?', 'pb.el.q1a': 'Работаем', 'pb.el.q1b': 'Учимся', 'pb.el.q1c': 'И то, и другое', 'pb.el.q1d': 'Другое',
   'pb.el.q2': 'Сколько детей в семье?', 'pb.el.q2a': 'Один', 'pb.el.q2b': 'Двое или трое', 'pb.el.q2c': 'Четверо и больше',
@@ -124,7 +126,7 @@ const RU = {
   'pb.el.msg1': 'Здравствуйте! Вот короткая инструкция:\n1. Проверьте право на субсидию на официальном сайте.\n2. Сохраните подтверждение.\n3. Приложите его при записи к нам.\nЕсть вопросы? Пишите сюда.',
   'pb.el.msg2': 'Здравствуйте! Вот короткая инструкция:\n1. Сохраните полученное подтверждение права.\n2. Приложите его при записи к нам.\nЕсть вопросы? Пишите сюда.',
   'pb.wl.title': 'Лист ожидания', 'pb.wl.intro': 'Когда освободится место, напишем по порядку очереди.', 'pb.wl.child': 'Имя ребёнка', 'pb.wl.dob': 'Дата рождения', 'pb.wl.group': 'Группа',
-  'pb.wl.submit': 'Встать в очередь', 'pb.wl.place': 'Вы {n}-е в очереди', 'pb.wl.you': 'вы', 'pb.wl.wa': 'Напишем в WhatsApp, как только освободится место',
+  'pb.wl.submit': 'Встать в очередь', 'pb.wl.place': 'Вы на {n}-м месте в очереди', 'pb.wl.you': 'вы', 'pb.wl.wa': 'Напишем в WhatsApp, как только освободится место',
   'pb.wl.ref': 'Номер заявки', 'pb.wl.copy': 'Скопировать', 'pb.wl.copied': 'Номер заявки скопирован', 'pb.wl.errChild': 'Как зовут ребёнка?', 'pb.wl.gate': 'группа',
   'pb.ck.title': 'Моё место в очереди', 'pb.ck.label': 'Номер заявки', 'pb.ck.hint': 'В демо подойдёт любой номер.', 'pb.ck.btn': 'Проверить', 'pb.ck.moved': 'С момента записи вы продвинулись на одно место',
   'pb.bk.title': 'Запись на экскурсию', 'pb.bk.day': 'Выберите день', 'pb.bk.slot': 'Выберите время', 'pb.bk.you': 'Ваши данные',
@@ -169,7 +171,7 @@ function openSheet(type, o) {
   const prev = mine.get(type); if (prev && !prev.closed) prev.close('replace');
   const s = App.ui.sheet(Object.assign({}, o, {
     className: `pb-sh pb-sh--${type} ${o.className || ''}`,
-    onClose: r => { if (mine.get(type) === s) mine.delete(type); o.onClose && o.onClose(r); }
+    onClose: r => { if (mine.get(type) === s) mine.delete(type); o.onClose && o.onClose(r); setTimeout(() => Fab.schedule(), 560); }
   }));
   mine.set(type, s); return s;
 }
@@ -201,6 +203,9 @@ function groupFor(months) { if (months == null || isNaN(months)) return null; if
 function monthsSince(iso) { if (!iso) return null; const d = new Date(iso + 'T12:00:00'); if (isNaN(d)) return null; const n = new Date(); return (n.getFullYear() - d.getFullYear()) * 12 + (n.getMonth() - d.getMonth()) - (n.getDate() < d.getDate() ? 1 : 0); }
 const isoMonthsAgo = m => { const d = new Date(); d.setMonth(d.getMonth() - m); d.setDate(Math.min(d.getDate(), 26)); return d.toISOString().slice(0, 10); };
 const todayIso = () => new Date().toISOString().slice(0, 10);
+/* iOS renders an empty <input type=date> as a blank box: show the format under it while it is empty */
+const dateHint = (id, v) => `<span class="hint pb-datehint" id="${id}" ${v ? 'hidden' : ''}>${icon('calendar')}${T('pb.dateFmt')}</span>`;
+const syncDateHint = inp => { const hn = inp && document.getElementById(inp.getAttribute('aria-describedby')); if (hn) hn.hidden = !!inp.value; };
 
 /* =====================================================================
    SECTION ART + MOTION
@@ -278,13 +283,22 @@ const Hol = {
     }));
     App.on('lang', () => this.render(true));
   },
+  /* Israel calendar: 15 = first day of the festival, then חול המועד, then the closing festival day */
+  DAYS: { sukkot: [15, 22], pesach: [15, 21] },
+  HEB: { 15: 'ט״ו', 16: 'ט״ז', 17: 'י״ז', 18: 'י״ח', 19: 'י״ט', 20: 'כ׳', 21: 'כ״א', 22: 'כ״ב' },
   render(keep) {
     const lit = keep && this.strip.classList.contains('is-lit');
     const ic = this.kind === 'sukkot' ? 'leaf' : 'sprout';
-    this.strip.innerHTML = [0, 1, 2, 3, 4, 5, 6].map(i => {
-      const open = i > 0 && i < 6;
-      return `<li class="pb-day ${open ? 'is-open' : 'is-hag'}" style="--i:${i}"><span class="sr-only">${esc(t(open ? 'pb.kw.openTile' : 'pb.kw.holTile'))}</span>${open ? `<svg class="ic ic--fill" aria-hidden="true"><use href="#i-sparkle"/></svg>` : icon(ic)}</li>`;
-    }).join('');
+    const [a, b] = this.DAYS[this.kind], he = lang() === 'he';
+    const mon = t('pb.kw.m.' + this.kind), num = d => (he ? this.HEB[d] : String(d));
+    $('.pb-hol__m', root).textContent = t('pb.kw.range', { a: num(a), b: num(b), m: mon });
+    let out = '';
+    for (let d = a; d <= b; d++) {
+      const i = d - a, open = d > a && d < b;
+      out += `<li class="pb-dayw" style="--i:${i}"><span class="pb-day ${open ? 'is-open' : 'is-hag'}" aria-hidden="true">${open ? sp() : icon(ic)}</span><span class="pb-day__d" aria-hidden="true">${esc(num(d))}</span><span class="sr-only">${esc(t('pb.kw.dayA11y', { d: num(d), m: mon, s: t(open ? 'pb.kw.openTile' : 'pb.kw.holTile') }))}</span></li>`;
+    }
+    this.strip.style.setProperty('--n', b - a + 1);
+    this.strip.innerHTML = out;
     this.strip.classList.toggle('is-lit', !!lit);
   },
   light(force) {
@@ -328,26 +342,62 @@ function initArt() {
 }
 
 /* ---------- floating assistant button ---------- */
+/* The bubble only appears over "empty" ground (band/card padding, gaps, ragged line ends).
+   Whenever text, a button, a field or an illustration would sit under it, it steps aside. */
+const FAB_HIT = 'a[href],button,input,select,textarea,label,summary,[role="button"],[role="switch"],[role="tab"],[tabindex]:not([tabindex="-1"])';
+const FAB_TEXT = 'h1,h2,h3,h4,h5,p,li,dt,dd,small,b,strong,.bubble,.tag,.demo-tag,.chip,.eyebrow,.lead';
 const Fab = {
+  el: null, shown: false, last: 0, tmo: 0, showTmo: 0,
   init() {
-    this.el = $('.pb-fab', root); this.labeled = false;
+    this.el = $('.pb-fab', root);
     this.el.addEventListener('click', () => openAssistant());
-    App.onScroll(y => this.update(y));
-    addEventListener('resize', () => this.update(), { passive: true });
+    App.onScroll(() => this.schedule());
+    addEventListener('resize', () => this.schedule(), { passive: true });
+    App.on('lang', () => this.schedule());
   },
-  update(y = App.scrollY()) {
+  /* throttled (~10/s) with a trailing check after scrolling settles */
+  schedule() {
+    const now = performance.now(); clearTimeout(this.tmo);
+    if (now - this.last > 100) { this.last = now; this.update(); }
+    this.tmo = setTimeout(() => { this.last = performance.now(); this.update(); }, 140);
+  },
+  isContent(el) {
+    if (!el || el === document.documentElement || el === document.body) return false;
+    if (el.closest('.dock,.topbar,.pb-fab')) return false;
+    if (el.closest(FAB_HIT)) return true;
+    if (el.closest('svg') || /^(IMG|CANVAS|VIDEO)$/.test(el.tagName)) return true;
+    if (el.matches(FAB_TEXT) || el.closest(FAB_TEXT)) return true;
+    for (const n of el.childNodes) if (n.nodeType === 3 && n.textContent.trim()) return true;
+    return false;
+  },
+  /* sample the bubble (plus a small breathing margin) on a ring of points */
+  clear() {
+    const r = this.el.getBoundingClientRect(); if (!r.width) return false;
+    const cx = r.left + r.width / 2, cy = r.top + r.height / 2, R = r.width / 2 + 6;
+    const pts = [[0, 0]]; for (let i = 0; i < 8; i++) { const a = i * Math.PI / 4; pts.push([Math.cos(a) * R, Math.sin(a) * R]); }
+    for (const [dx, dy] of pts) {
+      const x = cx + dx, y = cy + dy; if (x < 0 || y < 0 || x >= innerWidth || y >= innerHeight) continue;
+      const stack = document.elementsFromPoint(x, y);
+      const top = stack.find(el => !this.el.contains(el));
+      if (this.isContent(top)) return false;
+    }
+    return true;
+  },
+  update() {
     if (!this.el) return;
+    const y = App.scrollY();
     const docH = document.documentElement.scrollHeight;
     const nearEnd = y + innerHeight > docH - 260;
-    const clock = document.getElementById('clock'); let inClock = false;
-    if (clock) { const r = clock.getBoundingClientRect(); inClock = r.top < innerHeight * .6 && r.bottom > innerHeight * .75; }
-    const show = App.state.view === 'visitors' && y > innerHeight * .8 && !nearEnd && !inClock;
-    this.el.classList.toggle('is-shown', show);
-    if (show && !this.labeled) {
-      this.labeled = true; this.el.classList.add('is-labeled');
-      setTimeout(() => this.el.classList.remove('is-labeled'), 4200);
-    }
-  }
+    const zone = id => { const el = document.getElementById(id); if (!el) return false; const b = el.getBoundingClientRect(); return b.top < innerHeight * .75 && b.bottom > innerHeight * .25; };
+    const want = App.state.view === 'visitors' && !App.tour.running && !document.documentElement.classList.contains('sheet-open') &&
+      y > innerHeight * .8 && !nearEnd && !zone('clock') && !zone('pb-ask');
+    const ok = want && this.clear();
+    clearTimeout(this.showTmo);
+    if (!ok) { this.set(false); return; }
+    // hide at once, show only after the spot has stayed clear for a moment (no flicker while scrolling)
+    if (!this.shown) this.showTmo = setTimeout(() => { if (this.clear()) this.set(true); }, 260);
+  },
+  set(v) { if (this.shown === v) return; this.shown = v; this.el.classList.toggle('is-shown', v); this.el.tabIndex = v ? 0 : -1; this.el.setAttribute('aria-hidden', String(!v)); }
 };
 
 /* =====================================================================
@@ -410,7 +460,7 @@ function elDone(s) {
    ===================================================================== */
 const WL = { ref: null, group: 'big', name: '' };
 function queueHTML(pos) {
-  const looks = [{ skin: 2, hair: 'curly', hc: 0, bg: 3, shirt: SHIRT[2] }, { skin: 0, hair: 'bob', hc: 4, bg: 0, shirt: SHIRT[4] }, { skin: 1, hair: 'pigtails', hc: 2, bg: 5, shirt: SHIRT[0], bow: true }];
+  const looks = [{ skin: 2, hair: 'curly', hc: 0, bg: 3, shirt: SHIRT[2] }, { skin: 0, hair: 'bob', hc: 4, bg: 0, shirt: SHIRT[4] }, { skin: 1, hair: 'curly', hc: 3, bg: 5, shirt: SHIRT[0] }];
   let out = `<div class="pb-queue" role="img" aria-label="${esc(t('pb.wl.place', { n: pos }))}"><span class="pb-queue__gate">${icon('castle')}<span>${esc(t('pb.wl.gate'))}</span></span><span class="pb-queue__trail" aria-hidden="true"></span>`;
   for (let i = 1; i <= pos; i++) {
     const me = i === pos;
@@ -425,14 +475,16 @@ function openWaitlist(group = 'big') {
   box.innerHTML = `<form class="stack pb-form" style="--gap:16px" novalidate>
       <p class="muted small">${T('pb.wl.intro')}</p>
       <div class="field"><label for="pb-wl-n">${T('pb.wl.child')}</label><input class="input" id="pb-wl-n" autocomplete="off" required><span class="pb-err" hidden>${T('pb.wl.errChild')}</span></div>
-      <div class="field"><label for="pb-wl-d">${T('pb.wl.dob')}</label><input class="input" id="pb-wl-d" type="date" max="${todayIso()}"></div>
+      <div class="field"><label for="pb-wl-d">${T('pb.wl.dob')}</label><input class="input" id="pb-wl-d" type="date" max="${todayIso()}" aria-describedby="pb-wl-dh">${dateHint('pb-wl-dh', '')}</div>
       <div class="field"><span class="label">${T('pb.wl.group')}</span><div class="chips" role="group">${App.data.groups.map(g => `<button type="button" class="chip" data-g="${g.id}" aria-pressed="${g.id === WL.group}">${T('pb.g.' + g.id)}</button>`).join('')}</div></div>
       ${sfoot(`<button type="submit" class="btn btn--primary btn--block">${icon('hourglass')}${T('pb.wl.submit')}</button>`)}
     </form>`;
   const form = $('form', box);
   const pickG = id => { WL.group = id; $$('[data-g]', box).forEach(b => b.setAttribute('aria-pressed', b.dataset.g === id)); };
   $$('[data-g]', box).forEach(b => b.addEventListener('click', () => pickG(b.dataset.g)));
-  $('#pb-wl-d', box).addEventListener('change', e => { const g = groupFor(monthsSince(e.target.value)); if (['baby', 'young', 'big'].includes(g)) pickG(g); });
+  const wd = $('#pb-wl-d', box);
+  const onDob = () => { syncDateHint(wd); const g = groupFor(monthsSince(wd.value)); if (['baby', 'young', 'big'].includes(g)) pickG(g); };
+  wd.addEventListener('change', onDob); wd.addEventListener('input', onDob);
   form.addEventListener('submit', e => {
     e.preventDefault();
     const n = $('#pb-wl-n', box); const ok = n.value.trim().length > 1;
@@ -656,7 +708,7 @@ function rgRender() {
     body.innerHTML = `<div class="stack pb-anim-in" style="--gap:16px">
       ${RG.pre ? `<span class="tag tag--pink pb-self-start">${icon('star')}${esc(t('pb.rg.reserve', { g: groupName(RG.pre) }))}</span>` : ''}
       <div class="field"><label for="pb-rg-n">${T('pb.rg.cname')}</label><input class="input" id="pb-rg-n" autocomplete="off" value="${esc(RG.name)}"></div>
-      <div class="field"><label for="pb-rg-d">${T('pb.rg.dob')}</label><input class="input" id="pb-rg-d" type="date" max="${todayIso()}" value="${esc(RG.dob)}"></div>
+      <div class="field"><label for="pb-rg-d">${T('pb.rg.dob')}</label><input class="input" id="pb-rg-d" type="date" max="${todayIso()}" value="${esc(RG.dob)}" aria-describedby="pb-rg-dh">${dateHint('pb-rg-dh', RG.dob)}</div>
       <button type="button" class="link-btn pb-self-start pb-sample" data-sample>${icon('wand')}${T('pb.rg.sample')}</button>
       <div class="pb-gpick-wrap">
         <div class="pb-gpick-h"><span class="label">${T('pb.rg.groupH')}</span><span class="demo-tag">${esc(t('core.example'))}</span></div>
@@ -670,7 +722,7 @@ function rgRender() {
     foot.innerHTML = sfoot(`<button type="button" class="btn btn--primary btn--block" data-next>${T('pb.next')}${icon('arrow', 'ic--dir')}</button>`);
     const n = $('#pb-rg-n', body), d = $('#pb-rg-d', body);
     const upd = (animate) => {
-      RG.name = n.value; RG.dob = d.value; RG.months = monthsSince(d.value);
+      RG.name = n.value; RG.dob = d.value; RG.months = monthsSince(d.value); syncDateHint(d);
       const g = groupFor(RG.months); RG.group = ['baby', 'young', 'big'].includes(g) ? g : null;
       const note = $('.pb-gnote', body);
       note.className = 'pb-gnote small' + (g === 'older' || g === 'future' ? ' is-warn' : '');
@@ -891,8 +943,8 @@ const M = App.module('pubBottom', {
       const es = mine.get('elig'); if (es && !es.closed && EL.step < 3) elRender(es);
     });
   },
-  onEnter() { root && root.classList.remove('pb-paused'); Fab.update(); },
-  onLeave() { root && root.classList.add('pb-paused'); if (Fab.el) Fab.el.classList.remove('is-shown'); },
+  onEnter() { root && root.classList.remove('pb-paused'); Fab.schedule(); },
+  onLeave() { root && root.classList.add('pb-paused'); clearTimeout(Fab.showTmo); Fab.set(false); },
   reset() {
     closeMine(); CH.log = []; CH.busy = Promise.resolve();
     WL.ref = null; Plate.reset();

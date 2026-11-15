@@ -311,7 +311,8 @@ function layout() {
   let H = hero.offsetHeight;
   const cb = content.offsetTop + content.offsetHeight;
   const dockH = parseFloat(getComputedStyle(html).getPropertyValue('--dock-h')) || 68;
-  const base = desk ? clamp(Math.round(H * .13), 96, 140) : Math.round(dockH + 22 + 54);
+  // phone: dock + gap + the scroll cue (40) + breathing room, so the cue sits on clean grass below the castle
+  const base = desk ? clamp(Math.round(H * .14), 104, 150) : Math.round(dockH + 22 + 40 + 22);
   const minCh = desk ? 230 : 156, maxCh = desk ? 440 : 320;
   let room = H - cb - base - (desk ? 18 : 14);
   if (room < minCh) { H += minCh - room; hero.style.minHeight = H + 'px'; room = minCh; }
@@ -393,13 +394,23 @@ function buildBeads() {
   let out = '';
   for (let hh = 7; hh <= 17; hh++) out += `<button type="button" class="pt-bead" data-h="${hh}" aria-label="${App.esc(App.t('pt.bead', { t: pad(hh) + ':00' }))}"><i></i><span>${pad(hh)}</span></button>`;
   strip.insertAdjacentHTML('beforeend', out);
+  R.beads = $$('.pt-bead', strip); S.hour = null; S.ckey = '';
+}
+/* cached element refs for the scroll loop (no queries, no layout reads per frame) */
+const R = {};
+function cacheClock() {
+  R.hm = $('.pt-hand--m', dial); R.hh = $('.pt-hand--h', dial); R.ro = $('.pt-readout bdi', dial); R.roBox = $('.pt-readout', dial);
+  R.bg = $$('.pt-bg', stage); R.dim = $('.pt-stage__dim', stage); R.ns = $('.pt-nstars', stage); R.sun = $('.pt-stage__sun', stage);
+  R.line = $('.pt-ruler__line', stage); R.mark = $('.pt-ruler__mark', stage); R.win = $('.pt-ruler__win', stage);
+  R.scenes = $$('.pt-sc', stage);
 }
 function measureRuler() {
   const win = $('.pt-ruler__win', root), strip = $('.pt-ruler__strip', root); if (!win || !strip || !win.offsetWidth) return;
-  strip.style.transform = 'none';
-  S.winW = win.offsetWidth; S.stripW = strip.offsetWidth;
-  S.beadX = $$('.pt-bead', strip).map(b => b.offsetLeft + b.offsetWidth / 2);
-  $('.pt-ruler', root).classList.toggle('is-fit', S.stripW <= S.winW);
+  R.beads = $$('.pt-bead', strip);
+  S.winL = win.offsetLeft; S.winW = win.offsetWidth; S.stripW = strip.offsetWidth;
+  S.beadX = R.beads.map(b => b.offsetLeft + b.offsetWidth / 2);
+  S.stW = stage.offsetWidth; S.stH = stage.offsetHeight;
+  S.ckey = '';
 }
 /* the dial takes whatever height the stage has left (tour captions / floating buttons reserve the bottom) */
 function sizeDial() {
@@ -426,40 +437,43 @@ function jumpTo(hh, o = {}) {
   const min = (clamp(hh, 7, 17) - 7) * 60;
   return App.scrollTo(yForMinute(min, hh >= 17 ? .04 : .004), Object.assign({ duration: 900 }, o));
 }
-function updateClock() {
-  if (S.static || !track || !S.active) return;
+function updateClock(force) {
+  if (S.static || !track || !S.active || !R.hm) return;
+  if (!force && !S.clockVis && S.scene !== -1) return; // offscreen: nothing to draw
   const p = App.progress(track);
+  const key = p.toFixed(5);
+  if (!force && key === S.ckey) return; S.ckey = key;
   const k = clamp((p - P0) / (P1 - P0), 0, 1), min = k * 600, t = 7 + min / 60;
   // hands
-  $('.pt-hand--m', dial).style.transform = `rotate(${(min * 6).toFixed(2)}deg)`;
-  $('.pt-hand--h', dial).style.transform = `rotate(${(210 + min * .5).toFixed(2)}deg)`;
+  R.hm.style.transform = `rotate(${(min * 6).toFixed(2)}deg)`;
+  R.hh.style.transform = `rotate(${(210 + min * .5).toFixed(2)}deg)`;
   const txt = fmtMin(Math.min(600, min));
-  const ro = $('.pt-readout bdi', dial); if (ro.textContent !== txt) ro.textContent = txt;
+  if (R.ro.textContent !== txt) R.ro.textContent = txt;
   // sky through the day
-  const bg = $$('.pt-bg', stage);
-  bg[1].style.opacity = smooth(t, 8, 10.2).toFixed(3);
-  bg[2].style.opacity = smooth(t, 12.4, 14.8).toFixed(3);
-  bg[3].style.opacity = smooth(t, 15.2, 16.9).toFixed(3);
+  R.bg[1].style.opacity = smooth(t, 8, 10.2).toFixed(3);
+  R.bg[2].style.opacity = smooth(t, 12.4, 14.8).toFixed(3);
+  R.bg[3].style.opacity = smooth(t, 15.2, 16.9).toFixed(3);
   const dim = smooth(min, 318, 345) * (1 - smooth(min, 438, 462));
-  $('.pt-stage__dim', stage).style.opacity = (dim * .24).toFixed(3);
-  $('.pt-nstars', stage).style.opacity = dim.toFixed(3);
-  const sun = $('.pt-stage__sun', stage), sw = stage.offsetWidth, sh = stage.offsetHeight, fr = min / 600;
-  sun.style.transform = `translate3d(${((fr - .5) * sw * .84).toFixed(1)}px, ${(sh * (.6 - .48 * Math.sin(Math.PI * fr))).toFixed(1)}px, 0)`;
-  sun.style.opacity = (1 - dim * .8).toFixed(3);
+  R.dim.style.opacity = (dim * .24).toFixed(3);
+  R.ns.style.opacity = dim.toFixed(3);
+  const nap = dim > .02; if (nap !== S.nap) { S.nap = nap; stage.classList.toggle('is-nap', nap); }
+  const sw = S.stW || 390, sh = S.stH || 800, fr = min / 600;
+  R.sun.style.transform = `translate3d(${((fr - .5) * sw * .84).toFixed(1)}px, ${(sh * (.6 - .48 * Math.sin(Math.PI * fr))).toFixed(1)}px, 0)`;
+  R.sun.style.opacity = (1 - dim * .8).toFixed(3);
   // scene
   let idx = 0; for (let i = 0; i < SCENES.length; i++) if (min >= SCENES[i].from) idx = i;
   if (idx !== S.scene) setScene(idx, S.scene !== -1);
   // ruler
   const hi = clamp(Math.floor(t + 1e-6), 7, 17) - 7;
-  $$('.pt-bead', stage).forEach((b, i) => { b.classList.toggle('is-on', i === hi); b.classList.toggle('is-past', i < hi); if (i === hi) b.setAttribute('aria-current', 'time'); else b.removeAttribute('aria-current'); });
-  const line = $('.pt-ruler__line', stage); line && line.style.setProperty('--pt-fill', k.toFixed(4));
-  if (S.beadX.length === 11) {
-    const strip = $('.pt-ruler__strip', stage);
+  if (hi !== S.hour && R.beads) {
+    const first = S.hour == null; S.hour = hi;
+    R.beads.forEach((b, i) => { b.classList.toggle('is-on', i === hi); b.classList.toggle('is-past', i < hi); if (i === hi) b.setAttribute('aria-current', 'time'); else b.removeAttribute('aria-current'); });
+    if (!first && !App.motion.reduced) { R.roBox.classList.remove('is-tick'); void R.roBox.offsetWidth; R.roBox.classList.add('is-tick'); }
+  }
+  R.line && R.line.style.setProperty('--pt-fill', k.toFixed(4));
+  if (S.beadX.length === 11 && R.mark) {
     const f = (t - 7), i0 = clamp(Math.floor(f), 0, 9), pos = lerp(S.beadX[i0], S.beadX[i0 + 1], clamp(f - i0, 0, 1));
-    const tx = S.stripW <= S.winW ? (S.winW - S.stripW) / 2 : clamp(S.winW / 2 - pos, S.winW - S.stripW, 0);
-    strip.style.transform = `translate3d(${tx.toFixed(1)}px,0,0)`;
-    const mark = $('.pt-ruler__mark', stage), win = $('.pt-ruler__win', stage);
-    if (mark) mark.style.transform = `translate3d(${(win.offsetLeft + tx + pos).toFixed(1)}px,0,0)`;
+    R.mark.style.transform = `translate3d(${((S.winL || 0) + pos).toFixed(1)}px,0,0)`;
   }
   // finale
   const fin = p >= P1 + .006;
@@ -571,7 +585,7 @@ App.module('pubTop', {
     makeStars($('.pt-stars', hero), 34, 7, [3, 92]);
     makeStars($('.pt-nstars', stage), 12, 11, [8, 92]);
     $$('.pt-sc__art', stage).forEach((el, i) => { el.style.setProperty('--pt-art-bg', SCENES[i].bg); el.innerHTML = ART[el.dataset.art](); });
-    splitTitle(); buildBeads();
+    splitTitle(); cacheClock(); buildBeads();
     S.night = hero.classList.contains('is-night'); applyMode(false);
 
     // events
@@ -605,6 +619,7 @@ App.module('pubTop', {
       new IntersectionObserver(es => es.forEach(en => {
         S.clockVis = en.isIntersecting;
         $('.pt-clock', r).classList.toggle('pt-paused', !en.isIntersecting);
+        if (en.isIntersecting) updateClock(true);
       }), { rootMargin: '80px' }).observe($('.pt-clock', r));
     }
     // hide the cue while core's tour invitation pill sits in the same spot
@@ -614,27 +629,27 @@ App.module('pubTop', {
       new MutationObserver(sync).observe(inv, { attributes: true, attributeFilter: ['hidden'] }); sync();
     }
     let rT = 0;
-    addEventListener('resize', () => { clearTimeout(rT); rT = setTimeout(() => { if (!S.active) return; layout(); sizeDial(); measureRuler(); updateClock(); }, 120); }, { passive: true });
-    const reflow = () => { if (S.active) requestAnimationFrame(() => { sizeDial(); measureRuler(); updateClock(); }); };
+    addEventListener('resize', () => { clearTimeout(rT); rT = setTimeout(() => { if (!S.active) return; layout(); sizeDial(); measureRuler(); updateClock(true); }, 120); }, { passive: true });
+    const reflow = () => { if (S.active) requestAnimationFrame(() => { sizeDial(); measureRuler(); updateClock(true); }); };
     App.on('tour:start', reflow); App.on('tour:stop', reflow);
     App.on('lang', () => {
       splitTitle(); buildBeads();
       if (S.static) buildTimeline();
-      if (S.active) { layout(); sizeDial(); measureRuler(); updateClock(); }
+      if (S.active) { layout(); sizeDial(); measureRuler(); updateClock(true); }
     });
     App.on('motion', reduced => {
       setStatic(!!reduced);
       if (reduced) { stopLoop(); html.classList.remove('pt-armed'); hero.classList.remove('pt-go'); applyLayers(); placeCarriage(); }
-      else if (S.active) { sizeDial(); measureRuler(); updateClock(); startLoop(); }
+      else if (S.active) { S.scene = -1; sizeDial(); measureRuler(); updateClock(true); startLoop(); }
     });
     setStatic(App.motion.reduced);
-    if (document.fonts && document.fonts.ready) document.fonts.ready.then(() => { if (S.active) { layout(); sizeDial(); measureRuler(); updateClock(); } });
+    if (document.fonts && document.fonts.ready) document.fonts.ready.then(() => { if (S.active) { layout(); sizeDial(); measureRuler(); updateClock(true); } });
   },
   onEnter() {
     S.active = true; root.classList.remove('pt-paused');
     S.sy = App.scrollY();
     layout(); sizeDial(); measureRuler();
-    S.scene = -1; updateClock();
+    S.scene = -1; updateClock(true);
     applyMode(false);
     applyLayers(true); placeCarriage();
     if (!S.introStarted) playIntro();
