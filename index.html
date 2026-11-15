@@ -853,15 +853,16 @@ html[lang="ru"] .pt-title { font-weight: 900; letter-spacing: -.03em; font-size:
 .pt-ctas .btn { max-width: 100%; white-space: normal; text-align: center; line-height: 1.15; }
 @media (max-width: 899px) { .pt-ctas .btn { flex: 1 1 auto; } }
 
-/* short phones (in-app browsers): tighten the stack so the castle keeps its room */
-@media (max-width: 899px) and (max-height: 800px) {
-  .pt-logo, .pt-logo__img { width: clamp(64px, 11svh, 100px) !important; height: clamp(64px, 11svh, 100px) !important; }
-  .pt-logo__orbit { inset: -13px; }
-  .pt-eyebrow { margin-top: 10px; padding-block: 4px; }
-  .pt-title { margin-top: 6px; }
-  .pt-lead { margin-top: 8px; font-size: clamp(.9375rem, 4vw, 1.0625rem); }
-  .pt-ctas { margin-top: 14px; }
-  .pt-cta { --bh: 48px; }
+/* short phones (in-app browsers): tighten the stack so the castle keeps its room.
+   .pt-h800 is set from the SMALL viewport height (100svh) so it never flips when browser bars hide on scroll */
+@media (max-width: 899px) {
+  .pt-h800 .pt-logo, .pt-h800 .pt-logo__img { width: clamp(64px, 11svh, 100px) !important; height: clamp(64px, 11svh, 100px) !important; }
+  .pt-h800 .pt-logo__orbit { inset: -13px; }
+  .pt-h800 .pt-eyebrow { margin-top: 10px; padding-block: 4px; }
+  .pt-h800 .pt-title { margin-top: 6px; }
+  .pt-h800 .pt-lead { margin-top: 8px; font-size: clamp(.9375rem, 4vw, 1.0625rem); }
+  .pt-h800 .pt-ctas { margin-top: 14px; }
+  .pt-h800 .pt-cta { --bh: 48px; }
 }
 
 /* day / night switch */
@@ -1227,33 +1228,30 @@ html[lang="ru"] .pt-fin__big { font-weight: 800; }
 html.pt-dark-top .topbar:not(.is-solid) .brand__name { color: #fff; transition: color .6s; }
 html.pt-dark-top .topbar:not(.is-solid) .tb-btn--tour { box-shadow: inset 0 0 0 1.5px rgba(255, 255, 255, .4), 0 8px 20px -10px rgba(0, 0, 0, .6); }
 
-/* short phone screens (real iPhone Safari/Chrome ≈ 660–700px visible): compact head, ruler and card so the dial stays big */
-@media (max-width: 899px) and (max-height: 780px) {
-  .pt-stage { row-gap: 5px; --pt-arth: 76px; --pt-bot: calc(var(--dock-h) + 16px + var(--safe-b)); padding-top: calc(var(--bar-h) + var(--safe-t) + 4px); }
-  .pt-stage__title { font-size: 1.3rem; }
-  .pt-stage__head { gap: 2px; }
-  .pt-ruler { margin-top: 0; }
-  .pt-bead { height: 38px; padding-top: 6px; gap: 3px; }
-  .pt-sc__tx { padding: 6px 10px 0; }
-  .pt-sc__t { font-size: 1.1rem; }
-  .pt-sc__l { margin-top: 2px; font-size: .8125rem; line-height: 1.4; }
-  .pt-card { padding: 6px 6px 10px; }
-  .pt-dial { margin-bottom: 26px; }
-  .pt-readout { height: 32px; font-size: 1rem; }
-  .pt-fin { padding: 14px 14px 6px; gap: 6px; }
-  .pt-fin__big, html[lang="ru"] .pt-fin__big { font-size: clamp(1.2rem, 5.2vw, 1.5rem); }
-}
-@media (max-width: 899px) and (max-height: 690px) {
-  .pt-stage__sub > :not(.demo-tag) { display: none; }
-  .pt-stage { --pt-arth: 64px; }
-}
-@media (max-width: 899px) and (max-height: 620px) {
-  .pt-sc__art { display: none; }
-  .pt-card { border-radius: var(--r-lg); padding-top: 4px; }
-  .pt-fin { padding: 12px 12px 6px; gap: 4px; }
-  .pt-fin__ic { width: 24px; height: 24px; }
-  .pt-fin__big, html[lang="ru"] .pt-fin__big { font-size: 1.25rem; }
-  .pt-fin__small { font-size: .75rem; }
+/* short phone screens (real iPhone Safari/Chrome ≈ 660–760px visible): compact head, ruler and card so the dial stays big.
+   Classes come from JS (sizeDial) using the SMALL viewport height, so nothing flips while browser bars hide/show on scroll. */
+@media (max-width: 899px) {
+  .pt-stage.pt-h780 { row-gap: 5px; --pt-arth: 76px; --pt-bot: calc(var(--dock-h) + 16px + var(--safe-b)); padding-top: calc(var(--bar-h) + var(--safe-t) + 4px); }
+  .pt-h780 .pt-stage__title { font-size: 1.3rem; }
+  .pt-h780 .pt-stage__head { gap: 2px; }
+  .pt-h780 .pt-ruler { margin-top: 0; }
+  .pt-h780 .pt-bead { height: 38px; padding-top: 6px; gap: 3px; }
+  .pt-h780 .pt-sc__tx { padding: 6px 10px 0; }
+  .pt-h780 .pt-sc__t { font-size: 1.1rem; }
+  .pt-h780 .pt-sc__l { margin-top: 2px; font-size: .8125rem; line-height: 1.4; }
+  .pt-h780 .pt-card { padding: 6px 6px 10px; }
+  .pt-h780 .pt-dial { margin-bottom: 26px; }
+  .pt-h780 .pt-readout { height: 32px; font-size: 1rem; }
+  .pt-h780 .pt-fin { padding: 14px 14px 6px; gap: 6px; }
+  .pt-h780 .pt-fin__big, html[lang="ru"] .pt-h780 .pt-fin__big { font-size: clamp(1.2rem, 5.2vw, 1.5rem); }
+  .pt-h690 .pt-stage__sub > :not(.demo-tag) { display: none; }
+  .pt-stage.pt-h690 { --pt-arth: 64px; }
+  .pt-h620 .pt-sc__art { display: none; }
+  .pt-h620 .pt-card { border-radius: var(--r-lg); padding-top: 4px; }
+  .pt-h620 .pt-fin { padding: 12px 12px 6px; gap: 4px; }
+  .pt-h620 .pt-fin__ic { width: 24px; height: 24px; }
+  .pt-h620 .pt-fin__big, html[lang="ru"] .pt-h620 .pt-fin__big { font-size: 1.25rem; }
+  .pt-h620 .pt-fin__small { font-size: .75rem; }
 }
 
 </style>
@@ -6495,9 +6493,22 @@ function updateDarkTop() {
   html.classList.toggle('pt-dark-top', !!(S.night && S.active && S.sy < S.heroH - 80));
 }
 
+/* height classes from the SMALL viewport height (browser bars shown). Mobile browsers change innerHeight while
+   their bars hide/show on scroll; sizing from svh keeps the hero and the clock dial from jumping mid-scroll. */
+let svhProbe = null;
+function smallVH() {
+  if (!svhProbe) { svhProbe = document.createElement('div'); svhProbe.setAttribute('aria-hidden', 'true'); svhProbe.style.cssText = 'position:fixed;top:0;left:0;width:0;height:100vh;height:100svh;visibility:hidden;pointer-events:none'; document.body.append(svhProbe); }
+  return svhProbe.offsetHeight || innerHeight;
+}
+function heightClasses() {
+  const v = smallVH(); S.svh = v;
+  if (hero) hero.classList.toggle('pt-h800', v <= 800);
+  if (stage) { stage.classList.toggle('pt-h780', v <= 780); stage.classList.toggle('pt-h690', v <= 690); stage.classList.toggle('pt-h620', v <= 620); }
+}
 /* layout: the castle fills the room left between the content and the bottom chrome */
 function layout() {
   if (!hero || hero.offsetParent === null) return;
+  heightClasses();
   hero.style.minHeight = '';
   const W = hero.offsetWidth, desk = W >= 900;
   let H = hero.offsetHeight;
@@ -6608,6 +6619,7 @@ function measureRuler() {
 /* the dial takes whatever height the stage has left (tour captions / floating buttons reserve the bottom) */
 function sizeDial() {
   if (S.static || !stage || !stage.offsetHeight) return;
+  heightClasses();
   const cs = getComputedStyle(stage), W = stage.clientWidth, desk = W >= 900;
   const H = stage.clientHeight - parseFloat(cs.paddingTop) - parseFloat(cs.paddingBottom);
   const gap = parseFloat(cs.rowGap) || 8;
@@ -6823,7 +6835,15 @@ App.module('pubTop', {
       new MutationObserver(sync).observe(inv, { attributes: true, attributeFilter: ['hidden'] }); sync();
     }
     let rT = 0;
-    addEventListener('resize', () => { clearTimeout(rT); rT = setTimeout(() => { if (!S.active) return; layout(); sizeDial(); measureRuler(); updateClock(true); }, 120); }, { passive: true });
+    // ignore resizes caused only by mobile browser bars hiding/showing (same width, same small-viewport height):
+    // re-laying out then would make the dial and hero jump while the user scrolls
+    addEventListener('resize', () => { clearTimeout(rT); rT = setTimeout(() => {
+      if (!S.active) return;
+      const w = innerWidth, v = smallVH();
+      if (w === S.rzW && v === S.rzV) { updateClock(true); return; }
+      S.rzW = w; S.rzV = v;
+      layout(); sizeDial(); measureRuler(); updateClock(true);
+    }, 120); }, { passive: true });
     const reflow = () => { if (S.active) requestAnimationFrame(() => { sizeDial(); measureRuler(); updateClock(true); }); };
     App.on('tour:start', reflow); App.on('tour:stop', reflow);
     App.on('lang', () => {

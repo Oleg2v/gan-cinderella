@@ -303,9 +303,22 @@ function updateDarkTop() {
   html.classList.toggle('pt-dark-top', !!(S.night && S.active && S.sy < S.heroH - 80));
 }
 
+/* height classes from the SMALL viewport height (browser bars shown). Mobile browsers change innerHeight while
+   their bars hide/show on scroll; sizing from svh keeps the hero and the clock dial from jumping mid-scroll. */
+let svhProbe = null;
+function smallVH() {
+  if (!svhProbe) { svhProbe = document.createElement('div'); svhProbe.setAttribute('aria-hidden', 'true'); svhProbe.style.cssText = 'position:fixed;top:0;left:0;width:0;height:100vh;height:100svh;visibility:hidden;pointer-events:none'; document.body.append(svhProbe); }
+  return svhProbe.offsetHeight || innerHeight;
+}
+function heightClasses() {
+  const v = smallVH(); S.svh = v;
+  if (hero) hero.classList.toggle('pt-h800', v <= 800);
+  if (stage) { stage.classList.toggle('pt-h780', v <= 780); stage.classList.toggle('pt-h690', v <= 690); stage.classList.toggle('pt-h620', v <= 620); }
+}
 /* layout: the castle fills the room left between the content and the bottom chrome */
 function layout() {
   if (!hero || hero.offsetParent === null) return;
+  heightClasses();
   hero.style.minHeight = '';
   const W = hero.offsetWidth, desk = W >= 900;
   let H = hero.offsetHeight;
@@ -416,6 +429,7 @@ function measureRuler() {
 /* the dial takes whatever height the stage has left (tour captions / floating buttons reserve the bottom) */
 function sizeDial() {
   if (S.static || !stage || !stage.offsetHeight) return;
+  heightClasses();
   const cs = getComputedStyle(stage), W = stage.clientWidth, desk = W >= 900;
   const H = stage.clientHeight - parseFloat(cs.paddingTop) - parseFloat(cs.paddingBottom);
   const gap = parseFloat(cs.rowGap) || 8;
@@ -631,7 +645,15 @@ App.module('pubTop', {
       new MutationObserver(sync).observe(inv, { attributes: true, attributeFilter: ['hidden'] }); sync();
     }
     let rT = 0;
-    addEventListener('resize', () => { clearTimeout(rT); rT = setTimeout(() => { if (!S.active) return; layout(); sizeDial(); measureRuler(); updateClock(true); }, 120); }, { passive: true });
+    // ignore resizes caused only by mobile browser bars hiding/showing (same width, same small-viewport height):
+    // re-laying out then would make the dial and hero jump while the user scrolls
+    addEventListener('resize', () => { clearTimeout(rT); rT = setTimeout(() => {
+      if (!S.active) return;
+      const w = innerWidth, v = smallVH();
+      if (w === S.rzW && v === S.rzV) { updateClock(true); return; }
+      S.rzW = w; S.rzV = v;
+      layout(); sizeDial(); measureRuler(); updateClock(true);
+    }, 120); }, { passive: true });
     const reflow = () => { if (S.active) requestAnimationFrame(() => { sizeDial(); measureRuler(); updateClock(true); }); };
     App.on('tour:start', reflow); App.on('tour:stop', reflow);
     App.on('lang', () => {
