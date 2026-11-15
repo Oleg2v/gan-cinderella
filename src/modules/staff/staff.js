@@ -570,13 +570,19 @@ function renderBar(force) {
   barSig = sig;
   $('.st-bar__acts', bar).innerHTML = items.map((it, i) => `<button type="button" class="st-act st-act--${it.tone}" data-act="${it.id}" style="--i:${animate ? i : 0};${animate ? '' : 'animation:none'}"${it.off ? ' disabled' : ''}><span class="st-act__ic" aria-hidden="true">${it.ic}</span><span>${esc(it.label)}</span></button>`).join('');
 }
+/* the tour caption card, when shown: core puts it at the bottom, or over the top bar on short screens */
+function tourCap() {
+  const cap = $('.tour-cap__card'), wrap = $('.tour-cap');
+  if (!touring() || !cap || !wrap || wrap.hidden) return null;
+  const r = cap.getBoundingClientRect();
+  return r.height ? { r, low: r.top > innerHeight / 2 } : null;
+}
 function placeBar() {
   const bar = $('[data-st-bar]', root);
-  if (isDevice() || !touring()) { bar.style.removeProperty('--st-bar-b'); return; }
-  const cap = $('.tour-cap__card'), capWrap = $('.tour-cap');
-  if (!cap || !capWrap || capWrap.hidden) { bar.style.removeProperty('--st-bar-b'); return; }
-  const r = cap.getBoundingClientRect();
-  bar.style.setProperty('--st-bar-b', Math.round(innerHeight - r.top + 10) + 'px');
+  const c = isDevice() ? null : tourCap();
+  /* lift the bar above the caption only when the caption sits at the bottom */
+  if (!c || !c.low) { bar.style.removeProperty('--st-bar-b'); return; }
+  bar.style.setProperty('--st-bar-b', Math.round(innerHeight - c.r.top + 10) + 'px');
 }
 function setStep(s) { S.bar = s; renderBar(); }
 async function onAct(a) {
@@ -1214,12 +1220,16 @@ function fly(stage, alive, onArrive) {
 function fit() {
   if (!root) return;
   if (!isDevice()) { root.style.removeProperty('--st-s'); return; }
-  const top = 66, bottom = 68 + 40;
-  let availH = innerHeight - top - bottom - 14;
-  if (touring()) availH = innerHeight - top - (68 + 18 + 132) - 10;
+  let top = 66, bottom = 68 + 40 + 14, pad = 0;
+  const c = tourCap();
+  if (c && c.low) bottom = innerHeight - c.r.top + 10;
+  else if (c) { pad = Math.max(0, Math.round(c.r.bottom + 10 - top)); top += pad; }
+  const availH = innerHeight - top - bottom;
   const availW = document.documentElement.clientWidth - 56;
   const s = A.clamp(Math.min(availH / DEV_H, availW / DEV_W), .5, 1.12);
   root.style.setProperty('--st-s', s.toFixed(4));
+  /* caption over the top bar: push the tablet below it */
+  if (pad) root.style.setProperty('--st-tour-pt', pad + 'px'); else root.style.removeProperty('--st-tour-pt');
 }
 
 /* =====================================================================
@@ -1234,6 +1244,8 @@ function reset() {
   ensureTick();
 }
 const cardSel = id => `.st-kid[data-kid="${id}"]`;
+/* first visible y under the top bar, or under the tour caption when it rides at the top */
+const zoneTop = () => { const c = tourCap(); return c && !c.low ? Math.round(c.r.bottom + 8) : 64; };
 
 A.module('staff', {
   view: 'staff',
@@ -1293,23 +1305,23 @@ A.module('staff', {
       closeSheets();
       const need = ['noa', 'itai', 'daniel', 'maya'];
       if (S.sel.size) clearSel();
-      if (present().length < KIDS.length || need.some(id => S.kids[id].arrived == null)) { markAllPresent(); await ctx.wait(ctx.fast ? 80 : 260); }
+      if (present().length < KIDS.length || need.some(id => S.kids[id].arrived == null)) { markAllPresent(); await ctx.wait(ctx.fast ? 80 : 200); }
       if (!isDevice()) {
-        const r = $('.st-tools', root).getBoundingClientRect();
-        if (r.top < 64 || r.top > innerHeight * .4) await ctx.scrollTo($('.st-tools', root), { offset: 70, duration: 380 });
+        const r = $('.st-tools', root).getBoundingClientRect(), zt = zoneTop();
+        if (r.top < zt || r.top > zt + innerHeight * .25) await ctx.scrollTo($('.st-tools', root), { offset: zt + 6, duration: 380 });
       }
       if (S.mode !== 'select') await ctx.tap('[data-st-mode="select"]', { after: 160 });
       for (const id of need) await ctx.tap(cardSel(id), { after: 100 });
-      await ctx.tap('.st-bar [data-act="food"]', { after: 200 });
+      await ctx.tap('.st-bar [data-act="food"]', { after: 160 });
       await ctx.tap('.st-bar [data-act="lunch"]', { after: 100 });
       const ok = await ctx.waitFor('.st-alert [data-al="ok"]', 2500);
-      await ctx.wait(ctx.fast ? 200 : 620);
+      await ctx.wait(ctx.fast ? 200 : 520);
       if (ok) await ctx.tap(ok, { after: 320 });
       await ctx.tap('.st-bar [data-act="all"]', { after: 380 });
     },
     async endDay(ctx) {
       closeSheets(); if (S.sel.size) clearSel();
-      if (!isDevice()) { const r = $('[data-st="eod"]', root).getBoundingClientRect(); if (r.top < 64 || r.bottom > innerHeight * .6) await ctx.scrollTo(0, { duration: 380 }); }
+      if (!isDevice()) { const r = $('[data-st="eod"]', root).getBoundingClientRect(); if (r.top < zoneTop() || r.bottom > innerHeight * .6) await ctx.scrollTo(0, { duration: 380 }); }
       tourCtx = true;
       try { await ctx.tap('[data-st="eod"]', { after: 150 }); } finally { tourCtx = false; }
       const btn = await ctx.waitFor(() => { const b = $('.st-eod [data-eod="send"]'); return b && !b.disabled ? b : null; }, 5000);
