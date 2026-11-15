@@ -472,7 +472,7 @@ const S = {
   shabbat: new Set(), sumLang: 'he', sumNotified: false,
   calMonth: null, calSel: null,
   menuDay: 0, allergyOn: false, allergen: null,
-  album: { cur: 0, built: false, busy: false, flips: 0 },
+  album: { cur: 0, built: false, flips: 0 },
   phone: null, io: null, liveIO: null
 };
 const TABS = ['today', 'pay', 'cal', 'menu', 'docs', 'album'];
@@ -745,8 +745,7 @@ function bindTabs() {
 }
 function onPanelShown(id) {
   if (id === 'docs') requestAnimationFrame(sizeSig);
-  if (id === 'album') requestAnimationFrame(() => { layoutBook(); if (!S.album.built) assembleAlbum(); });
-  if (id === 'menu') requestAnimationFrame(() => { });
+  if (id === 'album') requestAnimationFrame(() => { if (!S.album.built) assembleAlbum(); });
   App.reveal(q('#pa-p-' + id));
 }
 
@@ -1435,7 +1434,6 @@ function bindBook() {
     else if (e.key === 'End') { e.preventDefault(); S.album.cur = BOOK.n; applyBook(false); }
   });
 }
-function layoutBook() { /* sizes are CSS-driven; keep hook for future */ }
 async function assembleAlbum() {
   S.album.built = true;
   const stage = q('.pa-album__stage'), book = q('.pa-book'), fly = q('.pa-fly');
@@ -1505,7 +1503,7 @@ function resetState() {
   S.shabbat = new Set(); S.sumLang = lang(); S.sumNotified = false;
   S.calMonth = null; S.calSel = null;
   const d = new Date().getDay(); S.menuDay = d <= 4 ? d : 0; S.allergyOn = false; S.allergen = null;
-  S.album = { cur: 0, built: false, busy: false, flips: 0 };
+  S.album = { cur: 0, built: false, flips: 0 };
   qq('.pa-like').forEach(b => b.setAttribute('aria-pressed', 'false'));
   if (S.phone) $('.phone__notifs', S.phone).innerHTML = '';
   if (sig.cv) clearSig();
@@ -1532,7 +1530,7 @@ const I18N = {
     'pa.qa.absent': 'לא מגיעים מחר', 'pa.qa.absentSub': 'עדכון לצוות', 'pa.qa.late': 'מאחרים', 'pa.qa.lateSub': 'כמה דקות?',
     'pa.qa.pickup': 'מי אוסף היום', 'pa.qa.pickupSub': 'קוד איסוף חד-פעמי', 'pa.qa.msg': 'הודעה לצוות', 'pa.qa.msgSub': 'בעברית או ברוסית', 'pa.qa.sentShort': 'נשלח',
     'pa.sending': 'שולחים…', 'pa.close': 'סגירה', 'pa.note': 'רוצים להוסיף משהו? (לא חובה)', 'pa.note.ph': 'למשל: חוזרים ביום רביעי',
-    'pa.abs.when': 'לא מגיעים ב:', 'pa.abs.why': 'מה קרה?', 'pa.abs.send': 'עדכון הצוות', 'pa.abs.pick': 'בחרו סיבה, ככה הצוות יידע',
+    'pa.abs.when': 'היום שבו לא מגיעים', 'pa.abs.why': 'מה קרה?', 'pa.abs.send': 'עדכון הצוות', 'pa.abs.pick': 'בחרו סיבה, ככה הצוות יידע',
     'pa.abs.doneT': 'הצוות קיבל', 'pa.abs.done': 'נועה מסומנת כלא מגיעה ב{date}. נתגעגע!', 'pa.abs.doneSick': 'רפואה שלמה לנועה! סימנו שהיא לא מגיעה ב{date}.',
     'pa.abs.undo': 'בעצם מגיעים', 'pa.abs.undone': 'עודכן. מחכים לנועה',
     'pa.late.lead': 'נעדכן את הצוות, כדי שאף אחד לא ידאג.', 'pa.late.how': 'בכמה מאחרים?', 'pa.late.ph': 'למשל: תקועים בפקק', 'pa.late.send': 'עדכון הצוות', 'pa.late.pick': 'בחרו כמה זמן',
@@ -1597,7 +1595,7 @@ const I18N = {
     'pa.qa.absent': 'Завтра не придём', 'pa.qa.absentSub': 'Предупредить', 'pa.qa.late': 'Опаздываем', 'pa.qa.lateSub': 'На сколько?',
     'pa.qa.pickup': 'Кто заберёт сегодня', 'pa.qa.pickupSub': 'Одноразовый код', 'pa.qa.msg': 'Написать воспитателям', 'pa.qa.msgSub': 'По-русски или на иврите', 'pa.qa.sentShort': 'Отправлено',
     'pa.sending': 'Отправляем…', 'pa.close': 'Закрыть', 'pa.note': 'Хотите что-то добавить? (необязательно)', 'pa.note.ph': 'Например: вернёмся в среду',
-    'pa.abs.when': 'Не придём:', 'pa.abs.why': 'Что случилось?', 'pa.abs.send': 'Предупредить воспитателей', 'pa.abs.pick': 'Выберите причину, чтобы воспитатели знали',
+    'pa.abs.when': 'День, когда не придём', 'pa.abs.why': 'Что случилось?', 'pa.abs.send': 'Предупредить воспитателей', 'pa.abs.pick': 'Выберите причину, чтобы воспитатели знали',
     'pa.abs.doneT': 'Воспитатели получили', 'pa.abs.done': 'Отметили, что Ноа не будет: {date}. Будем скучать!', 'pa.abs.doneSick': 'Пусть Ноа скорее поправляется! Отметили, что её не будет: {date}.',
     'pa.abs.undo': 'Всё-таки придём', 'pa.abs.undone': 'Обновили. Ждём Ноа',
     'pa.late.lead': 'Предупредим воспитателей, чтобы никто не волновался.', 'pa.late.how': 'На сколько опаздываете?', 'pa.late.ph': 'Например: стоим в пробке', 'pa.late.send': 'Предупредить воспитателей', 'pa.late.pick': 'Выберите, на сколько',
@@ -1621,7 +1619,7 @@ const I18N = {
     'pa.pay.title': 'Оплата', 'pa.pay.for': 'Счёт за {m}', 'pa.pay.how': 'Как платим?', 'pa.pay.saved': 'Сохранённая карта', 'pa.pay.exp': 'до', 'pa.pay.new': 'Другая карта',
     'pa.pay.ccNum': 'Номер карты', 'pa.pay.ccExp': 'Срок', 'pa.pay.sample': 'Заполнить тестовой картой', 'pa.pay.payNow': 'Оплатить {sum}',
     'pa.pay.missing': 'Заполните данные карты', 'pa.pay.processing': 'Проводим оплату…', 'pa.pay.doneT': 'Оплачено, спасибо!', 'pa.pay.done': 'Квитанция уже ждёт вас в списке квитанций.',
-    'pa.pay.rcptNo': 'Квитанция № {n}', 'pa.pay.date': 'Дата', 'pa.pay.forWho': 'За кого', 'pa.pay.period': 'Месяц', 'pa.pay.method': 'Способ оплаты',
+    'pa.pay.rcptNo': 'Квитанция №\u00a0{n}', 'pa.pay.date': 'Дата', 'pa.pay.forWho': 'За кого', 'pa.pay.period': 'Месяц', 'pa.pay.method': 'Способ оплаты',
     'pa.pay.share': 'Отправить себе в WhatsApp', 'pa.pay.shared': 'Квитанция отправлена вам',
     'pa.cal.holiday': 'Праздник', 'pa.cal.closed': 'Выходной (пример)', 'pa.cal.event': 'Событие', 'pa.cal.bday': 'День рождения', 'pa.cal.today': 'Сегодня', 'pa.cal.tomorrow': 'Завтра',
     'pa.cal.prev': 'Предыдущий месяц', 'pa.cal.next': 'Следующий месяц', 'pa.cal.upcoming': 'Скоро', 'pa.cal.bdays': 'Дни рождения в группе', 'pa.cal.days': '{n} дней',
@@ -1715,7 +1713,10 @@ App.module('parent', {
       const end = q('.pa-fi:last-child');
       const r = end.getBoundingClientRect();
       const target = App.scrollY() + r.bottom - innerHeight + 200;
-      await ctx.scrollTo(target, { duration: ctx.fast ? 0 : 3600, linear: false });
+      if (ctx.fast) { /* reduced motion: calm static beats instead of a long scroll */
+        const y0 = App.scrollY();
+        for (const k of [0, .5, 1]) { await ctx.scrollTo(y0 + (target - y0) * k, { duration: 0 }); await ctx.wait(1100); }
+      } else await ctx.scrollTo(target, { duration: 3600, linear: false });
       const like = q('.pa-fi .pa-like[data-k="sleep"]');
       if (like && like.getAttribute('aria-pressed') !== 'true') await ctx.tap(like, { after: 500 });
       else await ctx.wait(500);
@@ -1738,14 +1739,14 @@ App.module('parent', {
       else await toPhone(750);
       await ctx.wait(ctx.fast ? 80 : 250);
       dropNotif(base, true);
-      await ctx.wait(ctx.fast ? 200 : 1150);
+      await ctx.wait(ctx.fast ? 900 : 1150);
       const toCard = () => (wide ? Promise.resolve() : ctx.scrollTo(q('.pa-sum__card'), { offset: barH() + 74, duration: 550 }));
       await toCard();
-      await ctx.tap(`.pa-sum__lang button[data-l="${other}"]`, { after: ctx.fast ? 250 : 950 });
-      if (!wide) { await toPhone(550); await ctx.wait(ctx.fast ? 200 : 1000); }
-      else await ctx.wait(ctx.fast ? 200 : 900);
+      await ctx.tap(`.pa-sum__lang button[data-l="${other}"]`, { after: ctx.fast ? 1200 : 950 });
+      if (!wide) { await toPhone(550); await ctx.wait(ctx.fast ? 1000 : 1000); }
+      else await ctx.wait(ctx.fast ? 600 : 900);
       await toCard();
-      await ctx.tap(`.pa-sum__lang button[data-l="${base}"]`, { after: ctx.fast ? 250 : 650 });
+      await ctx.tap(`.pa-sum__lang button[data-l="${base}"]`, { after: ctx.fast ? 700 : 650 });
     }
   }
 });

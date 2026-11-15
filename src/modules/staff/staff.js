@@ -90,7 +90,7 @@ const I18N = {
     'st.in.orig': 'במקור: {text}', 'st.in.quick': 'תשובה מהירה', 'st.in.toast': 'התשובה נשלחה ל{who}', 'st.in.handled': 'טופל והתשובה נשלחה',
         'st.inc.title': 'דיווח אירוע', 'st.inc.who': 'מי?', 'st.inc.what': 'מה קרה?', 'st.inc.aid': 'מה עשינו?', 'st.inc.when': 'מתי?',
     'st.inc.note': 'כמה מילים להורים', 'st.inc.notePh': 'לא חובה', 'st.inc.earlier': 'מוקדם יותר', 'st.inc.later': 'מאוחר יותר',
-    'st.inc.preview': 'תצוגה מקדימה', 'st.inc.need': 'בוחרים ילד ומה קרה', 'st.inc.to': 'למי זה הולך',
+    'st.inc.preview': 'תצוגה מקדימה', 'st.inc.need': 'בוחרים ילד ומה קרה', 'st.inc.to': 'למי זה נשלח',
     'st.inc.toParents': 'ההורים של {name} · {lang}', 'st.inc.toOwner': 'המנהלת · בעברית', 'st.inc.lang.he': 'בעברית', 'st.inc.lang.ru': 'ברוסית',
     'st.inc.edit': 'עריכה', 'st.inc.send': 'שליחה להורים ולמנהלת', 'st.inc.sent': 'הדיווח נשלח',
     'st.inc.parentPhone': 'ההורים · {lang}', 'st.inc.ownerPhone': 'המנהלת · בעברית', 'st.inc.close': 'סגירה',
@@ -103,7 +103,7 @@ const I18N = {
     'st.lang.he': 'עב', 'st.lang.ru': 'RU', 'st.lang.heA': 'יישלח בעברית', 'st.lang.ruA': 'יישלח ברוסית', 'st.lang.heL': 'בעברית', 'st.lang.ruL': 'ברוסית',
     'st.rem.title': 'חשוב היום', 'st.rem.bday': 'מחר יום הולדת ל{name}', 'st.rem.bdaySub.m': 'אפשר להכין משהו קטן לכבודו', 'st.rem.bdaySub.f': 'אפשר להכין משהו קטן לכבודה', 'st.rem.allergy': 'אלרגיות בקבוצה',
     'st.log.title': 'יומן היום', 'st.log.empty': 'כל סימון של היום יופיע כאן',
-    'st.log.arrive.f': '{name} הגיעה', 'st.log.arrive.m': '{name} הגיע', 'st.log.unarrive': 'בוטלה ההגעה של {name}', 'st.log.more': 'הגיעו עוד {who}',
+    'st.log.arrive.f': '{name} הגיעה', 'st.log.arrive.m': '{name} הגיע', 'st.log.unarrive': 'ההגעה של {name} בוטלה', 'st.log.more': 'הגיעו עוד {who}',
     'st.log.meal': '{meal}: {amt} · {who}', 'st.log.sleepStart': 'נרדמו: {who}', 'st.log.sleepStop': 'התעוררו: {who}',
     'st.log.diaper': 'החתלה ({type}): {who}', 'st.log.photo': 'תמונה להורים של {who}', 'st.log.pickup': 'סבתא לודה אוספת את דניאל · אושר',
     'st.log.reply': 'נשלחה תשובה ל{who}', 'st.log.incident': 'דיווח אירוע: {name}', 'st.log.eod': 'סיכומי יום נשלחו ל-{n} משפחות'
@@ -112,31 +112,31 @@ const I18N = {
     'st.tabletMode': 'Режим планшета', 'st.role': 'Воспитательница старшей группы', 'st.roleS': 'воспитательница', 'st.group': 'Старшая группа',
     'st.synced': 'Сохранено', 'st.syncing': 'Сохраняем…', 'st.side': 'Важно сегодня и журнал',
     'st.stat.present': 'Пришли', 'st.stat.sleep': 'Спят', 'st.stat.meal': 'Еда',
-    'st.btn.inbox': 'Сообщения от родителей', 'st.btn.inboxS': 'Сообщения', 'st.btn.photo': 'Фото', 'st.btn.incident': 'Сообщить о происшествии', 'st.btn.incidentS': 'Случай', 'st.btn.eod': 'Конец дня',
+    'st.btn.inbox': 'Сообщения от родителей', 'st.btn.inboxS': 'Сообщения', 'st.btn.photo': 'Фото', 'st.btn.incident': 'Отчёт о происшествии', 'st.btn.incidentS': 'Отчёт', 'st.btn.eod': 'Конец дня',
     'st.mode.label': 'Режим работы', 'st.mode.arrive': 'Приход', 'st.mode.select': 'Выбор', 'st.allPresent': 'Все пришедшие',
-    'st.hint.arrive': 'Касание отмечает приход. Повторное касание отменяет.', 'st.hint.select': 'Выберите несколько детей и отметьте всех сразу.',
+    'st.hint.arrive': 'Одно касание отмечает приход, второе отменяет.', 'st.hint.select': 'Выберите несколько детей и отметьте всех сразу.',
     'st.grid': 'Дети группы',
     'st.notYet.f': 'ещё не пришла', 'st.notYet.m': 'ещё не пришёл',
     'st.arrived.f': 'пришла в {t}', 'st.arrived.m': 'пришёл в {t}',
     'st.asleep.f': 'сейчас спит', 'st.asleep.m': 'сейчас спит',
     'st.needArrive.f': '{name} ещё не пришла. Сначала отметьте приход.', 'st.needArrive.m': '{name} ещё не пришёл. Сначала отметьте приход.',
     'st.allergy': 'аллергия: {a}', 'st.bday': 'завтра день рождения',
-    'st.si.sleep': 'сон {d}', 'st.si.diaper': 'подгузник: {n}', 'st.si.photo': 'фото отправлено родителям', 'st.si.pickup': 'сегодня забирает бабушка Люда', 'st.si.incident': 'отправлен отчёт о происшествии',
+    'st.si.sleep': 'сон {d}', 'st.si.diaper': 'подгузники: {n}', 'st.si.photo': 'фото отправлено родителям', 'st.si.pickup': 'сегодня забирает бабушка Люда', 'st.si.incident': 'отправлен отчёт о происшествии',
     'st.bar.label': 'Действия для выбранных детей', 'st.bar.n': 'Выбрано: {n}', 'st.bar.clear': 'Снять выбор', 'st.bar.back': 'Назад',
     'st.act.food': 'Еда', 'st.act.sleep': 'Сон', 'st.act.diaper': 'Подгузник', 'st.act.photo': 'Фото',
     'st.meal.breakfast': 'Завтрак', 'st.meal.lunch': 'Обед', 'st.meal.snack': 'Полдник',
-    'st.q.meal': 'Какой приём пищи?', 'st.q.amt': '{meal}: сколько съели?', 'st.q.sleep': 'Сон: {who}', 'st.q.diaper': 'Подгузник: какой?',
+    'st.q.meal': 'Что едим?', 'st.q.amt': '{meal}: сколько съели?', 'st.q.sleep': 'Сон: {who}', 'st.q.diaper': 'Подгузник: какой?',
     'st.amt.all': 'Всё', 'st.amt.half': 'Половину', 'st.amt.little': 'Немного',
     'st.sleep.start': 'Уснули', 'st.sleep.stop': 'Проснулись',
     'st.dia.wet': 'Мокрый', 'st.dia.full': 'Грязный', 'st.dia.dry': 'Сухой',
     'st.t.sleepStart': 'Сладкого сна · {who}', 'st.t.sleepStop': 'Проснулись · {who}',
     'st.al.a11y': 'Предупреждение об аллергии', 'st.al.title': 'Внимание', 'st.al.sub': 'Проверьте блюдо, прежде чем подавать.',
-    'st.al.ok': 'Проверила, блюдо безопасно', 'st.al.cancel': 'Отмена', 'st.al.checked': 'аллергии проверены',
+    'st.al.ok': 'Проверила, можно подавать', 'st.al.cancel': 'Отмена', 'st.al.checked': 'аллергии проверены',
     'st.cam.title': 'Фото', 'st.cam.shoot': 'Снять', 'st.cam.live': 'Двор, сейчас', 'st.cam.tip': 'Снимите, потом отметьте, кто на фото',
-    'st.cam.who': 'Кто на фото?', 'st.cam.private': 'Фото получат только их родители. Не в общий чат.',
+    'st.cam.who': 'Кто на фото?', 'st.cam.private': 'Отправится только их родителям. Не в общий чат.',
     'st.cam.send': 'Отправить: {n}', 'st.cam.sendOne': 'Отправить одной семье', 'st.cam.need': 'Отметьте хотя бы одного ребёнка', 'st.cam.retake': 'Переснять',
     'st.cam.sent': 'Фото ушло только родителям: {names}',
-    'st.in.title': 'Сообщения от родителей', 'st.in.sub': 'Русские сообщения переводятся для команды автоматически', 'st.in.back': 'Все сообщения', 'st.in.done': 'Готово',
+    'st.in.title': 'Сообщения от родителей', 'st.in.sub': 'Сообщения на русском переводятся автоматически', 'st.in.back': 'Все сообщения', 'st.in.done': 'Готово',
     'st.in.trHe': 'Перевод на иврит для команды', 'st.in.trRu': 'Перевод с иврита', 'st.in.pickup': 'Забирают сегодня',
     'st.in.check': 'Проверить по списку доверенных', 'st.in.checking': 'Проверяем список…', 'st.in.list': 'Могут забирать Даниэля',
     'st.in.match': 'Есть в списке', 'st.in.approve': 'Подтвердить и ответить', 'st.in.sentRu': 'Отправлено по-русски', 'st.in.sentHe': 'Отправлено на иврите',
@@ -144,10 +144,10 @@ const I18N = {
         'st.inc.title': 'Отчёт о происшествии', 'st.inc.who': 'Кто?', 'st.inc.what': 'Что случилось?', 'st.inc.aid': 'Что сделали?', 'st.inc.when': 'Когда?',
     'st.inc.note': 'Пара слов родителям', 'st.inc.notePh': 'Необязательно', 'st.inc.earlier': 'Раньше', 'st.inc.later': 'Позже',
     'st.inc.preview': 'Предпросмотр', 'st.inc.need': 'Выберите ребёнка и что случилось', 'st.inc.to': 'Кому уйдёт',
-    'st.inc.toParents': 'Родители: {name} · {lang}', 'st.inc.toOwner': 'Руководитель · на иврите', 'st.inc.lang.he': 'на иврите', 'st.inc.lang.ru': 'по-русски',
-    'st.inc.edit': 'Изменить', 'st.inc.send': 'Отправить родителям и руководителю', 'st.inc.sent': 'Отчёт отправлен',
-    'st.inc.parentPhone': 'Родители · {lang}', 'st.inc.ownerPhone': 'Руководитель · на иврите', 'st.inc.close': 'Закрыть',
-    'st.eod.title': 'Конец дня', 'st.eod.writing': 'Система пишет сводки', 'st.eod.sub': 'Из сегодняшних отметок, каждой семье на её языке',
+    'st.inc.toParents': 'Родители: {name} · {lang}', 'st.inc.toOwner': 'Заведующая · на иврите', 'st.inc.lang.he': 'на иврите', 'st.inc.lang.ru': 'по-русски',
+    'st.inc.edit': 'Изменить', 'st.inc.send': 'Отправить родителям и заведующей', 'st.inc.sent': 'Отчёт отправлен',
+    'st.inc.parentPhone': 'Родители · {lang}', 'st.inc.ownerPhone': 'Заведующая · на иврите', 'st.inc.close': 'Закрыть',
+    'st.eod.title': 'Конец дня', 'st.eod.writing': 'Система пишет сводки', 'st.eod.sub': 'По отметкам за день, каждой семье на её языке',
     'st.eod.ready': 'Сводки готовы', 'st.eod.readySub': 'Нажмите на строку, чтобы прочитать перед отправкой',
     'st.eod.send': 'Отправить всем', 'st.eod.sending': 'Отправляем родителям…', 'st.eod.sentSub': 'Каждая семья получает сводку на телефон',
     'st.eod.done': 'Все семьи получили сводку', 'st.eod.doneSub': '{he} на иврите, {ru} по-русски. Каждой семье на её языке.',
@@ -159,7 +159,7 @@ const I18N = {
     'st.log.arrive.f': '{name} пришла', 'st.log.arrive.m': '{name} пришёл', 'st.log.unarrive': 'Приход отменён: {name}', 'st.log.more': 'Пришли ещё: {who}',
     'st.log.meal': '{meal}: {amt} · {who}', 'st.log.sleepStart': 'Уснули: {who}', 'st.log.sleepStop': 'Проснулись: {who}',
     'st.log.diaper': 'Подгузник ({type}): {who}', 'st.log.photo': 'Фото родителям: {who}', 'st.log.pickup': 'Даниэля забирает бабушка Люда · подтверждено',
-    'st.log.reply': 'Ответ отправлен: {who}', 'st.log.incident': 'Отчёт о происшествии: {name}', 'st.log.eod': 'Сводки дня отправлены {n} семьям'
+    'st.log.reply': 'Ответ отправлен: {who}', 'st.log.incident': 'Отчёт о происшествии: {name}', 'st.log.eod': 'Сводки дня отправлены семьям: {n}'
   }
 };
 
@@ -174,7 +174,7 @@ const SUM = {
     slept: { f: 'ישנה בין {a} ל-{b}.', m: 'ישן בין {a} ל-{b}.' },
     diaper: n => (n === 1 ? 'החלפנו חיתול פעם אחת.' : n === 2 ? 'החלפנו חיתול פעמיים.' : `החלפנו חיתול ${n} פעמים.`),
     photo: n => (n > 1 ? `שלחנו לכם ${n} תמונות מהיום.` : 'שלחנו לכם תמונה מהיום.'),
-    incident: 'היה היום אירוע קטן ({what}), ועדכנו אתכם מיד.',
+    incident: 'היום קרה משהו קטן ({what}), ועדכנו אתכם מיד.',
     pickup: 'סבתא לודה אוספת היום, כמו שביקשתם.',
     bye: { f: ['מחכים לה מחר!', 'נתראה מחר!'], m: ['מחכים לו מחר!', 'נתראה מחר!'] },
     bday: { f: 'ומחר חוגגים לה יום הולדת!', m: 'ומחר חוגגים לו יום הולדת!' }
@@ -188,7 +188,7 @@ const SUM = {
     slept: { f: 'Спала с {a} до {b}.', m: 'Спал с {a} до {b}.' },
     diaper: n => (n === 1 ? 'Подгузник меняли один раз.' : `Подгузник меняли ${n} ${pluralRu(n, ['раз', 'раза', 'раз'])}.`),
     photo: n => (n > 1 ? `Мы прислали вам ${n} фото за день.` : 'Мы прислали вам фото за день.'),
-    incident: 'Был небольшой эпизод ({what}), мы сразу вам написали.',
+    incident: 'Было небольшое происшествие ({what}), мы сразу вам написали.',
     pickup: 'Сегодня забирает бабушка Люда, как вы и просили.',
     bye: { f: ['Ждём её завтра!', 'До завтра!'], m: ['Ждём его завтра!', 'До завтра!'] },
     bday: { f: 'А завтра у неё день рождения!', m: 'А завтра у него день рождения!' }
@@ -202,11 +202,11 @@ const INC_WHAT = [
 ];
 const INC_AID = [
   ['cold', { he: 'קירור', ru: 'Приложили холод' }], ['wash', { he: 'שטיפה במים', ru: 'Промыли водой' }], ['plaster', { he: 'פלסטר', ru: 'Пластырь' }],
-  ['hug', { he: 'חיבוק והרגעה', ru: 'Обняли, успокоили' }], ['none', { he: 'לא נדרש טיפול', ru: 'Помощь не понадобилась' }]
+  ['hug', { he: 'חיבוק והרגעה', ru: 'Обняли, успокоили' }], ['none', { he: 'לא היה צורך', ru: 'Помощь не понадобилась' }]
 ];
 const INC = {
-  he: { title: 'עדכון מהגן · {name}', what: 'היום בשעה {t} היה אירוע קטן: {what}.', aid: 'טיפלנו: {aids}.', none: 'לא נדרש טיפול.', calm: { f: '{name} רגועה וחזרה לשחק.', m: '{name} רגוע וחזר לשחק.' } },
-  ru: { title: 'Сообщение из сада · {name}', what: 'Сегодня в {t} небольшое происшествие: {what}.', aid: 'Что сделали: {aids}.', none: 'Помощь не понадобилась.', calm: { f: '{name} уже спокойна и играет.', m: '{name} уже спокоен и играет.' } }
+  he: { title: 'עדכון מהגן · {name}', what: 'היום ב-{t} קרה משהו קטן: {what}.', aid: 'מה עשינו: {aids}.', none: 'לא היה צורך בטיפול.', calm: { f: '{name} רגועה וחזרה לשחק.', m: '{name} רגוע וחזר לשחק.' } },
+  ru: { title: 'Сообщение из сада · {name}', what: 'Сегодня в {t} было небольшое происшествие: {what}.', aid: 'Что сделали: {aids}.', none: 'Помощь не понадобилась.', calm: { f: '{name} уже спокойна и играет.', m: '{name} уже спокоен и играет.' } }
 };
 const APP_NAME = { he: 'גן סינדרלה', ru: 'Сад «Синдерелла»' };
 
@@ -861,7 +861,7 @@ function incTexts(st, lg) {
 function ownerText(st) {
   const k = kid(st.kid), what = INC_WHAT.find(w => w[0] === st.what)[1].he;
   const aids = INC_AID.filter(a => st.aid.has(a[0]) && a[0] !== 'none').map(a => a[1].he);
-  return { title: `דיווח אירוע · ${k.he}`, text: `${what} בשעה ${hm(st.t)}. ${aids.length ? 'טיפול: ' + aids.join(', ') + '.' : 'לא נדרש טיפול.'} ההורים קיבלו עדכון ${k.lang === 'ru' ? 'ברוסית' : 'בעברית'}.` };
+  return { title: `דיווח אירוע · ${k.he}`, text: `${what} בשעה ${hm(st.t)}. ${aids.length ? 'טיפול: ' + aids.join(', ') + '.' : 'לא היה צורך בטיפול.'} ההורים קיבלו עדכון ${k.lang === 'ru' ? 'ברוסית' : 'בעברית'}.` };
 }
 function openIncident() {
   const st = { kid: S.sel.size === 1 ? [...S.sel][0] : null, what: null, aid: new Set(), t: Math.max(7 * 60, Math.floor(S.clock / 5) * 5), note: '' };
