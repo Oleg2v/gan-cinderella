@@ -9,8 +9,8 @@
       <div class="pa-login__art" data-pa="loginArt" data-pa-live data-sparkle-zone></div>
       <div class="pa-login__card">
         <p class="eyebrow"><svg class="ic ic--fill" aria-hidden="true"><use href="#i-sparkle"/></svg><span data-i18n="pa.login.eyebrow">אזור ההורים</span></p>
-        <h1 class="pa-login__title" id="pa-login-title" data-i18n="pa.login.title">כל היום של הילד, אצלכם בטלפון</h1>
-        <p class="muted pa-login__lead" data-i18n="pa.login.lead">מה אכלו, כמה ישנו, תמונות רק שלכם, תשלומים ומסמכים. נכנסים עם קוד חד-פעמי.</p>
+        <h1 class="pa-login__title" id="pa-login-title" data-i18n="pa.login.title">כל היום בגן, אצלכם בטלפון</h1>
+        <p class="muted pa-login__lead" data-i18n="pa.login.lead">מה אכלו, כמה ישנו, תמונות שרק אתם רואים, תשלומים ומסמכים. נכנסים עם קוד חד-פעמי.</p>
         <form class="pa-login__form" data-pa="loginForm" novalidate>
           <div class="field">
             <label for="pa-phone" data-i18n="pa.login.phone">מספר הנייד שלכם</label>
@@ -18,7 +18,7 @@
               <svg class="ic" aria-hidden="true"><use href="#i-chat-text"/></svg>
               <input id="pa-phone" class="input tnum" type="tel" inputmode="tel" autocomplete="tel" dir="ltr" placeholder="050-000-0000" aria-describedby="pa-phone-hint">
             </div>
-            <p class="hint pa-login__hint" id="pa-phone-hint"><span data-i18n="pa.login.hint">נשלח אליכם קוד חד-פעמי</span><span aria-hidden="true"> · </span><button type="button" class="link-btn" data-pa="sample" data-i18n="pa.login.sample">מספר לדוגמה</button></p>
+            <p class="hint pa-login__hint" id="pa-phone-hint"><span data-i18n="pa.login.hint">הקוד יגיע אליכם בהודעה</span><span aria-hidden="true"> · </span><button type="button" class="link-btn" data-pa="sample" data-i18n="pa.login.sample">מספר לדוגמה</button></p>
             <p class="pa-err" data-pa="phoneErr" role="alert" hidden></p>
           </div>
           <button type="submit" class="btn btn--primary btn--block" data-pa="sendCode" data-magnetic=".2"><svg class="ic ic--dir" aria-hidden="true"><use href="#i-send"/></svg><span data-i18n="pa.login.send">שליחת קוד</span></button>
@@ -35,7 +35,7 @@
             <div class="pa-otpstep__links"><button type="button" class="link-btn" data-pa="resend" data-i18n="pa.login.resend">לא הגיע? לשלוח שוב</button><button type="button" class="link-btn" data-pa="other" data-i18n="pa.login.other">מספר אחר</button></div>
           </div>
         </form>
-        <p class="tiny muted pa-login__demo"><span class="demo-tag" data-i18n="core.example">לדוגמה</span> <span data-i18n="pa.login.demo">דמו: כל מספר נייד עובד, ושום הודעה לא נשלחת באמת.</span></p>
+        <p class="tiny muted pa-login__demo"><span class="demo-tag" data-i18n="core.example">לדוגמה</span> <span data-i18n="pa.login.demo">בדמו כל מספר נייד עובד, ושום הודעה לא נשלחת באמת.</span></p>
       </div>
     </div>
   </section>
@@ -78,7 +78,7 @@
 
     <div class="pa-tabs-sentinel" aria-hidden="true"></div>
     <div class="pa-tabs-wrap">
-      <div class="pa-tabs" role="tablist" aria-label="אזורים באזור ההורים" data-i18n-attr="aria-label:pa.tabs">
+      <div class="pa-tabs" role="tablist" aria-label="מדורים באזור ההורים" data-i18n-attr="aria-label:pa.tabs">
         <span class="pa-tabs__ind" aria-hidden="true"></span>
         <button type="button" class="pa-tab" role="tab" id="pa-t-today" aria-controls="pa-p-today" aria-selected="true" data-tab="today"><svg class="ic" aria-hidden="true"><use href="#i-sun"/></svg><span data-i18n="pa.tab.today">היום</span></button>
         <button type="button" class="pa-tab" role="tab" id="pa-t-pay" aria-controls="pa-p-pay" aria-selected="false" tabindex="-1" data-tab="pay"><svg class="ic" aria-hidden="true"><use href="#i-card"/></svg><span data-i18n="pa.tab.pay">תשלומים</span></button>
@@ -168,10 +168,10 @@
           <article class="card card--lift pa-doc pa-doc--health" aria-labelledby="pa-doc-h">
             <div class="pa-doc__top">
               <span class="icon-bubble icon-bubble--pink" aria-hidden="true"><svg class="ic" aria-hidden="true"><use href="#i-shield"/></svg></span>
-              <div class="rowi__main"><h3 class="h4" id="pa-doc-h" data-i18n="pa.docs.health">הצהרת בריאות</h3><p class="small muted" data-i18n="pa.docs.healthSub">פעם בשנה, לפני החורף</p></div>
+              <div class="rowi__main"><h3 class="h4" id="pa-doc-h" data-i18n="pa.docs.health">הצהרת בריאות</h3><p class="small muted" data-i18n="pa.docs.healthSub">לשנת הלימודים הזאת</p></div>
               <span class="tag tag--warn pa-doc__status"></span>
             </div>
-            <p class="pa-doc__text" data-i18n="pa.docs.healthText">אני מצהיר/ה שנועה בריאה ויכולה להשתתף בכל הפעילויות בגן, ושאעדכן את הצוות בכל שינוי בבריאות שלה.</p>
+            <p class="pa-doc__text" data-i18n="pa.docs.healthText">אנחנו מצהירים שנועה בריאה ויכולה להשתתף בכל הפעילויות בגן, ונעדכן את הצוות בכל שינוי בבריאות שלה.</p>
             <div class="pa-sig">
               <p class="pa-label" id="pa-sig-l" data-i18n="pa.docs.sigLabel">החתימה שלכם</p>
               <div class="pa-sig__pad">
@@ -181,10 +181,10 @@
               </div>
               <p class="pa-err" data-pa="sigErr" role="alert" hidden></p>
               <div class="pa-sig__btns">
-                <button type="button" class="btn btn--ghost btn--sm" data-pa="sigClear"><svg class="ic" aria-hidden="true"><use href="#i-refresh"/></svg><span data-i18n="pa.docs.clear">ניקוי</span></button>
+                <button type="button" class="btn btn--ghost btn--sm" data-pa="sigClear"><svg class="ic" aria-hidden="true"><use href="#i-refresh"/></svg><span data-i18n="pa.docs.clear">מחיקה</span></button>
                 <button type="button" class="btn btn--primary btn--sm" data-pa="sigDone"><svg class="ic" aria-hidden="true"><use href="#i-sign"/></svg><span data-i18n="pa.docs.sign">חתימה ושליחה</span></button>
               </div>
-              <button type="button" class="link-btn pa-sig__typed" data-pa="sigTyped" data-i18n="pa.docs.typed">לחתום בשם מוקלד</button>
+              <button type="button" class="link-btn pa-sig__typed" data-pa="sigTyped" data-i18n="pa.docs.typed">לחתום בהקלדה</button>
             </div>
             <div class="pa-doc__signed" hidden>
               <img alt="" class="pa-doc__sigimg">
@@ -208,7 +208,7 @@
           <article class="card pa-doc pa-doc--more">
             <ul class="rows">
               <li class="rowi"><span class="icon-bubble" aria-hidden="true"><svg class="ic" aria-hidden="true"><use href="#i-doc"/></svg></span><div class="rowi__main"><p class="rowi__title" data-i18n="pa.docs.reg">טופס רישום</p><p class="rowi__sub" data-i18n="pa.docs.regSub">התקבל בתחילת השנה</p></div><span class="tag tag--ok"><svg class="ic" aria-hidden="true"><use href="#i-check"/></svg><span data-i18n="pa.docs.got">התקבל</span></span></li>
-              <li class="rowi"><span class="icon-bubble" aria-hidden="true"><svg class="ic" aria-hidden="true"><use href="#i-users"/></svg></span><div class="rowi__main"><p class="rowi__title" data-i18n="pa.docs.pick">רשימת מבוגרים לאיסוף</p><p class="rowi__sub" data-i18n="pa.docs.pickSub">אמא, אבא, סבתא ודודה</p></div><span class="tag tag--ok"><svg class="ic" aria-hidden="true"><use href="#i-check"/></svg><span data-i18n="pa.docs.people">4 אנשים</span></span></li>
+              <li class="rowi"><span class="icon-bubble" aria-hidden="true"><svg class="ic" aria-hidden="true"><use href="#i-users"/></svg></span><div class="rowi__main"><p class="rowi__title" data-i18n="pa.docs.pick">רשימת האיסוף</p><p class="rowi__sub" data-i18n="pa.docs.pickSub">אמא, אבא, סבתא ודודה</p></div><span class="tag tag--ok"><svg class="ic" aria-hidden="true"><use href="#i-check"/></svg><span data-i18n="pa.docs.people">4 אנשים</span></span></li>
             </ul>
           </article>
         </div>
@@ -220,7 +220,7 @@
           <div class="pa-sec-h pa-album__head">
             <div>
               <h2 class="h3" data-i18n="pa.album.title">האלבום של נועה</h2>
-              <p class="small pa-album__auto"><svg class="ic" aria-hidden="true"><use href="#i-wand"/></svg><span data-i18n="pa.album.auto">נבנה לבד מהתמונות של השנה</span></p>
+              <p class="small pa-album__auto"><svg class="ic" aria-hidden="true"><use href="#i-wand"/></svg><span data-i18n="pa.album.auto">מתמלא לבד בתמונות של השנה</span></p>
             </div>
             <span class="demo-tag" data-i18n="core.example">לדוגמה</span>
           </div>

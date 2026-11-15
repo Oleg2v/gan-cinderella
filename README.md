@@ -4,8 +4,9 @@ One self-contained page (`index.html`) that shows the kindergarten's public site
 
 ## Open it
 
-- `index.html` works on its own: open it in a browser or host it anywhere (GitHub Pages, Netlify, any static host).
-- Direct links to an entrance: `#visitors`, `#parents`, `#staff`, `#owner`. `#tour` starts the guided tour (about 90 seconds).
+- Live: https://cinderella.kikkey.com (Cloudflare Worker `cinderella`, deployed with `deploy/deploy.sh`).
+- `index.html` works on its own: open it in a browser or host it anywhere.
+- Direct links to an entrance: `#visitors`, `#parents`, `#staff`, `#owner`. `#tour` starts the guided tour (about 88 seconds).
 
 ## Logo
 

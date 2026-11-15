@@ -806,7 +806,7 @@
           const btn = $(`.dock__btn[data-go="${view}"]`);
           await ctx.tap(btn, { noClick: true, after: 0 });
           await go(view, { origin: btn, focus: false });
-          await ctx.wait(motion.reduced ? 200 : 500);
+          await ctx.wait(motion.reduced ? 150 : 250);
         },
         hideFinger() { $('.ghost-finger').hidden = true; Tour.finger.shown = false; }
       };

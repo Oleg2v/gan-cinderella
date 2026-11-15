@@ -695,8 +695,8 @@ App.module('pubTop', {
       }
       const top = trackTop(), span = track.offsetHeight - innerHeight;
       await ctx.scrollTo(top + span * P0 * .5, { duration: 650 });
-      await ctx.scrollTo(top + span * (P1 + .03), { duration: 9600, linear: true });
-      await ctx.wait(1300);
+      await ctx.scrollTo(top + span * (P1 + .03), { duration: 8400, linear: true });
+      await ctx.wait(1100);
     }
   }
 });

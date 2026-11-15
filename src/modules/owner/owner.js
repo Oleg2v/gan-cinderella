@@ -1001,7 +1001,7 @@ App.module('owner', {
       AUTOS.forEach(a => { if (!S.on[a.id]) toggle(a.id); });
       const onAbort = () => closePlayer();
       ctx.signal.addEventListener('abort', onAbort, { once: true });
-      S.speed = f ? .3 : .42;
+      S.speed = f ? .3 : .36;
       try {
         await ctx.scrollTo($('#ow-auto .ow-auto__head'), { duration: f ? 0 : 650, offset: 70 });
         for (const id of ['lead', 'summaries']) {
