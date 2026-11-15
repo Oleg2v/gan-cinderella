@@ -431,6 +431,9 @@
       y = o.center ? scrollY() + r.top + r.height / 2 - vh / 2 : scrollY() + r.top - (o.offset != null ? o.offset : 76);
     }
     y = clamp(y, 0, Math.max(0, document.documentElement.scrollHeight - vh));
+    // long jumps that would fast-forward through a scroll-driven scene ([data-scroll-skip], e.g. the clock)
+    // become a quick fade-cut close to the target + a short glide, so the scene never flickers past
+    if (!o.linear && !o.noCut && !motion.reduced && crossesSkip(scrollY(), y)) return cutScroll(y, o);
     const dur = o.duration != null ? o.duration : clamp(Math.abs(y - scrollY()) * .5, 400, 1400);
     if (motion.reduced || dur <= 0) { lenis ? lenis.scrollTo(y, { immediate: true, force: true }) : window.scrollTo(0, y); return Promise.resolve(); }
     return new Promise(res => {
@@ -451,6 +454,30 @@
       };
       requestAnimationFrame(step);
     });
+  }
+  function crossesSkip(from, to) {
+    const lo = Math.min(from, to), hi = Math.max(from, to), vh = innerHeight;
+    return $$('[data-scroll-skip]').some(el => {
+      if (!el.offsetParent) return false;
+      const a = el.getBoundingClientRect().top + scrollY(), b = a + el.offsetHeight - vh;
+      const inside = to >= a - 2 && to <= b + 2;         // target inside the scene: let it play
+      const overlap = Math.min(hi, b) - Math.max(lo, a);  // how much of the scene we would scrub through
+      return !inside && overlap > vh * .8;
+    });
+  }
+  async function cutScroll(y, o) {
+    const main = $('#main'), dir = y > scrollY() ? 1 : -1;
+    const maxY = Math.max(0, document.documentElement.scrollHeight - innerHeight);
+    const pre = clamp(y - dir * innerHeight * .55, 0, maxY);
+    const jump = v => { if (lenis) lenis.scrollTo(v, { immediate: true, force: true }); else window.scrollTo(0, v); };
+    if (main && main.animate) await main.animate([{ opacity: 1 }, { opacity: 0 }], { duration: 170, easing: 'ease-in', fill: 'forwards' }).finished.catch(() => { });
+    jump(pre);
+    await nextFrame(); await nextFrame();
+    if (main && main.animate) {
+      main.getAnimations().forEach(a => a.cancel());
+      main.animate([{ opacity: 0 }, { opacity: 1 }], { duration: 380, easing: 'cubic-bezier(.22,1,.36,1)' });
+    }
+    return scrollTo(y, Object.assign({}, o, { duration: 560, noCut: true }));
   }
   const scrollSubs = new Set(); let scrollTick = false;
   function onScroll(fn) { scrollSubs.add(fn); return () => scrollSubs.delete(fn); }

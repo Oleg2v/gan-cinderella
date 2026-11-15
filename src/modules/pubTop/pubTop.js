@@ -312,8 +312,9 @@ function layout() {
   const cb = content.offsetTop + content.offsetHeight;
   const dockH = parseFloat(getComputedStyle(html).getPropertyValue('--dock-h')) || 68;
   // phone: dock + gap + the scroll cue (40) + breathing room, so the cue sits on clean grass below the castle
-  const base = desk ? clamp(Math.round(H * .14), 104, 150) : Math.round(dockH + 22 + 40 + 22);
-  const minCh = desk ? 230 : 156, maxCh = desk ? 440 : 320;
+  const short = H < 760;
+  const base = desk ? clamp(Math.round(H * .14), 104, 150) : Math.round(dockH + 22 + 40 + (short ? 12 : 22));
+  const minCh = desk ? 230 : (short ? 112 : 150), maxCh = desk ? 440 : 320;
   let room = H - cb - base - (desk ? 18 : 14);
   if (room < minCh) { H += minCh - room; hero.style.minHeight = H + 'px'; room = minCh; }
   const ch = clamp(Math.round(room), minCh, maxCh);
@@ -506,7 +507,7 @@ function buildTimeline() {
     <div class="pt-tl__head"><h2 class="h2" data-i18n="pt.clock.title"></h2><p class="pt-stage__sub"><span data-i18n="pt.clock.sub"></span> <span class="demo-tag" data-i18n="pt.clock.example"></span></p></div>
     <ol class="pt-tl__list">${SCENES.map((sc, i) => `<li class="pt-tl__it"><div class="pt-tl__clock">${miniClock(sc.at)}<bdi class="tnum" dir="ltr">${fmtMin(sc.at)}</bdi></div>
       <div class="pt-tl__body"><div class="pt-tl__art" style="background:${sc.bg}">${ART[sc.art]()}</div><div><h3 class="pt-tl__t" data-i18n="pt.s${i}.t"></h3><p class="pt-tl__l" data-i18n="pt.s${i}.l"></p></div></div></li>`).join('')}
-      <li class="pt-tl__it"><div class="pt-tl__clock">${miniClock(600)}<bdi class="tnum" dir="ltr">17:00</bdi></div><div class="pt-tl__body"><div class="pt-tl__fin" style="grid-column: span 2"><svg class="pt-fin__ic" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-sparkles"/></svg><p class="pt-fin__big" data-i18n="pt.fin.big"></p><p class="pt-fin__small" data-i18n="pt.fin.small"></p></div></div></li>
+      <li class="pt-tl__it"><div class="pt-tl__clock">${miniClock(600)}<bdi class="tnum" dir="ltr">17:00</bdi></div><div class="pt-tl__body"><div class="pt-tl__fin" style="grid-column: span 2"><svg class="pt-fin__ic" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-sparkles"/></svg><p class="pt-fin__big" data-i18n="pt.fin.big"></p><p class="pt-fin__small" data-i18n-html="pt.fin.small"></p></div></div></li>
     </ol></div>`;
   App.i18n.apply(tl);
 }
@@ -528,9 +529,9 @@ const I18N = {
     'pt.slogan': 'גן ילדים מהאגדות', 'pt.slogan.a': 'גן ילדים', 'pt.slogan.b': 'מהאגדות',
     'pt.lead': 'מעון יום מוכר ומפוקח, מלידה ועד גיל\u00a03',
     'pt.cta.visit': 'קביעת סיור בגן', 'pt.cta.avail': 'בדיקת מקום פנוי',
-    'pt.mode': 'תצוגת לילה', 'pt.cue': 'יום בגן', 'pt.cueA': 'לגלול אל השעון של סינדרלה',
+    'pt.mode': 'תצוגת לילה', 'pt.cue': 'יום בגן', 'pt.cueA': 'יום בגן: גלילה אל השעון של סינדרלה',
     'pt.f1': 'מלידה עד גיל 3', 'pt.f2': 'מעון מוכר ומפוקח', 'pt.f3': 'מטבח משלנו, אוכל טרי כל יום',
-    'pt.f4': 'א׳–ה׳ <bdi class="tnum">07:00–17:00</bdi><br>ו׳ <bdi class="tnum">07:00–13:00</bdi>',
+    'pt.f4': '<span class="pt-nw">א׳–ה׳ <bdi class="tnum" dir="ltr">07:00–17:00</bdi></span><br><span class="pt-nw">ו׳ <bdi class="tnum" dir="ltr">07:00–13:00</bdi></span>',
     'pt.clock.title': 'השעון של סינדרלה', 'pt.clock.sub': 'יום בגן, שעה אחרי שעה', 'pt.clock.example': 'יום לדוגמה',
     'pt.clock.aria': 'שעון שהמחוגים שלו זזים מ-07:00 עד 17:00 בזמן הגלילה',
     'pt.ruler': 'קפיצה לשעה ביום', 'pt.bead': 'קפיצה ל-{t}',
@@ -543,29 +544,29 @@ const I18N = {
     'pt.s6.t': 'ארוחת מנחה', 'pt.s6.l': 'מתעוררים לאט, ומשהו טעים כבר מחכה על השולחן.',
     'pt.s7.t': 'ההורים מגיעים', 'pt.s7.l': 'ריצה אל הדלת, חיבוק גדול, ויש המון מה לספר.',
     'pt.fin.big': 'אצלנו היום נגמר ב-17:00, לא בחצות',
-    'pt.fin.small': 'אפשר להאריך עד 18:00 · ביום ו׳ 07:00–13:00'
+    'pt.fin.small': '<span class="pt-nw">אפשר להאריך עד 18:00</span>&nbsp;· <span class="pt-nw">ביום ו׳ <bdi dir="ltr">07:00–13:00</bdi></span>'
   },
   ru: {
     'pt.eyebrow': 'Мэон (ясли-сад) · Ашдод',
     'pt.slogan': 'Детский сад из сказки', 'pt.slogan.a': 'Детский сад', 'pt.slogan.b': 'из сказки',
     'pt.lead': 'Признанный мэон под надзором, для детей от рождения до 3\u00a0лет',
-    'pt.cta.visit': 'Записаться на экскурсию', 'pt.cta.avail': 'Есть ли места',
-    'pt.mode': 'Ночной режим', 'pt.cue': 'День в саду', 'pt.cueA': 'Прокрутить к часам Синдереллы',
+    'pt.cta.visit': 'Экскурсия в сад', 'pt.cta.avail': 'Есть ли места?',
+    'pt.mode': 'Ночной режим', 'pt.cue': 'День в саду', 'pt.cueA': 'День в саду: к часам Синдереллы',
     'pt.f1': 'С рождения до 3\u00a0лет', 'pt.f2': 'Признанный мэон под надзором', 'pt.f3': 'Своя кухня, свежая еда каждый день',
-    'pt.f4': 'вс–чт <bdi class="tnum">07:00–17:00</bdi><br>пт <bdi class="tnum">07:00–13:00</bdi>',
+    'pt.f4': '<span class="pt-nw">вс–чт <bdi class="tnum">07:00–17:00</bdi></span><br><span class="pt-nw">пт <bdi class="tnum">07:00–13:00</bdi></span>',
     'pt.clock.title': 'Часы Синдереллы', 'pt.clock.sub': 'День в саду, час за часом', 'pt.clock.example': 'пример дня',
     'pt.clock.aria': 'Часы, стрелки которых идут с 07:00 до 17:00 при прокрутке',
     'pt.ruler': 'Перейти к часу дня', 'pt.bead': 'Перейти к {t}',
     'pt.s0.t': 'Доброе утро', 'pt.s0.l': 'Приходите без спешки, у двери вас уже встречают с улыбкой.',
     'pt.s1.t': 'Завтрак с нашей кухни', 'pt.s1.l': 'Готовим прямо в саду. Всё свежее, каждый день.',
-    'pt.s2.t': 'Три кружка в неделю', 'pt.s2.l': 'Музыка, спорт, природа и животные. Поём, прыгаем, гладим кролика.',
+    'pt.s2.t': 'Три кружка в неделю', 'pt.s2.l': 'Музыка, спорт, природа и животные. Поём, прыгаем и гладим зверушек.',
     'pt.s3.t': 'Гуляем во дворе', 'pt.s3.l': 'Играем на свежем воздухе, немного пачкаемся и много смеёмся.',
     'pt.s4.t': 'Обед', 'pt.s4.l': 'Домашняя еда с нашей кухни, меню утверждено диетологом.',
     'pt.s5.t': 'Тихий час', 'pt.s5.l': 'Мягкое одеяло, приглушённый свет и тишина. Набираемся сил.',
     'pt.s6.t': 'Полдник', 'pt.s6.l': 'Просыпаемся не спеша, а на столе уже ждёт что-то вкусное.',
     'pt.s7.t': 'Родители пришли', 'pt.s7.l': 'Бегом к двери, крепкие объятия, и дома есть что рассказать.',
     'pt.fin.big': 'У нас день заканчивается в 17:00, а не в полночь',
-    'pt.fin.small': 'Можно продлить до 18:00 · в пятницу 07:00–13:00'
+    'pt.fin.small': '<span class="pt-nw">Можно продлить до 18:00</span>&nbsp;· <span class="pt-nw">в пятницу 07:00–13:00</span>'
   }
 };
 

@@ -23,6 +23,7 @@ const groupName = id => { const g = App.data.groups.find(x => x.id === id); retu
 /* ---------- i18n: Hebrew for markup is harvested from the HTML; dynamic strings live here ---------- */
 const HE = {
   'pb.g.baby': 'תינוקייה', 'pb.g.young': 'צעירים', 'pb.g.big': 'בוגרים',
+  'pb.gs.baby': 'תינוקייה', 'pb.gs.young': 'צעירים', 'pb.gs.big': 'בוגרים',
   'pb.next': 'המשך', 'pb.back': 'חזרה', 'pb.close': 'סגירה', 'pb.done': 'סיום', 'pb.stepOf': 'שלב {n} מתוך {m}',
   'pb.name': 'שם', 'pb.phone': 'טלפון נייד', 'pb.phonePh': '050-000-0000', 'pb.msgLang': 'שפת ההודעות',
   'pb.dateFmt': 'יום / חודש / שנה', 'pb.errName': 'איך קוראים לכם?', 'pb.errPhone': 'מספר נייד: 10 ספרות, מתחיל ב-05', 'pb.example': 'לדוגמה',
@@ -49,10 +50,10 @@ const HE = {
   'pb.bk.remind': 'נשלח לכם גם תזכורת יום לפני', 'pb.bk.sent': 'ההודעה שקיבלתם',
   /* registration */
   'pb.rg.title': 'הרשמה לגן סינדרלה', 'pb.rg.t1': 'הילד או הילדה', 'pb.rg.t2': 'ההורים', 'pb.rg.t3': 'מסמכים',
-  'pb.rg.cname': 'שם הילד או הילדה', 'pb.rg.dob': 'תאריך לידה', 'pb.rg.sample': 'מילוי לדוגמה', 'pb.rg.groupH': 'הקבוצה', 'pb.rg.auto': 'נבחרה לפי תאריך הלידה',
+  'pb.rg.cname': 'שם הילד או הילדה', 'pb.rg.dob': 'תאריך לידה', 'pb.rg.sample': 'מילוי לדוגמה', 'pb.rg.groupH': 'הקבוצה', 'pb.rg.auto': 'הקבוצה נבחרה לפי תאריך הלידה',
   'pb.rg.rule': 'כלל לדוגמה: עד שנה תינוקייה, שנה עד שנתיים צעירים, שנתיים עד 3 בוגרים.', 'pb.rg.age': 'גיל: {m} חודשים',
   'pb.rg.older': 'הגן שלנו מיועד לילדים עד גיל 3. כתבו לנו בוואטסאפ ונשמח לייעץ.', 'pb.rg.future': 'נראה שהתאריך עוד לפנינו. כדאי לבדוק אותו שוב.',
-  'pb.rg.reserve': 'שריון מקום · {g}', 'pb.rg.mismatch': 'לפי תאריך הלידה מתאימה דווקא קבוצת {g}.',
+  'pb.rg.reserve': 'שריון מקום · {g}', 'pb.rg.mismatch': 'לפי הגיל מתאימה דווקא קבוצת {g}',
   'pb.rg.pname': 'שם ההורה', 'pb.rg.pphone': 'טלפון נייד (WhatsApp)',
   'pb.rg.docsP': 'צילום מהטלפון מספיק. בדמו אפשר לבחור קובץ לדוגמה.',
   'pb.rg.d1': 'ספח תעודת זהות עם פרטי הילד', 'pb.rg.d2': 'פנקס חיסונים', 'pb.rg.d3': 'אישור זכאות לסבסוד, אם יש', 'pb.rg.opt': 'לא חובה',
@@ -99,6 +100,7 @@ const RU = {
   'pb.rc.btn': 'Проверить право на скидку', 'pb.rc.hint': 'Три коротких вопроса и понятная инструкция в WhatsApp',
   'pb.av.eye': 'Места в группах', 'pb.av.h': 'Свободные места', 'pb.av.lead': 'Так сейчас выглядят группы. Можно забронировать место или встать в лист ожидания.',
   'pb.g.baby': 'Младенческая группа', 'pb.g.young': 'Младшая группа', 'pb.g.big': 'Старшая группа',
+  'pb.gs.baby': 'Младенческая', 'pb.gs.young': 'Младшая', 'pb.gs.big': 'Старшая',
   'pb.av.a11yBaby': 'Занято 6 мест из 8', 'pb.av.a11yYoung': 'Занято 9 мест из 10', 'pb.av.a11yBig': 'Все 12 мест заняты',
   'pb.av.two': '2 свободных места', 'pb.av.last': 'Последнее место', 'pb.av.wait': 'Лист ожидания', 'pb.av.reserve': 'Забронировать место',
   'pb.av.join': 'Встать в лист ожидания', 'pb.av.taken': 'занято', 'pb.av.free': 'свободно', 'pb.av.already': 'Уже в листе ожидания?', 'pb.av.check': 'Проверить моё место',
@@ -134,10 +136,10 @@ const RU = {
   'pb.bk.sending': 'Отправляем…', 'pb.bk.stamp': 'Готово', 'pb.bk.doneT': 'До встречи в саду, {name}', 'pb.bk.doneP': 'Подтверждение уже у вас в WhatsApp.',
   'pb.bk.remind': 'Накануне пришлём напоминание', 'pb.bk.sent': 'Сообщение, которое вы получили',
   'pb.rg.title': 'Запись в «Синдереллу»', 'pb.rg.t1': 'Ребёнок', 'pb.rg.t2': 'Родители', 'pb.rg.t3': 'Документы',
-  'pb.rg.cname': 'Имя ребёнка', 'pb.rg.dob': 'Дата рождения', 'pb.rg.sample': 'Заполнить примером', 'pb.rg.groupH': 'Группа', 'pb.rg.auto': 'Подобрана по дате рождения',
+  'pb.rg.cname': 'Имя ребёнка', 'pb.rg.dob': 'Дата рождения', 'pb.rg.sample': 'Заполнить примером', 'pb.rg.groupH': 'Группа', 'pb.rg.auto': 'группа подобрана по дате рождения',
   'pb.rg.rule': 'Пример правила: до года младенческая, от года до двух младшая, от двух до трёх старшая.', 'pb.rg.age': 'Возраст: {m} мес.',
   'pb.rg.older': 'Наш сад для детей до 3 лет. Напишите нам в WhatsApp, подскажем.', 'pb.rg.future': 'Похоже, эта дата ещё впереди. Проверьте, пожалуйста.',
-  'pb.rg.reserve': 'Бронь места · {g}', 'pb.rg.mismatch': 'По дате рождения подходит другая группа: {g}.',
+  'pb.rg.reserve': 'Бронь места · {g}', 'pb.rg.mismatch': 'по возрасту подходит {g}',
   'pb.rg.pname': 'Имя родителя', 'pb.rg.pphone': 'Мобильный (WhatsApp)',
   'pb.rg.docsP': 'Хватит фото с телефона. В демо можно выбрать пример файла.',
   'pb.rg.d1': 'Приложение к теудат зеут с данными ребёнка', 'pb.rg.d2': 'Прививочный паспорт', 'pb.rg.d3': 'Подтверждение права на субсидию, если есть', 'pb.rg.opt': 'по желанию',
@@ -229,7 +231,8 @@ const Plate = {
     $$('.pb-meals .chip', root).forEach(c => c.addEventListener('click', () => this.switchTo(c.dataset.meal)));
   },
   items(m) { return $$(`.pb-food[data-meal="${m}"] .pb-fi`, this.svg); },
-  showOnly(m) { $$('.pb-food', this.svg).forEach(f => { f.hidden = f.dataset.meal !== m; }); },
+  /* SVG elements have no .hidden property: toggle the attribute itself */
+  showOnly(m) { $$('.pb-food', this.svg).forEach(f => f.toggleAttribute('hidden', f.getAttribute('data-meal') !== m)); },
   play() {
     const g = gs(); this.showOnly(this.meal);
     if (this.tl) this.tl.kill();
@@ -330,7 +333,7 @@ function initArt() {
   const door = $('.pb-door', root);
   io([door], (el, vis) => { clearTimeout(el._t); if (vis) el._t = setTimeout(() => el.classList.add('is-open'), App.motion.reduced ? 0 : 450); else el.classList.remove('is-open'); }, { threshold: .45 });
   const seal = $('.pb-seal', root), foot = $('.pb-foot__scene', root);
-  io([seal, foot, $('.pb-askcard', root)], (el, vis) => el.classList.toggle('pb-on', vis), { threshold: .1 });
+  io([seal, foot, $('.pb-askcard', root), $('.pb-reviews', root)], (el, vis) => el.classList.toggle('pb-on', vis), { threshold: .1 });
   const sl = $('.pb-rg__art', root);
   io([sl], (el, vis) => {
     if (!vis || el._done) return; el._done = true;
@@ -350,6 +353,7 @@ const Fab = {
   el: null, shown: false, last: 0, tmo: 0, showTmo: 0,
   init() {
     this.el = $('.pb-fab', root);
+    this.el.tabIndex = -1; this.el.setAttribute('aria-hidden', 'true'); // invisible until the first clear spot
     this.el.addEventListener('click', () => openAssistant());
     App.onScroll(() => this.schedule());
     addEventListener('resize', () => this.schedule(), { passive: true });
@@ -445,7 +449,7 @@ function elDone(s) {
       <div class="pb-phonecrop"></div>
       <p class="tiny muted pb-center">${T('pb.el.demo')}</p>
     </div>
-    ${sfoot(`<button type="button" class="btn btn--ghost" data-book>${icon('calendar')}${T('pb.ch.act.book')}</button><button type="button" class="btn btn--primary pb-grow" data-close-sheet>${T('pb.done')}</button>`)}`;
+    ${sfoot(`<button type="button" class="btn btn--ghost pb-grow" data-book>${icon('calendar')}${T('pb.ch.act.book')}</button><button type="button" class="btn btn--primary pb-grow" data-close-sheet>${T('pb.done')}</button>`)}`;
   const ph = phoneChat(msg); $('.pb-phonecrop', box).append(ph);
   const stamp = $('.pb-stamp', box); stamp.classList.add('is-in');
   setTimeout(() => App.fx.burstAt(stamp, { count: 34 }), App.motion.reduced ? 0 : 380);
@@ -620,8 +624,8 @@ function bkBind(box) {
   go.addEventListener('click', async () => {
     if (BK.day == null || BK.slot == null) return;
     const okN = n.value.trim().length > 1, okP = phoneOk(p.value);
-    n.toggleAttribute('aria-invalid', !okN); n.nextElementSibling.hidden = okN;
-    p.toggleAttribute('aria-invalid', !okP); p.nextElementSibling.hidden = okP;
+    n.setAttribute('aria-invalid', String(!okN)); n.nextElementSibling.hidden = okN;
+    p.setAttribute('aria-invalid', String(!okP)); p.nextElementSibling.hidden = okP;
     if (!okN || !okP) { const bad = !okN ? n : p; scrollSheetTo(s, bad.closest('.field')); try { bad.focus({ preventScroll: true }); } catch (e) { } return; }
     BK.name = n.value.trim(); BK.phone = phoneFmt(p.value);
     go.disabled = true; go.classList.add('is-busy'); go.innerHTML = `${sp()}<span>${esc(t('pb.bk.sending'))}</span>`;
@@ -714,7 +718,7 @@ function rgRender() {
         <div class="pb-gpick-h"><span class="label">${T('pb.rg.groupH')}</span><span class="demo-tag">${esc(t('core.example'))}</span></div>
         <div class="pb-gpick" role="group" aria-label="${esc(t('pb.rg.groupH'))}">
           <span class="pb-gpick__wand" aria-hidden="true">${sp()}</span>
-          ${['baby', 'young', 'big'].map(g => `<span class="pb-gp ${RG.group === g ? 'is-chosen' : ''}" data-g="${g}" aria-current="${RG.group === g}">${icon('check', 'pb-gp__ck')}<span>${esc(groupName(g))}</span></span>`).join('')}
+          ${['baby', 'young', 'big'].map(g => `<span class="pb-gp ${RG.group === g ? 'is-chosen' : ''}" data-g="${g}" aria-current="${RG.group === g}">${icon('check', 'pb-gp__ck')}${T('pb.gs.' + g)}</span>`).join('')}
         </div>
         <p class="pb-gnote small" aria-live="polite"></p>
         <p class="tiny muted">${T('pb.rg.rule')}</p>
@@ -726,7 +730,7 @@ function rgRender() {
       const g = groupFor(RG.months); RG.group = ['baby', 'young', 'big'].includes(g) ? g : null;
       const note = $('.pb-gnote', body);
       note.className = 'pb-gnote small' + (g === 'older' || g === 'future' ? ' is-warn' : '');
-      note.textContent = g === 'older' ? t('pb.rg.older') : g === 'future' ? t('pb.rg.future') : RG.group ? t('pb.rg.age', { m: RG.months }) + ' · ' + t('pb.rg.auto') + (RG.pre && RG.pre !== RG.group ? '. ' + t('pb.rg.mismatch', { g: groupName(RG.group) }) : '') : '';
+      note.textContent = g === 'older' ? t('pb.rg.older') : g === 'future' ? t('pb.rg.future') : RG.group ? t('pb.rg.age', { m: RG.months }) + ' · ' + (RG.pre && RG.pre !== RG.group ? t('pb.rg.mismatch', { g: lang() === 'ru' ? groupName(RG.group).toLowerCase() : groupName(RG.group) }) : t('pb.rg.auto')) : '';
       rgPick(body, animate);
       $('[data-next]', foot).disabled = !(RG.name.trim().length > 1 && RG.group);
     };
@@ -752,8 +756,8 @@ function rgRender() {
     $('[data-back]', foot).addEventListener('click', () => { RG.step = 0; rgRender(); });
     $('[data-next]', foot).addEventListener('click', () => {
       const okN = pn.value.trim().length > 1, okP = phoneOk(pp.value);
-      pn.toggleAttribute('aria-invalid', !okN); pn.nextElementSibling.hidden = okN;
-      pp.toggleAttribute('aria-invalid', !okP); pp.nextElementSibling.hidden = okP;
+      pn.setAttribute('aria-invalid', String(!okN)); pn.nextElementSibling.hidden = okN;
+      pp.setAttribute('aria-invalid', String(!okP)); pp.nextElementSibling.hidden = okP;
       if (!okN || !okP) { (okN ? pp : pn).focus(); return; }
       RG.step = 2; rgRender();
     });
@@ -955,20 +959,20 @@ const M = App.module('pubBottom', {
       closeMine();
       const onAbort = () => closeMine(); ctx.signal.addEventListener('abort', onAbort, { once: true });
       const f = ctx.fast;
-      await ctx.tap('#visit [data-pb-book]', { after: f ? 250 : 560 });
+      await ctx.tap('#visit [data-pb-book]', { after: f ? 250 : 480 });
       const s = BK.s; if (!s) return;
       const day = await ctx.waitFor(() => $$('.pb-cal__day[data-di]:not([disabled])', s.body)[1]);
       await ctx.tap(day, { after: f ? 120 : 200 });
       const slot = await ctx.waitFor(() => $('.pb-slot:not([disabled])', s.body));
       await ctx.tap(slot, { after: f ? 150 : 360 });
       await ctx.type($('#pb-bk-n', s.body), lang() === 'ru' ? 'Михаль' : 'מיכל', { cps: 17, after: 100 });
-      await ctx.type($('#pb-bk-p', s.body), '0521234567', { cps: 32, after: 120 });
+      await ctx.type($('#pb-bk-p', s.body), '0521234567', { cps: 38, after: 120 });
       await ctx.tap($('[data-confirm]', s.body), { after: 150 });
       await ctx.waitFor(() => $('.pb-done--bk', s.body), 3000);
       const ph = await ctx.waitFor(() => $('.pb-phonecrop', s.body), 1500);
       if (ph) await ctx.point(ph);
       ctx.hideFinger();
-      await ctx.wait(f ? 900 : 2250);
+      await ctx.wait(f ? 900 : 1900);
       ctx.signal.removeEventListener('abort', onAbort);
       closeMine();
       await ctx.wait(f ? 100 : 200);

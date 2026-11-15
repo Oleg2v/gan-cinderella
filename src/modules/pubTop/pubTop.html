@@ -193,7 +193,7 @@
     </span>
   </button>
 
-  <button type="button" class="pt-cue" data-pt-cue aria-label="לשעון של סינדרלה" data-i18n-attr="aria-label:pt.cueA">
+  <button type="button" class="pt-cue" data-pt-cue aria-label="יום בגן: גלילה אל השעון של סינדרלה" data-i18n-attr="aria-label:pt.cueA">
     <span class="pt-cue__t" data-i18n="pt.cue">יום בגן</span>
     <span class="pt-cue__ic" aria-hidden="true"><svg class="ic" aria-hidden="true"><use href="#i-chevron-down"/></svg></span>
   </button>
@@ -205,14 +205,14 @@
     <li class="pt-fact" data-reveal style="--d:0ms"><span class="pt-fact__ic"><svg class="ic" aria-hidden="true"><use href="#i-baby"/></svg></span><span class="pt-fact__t" data-i18n="pt.f1">מלידה עד גיל 3</span></li>
     <li class="pt-fact" data-reveal style="--d:80ms"><span class="pt-fact__ic pt-fact__ic--pink"><svg class="ic" aria-hidden="true"><use href="#i-shield"/></svg></span><span class="pt-fact__t" data-i18n="pt.f2">מעון מוכר ומפוקח</span></li>
     <li class="pt-fact" data-reveal style="--d:160ms"><span class="pt-fact__ic pt-fact__ic--pink"><svg class="ic" aria-hidden="true"><use href="#i-chef"/></svg></span><span class="pt-fact__t" data-i18n="pt.f3">מטבח משלנו, אוכל טרי כל יום</span></li>
-    <li class="pt-fact" data-reveal style="--d:240ms"><span class="pt-fact__ic"><svg class="ic" aria-hidden="true"><use href="#i-clock"/></svg></span><span class="pt-fact__t" data-i18n-html="pt.f4">א׳–ה׳ <bdi class="tnum">07:00–17:00</bdi><br>ו׳ <bdi class="tnum">07:00–13:00</bdi></span></li>
+    <li class="pt-fact" data-reveal style="--d:240ms"><span class="pt-fact__ic"><svg class="ic" aria-hidden="true"><use href="#i-clock"/></svg></span><span class="pt-fact__t" data-i18n-html="pt.f4"><span class="pt-nw">א׳–ה׳ <bdi class="tnum" dir="ltr">07:00–17:00</bdi></span><br><span class="pt-nw">ו׳ <bdi class="tnum" dir="ltr">07:00–13:00</bdi></span></span></li>
   </ul>
   <i class="pt-awning" aria-hidden="true"></i>
 </div>
 
 <!-- ================= CINDERELLA'S CLOCK ================= -->
 <section id="clock" class="pt-clock" aria-labelledby="pt-clock-title">
-  <div class="pt-track">
+  <div class="pt-track" data-scroll-skip>
     <div class="pt-stage">
       <div class="pt-stage__bg" aria-hidden="true">
         <i class="pt-bg pt-bg--0"></i><i class="pt-bg pt-bg--1"></i><i class="pt-bg pt-bg--2"></i><i class="pt-bg pt-bg--3"></i>
@@ -273,7 +273,7 @@
         <div class="pt-fin">
           <svg class="pt-fin__ic" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-sparkles"/></svg>
           <p class="pt-fin__big" data-i18n="pt.fin.big">אצלנו היום נגמר ב-17:00, לא בחצות</p>
-          <p class="pt-fin__small" data-i18n="pt.fin.small">אפשר להאריך עד 18:00 · ביום ו׳ 07:00–13:00</p>
+          <p class="pt-fin__small" data-i18n-html="pt.fin.small"><span class="pt-nw">אפשר להאריך עד 18:00</span>&nbsp;· <span class="pt-nw">ביום ו׳ <bdi dir="ltr">07:00–13:00</bdi></span></p>
         </div>
       </div>
     </div>
