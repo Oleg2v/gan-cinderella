@@ -814,7 +814,7 @@ html.is-touring .tour-invite { display: none; }
 
 .pt-eyebrow {
   margin-top: 14px; display: inline-flex; align-items: center; gap: 7px;
-  padding: 5px 13px 5px 12px; border-radius: var(--r-pill);
+  padding: 5px 13px 5px 12px; border-radius: var(--r-pill); max-width: 100%; text-align: center; line-height: 1.3;
   background: rgba(255, 255, 255, .78); color: var(--magenta-700);
   font-weight: 600; font-size: var(--fs-sm); letter-spacing: .02em;
   box-shadow: 0 4px 14px -8px rgba(27, 26, 75, .35);
@@ -826,10 +826,10 @@ html.is-touring .tour-invite { display: none; }
 
 .pt-title {
   margin-top: 8px; font-family: var(--font-display); font-weight: 600;
-  font-size: min(15.6vw, 6.6svh + 1.2rem, 6rem); line-height: .96; letter-spacing: -.02em;
+  font-size: min(15.6vw, 7.4svh, 6rem); line-height: .96; letter-spacing: -.02em;
   color: var(--ink); transition: color 1.2s var(--ease-in-out);
 }
-html[lang="ru"] .pt-title { font-weight: 900; letter-spacing: -.03em; font-size: min(12.4vw, 5.6svh + 1rem, 5rem); line-height: 1; }
+html[lang="ru"] .pt-title { font-weight: 900; letter-spacing: -.03em; font-size: min(12.4vw, 6.6svh, 5rem); line-height: 1; }
 .pt-title__fx { display: block; }
 .pt-title__a, .pt-title__b { display: block; }
 .pt-title__b { position: relative; color: #D1037D; transition: color 1.2s var(--ease-in-out); }
@@ -845,18 +845,23 @@ html[lang="ru"] .pt-title { font-weight: 900; letter-spacing: -.03em; font-size:
 }
 .is-night .pt-lead { color: rgba(255, 255, 255, .9); }
 .pt-ctas { margin-top: 18px; display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; width: 100%; }
-.pt-cta { --bh: 50px; padding: 0 20px; font-size: 1rem; }
+.pt-cta { --bh: 50px; padding: 0 18px; font-size: 1rem; gap: 8px; }
 .pt-ctas .btn--ghost { box-shadow: inset 0 0 0 2px rgba(27, 26, 75, .14), 0 8px 20px -12px rgba(27, 26, 75, .45); }
-@media (max-width: 380px) { .pt-cta { padding: 0 15px; font-size: .9375rem; } .pt-cta .ic { display: none; } }
-html[lang="ru"] .pt-ctas .btn { flex: 1 1 auto; }
+@media (max-width: 380px) { .pt-cta { padding: 0 14px; font-size: .9375rem; } .pt-cta .ic { display: none; } }
+@media (max-width: 430px) { html[lang="ru"] .pt-cta .ic { display: none; } }
+/* never clip a label: if a translation is too long the pill wraps its text instead of overflowing */
+.pt-ctas .btn { max-width: 100%; white-space: normal; text-align: center; line-height: 1.15; }
+@media (max-width: 899px) { .pt-ctas .btn { flex: 1 1 auto; } }
 
 /* short phones (in-app browsers): tighten the stack so the castle keeps its room */
-@media (max-width: 899px) and (max-height: 780px) {
-  .pt-logo, .pt-logo__img { width: 92px !important; height: 92px !important; }
-  .pt-eyebrow { margin-top: 10px; }
+@media (max-width: 899px) and (max-height: 800px) {
+  .pt-logo, .pt-logo__img { width: clamp(64px, 11svh, 100px) !important; height: clamp(64px, 11svh, 100px) !important; }
+  .pt-logo__orbit { inset: -13px; }
+  .pt-eyebrow { margin-top: 10px; padding-block: 4px; }
   .pt-title { margin-top: 6px; }
-  .pt-lead { margin-top: 8px; }
+  .pt-lead { margin-top: 8px; font-size: clamp(.9375rem, 4vw, 1.0625rem); }
   .pt-ctas { margin-top: 14px; }
+  .pt-cta { --bh: 48px; }
 }
 
 /* day / night switch */
@@ -919,7 +924,7 @@ html[lang="ru"] .pt-ctas .btn { flex: 1 1 auto; }
 
 /* ---------- intro (armed before first paint) ---------- */
 html.pt-armed .pt-in, html.pt-armed .pt-ch, html.pt-armed .pt-L--far, html.pt-armed .pt-L--castle, html.pt-armed .pt-L--mid,
-html.pt-armed .pt-L--front, html.pt-armed .pt-L--clouds svg, html.pt-armed .pt-L--slipper, html.pt-armed .pt-L--spark { opacity: 0; }
+html.pt-armed .pt-L--front, html.pt-armed .pt-L--clouds svg, html.pt-armed .pt-L--slipper, html.pt-armed .pt-L--spark, html.pt-armed .pt-cue { opacity: 0; }
 .pt-go .pt-L--far { animation: ptRise 1s var(--ease-out) both 0ms; }
 .pt-go .pt-L--castle { animation: ptRise 1.05s var(--ease-out) both 90ms; }
 .pt-go .pt-L--mid { animation: ptRise 1s var(--ease-out) both 170ms; }
@@ -935,6 +940,7 @@ html.pt-armed .pt-L--front, html.pt-armed .pt-L--clouds svg, html.pt-armed .pt-L
 .pt-go .pt-cta:nth-child(1) { animation: ptPop .62s var(--ease-spring) both 880ms; }
 .pt-go .pt-cta:nth-child(2) { animation: ptPop .62s var(--ease-spring) both 960ms; }
 .pt-go .pt-mode { animation: ptFade .6s var(--ease-out) both 1000ms; }
+.pt-go .pt-cue { animation: ptUp .6s var(--ease-out) both 960ms; }
 
 @keyframes ptRise { from { opacity: 0; transform: translateY(70px); } to { opacity: 1; transform: none; } }
 @keyframes ptPop { from { opacity: 0; transform: scale(.6); } to { opacity: 1; transform: none; } }
@@ -951,7 +957,6 @@ html.pt-armed .pt-L--front, html.pt-armed .pt-L--clouds svg, html.pt-armed .pt-L
 @keyframes ptFlag { 0%, 100% { transform: skewY(0deg) scaleX(1); } 50% { transform: skewY(-6deg) scaleX(.86); } }
 @keyframes ptShoot { 0% { opacity: 0; transform: rotate(-24deg) translateX(0); } 3% { opacity: 1; } 10% { opacity: 0; transform: rotate(-24deg) translateX(-180px); } 100% { opacity: 0; transform: rotate(-24deg) translateX(-180px); } }
 @keyframes ptBob { 0%, 100% { transform: translateY(-2px); } 50% { transform: translateY(3px); } }
-@keyframes ptDots { 0%, 100% { opacity: .25; } 40% { opacity: 1; } }
 
 /* desktop hero */
 @media (min-width: 900px) {
@@ -963,8 +968,8 @@ html.pt-armed .pt-L--front, html.pt-armed .pt-L--clouds svg, html.pt-armed .pt-L
   .pt-cta { --bh: 56px; padding: 0 28px; font-size: 1.0625rem; }
   .pt-ctas { margin-top: 22px; gap: 14px; }
   .pt-lead { margin-top: 14px; }
-  .pt-sun { top: calc(var(--bar-h) + 70px); inset-inline-end: 12%; width: 78px; height: 78px; }
-  .pt-moon { top: calc(var(--bar-h) + 56px); inset-inline-end: 13%; width: 86px; height: 86px; }
+  .pt-sun { top: calc(var(--bar-h) + 112px); inset-inline-end: 15%; width: 78px; height: 78px; }
+  .pt-moon { top: calc(var(--bar-h) + 96px); inset-inline-end: 15%; width: 86px; height: 86px; }
   .pt-cloud--1 { inset-inline-start: 6%; width: 190px; top: calc(var(--bar-h) + 60px); }
   .pt-cloud--2 { inset-inline-end: 4%; width: 170px; top: 44%; }
   .pt-cloud--3 { width: 120px; inset-inline-start: 60%; }
@@ -974,13 +979,18 @@ html.pt-armed .pt-L--front, html.pt-armed .pt-L--clouds svg, html.pt-armed .pt-L
 
 
 /* ------------------------------------------------------- FACTS RIBBON */
-.pt-facts { position: relative; z-index: 2; background: #fff; padding-block: 18px 6px; }
-.pt-facts__list { list-style: none; display: grid; grid-template-columns: 1fr 1fr; gap: 14px 12px; }
-.pt-fact { display: flex; align-items: center; gap: 9px; min-width: 0; font-weight: 600; font-size: var(--fs-sm); line-height: 1.3; color: var(--ink); }
-.pt-fact__ic { width: 38px; height: 38px; flex: none; border-radius: 13px; display: grid; place-items: center; background: var(--sky); color: var(--ink); }
+.pt-facts { position: relative; z-index: 2; background: #fff; padding-block: 8px 2px; }
+.pt-facts__list { list-style: none; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.pt-fact {
+  display: flex; flex-direction: column; align-items: center; text-align: center; gap: 8px; min-width: 0;
+  padding: 12px 8px 14px; font-weight: 600; font-size: var(--fs-sm); line-height: 1.3; color: var(--ink);
+}
+.pt-fact:nth-child(odd) { border-inline-end: 1.5px dashed rgba(27, 26, 75, .13); }
+.pt-fact:nth-child(-n+2) { border-bottom: 1.5px dashed rgba(27, 26, 75, .13); }
+.pt-fact__ic { position: relative; width: 42px; height: 42px; flex: none; border-radius: 14px; display: grid; place-items: center; background: var(--sky); color: var(--ink); box-shadow: 0 3px 0 rgba(27, 26, 75, .06); }
 .pt-fact__ic--pink { background: var(--blush); }
-.pt-fact__ic .ic { width: 21px; height: 21px; }
-.pt-fact__t { min-width: 0; }
+.pt-fact__ic .ic { width: 22px; height: 22px; }
+.pt-fact__t { min-width: 0; max-width: 100%; text-wrap: balance; overflow-wrap: break-word; }
 .pt-fact__t bdi { white-space: nowrap; }
 .pt-awning {
   position: absolute; left: 0; right: 0; top: 100%; height: 16px; display: block; pointer-events: none;
@@ -988,10 +998,15 @@ html.pt-armed .pt-L--front, html.pt-armed .pt-L--clouds svg, html.pt-armed .pt-L
     radial-gradient(circle at 50% 0, #fff 0 11px, transparent 11.5px) 0 0 / 26px 16px repeat-x,
     radial-gradient(circle at 50% 0, var(--blush) 0 11px, transparent 11.5px) 0 4px / 26px 16px repeat-x;
 }
-@media (min-width: 900px) {
+@media (min-width: 640px) {
+  .pt-facts__list { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+  .pt-fact { border-bottom: 0 !important; border-inline-end: 1.5px dashed rgba(27, 26, 75, .13); }
+  .pt-fact:last-child { border-inline-end: 0; }
+}
+@media (min-width: 1000px) {
   .pt-facts { padding-block: 22px 8px; }
   .pt-facts__list { grid-template-columns: repeat(4, auto); justify-content: space-between; gap: 18px; }
-  .pt-fact { font-size: var(--fs-md); }
+  .pt-fact { flex-direction: row; text-align: start; gap: 12px; padding: 0; border: 0 !important; font-size: var(--fs-md); }
   .pt-fact__ic { width: 46px; height: 46px; }
 }
 
@@ -1020,7 +1035,16 @@ html.is-touring .pt-stage { --pt-bot: calc(var(--dock-h) + 142px + var(--safe-b)
 .pt-stage__dim { position: absolute; inset: 0; background: linear-gradient(180deg, #12164A, #2A2F7E); opacity: 0; }
 .pt-nstars { position: absolute; inset: 0 0 50% 0; opacity: 0; }
 .pt-nstars .pt-star { opacity: 1; transform: none; }
-.pt-nstars .pt-star::before { animation: ptTwinkle var(--tw, 2.6s) ease-in-out infinite; animation-delay: var(--td, 0s); }
+.pt-stage.is-nap .pt-nstars .pt-star::before { animation: ptTwinkle var(--tw, 2.6s) ease-in-out infinite; animation-delay: var(--td, 0s); }
+/* the clock hands off to the next section through a paper cloud bank */
+.pt-track::after, .pt-tl::after {
+  content: ""; position: absolute; z-index: 2; left: 0; right: 0; bottom: -1px; height: 34px; pointer-events: none;
+  background:
+    radial-gradient(circle at 50% 100%, var(--paper) 0 19px, transparent 19.5px) 0 100% / 52px 30px repeat-x,
+    radial-gradient(circle at 50% 100%, var(--paper) 0 13px, transparent 13.5px) 26px 100% / 52px 34px repeat-x,
+    radial-gradient(circle at 50% 100%, rgba(255, 255, 255, .6) 0 24px, transparent 24.5px) 13px 100% / 52px 34px repeat-x;
+}
+.pt-tl { position: relative; }
 .pt-scloud { width: 130px; opacity: .9; animation: ptDrift var(--dur, 50s) ease-in-out infinite alternate; }
 .pt-scloud--1 { top: 16%; inset-inline-start: -40px; --dx: 50px; }
 .pt-scloud--2 { top: 46%; inset-inline-end: -50px; width: 110px; --dx: -40px; --dur: 44s; }
@@ -1030,7 +1054,7 @@ html.is-touring .pt-stage { --pt-bot: calc(var(--dock-h) + 142px + var(--safe-b)
 .pt-stage__sub { font-size: var(--fs-xs); color: var(--ink-2); font-weight: 500; display: flex; align-items: center; gap: 8px; flex-wrap: wrap; justify-content: center; }
 
 /* the dial */
-.pt-dial { position: relative; width: var(--pt-cs); aspect-ratio: 1; margin-bottom: calc(var(--pt-cs) * .07 + 4px); }
+.pt-dial { position: relative; width: var(--pt-cs); aspect-ratio: 1; margin-bottom: 28px; /* room for the time pill hanging under the dial */ }
 .pt-dial::before { content: ""; position: absolute; left: 2%; right: 2%; top: 10%; bottom: -6%; border-radius: 50%; background: radial-gradient(closest-side, rgba(27, 26, 75, .2), rgba(27, 26, 75, .08) 70%, rgba(27, 26, 75, 0)); }
 .pt-dial > svg { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; }
 .pt-hand { transform-origin: 50% 52.5%; will-change: transform; }
@@ -1040,13 +1064,21 @@ html.is-touring .pt-stage { --pt-bot: calc(var(--dock-h) + 142px + var(--safe-b)
 @keyframes ptRing { from { opacity: .9; transform: scale(.94); } to { opacity: 0; transform: scale(1.5); } }
 @keyframes ptChime { 30% { transform: scale(1.05) rotate(-2deg); } 60% { transform: scale(.99) rotate(1.5deg); } }
 .pt-readout {
-  position: absolute; left: 50%; bottom: -7%; transform: translateX(-50%);
-  display: inline-flex; align-items: center; gap: 6px; height: 38px; padding: 0 14px 0 12px; border-radius: var(--r-pill);
+  /* hangs under the dial (overlaps only the scalloped rim, never the numerals); never shrinks with a small dial */
+  position: absolute; left: 50%; top: calc(100% - 8px); bottom: auto; transform: translateX(-50%); margin: 0;
+  width: max-content; white-space: nowrap; flex-wrap: nowrap;
+  display: inline-flex; align-items: center; gap: 6px; height: 36px; padding: 0 14px 0 12px; border-radius: var(--r-pill);
   background: var(--ink); color: #fff; font-weight: 600; font-size: 1.125rem; letter-spacing: .02em;
   box-shadow: 0 10px 22px -10px rgba(27, 26, 75, .7);
 }
 .pt-readout .ic { width: 17px; height: 17px; color: var(--pink); }
-.pt-readout bdi { min-width: 3.1em; text-align: center; }
+.pt-readout .ic { flex: none; }
+.pt-readout bdi { display: inline-block; min-width: 3.2em; text-align: center; white-space: nowrap; }
+
+.pt-readout.is-tick { animation: ptTick .55s var(--ease-spring); }
+.pt-readout.is-tick .ic { animation: ptTickIc .6s var(--ease-out); }
+@keyframes ptTick { 35% { scale: 1.12; } }
+@keyframes ptTickIc { 0% { rotate: -40deg; } 100% { rotate: 0deg; } }
 .pt-dial__slip { position: absolute; width: 26%; inset-inline-end: -8%; bottom: 4%; opacity: 0; transform: translateY(16px) rotate(-8deg) scale(.7); transition: opacity .6s, transform .8s var(--ease-spring); }
 .pt-dial__slip > svg:first-child { display: block; width: 100%; height: auto; }
 .pt-dial__slip .pt-glint { animation: none; opacity: 0; }
@@ -1068,7 +1100,32 @@ html.is-touring .pt-stage { --pt-bot: calc(var(--dock-h) + 142px + var(--safe-b)
 .pt-sc__art svg { position: absolute; inset: 0; width: 100%; height: 100%; }
 .pt-sc.is-on .pt-sc__art svg { animation: ptPopIn .7s var(--ease-spring) both; }
 @keyframes ptPopIn { from { transform: scale(.82) translateY(10px); opacity: .2; } to { transform: none; opacity: 1; } }
-.pt-sc__tx { padding: 10px 10px 0; text-align: center; }
+
+/* little lives inside the vignettes (only the visible scene moves; paused offscreen) */
+.pt-a { transform-box: fill-box; transform-origin: 50% 50%; }
+.pt-a-spin, .pt-a-swing { transform-box: view-box; }
+.pt-sc.is-on .pt-a-bob { animation: ptVBob 2.8s ease-in-out infinite; }
+.pt-sc.is-on .pt-a-tw { animation: ptVTw 2.4s ease-in-out infinite; }
+.pt-sc.is-on .pt-a-tw:nth-of-type(2n) { animation-duration: 3.1s; animation-delay: -1.2s; }
+.pt-sc.is-on .pt-a-steam { animation: ptVSteam 2.2s ease-out infinite; }
+.pt-sc.is-on .pt-a-spin { animation: ptSpin 16s linear infinite; }
+.pt-sc.is-on .pt-a-swing { animation: ptVSwing 1.9s ease-in-out infinite alternate; animation-delay: -.95s; }
+.pt-sc.is-on .pt-a-hop { animation: ptVHop .62s cubic-bezier(.3, 0, .5, 1) infinite alternate; }
+.pt-sc.is-on .pt-a-bounce { animation: ptVBounce .62s cubic-bezier(.3, 0, .5, 1) infinite alternate; animation-delay: -.31s; }
+.pt-a-ear { transform-origin: 50% 100%; }
+.pt-sc.is-on .pt-a-ear { animation: ptVEar 3.2s ease-in-out infinite; }
+.pt-sc.is-on .pt-a-z { animation: ptVZ 2.4s ease-out infinite; opacity: 0; }
+.pt-a-flag { transform-origin: 0 50%; }
+.pt-sc.is-on .pt-a-flag { animation: ptFlag 2.2s ease-in-out infinite; }
+@keyframes ptVBob { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-4px); } }
+@keyframes ptVTw { 0%, 100% { transform: scale(.55) rotate(0deg); opacity: .45; } 50% { transform: scale(1.12) rotate(20deg); opacity: 1; } }
+@keyframes ptVSteam { 0% { transform: translateY(5px); opacity: 0; } 35% { opacity: .95; } 100% { transform: translateY(-9px); opacity: 0; } }
+@keyframes ptVSwing { from { transform: rotate(-13deg); } to { transform: rotate(13deg); } }
+@keyframes ptVHop { from { transform: translateY(0); } to { transform: translateY(-7px); } }
+@keyframes ptVBounce { from { transform: translateY(0) rotate(0deg); } to { transform: translateY(-16px) rotate(70deg); } }
+@keyframes ptVEar { 0%, 70%, 100% { transform: rotate(0deg); } 78% { transform: rotate(-16deg); } 86% { transform: rotate(4deg); } }
+@keyframes ptVZ { 0% { transform: translate(0, 4px) scale(.7); opacity: 0; } 30% { opacity: 1; } 100% { transform: translate(8px, -12px) scale(1.05); opacity: 0; } }
+.pt-sc__tx { flex: 1; display: flex; flex-direction: column; justify-content: center; padding: 10px 10px 2px; text-align: center; }
 .pt-sc__t { font-size: clamp(1.15rem, 4.8vw, 1.45rem); color: var(--ink); }
 .pt-sc__l { margin-top: 4px; font-size: var(--fs-sm); color: var(--ink-2); line-height: 1.45; text-wrap: balance; }
 .pt-sc.is-on .pt-sc__tx { animation: ptUp .5s var(--ease-out) both .08s; }
@@ -1077,8 +1134,10 @@ html.is-touring .pt-stage { --pt-bot: calc(var(--dock-h) + 142px + var(--safe-b)
 .pt-fin__ic { width: 34px; height: 34px; color: var(--magenta); }
 .pt-fin__ic use { fill: currentColor; }
 .pt-fin__big { font-family: var(--font-display); font-weight: 600; font-size: clamp(1.5rem, 6.4vw, 2.2rem); line-height: 1.12; color: var(--ink); text-wrap: balance; }
+html[lang="ru"] .pt-fin__big { font-size: clamp(1.3rem, 5.8vw, 2rem); }
 html[lang="ru"] .pt-fin__big { font-weight: 800; }
-.pt-fin__small { font-size: var(--fs-sm); color: var(--ink-2); font-weight: 500; }
+.pt-fin__small { font-size: var(--fs-sm); color: var(--ink-2); font-weight: 500; line-height: 1.5; text-wrap: balance; }
+.pt-nw { white-space: nowrap; }
 .is-finale .pt-scenes { opacity: 0; }
 .is-finale .pt-card { background: var(--night); }
 .is-finale .pt-fin__big { color: #fff; }
@@ -1106,7 +1165,7 @@ html[lang="ru"] .pt-fin__big { font-weight: 800; }
 .pt-bead span { line-height: 1; font-variant-numeric: tabular-nums; letter-spacing: -.01em; }
 .pt-bead.is-past i { background: var(--magenta); box-shadow: inset 0 0 0 3px rgba(255, 255, 255, .7); }
 .pt-bead.is-on i { transform: scale(1.4); background: var(--magenta); box-shadow: 0 0 0 4px rgba(232, 4, 140, .2), inset 0 0 0 3px #fff; }
-.pt-bead.is-on { color: var(--magenta-700); font-weight: 700; }
+.pt-bead.is-on { color: var(--ink); font-weight: 700; }
 .pt-bead:hover i { transform: scale(1.2); }
 .pt-bead.is-on:hover i { transform: scale(1.4); }
 .pt-bead:focus-visible { outline-offset: -2px; }
@@ -1167,6 +1226,35 @@ html[lang="ru"] .pt-fin__big { font-weight: 800; }
 /* contrast helper: core brand name over a night hero (desktop) */
 html.pt-dark-top .topbar:not(.is-solid) .brand__name { color: #fff; transition: color .6s; }
 html.pt-dark-top .topbar:not(.is-solid) .tb-btn--tour { box-shadow: inset 0 0 0 1.5px rgba(255, 255, 255, .4), 0 8px 20px -10px rgba(0, 0, 0, .6); }
+
+/* short phone screens (real iPhone Safari/Chrome ≈ 660–700px visible): compact head, ruler and card so the dial stays big */
+@media (max-width: 899px) and (max-height: 780px) {
+  .pt-stage { row-gap: 5px; --pt-arth: 76px; --pt-bot: calc(var(--dock-h) + 16px + var(--safe-b)); padding-top: calc(var(--bar-h) + var(--safe-t) + 4px); }
+  .pt-stage__title { font-size: 1.3rem; }
+  .pt-stage__head { gap: 2px; }
+  .pt-ruler { margin-top: 0; }
+  .pt-bead { height: 38px; padding-top: 6px; gap: 3px; }
+  .pt-sc__tx { padding: 6px 10px 0; }
+  .pt-sc__t { font-size: 1.1rem; }
+  .pt-sc__l { margin-top: 2px; font-size: .8125rem; line-height: 1.4; }
+  .pt-card { padding: 6px 6px 10px; }
+  .pt-dial { margin-bottom: 26px; }
+  .pt-readout { height: 32px; font-size: 1rem; }
+  .pt-fin { padding: 14px 14px 6px; gap: 6px; }
+  .pt-fin__big, html[lang="ru"] .pt-fin__big { font-size: clamp(1.2rem, 5.2vw, 1.5rem); }
+}
+@media (max-width: 899px) and (max-height: 690px) {
+  .pt-stage__sub > :not(.demo-tag) { display: none; }
+  .pt-stage { --pt-arth: 64px; }
+}
+@media (max-width: 899px) and (max-height: 620px) {
+  .pt-sc__art { display: none; }
+  .pt-card { border-radius: var(--r-lg); padding-top: 4px; }
+  .pt-fin { padding: 12px 12px 6px; gap: 4px; }
+  .pt-fin__ic { width: 24px; height: 24px; }
+  .pt-fin__big, html[lang="ru"] .pt-fin__big { font-size: 1.25rem; }
+  .pt-fin__small { font-size: .75rem; }
+}
 
 </style>
 <style data-mod="pubBottom">
@@ -1418,6 +1506,8 @@ html[lang="ru"] .pb-grp__head .h3 { font-size: 1.2rem; }
 .pb-rv:nth-child(1) { rotate: -1.2deg; } .pb-rv:nth-child(2) { rotate: .8deg; } .pb-rv:nth-child(3) { rotate: -.5deg; }
 .pb-rv > i, .pb-rv__who i { display: block; height: 10px; width: var(--w); border-radius: 5px; background: linear-gradient(90deg, #E2ECF7 0%, #F4F8FC 50%, #E2ECF7 100%) 0 0 / 200% 100%; animation: pb-shim 2.6s linear infinite; }
 @keyframes pb-shim { to { background-position: -200% 0; } }
+.pb-rv > i, .pb-rv__who i { animation-play-state: paused; }
+.pb-reviews.pb-on .pb-rv > i, .pb-reviews.pb-on .pb-rv__who i { animation-play-state: running; }
 .pb-rv__q { width: 44px; height: 34px; margin-bottom: 4px; background: no-repeat center / contain url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 44 34'%3E%3Cpath d='M18 4c-9 3-15 10-15 19 0 6 4 10 9 10s8-3 8-8-3-7-7-7c1-4 4-7 8-9ZM40 4c-9 3-15 10-15 19 0 6 4 10 9 10s8-3 8-8-3-7-7-7c1-4 4-7 8-9Z' fill='%23F6B0C6'/%3E%3C/svg%3E"); }
 [dir="rtl"] .pb-rv__q { transform: scaleX(-1); }
 .pb-rv__who { display: flex; align-items: center; gap: 10px; margin-top: 10px; padding-top: 14px; border-top: 1.5px dashed rgba(27,26,75,.12); }
@@ -1427,6 +1517,7 @@ html[lang="ru"] .pb-grp__head .h3 { font-size: 1.2rem; }
 .pb-rv:nth-child(3) .pb-rv__av { background-color: #DDF5EC; }
 .pb-rv__cap { display: flex; align-items: center; justify-content: center; gap: 10px; margin: 28px auto 0; width: fit-content; max-width: 100%; padding: 10px 20px; border-radius: var(--r-pill); background: #fff; font-weight: 600; box-shadow: var(--shadow-1); text-align: center; }
 .pb-rv__cap .ic { width: 18px; height: 18px; color: var(--magenta); flex: none; }
+@media (max-width: 420px) { .pb-rv__cap { font-size: var(--fs-sm); padding: 10px 16px; gap: 8px; } }
 
 /* ---------- 7 · ask card ---------- */
 .pb-askcard {
@@ -1558,7 +1649,15 @@ html.is-touring .pb-fab, html.sheet-open .pb-fab { display: none; }
   margin: 18px -20px 0; padding: 14px 20px 18px;
   background: linear-gradient(to top, var(--paper) 72%, rgba(255,250,252,0));
 }
+.pb-sfoot { flex-wrap: wrap; }
+.pb-sfoot > .btn { min-width: 0; }
 .pb-sfoot .btn--ghost { flex: none; }
+.pb-sfoot .btn--ghost.pb-grow { flex: 1 1 auto; }
+/* on phones the "back" button folds to an icon so the primary label never gets clipped */
+@media (max-width: 420px) {
+  .pb-sfoot [data-back] { width: var(--bh); padding: 0; gap: 0; }
+  .pb-sfoot [data-back] > span { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+}
 .pb-anim-in { animation: pb-in .5s var(--ease-out) both; }
 @keyframes pb-in { from { opacity: 0; transform: translateY(12px); } }
 .pb-prog { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 18px; }
@@ -1570,6 +1669,9 @@ html.is-touring .pb-fab, html.sheet-open .pb-fab { display: none; }
 .pb-err { color: var(--danger); font-size: var(--fs-xs); font-weight: 600; }
 .pb-form .input[aria-invalid="true"] { box-shadow: inset 0 0 0 2px var(--danger); }
 .pb-ltr-in { direction: ltr; }
+.pb-datehint { display: inline-flex; align-items: center; gap: 6px; }
+.pb-datehint[hidden] { display: none; }
+.pb-datehint .ic { width: 14px; height: 14px; }
 [dir="rtl"] .pb-ltr-in { text-align: right; }
 .pb-ltr-in::placeholder { direction: ltr; }
 .pb-langrow { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 8px 12px; }
@@ -1701,7 +1803,7 @@ button.pb-cal__day:active { transform: scale(.93); }
 .pb-rg.is-done .pb-rg__slip { width: min(280px, 72vw); margin: 0; }
 .pb-rg.is-done .pb-rg__meta { display: none; }
 .pb-rg__meta { flex: 1; min-width: 0; }
-.pb-rg__meta .pb-prog { margin-bottom: 6px; flex-wrap: wrap; }
+.pb-rg__meta .pb-prog { margin-bottom: 6px; flex-wrap: wrap; justify-content: flex-start; gap: 8px 14px; }
 .pb-rg__title { font-family: var(--font-display); font-weight: 600; font-size: var(--fs-xl); line-height: 1.15; }
 html[lang="ru"] .pb-rg__title { font-weight: 800; }
 .pb-rg__body { flex: 1; }
@@ -1714,18 +1816,23 @@ html[lang="ru"] .pb-rg__title { font-weight: 800; }
 .pb-gpick-wrap { display: flex; flex-direction: column; gap: 10px; padding: 16px; border-radius: var(--r-lg); background: #fff; box-shadow: inset 0 0 0 1px var(--line); }
 .pb-gpick-h { display: flex; align-items: center; justify-content: space-between; }
 .pb-gpick-h .label { font-weight: 600; font-size: var(--fs-sm); }
-.pb-gpick { position: relative; display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; padding-top: 20px; }
+.pb-gpick { position: relative; display: flex; gap: 6px; padding-top: 20px; }
 .pb-gpick__wand { position: absolute; top: 0; left: 0; width: 20px; height: 20px; margin-left: -10px; color: var(--magenta); opacity: 0; transform: translateX(var(--x, 0px)); transition: transform .8s var(--ease-spring), opacity .3s; }
 .pb-gpick.has-pick .pb-gpick__wand { opacity: 1; }
 .pb-gpick__wand .ic { width: 20px; height: 20px; animation: pb-twk 1.6s ease-in-out infinite; }
 .pb-gp {
-  display: flex; align-items: center; justify-content: center; gap: 4px; min-height: 48px; padding: 6px 6px; border-radius: var(--r-md);
+  flex: 1 1 auto; display: flex; align-items: center; justify-content: center; gap: 4px; min-height: 48px; padding: 6px 10px; white-space: nowrap; border-radius: var(--r-md);
   background: var(--mist); color: var(--ink-2); font-weight: 600; font-size: var(--fs-sm); text-align: center; line-height: 1.15;
   transition: background-color .3s, color .3s, box-shadow .3s;
 }
 .pb-gp__ck { width: 0 !important; height: 16px !important; stroke-width: 3; transition: width .3s var(--ease-spring); }
 .pb-gp.is-chosen { background: var(--magenta-600); color: #fff; box-shadow: 0 12px 24px -12px rgba(209,3,125,.8); }
 .pb-gp.is-chosen .pb-gp__ck { width: 16px !important; }
+.pb-gpick { flex-wrap: wrap; }
+@media (max-width: 420px) {
+  html[lang="ru"] .pb-gp { padding-inline: 8px; font-size: .8125rem; }
+  html[lang="ru"] .pb-gp__ck { display: none; }
+}
 .pb-gp.is-pop { animation: pb-gpop .7s var(--ease-spring); }
 @keyframes pb-gpop { 0% { transform: scale(.8); } 50% { transform: scale(1.12) rotate(-2deg); } 100% { transform: scale(1); } }
 .pb-gnote { min-height: 1.2em; font-weight: 600; color: var(--ok); }
@@ -1781,6 +1888,13 @@ html[lang="ru"] .pb-rg__title { font-weight: 800; }
 .pb-chat__send { flex: none; width: 48px; height: 48px; border-radius: 50%; display: grid; place-items: center; background: var(--magenta-600); color: #fff; transition: transform .3s var(--ease-spring); }
 .pb-chat__send:active { transform: scale(.9); }
 .pb-chat__send .ic { width: 22px; height: 22px; }
+
+/* reduced motion: final states at once (core shortens durations; staggered delays must go too) */
+@media (prefers-reduced-motion: reduce) {
+  [data-module="pubBottom"] *, [data-module="pubBottom"] *::before, [data-module="pubBottom"] *::after, .pb-sh *, .pb-sh *::before, .pb-sh *::after { transition-delay: 0s !important; animation-delay: 0s !important; }
+}
+html.a11y-motion [data-module="pubBottom"] *, html.a11y-motion [data-module="pubBottom"] *::before, html.a11y-motion [data-module="pubBottom"] *::after,
+html.a11y-motion .pb-sh *, html.a11y-motion .pb-sh *::before, html.a11y-motion .pb-sh *::after { transition-delay: 0s !important; animation-delay: 0s !important; }
 
 </style>
 </head>
@@ -2104,7 +2218,7 @@ html[lang="ru"] .pb-rg__title { font-weight: 800; }
     </span>
   </button>
 
-  <button type="button" class="pt-cue" data-pt-cue aria-label="לשעון של סינדרלה" data-i18n-attr="aria-label:pt.cueA">
+  <button type="button" class="pt-cue" data-pt-cue aria-label="יום בגן: גלילה אל השעון של סינדרלה" data-i18n-attr="aria-label:pt.cueA">
     <span class="pt-cue__t" data-i18n="pt.cue">יום בגן</span>
     <span class="pt-cue__ic" aria-hidden="true"><svg class="ic" aria-hidden="true"><use href="#i-chevron-down"/></svg></span>
   </button>
@@ -2116,14 +2230,14 @@ html[lang="ru"] .pb-rg__title { font-weight: 800; }
     <li class="pt-fact" data-reveal style="--d:0ms"><span class="pt-fact__ic"><svg class="ic" aria-hidden="true"><use href="#i-baby"/></svg></span><span class="pt-fact__t" data-i18n="pt.f1">מלידה עד גיל 3</span></li>
     <li class="pt-fact" data-reveal style="--d:80ms"><span class="pt-fact__ic pt-fact__ic--pink"><svg class="ic" aria-hidden="true"><use href="#i-shield"/></svg></span><span class="pt-fact__t" data-i18n="pt.f2">מעון מוכר ומפוקח</span></li>
     <li class="pt-fact" data-reveal style="--d:160ms"><span class="pt-fact__ic pt-fact__ic--pink"><svg class="ic" aria-hidden="true"><use href="#i-chef"/></svg></span><span class="pt-fact__t" data-i18n="pt.f3">מטבח משלנו, אוכל טרי כל יום</span></li>
-    <li class="pt-fact" data-reveal style="--d:240ms"><span class="pt-fact__ic"><svg class="ic" aria-hidden="true"><use href="#i-clock"/></svg></span><span class="pt-fact__t" data-i18n-html="pt.f4">א׳–ה׳ <bdi class="tnum">07:00–17:00</bdi><br>ו׳ <bdi class="tnum">07:00–13:00</bdi></span></li>
+    <li class="pt-fact" data-reveal style="--d:240ms"><span class="pt-fact__ic"><svg class="ic" aria-hidden="true"><use href="#i-clock"/></svg></span><span class="pt-fact__t" data-i18n-html="pt.f4"><span class="pt-nw">א׳–ה׳ <bdi class="tnum" dir="ltr">07:00–17:00</bdi></span><br><span class="pt-nw">ו׳ <bdi class="tnum" dir="ltr">07:00–13:00</bdi></span></span></li>
   </ul>
   <i class="pt-awning" aria-hidden="true"></i>
 </div>
 
 <!-- ================= CINDERELLA'S CLOCK ================= -->
 <section id="clock" class="pt-clock" aria-labelledby="pt-clock-title">
-  <div class="pt-track">
+  <div class="pt-track" data-scroll-skip>
     <div class="pt-stage">
       <div class="pt-stage__bg" aria-hidden="true">
         <i class="pt-bg pt-bg--0"></i><i class="pt-bg pt-bg--1"></i><i class="pt-bg pt-bg--2"></i><i class="pt-bg pt-bg--3"></i>
@@ -2184,7 +2298,7 @@ html[lang="ru"] .pb-rg__title { font-weight: 800; }
         <div class="pt-fin">
           <svg class="pt-fin__ic" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-sparkles"/></svg>
           <p class="pt-fin__big" data-i18n="pt.fin.big">אצלנו היום נגמר ב-17:00, לא בחצות</p>
-          <p class="pt-fin__small" data-i18n="pt.fin.small">אפשר להאריך עד 18:00 · ביום ו׳ 07:00–13:00</p>
+          <p class="pt-fin__small" data-i18n-html="pt.fin.small"><span class="pt-nw">אפשר להאריך עד 18:00</span>&nbsp;· <span class="pt-nw">ביום ו׳ <bdi dir="ltr">07:00–13:00</bdi></span></p>
         </div>
       </div>
     </div>
@@ -2645,6 +2759,7 @@ html[lang="ru"] .pb-rg__title { font-weight: 800; }
         <path d="M600 186c-2.4-2.4-6.4-.8-6.4 2.4 0 2.4 3.2 4.8 6.4 7.2 3.2-2.4 6.4-4.8 6.4-7.2 0-3.2-4-4.8-6.4-2.4Z" fill="#E8048C" opacity=".9"/>
       </g>
       <path d="M0 242c180-26 360-30 560-12s420 18 640-6v56H0Z" fill="#12164A"/>
+      <path d="M250 241c90-4 190-6 270-10 26-1 48-4 64-8" stroke="#FFD27A" stroke-width="3" stroke-linecap="round" stroke-dasharray="0 11" fill="none" opacity=".55"/>
       <g class="pb-coach"><g class="pb-coach__bob">
         <path d="M380 211c0-15 12-25 27-25s27 10 27 25-12 21-27 21-27-6-27-21Z" fill="#2A3186"/>
         <path d="M407 186c-8 6-10 16-10 25s2 16 10 21m0-46c8 6 10 16 10 25s-2 16-10 21" stroke="#1A1F5E" stroke-width="2.2" fill="none"/>
@@ -3183,6 +3298,9 @@ window.__LOGO__ = null;
       y = o.center ? scrollY() + r.top + r.height / 2 - vh / 2 : scrollY() + r.top - (o.offset != null ? o.offset : 76);
     }
     y = clamp(y, 0, Math.max(0, document.documentElement.scrollHeight - vh));
+    // long jumps that would fast-forward through a scroll-driven scene ([data-scroll-skip], e.g. the clock)
+    // become a quick fade-cut close to the target + a short glide, so the scene never flickers past
+    if (!o.linear && !o.noCut && !motion.reduced && crossesSkip(scrollY(), y)) return cutScroll(y, o);
     const dur = o.duration != null ? o.duration : clamp(Math.abs(y - scrollY()) * .5, 400, 1400);
     if (motion.reduced || dur <= 0) { lenis ? lenis.scrollTo(y, { immediate: true, force: true }) : window.scrollTo(0, y); return Promise.resolve(); }
     return new Promise(res => {
@@ -3203,6 +3321,30 @@ window.__LOGO__ = null;
       };
       requestAnimationFrame(step);
     });
+  }
+  function crossesSkip(from, to) {
+    const lo = Math.min(from, to), hi = Math.max(from, to), vh = innerHeight;
+    return $$('[data-scroll-skip]').some(el => {
+      if (!el.offsetParent) return false;
+      const a = el.getBoundingClientRect().top + scrollY(), b = a + el.offsetHeight - vh;
+      const inside = to >= a - 2 && to <= b + 2;         // target inside the scene: let it play
+      const overlap = Math.min(hi, b) - Math.max(lo, a);  // how much of the scene we would scrub through
+      return !inside && overlap > vh * .8;
+    });
+  }
+  async function cutScroll(y, o) {
+    const main = $('#main'), dir = y > scrollY() ? 1 : -1;
+    const maxY = Math.max(0, document.documentElement.scrollHeight - innerHeight);
+    const pre = clamp(y - dir * innerHeight * .55, 0, maxY);
+    const jump = v => { if (lenis) lenis.scrollTo(v, { immediate: true, force: true }); else window.scrollTo(0, v); };
+    if (main && main.animate) await main.animate([{ opacity: 1 }, { opacity: 0 }], { duration: 170, easing: 'ease-in', fill: 'forwards' }).finished.catch(() => { });
+    jump(pre);
+    await nextFrame(); await nextFrame();
+    if (main && main.animate) {
+      main.getAnimations().forEach(a => a.cancel());
+      main.animate([{ opacity: 0 }, { opacity: 1 }], { duration: 380, easing: 'cubic-bezier(.22,1,.36,1)' });
+    }
+    return scrollTo(y, Object.assign({}, o, { duration: 560, noCut: true }));
   }
   const scrollSubs = new Set(); let scrollTick = false;
   function onScroll(fn) { scrollSubs.add(fn); return () => scrollSubs.delete(fn); }
@@ -4014,8 +4156,9 @@ function layout() {
   const cb = content.offsetTop + content.offsetHeight;
   const dockH = parseFloat(getComputedStyle(html).getPropertyValue('--dock-h')) || 68;
   // phone: dock + gap + the scroll cue (40) + breathing room, so the cue sits on clean grass below the castle
-  const base = desk ? clamp(Math.round(H * .14), 104, 150) : Math.round(dockH + 22 + 40 + 22);
-  const minCh = desk ? 230 : 156, maxCh = desk ? 440 : 320;
+  const short = H < 760;
+  const base = desk ? clamp(Math.round(H * .14), 104, 150) : Math.round(dockH + 22 + 40 + (short ? 12 : 22));
+  const minCh = desk ? 230 : (short ? 112 : 150), maxCh = desk ? 440 : 320;
   let room = H - cb - base - (desk ? 18 : 14);
   if (room < minCh) { H += minCh - room; hero.style.minHeight = H + 'px'; room = minCh; }
   const ch = clamp(Math.round(room), minCh, maxCh);
@@ -4096,6 +4239,7 @@ function buildBeads() {
   let out = '';
   for (let hh = 7; hh <= 17; hh++) out += `<button type="button" class="pt-bead" data-h="${hh}" aria-label="${App.esc(App.t('pt.bead', { t: pad(hh) + ':00' }))}"><i></i><span>${pad(hh)}</span></button>`;
   strip.insertAdjacentHTML('beforeend', out);
+  R.beads = $$('.pt-bead', strip); S.hour = null; S.ckey = '';
 }
 /* cached element refs for the scroll loop (no queries, no layout reads per frame) */
 const R = {};
@@ -4120,10 +4264,11 @@ function sizeDial() {
   const H = stage.clientHeight - parseFloat(cs.paddingTop) - parseFloat(cs.paddingBottom);
   const gap = parseFloat(cs.rowGap) || 8;
   let c;
-  if (desk) c = Math.min(W * .4, (H - 8) / 1.09, 540);
+  const pill = parseFloat(getComputedStyle(dial).marginBottom) || 28; // the time pill hangs in the dial's bottom margin
+  if (desk) c = Math.min(W * .4, H - 8 - pill, 540);
   else {
-    const used = $('.pt-stage__head', stage).offsetHeight + $('.pt-ruler', stage).offsetHeight + $('.pt-card', stage).offsetHeight + gap * 3 + 8;
-    c = Math.min(W * .74, 330, (H - used) / 1.07);
+    const head = $('.pt-stage__head', stage), used = (head.offsetHeight || 0) + $('.pt-ruler', stage).offsetHeight + $('.pt-card', stage).offsetHeight + gap * 3 + 4;
+    c = Math.min(W * .74, 330, H - used - pill);
   }
   c = Math.max(desk ? 260 : 140, Math.floor(c));
   stage.style.setProperty('--pt-cs', c + 'px');
@@ -4207,7 +4352,7 @@ function buildTimeline() {
     <div class="pt-tl__head"><h2 class="h2" data-i18n="pt.clock.title"></h2><p class="pt-stage__sub"><span data-i18n="pt.clock.sub"></span> <span class="demo-tag" data-i18n="pt.clock.example"></span></p></div>
     <ol class="pt-tl__list">${SCENES.map((sc, i) => `<li class="pt-tl__it"><div class="pt-tl__clock">${miniClock(sc.at)}<bdi class="tnum" dir="ltr">${fmtMin(sc.at)}</bdi></div>
       <div class="pt-tl__body"><div class="pt-tl__art" style="background:${sc.bg}">${ART[sc.art]()}</div><div><h3 class="pt-tl__t" data-i18n="pt.s${i}.t"></h3><p class="pt-tl__l" data-i18n="pt.s${i}.l"></p></div></div></li>`).join('')}
-      <li class="pt-tl__it"><div class="pt-tl__clock">${miniClock(600)}<bdi class="tnum" dir="ltr">17:00</bdi></div><div class="pt-tl__body"><div class="pt-tl__fin" style="grid-column: span 2"><svg class="pt-fin__ic" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-sparkles"/></svg><p class="pt-fin__big" data-i18n="pt.fin.big"></p><p class="pt-fin__small" data-i18n="pt.fin.small"></p></div></div></li>
+      <li class="pt-tl__it"><div class="pt-tl__clock">${miniClock(600)}<bdi class="tnum" dir="ltr">17:00</bdi></div><div class="pt-tl__body"><div class="pt-tl__fin" style="grid-column: span 2"><svg class="pt-fin__ic" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-sparkles"/></svg><p class="pt-fin__big" data-i18n="pt.fin.big"></p><p class="pt-fin__small" data-i18n-html="pt.fin.small"></p></div></div></li>
     </ol></div>`;
   App.i18n.apply(tl);
 }
@@ -4229,9 +4374,9 @@ const I18N = {
     'pt.slogan': 'גן ילדים מהאגדות', 'pt.slogan.a': 'גן ילדים', 'pt.slogan.b': 'מהאגדות',
     'pt.lead': 'מעון יום מוכר ומפוקח, מלידה ועד גיל\u00a03',
     'pt.cta.visit': 'קביעת סיור בגן', 'pt.cta.avail': 'בדיקת מקום פנוי',
-    'pt.mode': 'תצוגת לילה', 'pt.cue': 'יום בגן', 'pt.cueA': 'לגלול אל השעון של סינדרלה',
+    'pt.mode': 'תצוגת לילה', 'pt.cue': 'יום בגן', 'pt.cueA': 'יום בגן: גלילה אל השעון של סינדרלה',
     'pt.f1': 'מלידה עד גיל 3', 'pt.f2': 'מעון מוכר ומפוקח', 'pt.f3': 'מטבח משלנו, אוכל טרי כל יום',
-    'pt.f4': 'א׳–ה׳ <bdi class="tnum">07:00–17:00</bdi><br>ו׳ <bdi class="tnum">07:00–13:00</bdi>',
+    'pt.f4': '<span class="pt-nw">א׳–ה׳ <bdi class="tnum" dir="ltr">07:00–17:00</bdi></span><br><span class="pt-nw">ו׳ <bdi class="tnum" dir="ltr">07:00–13:00</bdi></span>',
     'pt.clock.title': 'השעון של סינדרלה', 'pt.clock.sub': 'יום בגן, שעה אחרי שעה', 'pt.clock.example': 'יום לדוגמה',
     'pt.clock.aria': 'שעון שהמחוגים שלו זזים מ-07:00 עד 17:00 בזמן הגלילה',
     'pt.ruler': 'קפיצה לשעה ביום', 'pt.bead': 'קפיצה ל-{t}',
@@ -4244,29 +4389,29 @@ const I18N = {
     'pt.s6.t': 'ארוחת מנחה', 'pt.s6.l': 'מתעוררים לאט, ומשהו טעים כבר מחכה על השולחן.',
     'pt.s7.t': 'ההורים מגיעים', 'pt.s7.l': 'ריצה אל הדלת, חיבוק גדול, ויש המון מה לספר.',
     'pt.fin.big': 'אצלנו היום נגמר ב-17:00, לא בחצות',
-    'pt.fin.small': 'אפשר להאריך עד 18:00 · ביום ו׳ 07:00–13:00'
+    'pt.fin.small': '<span class="pt-nw">אפשר להאריך עד 18:00</span>&nbsp;· <span class="pt-nw">ביום ו׳ <bdi dir="ltr">07:00–13:00</bdi></span>'
   },
   ru: {
     'pt.eyebrow': 'Мэон (ясли-сад) · Ашдод',
     'pt.slogan': 'Детский сад из сказки', 'pt.slogan.a': 'Детский сад', 'pt.slogan.b': 'из сказки',
     'pt.lead': 'Признанный мэон под надзором, для детей от рождения до 3\u00a0лет',
-    'pt.cta.visit': 'Записаться на экскурсию', 'pt.cta.avail': 'Есть ли места',
-    'pt.mode': 'Ночной режим', 'pt.cue': 'День в саду', 'pt.cueA': 'Прокрутить к часам Синдереллы',
+    'pt.cta.visit': 'Экскурсия в сад', 'pt.cta.avail': 'Есть ли места?',
+    'pt.mode': 'Ночной режим', 'pt.cue': 'День в саду', 'pt.cueA': 'День в саду: к часам Синдереллы',
     'pt.f1': 'С рождения до 3\u00a0лет', 'pt.f2': 'Признанный мэон под надзором', 'pt.f3': 'Своя кухня, свежая еда каждый день',
-    'pt.f4': 'вс–чт <bdi class="tnum">07:00–17:00</bdi><br>пт <bdi class="tnum">07:00–13:00</bdi>',
+    'pt.f4': '<span class="pt-nw">вс–чт <bdi class="tnum">07:00–17:00</bdi></span><br><span class="pt-nw">пт <bdi class="tnum">07:00–13:00</bdi></span>',
     'pt.clock.title': 'Часы Синдереллы', 'pt.clock.sub': 'День в саду, час за часом', 'pt.clock.example': 'пример дня',
     'pt.clock.aria': 'Часы, стрелки которых идут с 07:00 до 17:00 при прокрутке',
     'pt.ruler': 'Перейти к часу дня', 'pt.bead': 'Перейти к {t}',
     'pt.s0.t': 'Доброе утро', 'pt.s0.l': 'Приходите без спешки, у двери вас уже встречают с улыбкой.',
     'pt.s1.t': 'Завтрак с нашей кухни', 'pt.s1.l': 'Готовим прямо в саду. Всё свежее, каждый день.',
-    'pt.s2.t': 'Три кружка в неделю', 'pt.s2.l': 'Музыка, спорт, природа и животные. Поём, прыгаем, гладим кролика.',
+    'pt.s2.t': 'Три кружка в неделю', 'pt.s2.l': 'Музыка, спорт, природа и животные. Поём, прыгаем и гладим зверушек.',
     'pt.s3.t': 'Гуляем во дворе', 'pt.s3.l': 'Играем на свежем воздухе, немного пачкаемся и много смеёмся.',
     'pt.s4.t': 'Обед', 'pt.s4.l': 'Домашняя еда с нашей кухни, меню утверждено диетологом.',
     'pt.s5.t': 'Тихий час', 'pt.s5.l': 'Мягкое одеяло, приглушённый свет и тишина. Набираемся сил.',
     'pt.s6.t': 'Полдник', 'pt.s6.l': 'Просыпаемся не спеша, а на столе уже ждёт что-то вкусное.',
     'pt.s7.t': 'Родители пришли', 'pt.s7.l': 'Бегом к двери, крепкие объятия, и дома есть что рассказать.',
     'pt.fin.big': 'У нас день заканчивается в 17:00, а не в полночь',
-    'pt.fin.small': 'Можно продлить до 18:00 · в пятницу 07:00–13:00'
+    'pt.fin.small': '<span class="pt-nw">Можно продлить до 18:00</span>&nbsp;· <span class="pt-nw">в пятницу 07:00–13:00</span>'
   }
 };
 
@@ -4286,7 +4431,7 @@ App.module('pubTop', {
     makeStars($('.pt-stars', hero), 34, 7, [3, 92]);
     makeStars($('.pt-nstars', stage), 12, 11, [8, 92]);
     $$('.pt-sc__art', stage).forEach((el, i) => { el.style.setProperty('--pt-art-bg', SCENES[i].bg); el.innerHTML = ART[el.dataset.art](); });
-    splitTitle(); buildBeads();
+    splitTitle(); cacheClock(); buildBeads();
     S.night = hero.classList.contains('is-night'); applyMode(false);
 
     // events
@@ -4320,6 +4465,7 @@ App.module('pubTop', {
       new IntersectionObserver(es => es.forEach(en => {
         S.clockVis = en.isIntersecting;
         $('.pt-clock', r).classList.toggle('pt-paused', !en.isIntersecting);
+        if (en.isIntersecting) updateClock(true);
       }), { rootMargin: '80px' }).observe($('.pt-clock', r));
     }
     // hide the cue while core's tour invitation pill sits in the same spot
@@ -4329,27 +4475,27 @@ App.module('pubTop', {
       new MutationObserver(sync).observe(inv, { attributes: true, attributeFilter: ['hidden'] }); sync();
     }
     let rT = 0;
-    addEventListener('resize', () => { clearTimeout(rT); rT = setTimeout(() => { if (!S.active) return; layout(); sizeDial(); measureRuler(); updateClock(); }, 120); }, { passive: true });
-    const reflow = () => { if (S.active) requestAnimationFrame(() => { sizeDial(); measureRuler(); updateClock(); }); };
+    addEventListener('resize', () => { clearTimeout(rT); rT = setTimeout(() => { if (!S.active) return; layout(); sizeDial(); measureRuler(); updateClock(true); }, 120); }, { passive: true });
+    const reflow = () => { if (S.active) requestAnimationFrame(() => { sizeDial(); measureRuler(); updateClock(true); }); };
     App.on('tour:start', reflow); App.on('tour:stop', reflow);
     App.on('lang', () => {
       splitTitle(); buildBeads();
       if (S.static) buildTimeline();
-      if (S.active) { layout(); sizeDial(); measureRuler(); updateClock(); }
+      if (S.active) { layout(); sizeDial(); measureRuler(); updateClock(true); }
     });
     App.on('motion', reduced => {
       setStatic(!!reduced);
       if (reduced) { stopLoop(); html.classList.remove('pt-armed'); hero.classList.remove('pt-go'); applyLayers(); placeCarriage(); }
-      else if (S.active) { sizeDial(); measureRuler(); updateClock(); startLoop(); }
+      else if (S.active) { S.scene = -1; sizeDial(); measureRuler(); updateClock(true); startLoop(); }
     });
     setStatic(App.motion.reduced);
-    if (document.fonts && document.fonts.ready) document.fonts.ready.then(() => { if (S.active) { layout(); sizeDial(); measureRuler(); updateClock(); } });
+    if (document.fonts && document.fonts.ready) document.fonts.ready.then(() => { if (S.active) { layout(); sizeDial(); measureRuler(); updateClock(true); } });
   },
   onEnter() {
     S.active = true; root.classList.remove('pt-paused');
     S.sy = App.scrollY();
     layout(); sizeDial(); measureRuler();
-    S.scene = -1; updateClock();
+    S.scene = -1; updateClock(true);
     applyMode(false);
     applyLayers(true); placeCarriage();
     if (!S.introStarted) playIntro();
@@ -4431,9 +4577,10 @@ const groupName = id => { const g = App.data.groups.find(x => x.id === id); retu
 /* ---------- i18n: Hebrew for markup is harvested from the HTML; dynamic strings live here ---------- */
 const HE = {
   'pb.g.baby': 'תינוקייה', 'pb.g.young': 'צעירים', 'pb.g.big': 'בוגרים',
+  'pb.gs.baby': 'תינוקייה', 'pb.gs.young': 'צעירים', 'pb.gs.big': 'בוגרים',
   'pb.next': 'המשך', 'pb.back': 'חזרה', 'pb.close': 'סגירה', 'pb.done': 'סיום', 'pb.stepOf': 'שלב {n} מתוך {m}',
   'pb.name': 'שם', 'pb.phone': 'טלפון נייד', 'pb.phonePh': '050-000-0000', 'pb.msgLang': 'שפת ההודעות',
-  'pb.errName': 'איך קוראים לכם?', 'pb.errPhone': 'מספר נייד: 10 ספרות, מתחיל ב-05', 'pb.example': 'לדוגמה',
+  'pb.dateFmt': 'יום / חודש / שנה', 'pb.errName': 'איך קוראים לכם?', 'pb.errPhone': 'מספר נייד: 10 ספרות, מתחיל ב-05', 'pb.example': 'לדוגמה',
   'pb.kw.holTile': 'חג', 'pb.kw.openTile': 'חול המועד, פתוחים',
   'pb.kw.m.sukkot': 'תשרי', 'pb.kw.m.pesach': 'ניסן', 'pb.kw.range': '{a}–{b} ב{m}', 'pb.kw.dayA11y': '{d} ב{m}: {s}',
   /* eligibility */
@@ -4457,10 +4604,10 @@ const HE = {
   'pb.bk.remind': 'נשלח לכם גם תזכורת יום לפני', 'pb.bk.sent': 'ההודעה שקיבלתם',
   /* registration */
   'pb.rg.title': 'הרשמה לגן סינדרלה', 'pb.rg.t1': 'הילד או הילדה', 'pb.rg.t2': 'ההורים', 'pb.rg.t3': 'מסמכים',
-  'pb.rg.cname': 'שם הילד או הילדה', 'pb.rg.dob': 'תאריך לידה', 'pb.rg.sample': 'מילוי לדוגמה', 'pb.rg.groupH': 'הקבוצה', 'pb.rg.auto': 'נבחרה לפי תאריך הלידה',
+  'pb.rg.cname': 'שם הילד או הילדה', 'pb.rg.dob': 'תאריך לידה', 'pb.rg.sample': 'מילוי לדוגמה', 'pb.rg.groupH': 'הקבוצה', 'pb.rg.auto': 'הקבוצה נבחרה לפי תאריך הלידה',
   'pb.rg.rule': 'כלל לדוגמה: עד שנה תינוקייה, שנה עד שנתיים צעירים, שנתיים עד 3 בוגרים.', 'pb.rg.age': 'גיל: {m} חודשים',
   'pb.rg.older': 'הגן שלנו מיועד לילדים עד גיל 3. כתבו לנו בוואטסאפ ונשמח לייעץ.', 'pb.rg.future': 'נראה שהתאריך עוד לפנינו. כדאי לבדוק אותו שוב.',
-  'pb.rg.reserve': 'שריון מקום · {g}', 'pb.rg.mismatch': 'לפי תאריך הלידה מתאימה דווקא קבוצת {g}.',
+  'pb.rg.reserve': 'שריון מקום · {g}', 'pb.rg.mismatch': 'לפי הגיל מתאימה דווקא קבוצת {g}',
   'pb.rg.pname': 'שם ההורה', 'pb.rg.pphone': 'טלפון נייד (WhatsApp)',
   'pb.rg.docsP': 'צילום מהטלפון מספיק. בדמו אפשר לבחור קובץ לדוגמה.',
   'pb.rg.d1': 'ספח תעודת זהות עם פרטי הילד', 'pb.rg.d2': 'פנקס חיסונים', 'pb.rg.d3': 'אישור זכאות לסבסוד, אם יש', 'pb.rg.opt': 'לא חובה',
@@ -4507,6 +4654,7 @@ const RU = {
   'pb.rc.btn': 'Проверить право на скидку', 'pb.rc.hint': 'Три коротких вопроса и понятная инструкция в WhatsApp',
   'pb.av.eye': 'Места в группах', 'pb.av.h': 'Свободные места', 'pb.av.lead': 'Так сейчас выглядят группы. Можно забронировать место или встать в лист ожидания.',
   'pb.g.baby': 'Младенческая группа', 'pb.g.young': 'Младшая группа', 'pb.g.big': 'Старшая группа',
+  'pb.gs.baby': 'Младенческая', 'pb.gs.young': 'Младшая', 'pb.gs.big': 'Старшая',
   'pb.av.a11yBaby': 'Занято 6 мест из 8', 'pb.av.a11yYoung': 'Занято 9 мест из 10', 'pb.av.a11yBig': 'Все 12 мест заняты',
   'pb.av.two': '2 свободных места', 'pb.av.last': 'Последнее место', 'pb.av.wait': 'Лист ожидания', 'pb.av.reserve': 'Забронировать место',
   'pb.av.join': 'Встать в лист ожидания', 'pb.av.taken': 'занято', 'pb.av.free': 'свободно', 'pb.av.already': 'Уже в листе ожидания?', 'pb.av.check': 'Проверить моё место',
@@ -4524,7 +4672,7 @@ const RU = {
   'pb.fab': 'Спросите нас',
   'pb.next': 'Дальше', 'pb.back': 'Назад', 'pb.close': 'Закрыть', 'pb.done': 'Готово', 'pb.stepOf': 'Шаг {n} из {m}',
   'pb.name': 'Имя', 'pb.phone': 'Мобильный', 'pb.phonePh': '050-000-0000', 'pb.msgLang': 'Язык сообщений',
-  'pb.errName': 'Как вас зовут?', 'pb.errPhone': 'Мобильный номер: 10 цифр, начинается с 05', 'pb.example': 'пример',
+  'pb.dateFmt': 'дд.мм.гггг', 'pb.errName': 'Как вас зовут?', 'pb.errPhone': 'Мобильный номер: 10 цифр, начинается с 05', 'pb.example': 'пример',
   'pb.el.title': 'Проверка права на скидку', 'pb.el.intro': 'Три коротких вопроса, без цифр и документов.',
   'pb.el.q1': 'Родители работают или учатся?', 'pb.el.q1a': 'Работаем', 'pb.el.q1b': 'Учимся', 'pb.el.q1c': 'И то, и другое', 'pb.el.q1d': 'Другое',
   'pb.el.q2': 'Сколько детей в семье?', 'pb.el.q2a': 'Один', 'pb.el.q2b': 'Двое или трое', 'pb.el.q2c': 'Четверо и больше',
@@ -4542,10 +4690,10 @@ const RU = {
   'pb.bk.sending': 'Отправляем…', 'pb.bk.stamp': 'Готово', 'pb.bk.doneT': 'До встречи в саду, {name}', 'pb.bk.doneP': 'Подтверждение уже у вас в WhatsApp.',
   'pb.bk.remind': 'Накануне пришлём напоминание', 'pb.bk.sent': 'Сообщение, которое вы получили',
   'pb.rg.title': 'Запись в «Синдереллу»', 'pb.rg.t1': 'Ребёнок', 'pb.rg.t2': 'Родители', 'pb.rg.t3': 'Документы',
-  'pb.rg.cname': 'Имя ребёнка', 'pb.rg.dob': 'Дата рождения', 'pb.rg.sample': 'Заполнить примером', 'pb.rg.groupH': 'Группа', 'pb.rg.auto': 'Подобрана по дате рождения',
+  'pb.rg.cname': 'Имя ребёнка', 'pb.rg.dob': 'Дата рождения', 'pb.rg.sample': 'Заполнить примером', 'pb.rg.groupH': 'Группа', 'pb.rg.auto': 'группа подобрана по дате рождения',
   'pb.rg.rule': 'Пример правила: до года младенческая, от года до двух младшая, от двух до трёх старшая.', 'pb.rg.age': 'Возраст: {m} мес.',
   'pb.rg.older': 'Наш сад для детей до 3 лет. Напишите нам в WhatsApp, подскажем.', 'pb.rg.future': 'Похоже, эта дата ещё впереди. Проверьте, пожалуйста.',
-  'pb.rg.reserve': 'Бронь места · {g}', 'pb.rg.mismatch': 'По дате рождения подходит другая группа: {g}.',
+  'pb.rg.reserve': 'Бронь места · {g}', 'pb.rg.mismatch': 'по возрасту подходит {g}',
   'pb.rg.pname': 'Имя родителя', 'pb.rg.pphone': 'Мобильный (WhatsApp)',
   'pb.rg.docsP': 'Хватит фото с телефона. В демо можно выбрать пример файла.',
   'pb.rg.d1': 'Приложение к теудат зеут с данными ребёнка', 'pb.rg.d2': 'Прививочный паспорт', 'pb.rg.d3': 'Подтверждение права на субсидию, если есть', 'pb.rg.opt': 'по желанию',
@@ -4611,6 +4759,9 @@ function groupFor(months) { if (months == null || isNaN(months)) return null; if
 function monthsSince(iso) { if (!iso) return null; const d = new Date(iso + 'T12:00:00'); if (isNaN(d)) return null; const n = new Date(); return (n.getFullYear() - d.getFullYear()) * 12 + (n.getMonth() - d.getMonth()) - (n.getDate() < d.getDate() ? 1 : 0); }
 const isoMonthsAgo = m => { const d = new Date(); d.setMonth(d.getMonth() - m); d.setDate(Math.min(d.getDate(), 26)); return d.toISOString().slice(0, 10); };
 const todayIso = () => new Date().toISOString().slice(0, 10);
+/* iOS renders an empty <input type=date> as a blank box: show the format under it while it is empty */
+const dateHint = (id, v) => `<span class="hint pb-datehint" id="${id}" ${v ? 'hidden' : ''}>${icon('calendar')}${T('pb.dateFmt')}</span>`;
+const syncDateHint = inp => { const hn = inp && document.getElementById(inp.getAttribute('aria-describedby')); if (hn) hn.hidden = !!inp.value; };
 
 /* =====================================================================
    SECTION ART + MOTION
@@ -4634,7 +4785,8 @@ const Plate = {
     $$('.pb-meals .chip', root).forEach(c => c.addEventListener('click', () => this.switchTo(c.dataset.meal)));
   },
   items(m) { return $$(`.pb-food[data-meal="${m}"] .pb-fi`, this.svg); },
-  showOnly(m) { $$('.pb-food', this.svg).forEach(f => { f.hidden = f.dataset.meal !== m; }); },
+  /* SVG elements have no .hidden property: toggle the attribute itself */
+  showOnly(m) { $$('.pb-food', this.svg).forEach(f => f.toggleAttribute('hidden', f.getAttribute('data-meal') !== m)); },
   play() {
     const g = gs(); this.showOnly(this.meal);
     if (this.tl) this.tl.kill();
@@ -4735,7 +4887,7 @@ function initArt() {
   const door = $('.pb-door', root);
   io([door], (el, vis) => { clearTimeout(el._t); if (vis) el._t = setTimeout(() => el.classList.add('is-open'), App.motion.reduced ? 0 : 450); else el.classList.remove('is-open'); }, { threshold: .45 });
   const seal = $('.pb-seal', root), foot = $('.pb-foot__scene', root);
-  io([seal, foot, $('.pb-askcard', root)], (el, vis) => el.classList.toggle('pb-on', vis), { threshold: .1 });
+  io([seal, foot, $('.pb-askcard', root), $('.pb-reviews', root)], (el, vis) => el.classList.toggle('pb-on', vis), { threshold: .1 });
   const sl = $('.pb-rg__art', root);
   io([sl], (el, vis) => {
     if (!vis || el._done) return; el._done = true;
@@ -4755,6 +4907,7 @@ const Fab = {
   el: null, shown: false, last: 0, tmo: 0, showTmo: 0,
   init() {
     this.el = $('.pb-fab', root);
+    this.el.tabIndex = -1; this.el.setAttribute('aria-hidden', 'true'); // invisible until the first clear spot
     this.el.addEventListener('click', () => openAssistant());
     App.onScroll(() => this.schedule());
     addEventListener('resize', () => this.schedule(), { passive: true });
@@ -4850,7 +5003,7 @@ function elDone(s) {
       <div class="pb-phonecrop"></div>
       <p class="tiny muted pb-center">${T('pb.el.demo')}</p>
     </div>
-    ${sfoot(`<button type="button" class="btn btn--ghost" data-book>${icon('calendar')}${T('pb.ch.act.book')}</button><button type="button" class="btn btn--primary pb-grow" data-close-sheet>${T('pb.done')}</button>`)}`;
+    ${sfoot(`<button type="button" class="btn btn--ghost pb-grow" data-book>${icon('calendar')}${T('pb.ch.act.book')}</button><button type="button" class="btn btn--primary pb-grow" data-close-sheet>${T('pb.done')}</button>`)}`;
   const ph = phoneChat(msg); $('.pb-phonecrop', box).append(ph);
   const stamp = $('.pb-stamp', box); stamp.classList.add('is-in');
   setTimeout(() => App.fx.burstAt(stamp, { count: 34 }), App.motion.reduced ? 0 : 380);
@@ -4880,14 +5033,16 @@ function openWaitlist(group = 'big') {
   box.innerHTML = `<form class="stack pb-form" style="--gap:16px" novalidate>
       <p class="muted small">${T('pb.wl.intro')}</p>
       <div class="field"><label for="pb-wl-n">${T('pb.wl.child')}</label><input class="input" id="pb-wl-n" autocomplete="off" required><span class="pb-err" hidden>${T('pb.wl.errChild')}</span></div>
-      <div class="field"><label for="pb-wl-d">${T('pb.wl.dob')}</label><input class="input" id="pb-wl-d" type="date" max="${todayIso()}"></div>
+      <div class="field"><label for="pb-wl-d">${T('pb.wl.dob')}</label><input class="input" id="pb-wl-d" type="date" max="${todayIso()}" aria-describedby="pb-wl-dh">${dateHint('pb-wl-dh', '')}</div>
       <div class="field"><span class="label">${T('pb.wl.group')}</span><div class="chips" role="group">${App.data.groups.map(g => `<button type="button" class="chip" data-g="${g.id}" aria-pressed="${g.id === WL.group}">${T('pb.g.' + g.id)}</button>`).join('')}</div></div>
       ${sfoot(`<button type="submit" class="btn btn--primary btn--block">${icon('hourglass')}${T('pb.wl.submit')}</button>`)}
     </form>`;
   const form = $('form', box);
   const pickG = id => { WL.group = id; $$('[data-g]', box).forEach(b => b.setAttribute('aria-pressed', b.dataset.g === id)); };
   $$('[data-g]', box).forEach(b => b.addEventListener('click', () => pickG(b.dataset.g)));
-  $('#pb-wl-d', box).addEventListener('change', e => { const g = groupFor(monthsSince(e.target.value)); if (['baby', 'young', 'big'].includes(g)) pickG(g); });
+  const wd = $('#pb-wl-d', box);
+  const onDob = () => { syncDateHint(wd); const g = groupFor(monthsSince(wd.value)); if (['baby', 'young', 'big'].includes(g)) pickG(g); };
+  wd.addEventListener('change', onDob); wd.addEventListener('input', onDob);
   form.addEventListener('submit', e => {
     e.preventDefault();
     const n = $('#pb-wl-n', box); const ok = n.value.trim().length > 1;
@@ -5023,8 +5178,8 @@ function bkBind(box) {
   go.addEventListener('click', async () => {
     if (BK.day == null || BK.slot == null) return;
     const okN = n.value.trim().length > 1, okP = phoneOk(p.value);
-    n.toggleAttribute('aria-invalid', !okN); n.nextElementSibling.hidden = okN;
-    p.toggleAttribute('aria-invalid', !okP); p.nextElementSibling.hidden = okP;
+    n.setAttribute('aria-invalid', String(!okN)); n.nextElementSibling.hidden = okN;
+    p.setAttribute('aria-invalid', String(!okP)); p.nextElementSibling.hidden = okP;
     if (!okN || !okP) { const bad = !okN ? n : p; scrollSheetTo(s, bad.closest('.field')); try { bad.focus({ preventScroll: true }); } catch (e) { } return; }
     BK.name = n.value.trim(); BK.phone = phoneFmt(p.value);
     go.disabled = true; go.classList.add('is-busy'); go.innerHTML = `${sp()}<span>${esc(t('pb.bk.sending'))}</span>`;
@@ -5111,13 +5266,13 @@ function rgRender() {
     body.innerHTML = `<div class="stack pb-anim-in" style="--gap:16px">
       ${RG.pre ? `<span class="tag tag--pink pb-self-start">${icon('star')}${esc(t('pb.rg.reserve', { g: groupName(RG.pre) }))}</span>` : ''}
       <div class="field"><label for="pb-rg-n">${T('pb.rg.cname')}</label><input class="input" id="pb-rg-n" autocomplete="off" value="${esc(RG.name)}"></div>
-      <div class="field"><label for="pb-rg-d">${T('pb.rg.dob')}</label><input class="input" id="pb-rg-d" type="date" max="${todayIso()}" value="${esc(RG.dob)}"></div>
+      <div class="field"><label for="pb-rg-d">${T('pb.rg.dob')}</label><input class="input" id="pb-rg-d" type="date" max="${todayIso()}" value="${esc(RG.dob)}" aria-describedby="pb-rg-dh">${dateHint('pb-rg-dh', RG.dob)}</div>
       <button type="button" class="link-btn pb-self-start pb-sample" data-sample>${icon('wand')}${T('pb.rg.sample')}</button>
       <div class="pb-gpick-wrap">
         <div class="pb-gpick-h"><span class="label">${T('pb.rg.groupH')}</span><span class="demo-tag">${esc(t('core.example'))}</span></div>
         <div class="pb-gpick" role="group" aria-label="${esc(t('pb.rg.groupH'))}">
           <span class="pb-gpick__wand" aria-hidden="true">${sp()}</span>
-          ${['baby', 'young', 'big'].map(g => `<span class="pb-gp ${RG.group === g ? 'is-chosen' : ''}" data-g="${g}" aria-current="${RG.group === g}">${icon('check', 'pb-gp__ck')}<span>${esc(groupName(g))}</span></span>`).join('')}
+          ${['baby', 'young', 'big'].map(g => `<span class="pb-gp ${RG.group === g ? 'is-chosen' : ''}" data-g="${g}" aria-current="${RG.group === g}">${icon('check', 'pb-gp__ck')}${T('pb.gs.' + g)}</span>`).join('')}
         </div>
         <p class="pb-gnote small" aria-live="polite"></p>
         <p class="tiny muted">${T('pb.rg.rule')}</p>
@@ -5125,11 +5280,11 @@ function rgRender() {
     foot.innerHTML = sfoot(`<button type="button" class="btn btn--primary btn--block" data-next>${T('pb.next')}${icon('arrow', 'ic--dir')}</button>`);
     const n = $('#pb-rg-n', body), d = $('#pb-rg-d', body);
     const upd = (animate) => {
-      RG.name = n.value; RG.dob = d.value; RG.months = monthsSince(d.value);
+      RG.name = n.value; RG.dob = d.value; RG.months = monthsSince(d.value); syncDateHint(d);
       const g = groupFor(RG.months); RG.group = ['baby', 'young', 'big'].includes(g) ? g : null;
       const note = $('.pb-gnote', body);
       note.className = 'pb-gnote small' + (g === 'older' || g === 'future' ? ' is-warn' : '');
-      note.textContent = g === 'older' ? t('pb.rg.older') : g === 'future' ? t('pb.rg.future') : RG.group ? t('pb.rg.age', { m: RG.months }) + ' · ' + t('pb.rg.auto') + (RG.pre && RG.pre !== RG.group ? '. ' + t('pb.rg.mismatch', { g: groupName(RG.group) }) : '') : '';
+      note.textContent = g === 'older' ? t('pb.rg.older') : g === 'future' ? t('pb.rg.future') : RG.group ? t('pb.rg.age', { m: RG.months }) + ' · ' + (RG.pre && RG.pre !== RG.group ? t('pb.rg.mismatch', { g: lang() === 'ru' ? groupName(RG.group).toLowerCase() : groupName(RG.group) }) : t('pb.rg.auto')) : '';
       rgPick(body, animate);
       $('[data-next]', foot).disabled = !(RG.name.trim().length > 1 && RG.group);
     };
@@ -5155,8 +5310,8 @@ function rgRender() {
     $('[data-back]', foot).addEventListener('click', () => { RG.step = 0; rgRender(); });
     $('[data-next]', foot).addEventListener('click', () => {
       const okN = pn.value.trim().length > 1, okP = phoneOk(pp.value);
-      pn.toggleAttribute('aria-invalid', !okN); pn.nextElementSibling.hidden = okN;
-      pp.toggleAttribute('aria-invalid', !okP); pp.nextElementSibling.hidden = okP;
+      pn.setAttribute('aria-invalid', String(!okN)); pn.nextElementSibling.hidden = okN;
+      pp.setAttribute('aria-invalid', String(!okP)); pp.nextElementSibling.hidden = okP;
       if (!okN || !okP) { (okN ? pp : pn).focus(); return; }
       RG.step = 2; rgRender();
     });
@@ -5358,20 +5513,20 @@ const M = App.module('pubBottom', {
       closeMine();
       const onAbort = () => closeMine(); ctx.signal.addEventListener('abort', onAbort, { once: true });
       const f = ctx.fast;
-      await ctx.tap('#visit [data-pb-book]', { after: f ? 250 : 560 });
+      await ctx.tap('#visit [data-pb-book]', { after: f ? 250 : 480 });
       const s = BK.s; if (!s) return;
       const day = await ctx.waitFor(() => $$('.pb-cal__day[data-di]:not([disabled])', s.body)[1]);
       await ctx.tap(day, { after: f ? 120 : 200 });
       const slot = await ctx.waitFor(() => $('.pb-slot:not([disabled])', s.body));
       await ctx.tap(slot, { after: f ? 150 : 360 });
       await ctx.type($('#pb-bk-n', s.body), lang() === 'ru' ? 'Михаль' : 'מיכל', { cps: 17, after: 100 });
-      await ctx.type($('#pb-bk-p', s.body), '0521234567', { cps: 32, after: 120 });
+      await ctx.type($('#pb-bk-p', s.body), '0521234567', { cps: 38, after: 120 });
       await ctx.tap($('[data-confirm]', s.body), { after: 150 });
       await ctx.waitFor(() => $('.pb-done--bk', s.body), 3000);
       const ph = await ctx.waitFor(() => $('.pb-phonecrop', s.body), 1500);
       if (ph) await ctx.point(ph);
       ctx.hideFinger();
-      await ctx.wait(f ? 900 : 2250);
+      await ctx.wait(f ? 900 : 1900);
       ctx.signal.removeEventListener('abort', onAbort);
       closeMine();
       await ctx.wait(f ? 100 : 200);

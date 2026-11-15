@@ -8,7 +8,9 @@ import { join, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 const ROOT = dirname(fileURLToPath(import.meta.url));
 const rd = p => (existsSync(join(ROOT, p)) ? readFileSync(join(ROOT, p), 'utf8') : '');
-const MODULES = ['pubTop', 'pubBottom', 'parent', 'staff', 'owner'];
+const ALL_MODULES = ['pubTop', 'pubBottom', 'parent', 'staff', 'owner'];
+// GC_MODULES=pubTop,pubBottom node build.mjs  → build with only those modules (others render empty)
+const MODULES = process.env.GC_MODULES ? ALL_MODULES.filter(m => process.env.GC_MODULES.split(',').includes(m)) : ALL_MODULES;
 
 let shell = rd('src/shell.html');
 const args = process.argv.slice(2); const outIdx = args.indexOf('--out'); const OUT = outIdx > -1 ? args[outIdx + 1] : null;
@@ -36,7 +38,7 @@ const modJs = MODULES.map(m => {
 if (/<\/script/i.test(js)) { console.error('ERROR: core JS contains a literal "</script"'); process.exit(1); }
 
 shell = shell.replace('/*@CSS*/', () => css).replace('<!--@/HEAD-->', () => modCss + '\n<!--@/HEAD-->').replace('<!--@ICONS-->', () => icons).replace('/*@JS*/', () => js).replace(/(<script>\s*\n?window\.__LOGO__[\s\S]*?<\/script>)/, m => m + '\n' + modJs);
-for (const m of MODULES) shell = shell.replace(`<!--@MODULE:${m}-->`, () => rd(`src/modules/${m}/${m}.html`));
+for (const m of ALL_MODULES) shell = shell.replace(`<!--@MODULE:${m}-->`, () => MODULES.includes(m) ? rd(`src/modules/${m}/${m}.html`) : "");
 
 const headMatch = shell.match(/<!--@HEAD-->([\s\S]*?)<!--@\/HEAD-->/);
 const head = headMatch ? headMatch[1].trim() : '';

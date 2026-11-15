@@ -420,10 +420,11 @@ function sizeDial() {
   const H = stage.clientHeight - parseFloat(cs.paddingTop) - parseFloat(cs.paddingBottom);
   const gap = parseFloat(cs.rowGap) || 8;
   let c;
-  if (desk) c = Math.min(W * .4, (H - 8) / 1.09, 540);
+  const pill = parseFloat(getComputedStyle(dial).marginBottom) || 28; // the time pill hangs in the dial's bottom margin
+  if (desk) c = Math.min(W * .4, H - 8 - pill, 540);
   else {
-    const used = $('.pt-stage__head', stage).offsetHeight + $('.pt-ruler', stage).offsetHeight + $('.pt-card', stage).offsetHeight + gap * 3 + 8;
-    c = Math.min(W * .74, 330, (H - used) / 1.07);
+    const head = $('.pt-stage__head', stage), used = (head.offsetHeight || 0) + $('.pt-ruler', stage).offsetHeight + $('.pt-card', stage).offsetHeight + gap * 3 + 4;
+    c = Math.min(W * .74, 330, H - used - pill);
   }
   c = Math.max(desk ? 260 : 140, Math.floor(c));
   stage.style.setProperty('--pt-cs', c + 'px');
