@@ -79,7 +79,7 @@ const I18N = {
     'st.t.sleepStart': 'שינה נעימה · {who}', 'st.t.sleepStop': 'התעוררו · {who}',
     'st.al.a11y': 'התראת אלרגיה', 'st.al.title': 'שימו לב', 'st.al.sub': 'בודקים שהמנה מתאימה לפני שמגישים.',
     'st.al.ok': 'בדקתי, המנה בטוחה', 'st.al.cancel': 'ביטול', 'st.al.checked': 'אלרגיות נבדקו',
-    'st.cam.title': 'צילום', 'st.cam.shoot': 'צילום', 'st.cam.live': 'החצר, עכשיו', 'st.cam.tip': 'לוחצים על הכפתור',
+    'st.cam.title': 'צילום', 'st.cam.shoot': 'צילום', 'st.cam.live': 'החצר, עכשיו', 'st.cam.tip': 'מצלמים, ואז מסמנים מי בתמונה',
     'st.cam.who': 'מי בתמונה?', 'st.cam.private': 'יישלח רק להורים שלהם. לא לקבוצות.',
     'st.cam.send': 'שליחה ל-{n}', 'st.cam.sendOne': 'שליחה למשפחה אחת', 'st.cam.need': 'מסמנים לפחות ילד אחד', 'st.cam.retake': 'צילום חוזר',
     'st.cam.sent': 'נשלח רק להורים של {names}',
@@ -88,8 +88,7 @@ const I18N = {
     'st.in.check': 'בדיקה מול רשימת המורשים', 'st.in.checking': 'בודקים ברשימה…', 'st.in.list': 'מורשים לאסוף את דניאל',
     'st.in.match': 'נמצאה ברשימה', 'st.in.approve': 'אישור ושליחת תשובה', 'st.in.sentRu': 'נשלח ברוסית', 'st.in.sentHe': 'נשלח בעברית',
     'st.in.orig': 'במקור: {text}', 'st.in.quick': 'תשובה מהירה', 'st.in.toast': 'התשובה נשלחה ל{who}', 'st.in.handled': 'טופל והתשובה נשלחה',
-    'st.in.kidOf': 'ההורים של {name}',
-    'st.inc.title': 'דיווח אירוע', 'st.inc.who': 'מי?', 'st.inc.what': 'מה קרה?', 'st.inc.aid': 'מה עשינו?', 'st.inc.when': 'מתי?',
+        'st.inc.title': 'דיווח אירוע', 'st.inc.who': 'מי?', 'st.inc.what': 'מה קרה?', 'st.inc.aid': 'מה עשינו?', 'st.inc.when': 'מתי?',
     'st.inc.note': 'כמה מילים להורים', 'st.inc.notePh': 'לא חובה', 'st.inc.earlier': 'מוקדם יותר', 'st.inc.later': 'מאוחר יותר',
     'st.inc.preview': 'תצוגה מקדימה', 'st.inc.need': 'בוחרים ילד ומה קרה', 'st.inc.to': 'למי זה הולך',
     'st.inc.toParents': 'ההורים של {name} · {lang}', 'st.inc.toOwner': 'המנהלת · בעברית', 'st.inc.lang.he': 'בעברית', 'st.inc.lang.ru': 'ברוסית',
@@ -99,10 +98,10 @@ const I18N = {
     'st.eod.ready': 'הסיכומים מוכנים', 'st.eod.readySub': 'אפשר לפתוח כל שורה ולקרוא לפני השליחה',
     'st.eod.send': 'שלח לכולם', 'st.eod.sending': 'שולחים להורים…', 'st.eod.sentSub': 'כל משפחה מקבלת סיכום לטלפון',
     'st.eod.done': 'כל המשפחות קיבלו סיכום', 'st.eod.doneSub': '{he} בעברית, {ru} ברוסית. כל משפחה בשפה שלה.',
-    'st.eod.tap': 'נגיעה בטלפון מציגה את ההודעה', 'st.eod.close': 'סגירה', 'st.eod.inUi': 'בעברית:', 'st.eod.toast': 'נשלחו {n}/{n} סיכומים',
+    'st.eod.tap': 'נגיעה בטלפון מציגה את ההודעה', 'st.eod.close': 'סגירה', 'st.eod.inUi': 'בעברית:',
     'st.eod.sentN': 'נשלחו',
     'st.lang.he': 'עב', 'st.lang.ru': 'RU', 'st.lang.heA': 'יישלח בעברית', 'st.lang.ruA': 'יישלח ברוסית', 'st.lang.heL': 'בעברית', 'st.lang.ruL': 'ברוסית',
-    'st.rem.title': 'חשוב היום', 'st.rem.bday': 'מחר יום הולדת ל{name}', 'st.rem.bdaySub': 'כדאי להכין משהו קטן לכבוד', 'st.rem.allergy': 'אלרגיות בקבוצה',
+    'st.rem.title': 'חשוב היום', 'st.rem.bday': 'מחר יום הולדת ל{name}', 'st.rem.bdaySub.m': 'אפשר להכין משהו קטן לכבודו', 'st.rem.bdaySub.f': 'אפשר להכין משהו קטן לכבודה', 'st.rem.allergy': 'אלרגיות בקבוצה',
     'st.log.title': 'יומן היום', 'st.log.empty': 'כל סימון של היום יופיע כאן',
     'st.log.arrive.f': '{name} הגיעה', 'st.log.arrive.m': '{name} הגיע', 'st.log.unarrive': 'בוטלה ההגעה של {name}', 'st.log.more': 'הגיעו עוד {who}',
     'st.log.meal': '{meal}: {amt} · {who}', 'st.log.sleepStart': 'נרדמו: {who}', 'st.log.sleepStop': 'התעוררו: {who}',
@@ -133,7 +132,7 @@ const I18N = {
     'st.t.sleepStart': 'Сладкого сна · {who}', 'st.t.sleepStop': 'Проснулись · {who}',
     'st.al.a11y': 'Предупреждение об аллергии', 'st.al.title': 'Внимание', 'st.al.sub': 'Проверьте блюдо, прежде чем подавать.',
     'st.al.ok': 'Проверила, блюдо безопасно', 'st.al.cancel': 'Отмена', 'st.al.checked': 'аллергии проверены',
-    'st.cam.title': 'Фото', 'st.cam.shoot': 'Снять', 'st.cam.live': 'Двор, сейчас', 'st.cam.tip': 'Нажмите на кнопку',
+    'st.cam.title': 'Фото', 'st.cam.shoot': 'Снять', 'st.cam.live': 'Двор, сейчас', 'st.cam.tip': 'Снимите, потом отметьте, кто на фото',
     'st.cam.who': 'Кто на фото?', 'st.cam.private': 'Фото получат только их родители. Не в общий чат.',
     'st.cam.send': 'Отправить: {n}', 'st.cam.sendOne': 'Отправить одной семье', 'st.cam.need': 'Отметьте хотя бы одного ребёнка', 'st.cam.retake': 'Переснять',
     'st.cam.sent': 'Фото ушло только родителям: {names}',
@@ -142,8 +141,7 @@ const I18N = {
     'st.in.check': 'Проверить по списку доверенных', 'st.in.checking': 'Проверяем список…', 'st.in.list': 'Могут забирать Даниэля',
     'st.in.match': 'Есть в списке', 'st.in.approve': 'Подтвердить и ответить', 'st.in.sentRu': 'Отправлено по-русски', 'st.in.sentHe': 'Отправлено на иврите',
     'st.in.orig': 'Оригинал: {text}', 'st.in.quick': 'Быстрый ответ', 'st.in.toast': 'Ответ отправлен: {who}', 'st.in.handled': 'Готово, ответ отправлен',
-    'st.in.kidOf': 'родители: {name}',
-    'st.inc.title': 'Отчёт о происшествии', 'st.inc.who': 'Кто?', 'st.inc.what': 'Что случилось?', 'st.inc.aid': 'Что сделали?', 'st.inc.when': 'Когда?',
+        'st.inc.title': 'Отчёт о происшествии', 'st.inc.who': 'Кто?', 'st.inc.what': 'Что случилось?', 'st.inc.aid': 'Что сделали?', 'st.inc.when': 'Когда?',
     'st.inc.note': 'Пара слов родителям', 'st.inc.notePh': 'Необязательно', 'st.inc.earlier': 'Раньше', 'st.inc.later': 'Позже',
     'st.inc.preview': 'Предпросмотр', 'st.inc.need': 'Выберите ребёнка и что случилось', 'st.inc.to': 'Кому уйдёт',
     'st.inc.toParents': 'Родители: {name} · {lang}', 'st.inc.toOwner': 'Руководитель · на иврите', 'st.inc.lang.he': 'на иврите', 'st.inc.lang.ru': 'по-русски',
@@ -153,15 +151,15 @@ const I18N = {
     'st.eod.ready': 'Сводки готовы', 'st.eod.readySub': 'Нажмите на строку, чтобы прочитать перед отправкой',
     'st.eod.send': 'Отправить всем', 'st.eod.sending': 'Отправляем родителям…', 'st.eod.sentSub': 'Каждая семья получает сводку на телефон',
     'st.eod.done': 'Все семьи получили сводку', 'st.eod.doneSub': '{he} на иврите, {ru} по-русски. Каждой семье на её языке.',
-    'st.eod.tap': 'Нажмите на телефон, чтобы прочитать', 'st.eod.close': 'Закрыть', 'st.eod.inUi': 'По-русски:', 'st.eod.toast': 'Отправлено сводок: {n}/{n}',
+    'st.eod.tap': 'Нажмите на телефон, чтобы прочитать', 'st.eod.close': 'Закрыть', 'st.eod.inUi': 'По-русски:',
     'st.eod.sentN': 'отправлено',
     'st.lang.he': 'עב', 'st.lang.ru': 'RU', 'st.lang.heA': 'уйдёт на иврите', 'st.lang.ruA': 'уйдёт по-русски', 'st.lang.heL': 'на иврите', 'st.lang.ruL': 'по-русски',
-    'st.rem.title': 'Важно сегодня', 'st.rem.bday': '{name}: завтра день рождения', 'st.rem.bdaySub': 'Можно приготовить что-то маленькое', 'st.rem.allergy': 'Аллергии в группе',
+    'st.rem.title': 'Важно сегодня', 'st.rem.bday': '{name}: завтра день рождения', 'st.rem.bdaySub.m': 'Можно подготовить маленький сюрприз', 'st.rem.bdaySub.f': 'Можно подготовить маленький сюрприз', 'st.rem.allergy': 'Аллергии в группе',
     'st.log.title': 'Журнал дня', 'st.log.empty': 'Здесь появятся все отметки за день',
     'st.log.arrive.f': '{name} пришла', 'st.log.arrive.m': '{name} пришёл', 'st.log.unarrive': 'Приход отменён: {name}', 'st.log.more': 'Пришли ещё: {who}',
     'st.log.meal': '{meal}: {amt} · {who}', 'st.log.sleepStart': 'Уснули: {who}', 'st.log.sleepStop': 'Проснулись: {who}',
     'st.log.diaper': 'Подгузник ({type}): {who}', 'st.log.photo': 'Фото родителям: {who}', 'st.log.pickup': 'Даниэля забирает бабушка Люда · подтверждено',
-    'st.log.reply': 'Ответ отправлен: {who}', 'st.log.incident': 'Отчёт о происшествии: {name}', 'st.log.eod': 'Сводки дня отправлены: {n} семьям'
+    'st.log.reply': 'Ответ отправлен: {who}', 'st.log.incident': 'Отчёт о происшествии: {name}', 'st.log.eod': 'Сводки дня отправлены {n} семьям'
   }
 };
 
@@ -336,7 +334,7 @@ function paintKid(id, o = {}) {
   el.setAttribute('aria-label', parts.join('. '));
   if (o.pop) restart(el, 'is-pop');
 }
-const paintAllKids = () => KIDS.forEach(k => paintKid(k.id));
+const paintAllKids = (ids, fresh) => KIDS.forEach(k => paintKid(k.id, ids && ids.includes(k.id) ? { fresh } : {}));
 
 /* ---------- header, stats, mode ---------- */
 function bump(el, txt) { if (!el) return; if (el.textContent !== txt) { el.textContent = txt; if (!reduced()) restart(el, 'is-bump'); } }
@@ -376,7 +374,7 @@ function say(text) { const el = $('[data-st-live]', root); if (!el) return; el.t
 function renderSide() {
   const bday = KIDS.find(k => k.birthdayTomorrow), allergic = KIDS.filter(k => k.allergies && k.allergies.length);
   $('[data-st-rem]', root).innerHTML =
-    (bday ? `<li class="st-rem__i"><span class="st-rem__ic st-rem__ic--bday" aria-hidden="true">${icon('cake')}</span><span class="st-rem__t"><b>${esc(t('st.rem.bday', { name: nm(bday.id) }))}</b>${esc(t('st.rem.bdaySub'))}</span></li>` : '') +
+    (bday ? `<li class="st-rem__i"><span class="st-rem__ic st-rem__ic--bday" aria-hidden="true">${icon('cake')}</span><span class="st-rem__t"><b>${esc(t('st.rem.bday', { name: nm(bday.id) }))}</b>${esc(tg('st.rem.bdaySub', bday.id))}</span></li>` : '') +
     `<li class="st-rem__i"><span class="st-rem__ic st-rem__ic--al" aria-hidden="true">${icon('alert')}</span><span class="st-rem__t"><b>${esc(t('st.rem.allergy'))}</b>
       <ul class="st-rem__al">${allergic.map(k => `<li>${A.avatarEl(k, 22, { label: '' })}<span>${esc(nm(k.id))} · ${esc(k.allergies.map(a => A.L(A.data.allergens[a])).join(', '))}</span></li>`).join('')}</ul></span></li>`;
   renderLog();
@@ -447,8 +445,7 @@ function setMode(m) {
 }
 function finish(ids, freshType) {
   S.sel.clear(); S.bar = 'root'; S.meal = null; S.checked = false;
-  ids.forEach(id => paintKid(id, { fresh: freshType }));
-  paintAllKids(); paintAllChip(); renderBar(); paintStats(); sync(); ensureTick();
+  paintAllKids(ids, freshType); paintAllChip(); renderBar(); paintStats(); sync(); ensureTick();
 }
 function recordMeal(meal, amt) {
   const ids = [...S.sel]; if (!ids.length) return;
@@ -745,8 +742,7 @@ function openCamera(pre = []) {
       log('camera', () => t('st.log.photo', { who: who(w) }));
       A.ui.toast(t('st.cam.sent', { names: joinNames(ids.map(nm)) }), { icon: 'lock', tone: 'ok' });
       if (fromBar) { S.sel.clear(); S.bar = 'root'; }
-      ids.forEach(id => paintKid(id, { fresh: 'photo' }));
-      paintAllKids(); paintAllChip(); renderBar(); sync();
+      paintAllKids(ids, 'photo'); paintAllChip(); renderBar(); sync();
       setTimeout(() => s.close('sent'), 220);
     }
   });
@@ -770,7 +766,7 @@ function openInbox(focusId) {
   const body = A.h('<div class="st-in"></div>');
   const s = sheet({ titleKey: 'st.in.title', content: body, className: 'st-in-sheet' });
   const msg = id => S.inbox.find(m => m.id === id);
-  const list = () => `<p class="st-in__sub">${icon('translate')}<span>${esc(t('st.in.sub'))}</span></p>
+  const list = () => `<p class="st-in__sub">${icon('translate')}<span>${esc(t('st.in.sub'))}</span><span class="demo-tag">${esc(t('core.example'))}</span></p>
     <ul class="st-msgs">${S.inbox.map(m => {
       const txt = lang() === 'ru' ? m.text.ru : m.text.he;
       return `<li><button type="button" class="st-msg${m.read ? ' is-read' : ''}" data-in-open="${m.id}">
@@ -783,7 +779,7 @@ function openInbox(focusId) {
     }).join('')}</ul>`;
   const detail = m => {
     const k = kid(m.kid), famLang = m.orig;
-    const reply = m.sent ? `${bubbleHTML(m.sent[famLang], famLang, true, m.sentTime)}<p class="st-orig">${esc(t(famLang === 'ru' ? 'st.in.sentRu' : 'st.in.sentHe'))}${famLang !== lang() || famLang === 'ru' ? ' · ' + origLine(lang() === 'ru' && famLang === 'he' ? 'ru' : 'he', m.sent) : ''}</p>` : '';
+    const reply = m.sent ? `${bubbleHTML(m.sent[famLang], famLang, true, m.sentTime)}<p class="st-orig">${esc(t(famLang === 'ru' ? 'st.in.sentRu' : 'st.in.sentHe'))}${famLang !== lang() ? ' · ' + origLine(lang(), m.sent) : ''}</p>` : '';
     let tail = '';
     if (m.pickup) {
       const tr = A.data.trusted.daniel;
@@ -1005,7 +1001,7 @@ function openEod() {
   };
   const body = A.h(`<div class="st-eod is-writing">
     <div class="st-eod__head"><span class="st-eod__wand" aria-hidden="true">${icon('wand')}</span>
-      <div class="st-eod__ht"><p class="st-eod__h" data-eod-h>${esc(t('st.eod.writing'))}</p><p class="st-eod__sub" data-eod-sub>${esc(t('st.eod.sub'))}</p></div>
+      <div class="st-eod__ht"><p class="st-eod__h" data-eod-h>${esc(t('st.eod.writing'))}</p><p class="st-eod__sub"><span data-eod-sub>${esc(t('st.eod.sub'))}</span> <span class="demo-tag">${esc(t('core.example'))}</span></p></div>
       <span class="st-eod__n tnum" data-eod-n><b>0</b><span>/${items.length}</span></span></div>
     <ul class="st-eod__list" data-eod-list>${items.map(row).join('')}</ul>
     <div class="st-eod__foot" data-eod-foot><button type="button" class="btn btn--primary btn--block" data-eod="send" disabled>${icon('send', 'ic--dir')}<span>${esc(t('st.eod.send'))}</span></button></div>
@@ -1043,13 +1039,17 @@ function openEod() {
     if (ph && !ph.disabled) { pick(ph.closest('.st-mph').dataset.kid); return; }
     if (e.target.closest('[data-eod="close"]')) s.close('done');
   });
+  let big = null, featured = null;
   const pick = id => {
-    const it = items.find(x => x.id === id), read = $('[data-read]', body); if (!it || !read) return;
+    const it = items.find(x => x.id === id); if (!it || !big) return;
     $$('.st-mph', body).forEach(p => p.classList.toggle('is-pick', p.dataset.kid === id));
-    const lu = lang();
-    read.innerHTML = `<div class="st-read__who">${A.avatarEl(kid(id), 34, { label: '' })}<span>${esc(nm(id))}</span>${langBadge(it.lg)}</div>
-      ${bubbleHTML(it.text[it.lg], it.lg, false, hm(S.sentAt || 17 * 60))}
-      ${it.lg !== lu ? `<p class="st-read__tr"><b>${esc(t('st.eod.inUi'))}</b> <span dir="${dirOf(lu)}" lang="${lu}">${esc(it.text[lu])}</span></p>` : ''}`;
+    $('.phone__date', big).textContent = dateStr(it.lg, today());
+    const c = big.notify({ title: APP_NAME[it.lg], text: it.text[it.lg], icon: 'sparkle', time: it.lg === 'ru' ? 'сейчас' : 'עכשיו' }, !reduced());
+    c.setAttribute('dir', dirOf(it.lg)); c.setAttribute('lang', it.lg);
+    const lu = lang(), tr = $('[data-read-tr]', body);
+    $('[data-read-who]', body).innerHTML = `${A.avatarEl(kid(id), 30, { label: '' })}<span>${esc(nm(id))}</span>${langBadge(it.lg)}`;
+    tr.hidden = it.lg === lu;
+    tr.innerHTML = it.lg !== lu ? `<b>${esc(t('st.eod.inUi'))}</b> <span dir="${dirOf(lu)}" lang="${lu}">${esc(it.text[lu])}</span>` : '';
   };
   async function sendAll() {
     S.sentAt = Math.max(S.clock, 17 * 60); atLeast(S.sentAt);
@@ -1063,7 +1063,8 @@ function openEod() {
     const appT = APP_NAME;
     const stage = A.h(`<div class="st-send">
       <div class="st-send__hub"><span class="st-send__tab" aria-hidden="true"><span>${icon('send', 'ic--dir')}</span></span>
-        <p class="st-send__cnt tnum" aria-live="polite"><bdi dir="ltr"><b data-send-n>0</b>/${items.length}</bdi><span>${esc(t('st.eod.sentN'))}</span></p></div>
+        <p class="st-send__cnt tnum" aria-live="polite"><bdi dir="ltr"><b data-send-n>0</b>/${items.length}</bdi><span>${esc(t('st.eod.sentN'))}</span></p>
+        <p class="st-read__hint" hidden data-read-hint>${icon('eye')}<span>${esc(t('st.eod.tap'))}</span></p></div>
       <ul class="st-send__grid">${items.map((it, i) => `<li class="st-mph" data-kid="${it.id}" style="--d:${i}">
         <button type="button" class="st-mph__btn" disabled aria-label="${esc(nm(it.id))} · ${esc(t(it.lg === 'ru' ? 'st.lang.ruL' : 'st.lang.heL'))}">
           <span class="st-mph__body"><span class="st-mph__scr"><span class="st-mph__island"></span><span class="st-mph__clock tnum" aria-hidden="true">${hm(S.sentAt)}</span>
@@ -1072,15 +1073,20 @@ function openEod() {
           </span>${langBadge(it.lg)}</span>
           <span class="st-mph__cap"><span class="st-mph__name">${esc(nm(it.id))}</span></span>
         </button></li>`).join('')}</ul>
+      <div class="st-read"><p class="st-read__who" data-read-who></p><div class="st-read__ph" data-read-ph></div><p class="st-read__tr" data-read-tr hidden></p></div>
       <div class="st-send__fly" aria-hidden="true"></div>
     </div>`);
     body.insertBefore(stage, foot);
+    featured = (items.find(x => x.lg !== lang()) || items[0]).id;
+    big = A.ui.phone({ time: hm(S.sentAt), size: matchMedia('(min-width: 760px)').matches ? 160 : 220, max: 1 });
+    $('[data-read-ph]', stage).append(big);
     if (s.body) s.body.scrollTop = 0;
     await A.sleep(reduced() ? 0 : (touring() || tourCtx) ? 330 : 480);
     if (s.closed) return;
     let n = 0; const cnt = $('.st-send__cnt', stage), cntN = $('[data-send-n]', stage);
     await fly(stage, ph => {
       ph.classList.add('is-on'); n++; cntN.textContent = n; if (!reduced()) restart(cnt, 'is-bump');
+      if (ph.dataset.kid === featured) pick(featured);
       if (!reduced()) A.fx.burstAt($('.st-mph__scr', ph), { count: 6, speed: [60, 160], size: [6, 13], life: [350, 700], gravity: 90, colors: ['gold', 'white', 'pink'] });
     });
     if (s.closed) return;
@@ -1091,8 +1097,8 @@ function openEod() {
     A.fx.burstAt($('.st-send__tab', stage), { count: 40, speed: [160, 460], life: [700, 1300] });
     A.haptic(30);
     $$('.st-mph__btn', stage).forEach(b => { b.disabled = false; });
-    stage.append(A.h(`<div class="st-read"><p class="st-read__hint">${icon('eye')}<span>${esc(t('st.eod.tap'))}</span></p><div class="st-read__card" data-read></div></div>`));
-    pick((items.find(x => x.lg !== lang()) || items[0]).id);
+    $('[data-read-hint]', stage).hidden = false;
+    if (!$('.st-mph.is-pick', stage)) pick(featured);
     foot.innerHTML = `<button type="button" class="btn btn--night btn--block" data-eod="close">${icon('check')}<span>${esc(t('st.eod.close'))}</span></button>`;
     foot.hidden = false;
     log('sparkles', () => t('st.log.eod', { n: items.length }), S.sentAt);
@@ -1229,9 +1235,9 @@ A.module('staff', {
       await ctx.tap('.st-bar [data-act="food"]', { after: 200 });
       await ctx.tap('.st-bar [data-act="lunch"]', { after: 100 });
       const ok = await ctx.waitFor('.st-alert [data-al="ok"]', 2500);
-      await ctx.wait(ctx.fast ? 200 : 820);
+      await ctx.wait(ctx.fast ? 200 : 760);
       if (ok) await ctx.tap(ok, { after: 380 });
-      await ctx.tap('.st-bar [data-act="all"]', { after: 480 });
+      await ctx.tap('.st-bar [data-act="all"]', { after: 420 });
     },
     async endDay(ctx) {
       closeSheets(); if (S.sel.size) clearSel();
