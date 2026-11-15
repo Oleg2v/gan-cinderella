@@ -627,3 +627,14 @@ html.is-touring .tour-invite { display: none; }
 button, a, [role="button"], [role="switch"], [role="tab"], label, .chip, summary { touch-action: manipulation; }
 button, .btn, .chip, .tb-btn, .dock__btn, [role="tab"], [role="switch"] { -webkit-user-select: none; user-select: none; -webkit-touch-callout: none; }
 .sheet-backdrop { touch-action: none; }
+
+/* compact tour caption on short phone screens (the scene above keeps its room) */
+@media (max-height: 780px) {
+  /* short phones: the caption rides over the (inactive during the tour) top bar, freeing the lower screen */
+  .tour-cap { bottom: auto; top: calc(var(--safe-t) + 6px); }
+  .tour-cap__card { padding: 10px 10px 10px 14px; gap: 6px 10px; border-radius: 18px; }
+  [dir="rtl"] .tour-cap__card { padding: 10px 14px 10px 10px; }
+  .tour-cap__text { font-size: .9375rem; min-height: 2.7em; line-height: 1.35; }
+  .tour-cap__hint { display: none; }
+  .tour-cap__stop { height: 34px; }
+}

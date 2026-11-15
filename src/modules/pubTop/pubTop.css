@@ -418,6 +418,7 @@ html:not(.pt-booted) .pt-hero:not(.pt-go) .pt-cue, html:not(.pt-booted) .pt-hero
   padding: calc(var(--bar-h) + var(--safe-t) + 8px) var(--gutter-r) var(--pt-bot) var(--gutter-l);
 }
 html.is-touring .pt-stage { --pt-bot: calc(var(--dock-h) + 142px + var(--safe-b)); }
+@media (max-width: 899px) { html.is-touring .pt-stage.pt-h780 { --pt-bot: calc(var(--dock-h) + 16px + var(--safe-b)); padding-top: calc(var(--bar-h) + var(--safe-t) + 28px); } }
 .pt-stage__bg { position: absolute; inset: 0 0 -25vh 0; z-index: -1; overflow: hidden; pointer-events: none; }
 .pt-bg { position: absolute; inset: 0; }
 .pt-bg--0 { background: linear-gradient(180deg, #BDE5FB 0%, #DFF2FE 52%, #FFF4F8 100%); }

@@ -23,6 +23,11 @@ let logo = null;
 for (const p of ['cinderella-logo.png', 'assets/cinderella-logo.png', 'cinderella-logo.webp', 'assets/cinderella-logo.webp', 'cinderella-logo.jpg', 'assets/cinderella-logo.jpg']) {
   if (existsSync(join(ROOT, p))) { const ext = p.split('.').pop(); logo = `data:image/${ext === 'jpg' ? 'jpeg' : ext};base64,` + readFileSync(join(ROOT, p)).toString('base64'); break; }
 }
+// pre-render logo slots so the top bar / hero / footer never show an empty circle before scripts run
+const logoHtml = logo
+  ? `<img src="${logo}" alt="הלוגו של גן סינדרלה" data-i18n-attr="alt:core.logoAlt">`
+  : `<span class="logo-ph" role="img" aria-label="הלוגו של גן סינדרלה" data-i18n-attr="aria-label:core.logoAlt"><span data-i18n="core.brand">גן סינדרלה</span></span>`;
+const fillLogoSlots = html => html.replace(/(<span\b[^>]*\bdata-logo\b[^>]*)>\s*<\/span>/g, (m, open) => `${open} data-logo-done="1">${logoHtml}</span>`);
 const wrapMod = (m, code) => code.trim() ? `\n/* ===== module: ${m} ===== */\n;(function(){\ntry {\n${code}\n} catch (e) { console.error('[module ${m}] failed to load', e); }\n})();\n` : '';
 const js = `window.__LOGO__ = ${logo ? JSON.stringify(logo) : 'null'};\n` + rd('src/core/core.js');
 let problems = 0;
@@ -37,8 +42,9 @@ const modJs = MODULES.map(m => {
 }).join('\n');
 if (/<\/script/i.test(js)) { console.error('ERROR: core JS contains a literal "</script"'); process.exit(1); }
 
+shell = fillLogoSlots(shell);
 shell = shell.replace('/*@CSS*/', () => css).replace('<!--@/HEAD-->', () => modCss + '\n<!--@/HEAD-->').replace('<!--@ICONS-->', () => icons).replace('/*@JS*/', () => js).replace(/(<script>\s*\n?window\.__LOGO__[\s\S]*?<\/script>)/, m => m + '\n' + modJs);
-for (const m of ALL_MODULES) shell = shell.replace(`<!--@MODULE:${m}-->`, () => MODULES.includes(m) ? rd(`src/modules/${m}/${m}.html`) : "");
+for (const m of ALL_MODULES) shell = shell.replace(`<!--@MODULE:${m}-->`, () => MODULES.includes(m) ? fillLogoSlots(rd(`src/modules/${m}/${m}.html`)) : "");
 
 const headMatch = shell.match(/<!--@HEAD-->([\s\S]*?)<!--@\/HEAD-->/);
 const head = headMatch ? headMatch[1].trim() : '';

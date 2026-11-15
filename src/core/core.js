@@ -425,9 +425,10 @@
 
   /* logo: real file inlined by build (window.__LOGO__) or a neutral placeholder */
   function logoMarkup() {
-    return window.__LOGO__ ? `<img src="${window.__LOGO__}" alt="${esc(t('core.logoAlt'))}" data-i18n-attr="alt:core.logoAlt">` : `<span class="logo-ph" role="img" aria-label="${esc(t('core.logoAlt'))}"><span>${esc(t('core.brand'))}</span></span>`;
+    return window.__LOGO__ ? `<img src="${window.__LOGO__}" alt="${esc(t('core.logoAlt'))}" data-i18n-attr="alt:core.logoAlt">` : `<span class="logo-ph" role="img" aria-label="${esc(t('core.logoAlt'))}" data-i18n-attr="aria-label:core.logoAlt"><span data-i18n="core.brand">${esc(t('core.brand'))}</span></span>`;
   }
-  function fillLogos(root = document) { $$('[data-logo]', root).forEach(el => { if (!el.dataset.logoDone) { el.innerHTML = logoMarkup(); el.dataset.logoDone = '1'; } }); }
+  /* the build pre-renders logos into the HTML (data-logo-done) so they show before any script runs */
+  function fillLogos(root = document) { $$('[data-logo]', root).forEach(el => { if (!el.dataset.logoDone || !el.firstElementChild) { el.innerHTML = logoMarkup(); el.dataset.logoDone = '1'; } }); }
 
   /* =====================================================================
      SCROLL · Lenis (desktop only) + helpers
@@ -777,8 +778,9 @@
           const zoneTop = 70 + (parseFloat(getComputedStyle(html).getPropertyValue('--safe-t')) || 0);
           const cap = $('.tour-cap__card'); const capR = cap && !$('.tour-cap').hidden ? cap.getBoundingClientRect() : null;
           const sheetOpen = html.classList.contains('sheet-open');
-          const top = sheetOpen && capR ? capR.bottom + 8 : zoneTop;
-          const bottom = sheetOpen || !capR ? innerHeight - 16 - (sheetOpen ? 0 : 90) : capR.top - 8;
+          const capOnTop = !!capR && capR.top < innerHeight / 2;
+          const top = capR && (sheetOpen || capOnTop) ? capR.bottom + 8 : zoneTop;
+          const bottom = sheetOpen || capOnTop || !capR ? innerHeight - 16 - (sheetOpen ? 0 : 90) : capR.top - 8;
           let r = el.getBoundingClientRect();
           if (r.top >= top && r.bottom <= bottom) return;
           const inSheet = el.closest('.sheet__body');
