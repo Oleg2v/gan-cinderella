@@ -814,7 +814,7 @@
   i18n.add({
     he: {
       'core.brand': 'גן סינדרלה', 'core.logoAlt': 'הלוגו של גן סינדרלה', 'core.skip': 'דילוג לתוכן',
-      'core.demo': 'דמו · נתונים לדוגמה', 'core.tourBtn': 'סיור בדמו', 'core.langBtn': 'RU', 'core.langA11y': 'Переключить на русский',
+      'core.demo': 'דמו · נתונים לדוגמה', 'core.demoA': 'דמו', 'core.demoB': 'נתונים לדוגמה', 'core.tourBtn': 'סיור בדמו', 'core.tourShort': 'סיור', 'core.langBtn': 'RU', 'core.langA11y': 'Переключить на русский',
       'core.a11yBtn': 'תפריט נגישות', 'core.close': 'סגירה', 'core.example': 'לדוגמה',
       'core.dock.label': 'בחירת תצוגה', 'core.dock.visitors': 'מבקרים חדשים', 'core.dock.parents': 'הורים', 'core.dock.staff': 'צוות', 'core.dock.owner': 'הנהלה',
       'core.invite': 'סיור בדמו · דקה וחצי', 'core.inviteX': 'לא עכשיו',
@@ -840,7 +840,7 @@
     },
     ru: {
       'core.brand': 'Синдерелла', 'core.logoAlt': 'Логотип сада «Синдерелла»', 'core.skip': 'К содержанию',
-      'core.demo': 'Демо · примерные данные', 'core.tourBtn': 'Демо-тур', 'core.langBtn': 'עב', 'core.langA11y': 'לעבור לעברית',
+      'core.demo': 'Демо · примерные данные', 'core.demoA': 'Демо', 'core.demoB': 'примерные данные', 'core.tourBtn': 'Демо-тур', 'core.tourShort': 'Тур', 'core.langBtn': 'עב', 'core.langA11y': 'לעבור לעברית',
       'core.a11yBtn': 'Меню доступности', 'core.close': 'Закрыть', 'core.example': 'пример',
       'core.dock.label': 'Выбор раздела', 'core.dock.visitors': 'Новые семьи', 'core.dock.parents': 'Родители', 'core.dock.staff': 'Команда', 'core.dock.owner': 'Управление',
       'core.invite': 'Демо-тур · полторы минуты', 'core.inviteX': 'Не сейчас',
