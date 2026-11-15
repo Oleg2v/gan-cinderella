@@ -96,7 +96,7 @@ const I18N = {
     'st.in.orig': 'במקור: {text}', 'st.in.quick': 'תשובה מהירה', 'st.in.toast': 'התשובה נשלחה ל{who}', 'st.in.handled': 'טופל והתשובה נשלחה',
         'st.inc.title': 'דיווח אירוע', 'st.inc.who': 'מי?', 'st.inc.what': 'מה קרה?', 'st.inc.aid': 'מה עשינו?', 'st.inc.when': 'מתי?',
     'st.inc.note': 'כמה מילים להורים', 'st.inc.notePh': 'לא חובה', 'st.inc.earlier': 'מוקדם יותר', 'st.inc.later': 'מאוחר יותר',
-    'st.inc.preview': 'תצוגה מקדימה', 'st.inc.need': 'בוחרים ילד ומה קרה', 'st.inc.to': 'למי זה נשלח',
+    'st.inc.preview': 'תצוגה מקדימה', 'st.inc.need': 'בוחרים ילד ומה קרה', 'st.inc.needKid': 'בוחרים את הילד', 'st.inc.needWhat': 'בוחרים מה קרה', 'st.inc.to': 'למי זה נשלח',
     'st.inc.toParents': 'ההורים של {name} · {lang}', 'st.inc.toOwner': 'המנהלת · בעברית', 'st.inc.lang.he': 'בעברית', 'st.inc.lang.ru': 'ברוסית',
     'st.inc.edit': 'עריכה', 'st.inc.send': 'שליחה להורים ולמנהלת', 'st.inc.sent': 'הדיווח נשלח',
     'st.inc.capParents': 'ההורים', 'st.inc.capOwner': 'המנהלת', 'st.inc.close': 'סגירה',
@@ -151,7 +151,7 @@ const I18N = {
     'st.in.orig': 'Оригинал: {text}', 'st.in.quick': 'Быстрый ответ', 'st.in.toast': 'Ответ отправлен: {who}', 'st.in.handled': 'Готово, ответ отправлен',
         'st.inc.title': 'Отчёт о происшествии', 'st.inc.who': 'Кто?', 'st.inc.what': 'Что случилось?', 'st.inc.aid': 'Что сделали?', 'st.inc.when': 'Когда?',
     'st.inc.note': 'Пара слов родителям', 'st.inc.notePh': 'Необязательно', 'st.inc.earlier': 'Раньше', 'st.inc.later': 'Позже',
-    'st.inc.preview': 'Предпросмотр', 'st.inc.need': 'Выберите ребёнка и что случилось', 'st.inc.to': 'Кому уйдёт',
+    'st.inc.preview': 'Предпросмотр', 'st.inc.need': 'Выберите ребёнка и что случилось', 'st.inc.needKid': 'Выберите ребёнка', 'st.inc.needWhat': 'Выберите, что случилось', 'st.inc.to': 'Кому уйдёт',
     'st.inc.toParents': 'Родители: {name} · {lang}', 'st.inc.toOwner': 'Заведующая · на иврите', 'st.inc.lang.he': 'на\u00a0иврите', 'st.inc.lang.ru': 'по-русски',
     'st.inc.edit': 'Изменить', 'st.inc.send': 'Отправить отчёт', 'st.inc.sent': 'Отчёт отправлен',
     'st.inc.capParents': 'Родители', 'st.inc.capOwner': 'Заведующая', 'st.inc.close': 'Закрыть',
@@ -259,9 +259,9 @@ function makeInbox() {
    STATE
    ===================================================================== */
 let S = null, root = null;
-const E = { cards: {}, face: {}, time: {}, st: {}, moon: {}, nm: {} };
+const E = { cards: {}, face: {}, time: {}, st: {}, moon: {}, nm: {}, al: {} };
 const open = new Set();
-let tickId = 0, syncT = 0, active = false, entered = false, tourCtx = false;
+let tickId = 0, minId = 0, syncT = 0, active = false, entered = false, tourCtx = false;
 
 function newKid() { return { arrived: null, meals: {}, sleep: null, sleeps: [], diapers: [], photos: 0, pickup: null, incident: null }; }
 function fresh() {
@@ -302,7 +302,7 @@ function buildGrid() {
   KIDS.forEach(k => {
     const el = $(`.st-kid[data-kid="${k.id}"]`, grid);
     E.cards[k.id] = el; E.face[k.id] = $('.st-kid__face', el); E.time[k.id] = $('.st-kid__time', el);
-    E.st[k.id] = $('.st-kid__st', el); E.moon[k.id] = $('.st-kid__moon b', el); E.nm[k.id] = $('.st-kid__nm', el);
+    E.st[k.id] = $('.st-kid__st', el); E.moon[k.id] = $('.st-kid__moon b', el); E.nm[k.id] = $('.st-kid__nm', el); E.al[k.id] = $('.st-kid__al span', el);
   });
 }
 function chipsOf(id) {
@@ -319,7 +319,7 @@ function chipsOf(id) {
 function chipsHTML(list, fresh) {
   const show = list.length > 4 ? list.slice(0, 3) : list;
   return show.map(c => `<i class="st-si st-si--${c[0]}${fresh === c[0] ? ' is-new' : ''}" title="${esc(c[2])}">${c[1]}</i>`).join('')
-    + (list.length > 4 ? `<i class="st-si st-si--more">+${list.length - 3}</i>` : '');
+    + (list.length > 4 ? `<i class="st-si st-si--more" dir="ltr">+${list.length - 3}</i>` : '');
 }
 function paintKid(id, o = {}) {
   const el = E.cards[id]; if (!el) return;
@@ -329,6 +329,7 @@ function paintKid(id, o = {}) {
   el.setAttribute('aria-pressed', String(selMode ? isSel : isIn));
   if (selMode && !isIn) el.setAttribute('aria-disabled', 'true'); else el.removeAttribute('aria-disabled');
   E.nm[id].textContent = nm(id);
+  if (E.al[id]) E.al[id].textContent = (k.allergies || []).map(a => A.L(A.data.allergens[a])).join(', ');
   E.time[id].textContent = isIn ? hm(ks.arrived) : tg('st.notYet', id);
   E.time[id].classList.toggle('is-off', !isIn);
   const chips = chipsOf(id);
@@ -507,6 +508,11 @@ function tick() {
   advance(1); paintClock();
   sleeping().forEach(id => { E.moon[id].textContent = dur(Math.max(0, S.clock - S.kids[id].sleep.start)); });
 }
+/* the tablet clock is alive: one demo minute per real minute while the view is open (nap time runs fast, above) */
+function minuteClock(on) {
+  clearInterval(minId); minId = 0;
+  if (on) minId = setInterval(() => { if (S && !tickId) { advance(1); paintClock(); } }, 60000);
+}
 
 /* =====================================================================
    ACTION BAR (two taps: action → option)
@@ -554,12 +560,13 @@ function renderBar(force) {
   x.innerHTML = isRoot ? icon('close') : icon('back', 'ic--dir');
   x.setAttribute('aria-label', t(isRoot ? 'st.bar.clear' : 'st.bar.back'));
   const sel = [...S.sel];
-  $('.st-bar__avs', bar).innerHTML = sel.slice(0, 3).map(id => A.avatarEl(kid(id), 28, { label: '' })).join('') + (sel.length > 3 ? `<span class="st-bar__more">+${sel.length - 3}</span>` : '');
+  $('.st-bar__avs', bar).innerHTML = sel.slice(0, 3).map(id => A.avatarEl(kid(id), 28, { label: '' })).join('') + (sel.length > 3 ? `<span class="st-bar__more" dir="ltr">+${sel.length - 3}</span>` : '');
   $('.st-bar__title', bar).textContent = barTitle();
   const items = barItems();
   const sig = S.bar + '|' + lang() + '|' + items.map(i => i.id + (i.off ? 0 : 1) + i.label).join(',');
   if (sig === barSig && !force) return;
-  const animate = !barSig.startsWith(S.bar + '|') || force;
+  /* buttons animate in when the step changes, not when the language switches or the view is re-entered */
+  const animate = !barSig.startsWith(S.bar + '|') || force === true;
   barSig = sig;
   $('.st-bar__acts', bar).innerHTML = items.map((it, i) => `<button type="button" class="st-act st-act--${it.tone}" data-act="${it.id}" style="--i:${animate ? i : 0};${animate ? '' : 'animation:none'}"${it.off ? ' disabled' : ''}><span class="st-act__ic" aria-hidden="true">${it.ic}</span><span>${esc(it.label)}</span></button>`).join('');
 }
@@ -726,7 +733,7 @@ function openCamera(pre = []) {
       <div class="chips st-tagchips">${kidsList.map(id => `<button type="button" class="chip st-tag" data-tag="${id}" aria-pressed="${tags.has(id)}">${A.avatarEl(kid(id), 32, { label: '' })}<span>${esc(nm(id))}</span></button>`).join('')}</div>
       <p class="st-private">${icon('lock')}<span>${esc(t('st.cam.private'))}</span></p>
       <div class="st-foot"><p class="st-need" aria-live="polite" data-need></p>
-        <div class="st-actions"><button type="button" class="btn btn--ghost" data-cam="retake">${icon('camera')}<span>${esc(t('st.cam.retake'))}</span></button>
+        <div class="st-actions st-actions--cam"><button type="button" class="btn btn--ghost btn--icon" data-cam="retake" aria-label="${esc(t('st.cam.retake'))}" title="${esc(t('st.cam.retake'))}">${icon('refresh')}</button>
         <button type="button" class="btn btn--primary" data-cam="send">${icon('send', 'ic--dir')}<span data-sendlbl></span></button></div></div>
     </div>`;
     paintSend();
@@ -834,6 +841,11 @@ function openInbox(focusId) {
     if (e.target.closest('[data-in-check]')) {
       const card = $('.st-trust', body), btn = e.target.closest('[data-in-check]');
       btn.disabled = true; $('span', btn).textContent = t('st.in.checking');
+      /* the list sits partly under the sticky button on a phone: bring it fully into view before scanning */
+      if (s.body && s.body.scrollHeight > s.body.clientHeight + 4) {
+        const top = s.body.scrollHeight - s.body.clientHeight;
+        if (reduced() || !s.body.scrollTo) s.body.scrollTop = top; else { s.body.scrollTo({ top, behavior: 'smooth' }); await A.sleep(320); if (s.closed) return; }
+      }
       const rows = $$('.st-trust__p', card);
       card.style.setProperty('--beam', Math.max(60, card.clientHeight - 30) + 'px');
       if (!reduced()) {
@@ -897,7 +909,7 @@ function openIncident() {
       <fieldset><legend>${esc(t('st.inc.aid'))}</legend><div class="chips">${INC_AID.map(([id, l]) => `<button type="button" class="chip" data-ia="${id}" aria-pressed="${st.aid.has(id)}">${esc(A.L(l))}</button>`).join('')}</div></fieldset>
       <div class="field"><span class="label" id="st-inc-when">${esc(t('st.inc.when'))}</span>
         <div class="st-stepper" role="group" aria-labelledby="st-inc-when"><button type="button" data-it="-5" aria-label="${esc(t('st.inc.earlier'))}">${icon('minus')}</button><output class="tnum" data-itime>${hm(st.t)}</output><button type="button" data-it="5" aria-label="${esc(t('st.inc.later'))}">${icon('plus')}</button></div></div>
-      <div class="field"><label class="label" for="st-inc-note">${esc(t('st.inc.note'))}</label><textarea class="input" id="st-inc-note" rows="2" dir="auto" placeholder="${esc(t('st.inc.notePh'))}">${esc(st.note)}</textarea></div>
+      <div class="field"><label class="label" for="st-inc-note">${esc(t('st.inc.note'))}</label><textarea class="input" id="st-inc-note" rows="2" placeholder="${esc(t('st.inc.notePh'))}">${esc(st.note)}</textarea></div>
       <div class="st-foot"><p class="st-need" aria-live="polite" data-need></p>
         <button type="submit" class="btn btn--primary btn--block">${icon('eye')}<span>${esc(t('st.inc.preview'))}</span></button></div>
     </form>`;
@@ -906,7 +918,7 @@ function openIncident() {
       e.preventDefault();
       st.note = $('#st-inc-note', body).value || '';
       if (!st.kid || !st.what) {
-        $('[data-need]', body).textContent = t('st.inc.need');
+        $('[data-need]', body).textContent = t(!st.kid && !st.what ? 'st.inc.need' : !st.kid ? 'st.inc.needKid' : 'st.inc.needWhat');
         /* show the caregiver what is missing: scroll to it and nudge it */
         const all = $$('fieldset', f), fs = all[st.kid ? 1 : 0];
         all.forEach(x => x.classList.remove('is-miss'));
@@ -1132,7 +1144,7 @@ function openEod() {
     await A.sleep(reduced() ? 0 : (touring() || tourCtx) ? 330 : 480);
     if (s.closed) return;
     let n = 0; const cnt = $('.st-send__cnt', stage), cntN = $('[data-send-n]', stage);
-    await fly(stage, ph => {
+    await fly(stage, () => !s.closed, ph => {
       ph.classList.add('is-on'); n++; cntN.textContent = n; if (!reduced()) restart(cnt, 'is-bump');
       if (ph.dataset.kid === featured) pick(featured);
       if (!reduced()) A.fx.burstAt($('.st-mph__scr', ph), { count: 6, speed: [60, 160], size: [6, 13], life: [350, 700], gravity: 90, colors: ['gold', 'white', 'pink'] });
@@ -1154,7 +1166,7 @@ function openEod() {
     A.emit('staff:endday', { count: items.length, he, ru, time: hm(S.sentAt) });
   }
 }
-function fly(stage, onArrive) {
+function fly(stage, alive, onArrive) {
   return new Promise(resolve => {
     const phones = $$('.st-mph', stage);
     if (reduced()) { phones.forEach(p => onArrive(p)); resolve(); return; }
@@ -1172,6 +1184,8 @@ function fly(stage, onArrive) {
     const ease = k => (k < .5 ? 2 * k * k : 1 - Math.pow(-2 * k + 2, 2) / 2);
     const T = performance.now(); let left = fl.length;
     const frame = now => {
+      /* the sheet was closed (or the role switched) mid-flight: drop the envelopes, no trails over another view */
+      if (!alive()) { fl.forEach(f => f.env.remove()); resolve(); return; }
       for (const f of fl) {
         if (f.done) continue;
         const k = (now - T - f.delay) / f.dur;
@@ -1209,7 +1223,7 @@ function fit() {
 /* =====================================================================
    PUBLIC
    ===================================================================== */
-function repaintAll() { paintHead(); paintMode(); paintAllKids(); paintStats(); renderSide(); renderBar(true); }
+function repaintAll() { paintHead(); paintMode(); paintAllKids(); paintStats(); renderSide(); renderBar('quiet'); }
 function reset() {
   closeSheets();
   fresh();
@@ -1255,12 +1269,12 @@ A.module('staff', {
     fit();
   },
   onEnter() {
-    active = true; fit(); paintHead(); renderBar(true); ensureTick();
+    active = true; fit(); paintHead(); renderBar('quiet'); ensureTick(); minuteClock(true);
     const grid = $('[data-st-grid]', root);
     if (!reduced() && !entered) { grid.classList.add('st-enter'); setTimeout(() => grid.classList.remove('st-enter'), 1200); }
     entered = true;
   },
-  onLeave() { active = false; ensureTick(); },
+  onLeave() { active = false; ensureTick(); minuteClock(false); },
   reset,
   /* other modules may peek at the day (e.g. owner dashboard) */
   stats() { return { present: present().length, total: KIDS.length, sleeping: sleeping().length, sent: !!S.sentAt }; },

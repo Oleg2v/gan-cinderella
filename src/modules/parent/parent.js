@@ -44,6 +44,7 @@ const TRUSTED = () => App.data.trusted.noa;
 const TRUST_SEX = { mom: 'f', dad: 'm', grandma: 'f', aunt: 'f' };
 const firstName = p => String(L(p)).split(' · ').pop();
 const momName = () => firstName(TRUSTED()[0]);
+const RU_DAT = { mom: 'Михаль', dad: 'Рои', grandma: 'Орне', aunt: 'Шани' };
 const personName = p => { const s = String(L(p)).replace(' · ', ' '); return lang() === 'ru' ? s.charAt(0).toLowerCase() + s.slice(1) : s; };
 
 const FEED = [
@@ -63,7 +64,7 @@ const SUMMARY = {
 };
 const SUM_NOTIF = {
   he: { title: 'גן סינדרלה', text: 'הסיכום של נועה מהיום: אכלה הכל, ניגנה על קסילופון וישנה שעה ו-40 דק׳.', now: 'עכשיו' },
-  ru: { title: 'Сад «Синдерелла»', text: 'Итоги дня Ноа: съела весь завтрак, играла на ксилофоне, спала 1 ч 40 мин.', now: 'сейчас' }
+  ru: { title: 'Сад «Синдерелла»', text: 'Итоги дня: съела весь завтрак, играла на ксилофоне, спала 1 ч 40 мин.', now: 'сейчас' }
 };
 
 const REASONS = [
@@ -530,6 +531,18 @@ function bindLogin() {
     if (!err.hidden && d.length >= 10) fieldErr(err, '');
   });
   q('[data-pa="sample"]').addEventListener('click', () => { phone.value = '050-123-4567'; fieldErr(err, ''); phone.focus(); });
+  /* phones: the send button sits under the floating dock (and the iOS keyboard); lift the field up under the top bar */
+  phone.addEventListener('focus', () => {
+    if (!App.isTouch || App.tour.running) return;
+    clearTimeout(phone._tm);
+    phone._tm = setTimeout(() => {
+      if (document.activeElement !== phone || S.logged) return;
+      const btn = q('[data-pa="sendCode"]'); const tgt = btn.hidden ? q('[data-pa="enter"]') : btn;
+      if (tgt.getBoundingClientRect().bottom > Math.min(dockTop(), (window.visualViewport ? visualViewport.height : innerHeight)) - 10) {
+        App.scrollTo(App.scrollY() + phone.getBoundingClientRect().top - barH() - 44, { duration: 420 });
+      }
+    }, 340);
+  });
   form.addEventListener('submit', e => { e.preventDefault(); if (S.codeSent && otpValue().length === 4) enter(); else sendCode(); });
   q('[data-pa="resend"]').addEventListener('click', () => { clearOtp(); sendCode(true); });
   q('[data-pa="other"]').addEventListener('click', () => { resetLogin(); phone.focus(); });
@@ -607,9 +620,10 @@ async function autofill(seq) {
   updateEnter();
 }
 async function enter() {
-  if (otpValue().length !== 4 || S.logged) return;
-  const seq = ++S.loginSeq;
   const btn = q('[data-pa="enter"]');
+  if (otpValue().length !== 4 || S.logged || btn.classList.contains('is-busy')) return;
+  const seq = ++S.loginSeq;
+  btn.classList.add('is-busy'); btn.classList.remove('is-ready');
   hideSms();
   burst(btn, { count: 40, speed: [160, 460] });
   App.haptic(20);
@@ -629,6 +643,7 @@ function resetLogin() {
   login.classList.remove('is-opening', 'has-code');
   login.getAnimations && login.getAnimations().forEach(a => a.cancel());
   q('#pa-phone').value = ''; clearOtp(); fieldErr(q('[data-pa="phoneErr"]'), '');
+  q('[data-pa="enter"]').classList.remove('is-busy');
   q('[data-pa="otpStep"]').hidden = true; q('[data-pa="sendCode"]').hidden = false;
   const sms = q('[data-pa="sms"]'); sms.hidden = true; sms.classList.remove('is-in', 'is-out');
 }
@@ -646,7 +661,7 @@ function showApp({ animate }) {
     setTimeout(() => { const av = q('.pa-head__av'); if (av && !reduced()) { const r = av.getBoundingClientRect(); App.fx.ring(r.left + r.width / 2, r.top + r.height / 2, r.width * .62, 14); } }, 380);
     setTimeout(() => app.classList.remove('is-entering'), 1600);
   }
-  requestAnimationFrame(() => { moveInd(true); try { q('#pa-app-title').focus({ preventScroll: true }); } catch (e) { } });
+  requestAnimationFrame(() => { moveInd(true); sideTop(); try { q('#pa-app-title').focus({ preventScroll: true }); } catch (e) { } });
   observeLive();
 }
 function logout({ instant = false } = {}) {
@@ -697,6 +712,18 @@ function moveInd(instant) {
   ind.style.width = btn.offsetWidth + 'px';
   ind.style.transform = `translateX(${btn.offsetLeft}px)`;
   if (instant) { void ind.offsetWidth; ind.style.transition = ''; }
+  tabFades();
+}
+/* soft fade on the physical side(s) where more tabs are hidden: tells the thumb "this row scrolls" */
+function tabFades() {
+  const tl = q('.pa-tabs'), pill = q('.pa-tabs-pill'); if (!tl || !pill) return;
+  const max = tl.scrollWidth - tl.clientWidth, sl = tl.scrollLeft;
+  let l = false, r = false;
+  if (max > 2) {
+    if (getComputedStyle(tl).direction === 'rtl') { const off = Math.abs(sl); r = off > 2; l = off < max - 2; }
+    else { l = sl > 2; r = sl < max - 2; }
+  }
+  pill.classList.toggle('is-more-l', l); pill.classList.toggle('is-more-r', r);
 }
 function selectTab(id, { animate = true, scroll = true, focus = false } = {}) {
   if (!TABS.includes(id)) id = 'today';
@@ -725,11 +752,19 @@ function selectTab(id, { animate = true, scroll = true, focus = false } = {}) {
     }
   }
 }
+function sideTop() {
+  const side = q('.pa-today__side'); if (!side) return;
+  if (innerWidth < 1000 || !side.offsetHeight) { side.style.removeProperty('--pa-side-top'); return; }
+  const base = barH() + 78, h = side.offsetHeight;
+  side.style.setProperty('--pa-side-top', Math.round(Math.min(base, innerHeight - h - 24)) + 'px');
+}
 const lenisResize = () => { try { App.lenis && App.lenis.resize && App.lenis.resize(); } catch (e) { } };
 const barH = () => { const tb = $('.topbar'); return tb ? tb.getBoundingClientRect().height : 60; };
+const dockTop = () => { const d = $('.dock__bar'); const r = d && d.getBoundingClientRect(); return r && r.height ? r.top : innerHeight; };
 function bindTabs() {
   const tl = q('.pa-tabs');
   tl.addEventListener('click', e => { const b = e.target.closest('.pa-tab'); if (b) selectTab(b.dataset.tab); });
+  tl.addEventListener('scroll', () => { if (!tabFades.raf) tabFades.raf = requestAnimationFrame(() => { tabFades.raf = 0; tabFades(); }); }, { passive: true });
   tl.addEventListener('keydown', e => {
     const i = TABS.indexOf(S.tab); let n = null;
     const fwd = lang() === 'he' ? 'ArrowLeft' : 'ArrowRight', back = lang() === 'he' ? 'ArrowRight' : 'ArrowLeft';
@@ -753,6 +788,7 @@ function onPanelShown(id) {
    TODAY · quick actions
    ===================================================================== */
 function renderTiles() {
+  const abs = q('.pa-tile[data-qa="absent"] .pa-tile__t'); if (abs) abs.textContent = t(absentKey());
   const st = (k, html) => { const el = q(`.pa-tile[data-qa="${k}"] .pa-tile__state`); if (el) el.innerHTML = html; q(`.pa-tile[data-qa="${k}"]`).classList.toggle('is-sent', !!html); };
   const s = S.sent;
   st('absent', s.absent ? `<span class="tag tag--ok">${icon('check')}${esc(t('pa.qa.sentShort'))}</span>` : '');
@@ -760,7 +796,8 @@ function renderTiles() {
   st('pickup', s.pickup ? `<span class="pa-tile__who">${App.avatarEl(TRUSTED().find(p => p.id === s.pickup.id), 22, { label: '' })}<span>${esc(L(TRUSTED().find(p => p.id === s.pickup.id)))}</span></span>` : '');
   st('msg', s.msg ? `<span class="tag tag--ok">${icon('check')}${esc(t('pa.qa.sentShort'))}</span>` : '');
 }
-function sheetShell(titleKey, node) { return App.ui.sheet({ title: t(titleKey), content: node, className: 'pa-sheetroot' }); }
+function sheetShell(titleKey, node, reopen) { return track(App.ui.sheet({ title: t(titleKey), content: node, className: 'pa-sheetroot' }), reopen); }
+const track = (sh, reopen) => { if (reopen) S.cur = { sh, reopen }; return sh; };
 function chipGroup(items, labelId, cls = '') {
   return `<div class="chips ${cls}" role="group" aria-labelledby="${labelId}">${items.map(it => `<button type="button" class="chip" aria-pressed="false" data-v="${esc(it.id)}">${it.ic ? icon(it.ic) : ''}<span>${esc(L(it))}</span></button>`).join('')}</div>`;
 }
@@ -768,6 +805,7 @@ function bindChipGroup(root, onPick) {
   $$('.chip', root).forEach(c => c.addEventListener('click', () => { $$('.chip', root).forEach(x => x.setAttribute('aria-pressed', String(x === c))); onPick && onPick(c.dataset.v, c); }));
 }
 
+const absentKey = () => (sameDay(nextWorkDay(), addDays(today0(), 1)) ? 'pa.qa.absent' : 'pa.qa.absentSun');
 function openAbsent() {
   const d = nextWorkDay();
   let reason = null;
@@ -778,7 +816,7 @@ function openAbsent() {
     <button type="button" class="btn btn--primary btn--block" data-send>${icon('send', 'ic--dir')}<span>${esc(t('pa.abs.send'))}</span></button>
   </div>`);
   bindChipGroup(node, v => { reason = v; fieldErr($('.pa-err', node), ''); });
-  const sh = sheetShell('pa.qa.absent', node);
+  const sh = sheetShell(absentKey(), node, openAbsent);
   $('[data-send]', node).addEventListener('click', async e => {
     if (!reason) { fieldErr($('.pa-err', node), t('pa.abs.pick')); return; }
     await busyBtn(e.currentTarget);
@@ -802,7 +840,7 @@ function openLate() {
     <button type="button" class="btn btn--primary btn--block" data-send>${icon('send', 'ic--dir')}<span>${esc(t('pa.late.send'))}</span></button>
   </div>`);
   bindChipGroup(node, v => { n = +v; fieldErr($('.pa-err', node), ''); });
-  const sh = sheetShell('pa.qa.late', node);
+  const sh = sheetShell('pa.qa.late', node, openLate);
   $('[data-send]', node).addEventListener('click', async e => {
     if (!n) { fieldErr($('.pa-err', node), t('pa.late.pick')); return; }
     await busyBtn(e.currentTarget);
@@ -832,7 +870,7 @@ function openPickup() {
       if (!step) return; e.preventDefault(); const nb = radios[(i + step + radios.length) % radios.length]; pick(nb); nb.focus();
     });
   });
-  const sh = sheetShell('pa.qa.pickup', node);
+  const sh = sheetShell('pa.qa.pickup', node, openPickup);
   $('[data-make]', node).addEventListener('click', async e => {
     if (!who) { fieldErr($('.pa-err', node), t('pa.pick.pick')); return; }
     await busyBtn(e.currentTarget, 600, 'pa.pick.making');
@@ -843,7 +881,7 @@ function openPickup() {
     S.sent.pickup = { id: who, code }; renderTiles();
     App.emit('parent:pickup', { kid: 'noa', person: who, code });
     const sex = TRUST_SEX[who] || 'f';
-    const nm = firstName(p);
+    const nm = lang() === 'ru' && RU_DAT[who] ? RU_DAT[who] : firstName(p);
     const msgTxt = { he: `היי ${p.he.split(' · ').pop()}, הקוד לאיסוף של נועה היום: ${code}. בתוקף עד ${until}.`, ru: `${String(p.ru).split(' · ').pop()}, привет! Код, чтобы забрать Ноа сегодня: ${code}. Действует до ${until}.` };
     const extra = `<div class="pa-code" aria-label="${esc(t('pa.pick.codeA', { code: code.split('').join(' ') }))}">${App.avatarEl(p, 52, { label: '' })}
         <div class="pa-code__digits" aria-hidden="true" dir="ltr">${code.split('').map((c, i) => `<span style="--i:${i}">${c}</span>`).join('')}</div>
@@ -876,7 +914,7 @@ function openMsg() {
   </div>`);
   const ta = $('#pa-msg-t', node);
   $$('.pa-ex__b', node).forEach(b => b.addEventListener('click', () => { ta.value = MSG_EXAMPLES[+b.dataset.i].text; fieldErr($('.pa-err', node), ''); ta.focus({ preventScroll: true }); }));
-  const sh = sheetShell('pa.qa.msg', node);
+  const sh = sheetShell('pa.qa.msg', node, openMsg);
   $('[data-send]', node).addEventListener('click', async e => {
     const text = ta.value.trim();
     if (!text) { fieldErr($('.pa-err', node), t('pa.msg.empty')); ta.focus(); return; }
@@ -925,7 +963,8 @@ function bindFeed() {
   q('.pa-feed__list').addEventListener('click', e => {
     const b = e.target.closest('.pa-like'); if (!b) return;
     const on = b.getAttribute('aria-pressed') !== 'true'; b.setAttribute('aria-pressed', String(on));
-    if (on) { burst(b, { count: 14, colors: ['magenta', 'pink', 'white'], speed: [60, 200], gravity: 120 }); App.haptic(10); }
+    b.classList.remove('is-pop');
+    if (on) { void b.offsetWidth; b.classList.add('is-pop'); burst(b, { count: 14, colors: ['magenta', 'pink', 'white'], speed: [60, 200], gravity: 120 }); App.haptic(10); }
   });
   q('.pa-feed__list').addEventListener('dblclick', e => { const f = e.target.closest('.pa-photo'); if (f) { const b = $('.pa-like', f); if (b.getAttribute('aria-pressed') !== 'true') b.click(); } });
 }
@@ -1009,11 +1048,12 @@ function renderPay() {
     </section>
     <section class="card pa-rcpts" aria-labelledby="pa-rcpt-t">
       <div class="pa-sec-h"><h2 class="h4" id="pa-rcpt-t">${esc(t('pa.pay.receipts'))}</h2>${demoTag()}</div>
-      <ul class="rows">${receipts().map(r => `<li><button type="button" class="pa-rrow ${r.isNew ? 'is-new' : ''}" data-rcpt="${r.no}"><span class="icon-bubble ${r.isNew ? 'icon-bubble--magenta' : ''}">${icon('receipt')}</span>
-        <span class="rowi__main"><span class="rowi__title">${esc(t('pa.pay.rcptOf', { m: monthYear(r.month) }))}</span><span class="rowi__sub">${esc(t('pa.pay.paidOn', { d: dayMonth(r.paidOn) }))} · <bdi dir="ltr">••4242</bdi></span></span>
+      <ul class="rows">${receipts().map(r => `<li><button type="button" class="pa-rrow ${r.isNew && S.rcptFlash ? 'is-new' : ''}" data-rcpt="${r.no}" aria-label="${esc(t('pa.pay.rcptOf', { m: monthYear(r.month) }))}"><span class="icon-bubble ${r.isNew ? 'icon-bubble--magenta' : ''}">${icon('receipt')}</span>
+        <span class="rowi__main"><span class="rowi__title">${esc(monthYear(r.month))}</span><span class="rowi__sub">${esc(t('pa.pay.paidOn', { d: dayMonth(r.paidOn) }))}</span></span>
         <span class="pa-rrow__sum tnum">${App.fmt.money(PAY_TOTAL)}</span>${icon('chevron', 'ic--dir ic--sm pa-rrow__chev')}</button></li>`).join('')}</ul>
       <p class="tiny muted">${esc(t('pa.pay.auto'))}</p>
     </section></div>`;
+  S.rcptFlash = false;
   App.reveal(box);
   renderMore();
 }
@@ -1034,7 +1074,7 @@ function openPay() {
     </div>
     <div class="pa-newcard stack" style="--gap:12px" hidden>
       <div class="field"><label for="pa-cc">${esc(t('pa.pay.ccNum'))}</label><input id="pa-cc" class="input tnum" dir="ltr" inputmode="numeric" autocomplete="cc-number" placeholder="0000 0000 0000 0000"></div>
-      <div class="pa-cc2"><div class="field"><label for="pa-exp">${esc(t('pa.pay.ccExp'))}</label><input id="pa-exp" class="input tnum" dir="ltr" inputmode="numeric" autocomplete="cc-exp" placeholder="MM/YY"></div>
+      <div class="pa-cc2"><div class="field"><label for="pa-exp">${esc(t('pa.pay.ccExp'))}</label><input id="pa-exp" class="input tnum" dir="ltr" inputmode="numeric" autocomplete="cc-exp" placeholder="${esc(t('pa.pay.expPh'))}"></div>
         <div class="field"><label for="pa-cvv">CVV</label><input id="pa-cvv" class="input tnum" dir="ltr" inputmode="numeric" autocomplete="cc-csc" placeholder="123" maxlength="4"></div></div>
       <button type="button" class="link-btn pa-sample" data-sample>${esc(t('pa.pay.sample'))}</button>
     </div>
@@ -1043,23 +1083,35 @@ function openPay() {
     <p class="tiny muted pa-center">${esc(t('pa.pay.secure'))}</p>
   </div>`);
   const ms = $$('.pa-method', node), nc = $('.pa-newcard', node);
-  const setM = b => { method = b.dataset.m; ms.forEach(x => { x.setAttribute('aria-checked', String(x === b)); x.tabIndex = x === b ? 0 : -1; }); nc.hidden = method !== 'new'; if (method === 'new' && !reduced()) nc.animate([{ opacity: 0, transform: 'translateY(-6px)' }, { opacity: 1, transform: 'none' }], { duration: 320 }); };
+  const err = () => $('.pa-err', node);
+  const setM = b => {
+    const was = method; method = b.dataset.m; ms.forEach(x => { x.setAttribute('aria-checked', String(x === b)); x.tabIndex = x === b ? 0 : -1; });
+    nc.hidden = method !== 'new'; fieldErr(err(), '');
+    if (method === 'new' && was !== 'new') {
+      if (!reduced()) nc.animate([{ opacity: 0, transform: 'translateY(-6px)' }, { opacity: 1, transform: 'none' }], { duration: 320 });
+      /* bring the card fields into view inside the sheet */
+      requestAnimationFrame(() => { const body = node.closest('.sheet__body'); if (!body) return; const br = body.getBoundingClientRect(), r = nc.getBoundingClientRect(); if (r.bottom > br.bottom) body.scrollTo({ top: body.scrollTop + (r.top - br.top) - 70, behavior: reduced() ? 'auto' : 'smooth' }); });
+    }
+  };
   ms.forEach((b, i) => { b.addEventListener('click', () => setM(b)); b.addEventListener('keydown', e => { if (['ArrowDown', 'ArrowUp', 'ArrowLeft', 'ArrowRight'].includes(e.key)) { e.preventDefault(); const nb = ms[1 - i]; setM(nb); nb.focus(); } }); });
   const cc = $('#pa-cc', node), ex = $('#pa-exp', node), cvv = $('#pa-cvv', node);
+  const cardOk = () => cc.value.replace(/\D/g, '').length === 16 && /^(0[1-9]|1[0-2])\/\d\d$/.test(ex.value) && cvv.value.length >= 3;
+  [cc, ex, cvv].forEach(i => i.addEventListener('input', () => { if (!err().hidden && cardOk()) fieldErr(err(), ''); }));
   cc.addEventListener('input', () => { const d = cc.value.replace(/\D/g, '').slice(0, 16); cc.value = d.replace(/(\d{4})(?=\d)/g, '$1 '); });
   ex.addEventListener('input', () => { const d = ex.value.replace(/\D/g, '').slice(0, 4); ex.value = d.length > 2 ? d.slice(0, 2) + '/' + d.slice(2) : d; });
   cvv.addEventListener('input', () => { cvv.value = cvv.value.replace(/\D/g, '').slice(0, 4); });
   $('[data-sample]', node).addEventListener('click', () => { cc.value = '4242 4242 4242 4242'; ex.value = '08/28'; cvv.value = '123'; fieldErr($('.pa-err', node), ''); });
-  const sh = sheetShell('pa.pay.title', node);
+  const sh = sheetShell('pa.pay.title', node, () => (S.paid ? openReceipt(1068) : openPay()));
   $('[data-go]', node).addEventListener('click', async e => {
-    if (method === 'new' && (cc.value.replace(/\D/g, '').length < 16 || ex.value.length < 5 || cvv.value.length < 3)) { fieldErr($('.pa-err', node), t('pa.pay.missing')); return; }
+    if (method === 'new' && !cardOk()) { fieldErr(err(), t('pa.pay.missing')); return; }
+    fieldErr(err(), '');
     const btn = e.currentTarget;
     const prog = App.h(`<div class="pa-proc" role="status"><div class="progress"><i style="--p:0%"></i></div><p class="small muted pa-center">${esc(t('pa.pay.processing'))}</p></div>`);
     btn.replaceWith(prog);
     requestAnimationFrame(() => { $('i', prog).style.setProperty('--p', '100%'); });
     await sleep(reduced() ? 300 : App.tour.running ? 700 : 1400);
-    if (sh.closed) { S.paid = true; renderPay(); return; }
-    S.paid = true; renderPay();
+    S.paid = true; S.rcptFlash = true; renderPay();
+    if (sh.closed) return;
     App.emit('parent:paid', { kid: 'noa', sum: PAY_TOTAL });
     showDone(sh, { title: t('pa.pay.doneT'), text: t('pa.pay.done'), extra: `<button type="button" class="btn btn--primary btn--block" data-open-r>${icon('receipt')}<span>${esc(t('pa.pay.viewRcpt'))}</span></button>` });
     $('[data-open-r]', sh.body).addEventListener('click', () => { sh.close(); setTimeout(() => openReceipt(1068), 300); });
@@ -1084,7 +1136,7 @@ function openReceipt(no) {
     <button type="button" class="btn btn--soft btn--block" data-share>${icon('send', 'ic--dir')}<span>${esc(t('pa.pay.share'))}</span></button>
   </div>`);
   App.ui.fillLogos(node);
-  const sh = App.ui.sheet({ title: t('pa.pay.rcptOf', { m: monthYear(r.month) }), content: node, className: 'pa-sheetroot' });
+  const sh = track(App.ui.sheet({ title: t('pa.pay.rcptOf', { m: monthYear(r.month) }), content: node, className: 'pa-sheetroot' }), () => openReceipt(no));
   $('[data-share]', node).addEventListener('click', async e => { await busyBtn(e.currentTarget, 500); App.ui.toast(t('pa.pay.shared'), { tone: 'ok' }); });
   return sh;
 }
@@ -1212,46 +1264,73 @@ function weekStart() { const d = today0(); const s = addDays(d, -d.getDay()); re
 function renderMenu() {
   const box = q('#pa-p-menu'); const ws = weekStart();
   const keys = Object.keys(App.data.allergens);
-  const al = S.allergen;
-  const count = al ? MENU.reduce((n, d) => n + ['b', 'l', 's'].filter(k => d[k].a.includes(al)).length, 0) : 0;
-  box.innerHTML = `<section class="pa-food ${S.allergyOn && al ? 'is-filter' : ''}" aria-labelledby="pa-menu-t">
-    <div class="pa-menu__head">
-      <div><h2 class="h3" id="pa-menu-t">${esc(t('pa.menu.title'))}</h2><p class="small muted pa-menu__fact">${icon('chef', 'ic--sm')} ${esc(t('pa.menu.fact'))}</p></div>
-      <span class="demo-tag">${esc(t('pa.menu.example'))}</span>
-    </div>
+  box.innerHTML = `<section class="pa-food" aria-labelledby="pa-menu-t">
+    <div class="pa-menu__head"><h2 class="h3" id="pa-menu-t">${esc(t('pa.menu.title'))}</h2><span class="demo-tag">${esc(t('pa.menu.example'))}</span></div>
+    <p class="small muted pa-menu__fact">${icon('chef', 'ic--sm')}<span>${esc(t('pa.menu.fact'))}</span></p>
     <div class="card pa-allergy">
-      <button type="button" class="pa-allergy__sw" role="switch" aria-checked="${S.allergyOn}" data-allergy><span class="icon-bubble icon-bubble--pink">${icon('alert')}</span><span class="pa-allergy__t">${esc(t('pa.menu.toggle'))}</span><span class="switch" aria-hidden="true"></span></button>
-      <div class="pa-allergy__body" ${S.allergyOn ? '' : 'hidden'}>
+      <button type="button" class="pa-allergy__sw" role="switch" aria-checked="false" aria-controls="pa-al-body" data-allergy><span class="icon-bubble icon-bubble--pink">${icon('alert')}</span><span class="pa-allergy__t">${esc(t('pa.menu.toggle'))}</span><span class="switch" aria-hidden="true"></span></button>
+      <div class="pa-allergy__body" id="pa-al-body" hidden>
         <p class="small"><span class="tag tag--ok">${icon('check')}${esc(t('pa.menu.none'))}</span></p>
         <p class="small muted" id="pa-al-l">${esc(t('pa.menu.try'))}</p>
-        <div class="chips pa-al-chips" role="group" aria-labelledby="pa-al-l">${keys.map(k => `<button type="button" class="chip chip--sm" aria-pressed="${al === k}" data-al="${k}">${esc(L(App.data.allergens[k]))}</button>`).join('')}</div>
-        <p class="small pa-allergy__res" aria-live="polite">${al ? esc(t(count === 1 ? 'pa.menu.count1' : 'pa.menu.count', { n: count, a: L(App.data.allergens[al]) })) : ''}</p>
+        <div class="chips pa-al-chips" role="group" aria-labelledby="pa-al-l">${keys.map(k => `<button type="button" class="chip chip--sm" aria-pressed="false" data-al="${k}">${esc(L(App.data.allergens[k]))}</button>`).join('')}</div>
+        <p class="small pa-allergy__res" aria-live="polite"></p>
       </div>
     </div>
-    <div class="pa-days" role="tablist" aria-label="${esc(t('pa.menu.days'))}">${MENU.map((d, i) => { const dt = addDays(ws, i); return `<button type="button" class="pa-day" role="tab" id="pa-md-${i}" aria-controls="pa-mp-${i}" aria-selected="${i === S.menuDay}" tabindex="${i === S.menuDay ? 0 : -1}" data-day="${i}"><b>${esc(App.fmt.weekday(dt))}</b><small class="tnum">${shortNum(dt)}</small>${sameDay(dt, today0()) ? `<i class="pa-day__today" aria-hidden="true"></i>` : ''}</button>`; }).join('')}</div>
+    <div class="pa-days" role="tablist" aria-label="${esc(t('pa.menu.days'))}">${MENU.map((d, i) => { const dt = addDays(ws, i); return `<button type="button" class="pa-day" role="tab" id="pa-md-${i}" aria-controls="pa-mp-${i}" aria-selected="${i === S.menuDay}" tabindex="${i === S.menuDay ? 0 : -1}" data-day="${i}"><b>${esc(App.fmt.weekday(dt))}</b><small class="tnum">${shortNum(dt)}</small>${sameDay(dt, today0()) ? `<i class="pa-day__today" aria-hidden="true"></i>` : ''}<i class="pa-day__hit tnum" aria-hidden="true"></i></button>`; }).join('')}</div>
     <div class="pa-week">${MENU.map((d, i) => { const dt = addDays(ws, i); return `<div class="pa-dayp ${i === S.menuDay ? 'is-on' : ''}" role="tabpanel" id="pa-mp-${i}" aria-labelledby="pa-md-${i}">
       <p class="pa-dayp__h">${esc(longDate(dt))}${sameDay(dt, today0()) ? ` <span class="tag tag--ink">${esc(t('pa.cal.today'))}</span>` : ''}</p>
-      ${MEALS.map(([k, ic, lk]) => { const it = d[k]; const hit = S.allergyOn && al && it.a.includes(al); return `<article class="pa-meal ${hit ? 'is-hit' : ''}">
+      ${MEALS.map(([k, ic, lk]) => { const it = d[k]; return `<article class="pa-meal" data-day="${i}" data-a="${it.a.join(' ')}">
         <span class="pa-meal__ic pa-meal__ic--${k}" aria-hidden="true">${icon(ic)}</span>
         <div class="pa-meal__main"><p class="pa-meal__k">${esc(t(lk))}</p><p class="pa-meal__n">${esc(L(it))}</p>
-          <p class="pa-meal__al">${it.a.length ? it.a.map(a => `<span class="pa-al ${S.allergyOn && al === a ? 'is-hit' : ''}">${esc(L(App.data.allergens[a]))}</span>`).join('') : `<span class="pa-al pa-al--none">${esc(t('pa.menu.noAl'))}</span>`}</p>
-          ${hit ? `<p class="pa-meal__warn">${icon('alert', 'ic--sm')} ${esc(t('pa.menu.contains', { a: L(App.data.allergens[al]) }))}</p>` : ''}</div></article>`; }).join('')}
+          <p class="pa-meal__al">${it.a.length ? it.a.map(a => `<span class="pa-al" data-a="${a}">${esc(L(App.data.allergens[a]))}</span>`).join('') : `<span class="pa-al pa-al--none">${esc(t('pa.menu.noAl'))}</span>`}</p>
+          <p class="pa-meal__warn" hidden>${icon('alert', 'ic--sm')}<span></span></p></div></article>`; }).join('')}
     </div>`; }).join('')}</div>
   </section>`;
+  applyAllergy(false);
+}
+/* allergen highlight: updated in place (no re-render, so nothing flashes and focus stays on the chip) */
+function applyAllergy(animate) {
+  const box = q('#pa-p-menu'); const food = box && $('.pa-food', box); if (!food) return 0;
+  const al = S.allergyOn ? S.allergen : null;
+  $('[data-allergy]', box).setAttribute('aria-checked', String(S.allergyOn));
+  const body = $('.pa-allergy__body', box), wasHidden = body.hidden;
+  body.hidden = !S.allergyOn;
+  if (S.allergyOn && wasHidden && animate && !reduced()) body.animate([{ opacity: 0, transform: 'translateY(-6px)' }, { opacity: 1, transform: 'none' }], { duration: 340, easing: 'cubic-bezier(.22,1,.36,1)' });
+  $$('[data-al]', box).forEach(c => c.setAttribute('aria-pressed', String(c.dataset.al === al)));
+  food.classList.toggle('is-filter', !!al);
+  let count = 0; const perDay = MENU.map(() => 0);
+  $$('.pa-meal', box).forEach(m => {
+    const hit = !!al && m.dataset.a.split(' ').includes(al);
+    m.classList.toggle('is-hit', hit);
+    $$('.pa-al[data-a]', m).forEach(b => b.classList.toggle('is-hit', !!al && b.dataset.a === al));
+    const w = $('.pa-meal__warn', m); w.hidden = !hit;
+    $('span', w).textContent = hit ? t('pa.menu.contains', { a: L(App.data.allergens[al]) }) : '';
+    if (hit) { count++; perDay[+m.dataset.day]++; }
+  });
+  $$('.pa-day', box).forEach((b, i) => { b.classList.toggle('has-hit', perDay[i] > 0); $('.pa-day__hit', b).textContent = perDay[i] || ''; });
+  $('.pa-allergy__res', box).textContent = al ? t(count === 1 ? 'pa.menu.count1' : 'pa.menu.count', { n: count, a: L(App.data.allergens[al]) }) : '';
+  return count;
 }
 function bindMenu() {
   const box = q('#pa-p-menu');
   box.addEventListener('click', e => {
-    if (e.target.closest('[data-allergy]')) { S.allergyOn = !S.allergyOn; if (!S.allergyOn) S.allergen = null; renderMenu(); q('[data-allergy]').focus({ preventScroll: true }); return; }
+    if (e.target.closest('[data-allergy]')) { S.allergyOn = !S.allergyOn; if (!S.allergyOn) S.allergen = null; applyAllergy(true); return; }
     const a = e.target.closest('[data-al]');
-    if (a) { S.allergen = S.allergen === a.dataset.al ? null : a.dataset.al; renderMenu(); const nb = q(`[data-al="${a.dataset.al}"]`); nb && nb.focus({ preventScroll: true }); const hits = qq('.pa-meal.is-hit'); if (hits[0] && !reduced()) hits.forEach((h, i) => h.animate([{ transform: 'scale(.97)' }, { transform: 'scale(1.015)' }, { transform: 'none' }], { duration: 420, delay: i * 50 })); return; }
-    const d = e.target.closest('[data-day]'); if (d) setMenuDay(+d.dataset.day);
+    if (a) {
+      S.allergen = S.allergen === a.dataset.al ? null : a.dataset.al; applyAllergy(true);
+      if (!reduced()) {
+        qq('.pa-meal.is-hit').filter(h => h.offsetParent).forEach((h, i) => h.animate([{ transform: 'scale(.97)' }, { transform: 'scale(1.015)' }, { transform: 'none' }], { duration: 420, delay: i * 50 }));
+        qq('.pa-day.has-hit .pa-day__hit').forEach((h, i) => h.animate([{ transform: 'scale(.4)' }, { transform: 'scale(1.2)' }, { transform: 'none' }], { duration: 420, delay: i * 40, easing: 'cubic-bezier(.34,1.56,.64,1)' }));
+      }
+      return;
+    }
+    const d = e.target.closest('.pa-day'); if (d) setMenuDay(+d.dataset.day);
   });
   box.addEventListener('keydown', e => {
-    const d = e.target.closest('[data-day]'); if (!d) return;
+    const d = e.target.closest('.pa-day'); if (!d) return;
     const rtl = lang() === 'he'; const i = +d.dataset.day; let n = null;
     if (e.key === (rtl ? 'ArrowLeft' : 'ArrowRight')) n = Math.min(4, i + 1); else if (e.key === (rtl ? 'ArrowRight' : 'ArrowLeft')) n = Math.max(0, i - 1);
-    if (n == null) return; e.preventDefault(); setMenuDay(n); q(`[data-day="${n}"]`).focus();
+    if (n == null) return; e.preventDefault(); setMenuDay(n); q(`.pa-day[data-day="${n}"]`).focus();
   });
 }
 function setMenuDay(i) {
@@ -1439,8 +1518,14 @@ async function assembleAlbum() {
   const stage = q('.pa-album__stage'), book = q('.pa-book'), fly = q('.pa-fly');
   const auto = q('.pa-album__auto');
   if (reduced() || !book.animate) { auto.classList.add('is-on'); return; }
+  if (!App.tour.running && book.getBoundingClientRect().bottom > Math.min(dockTop(), innerHeight) - 12) {
+    book.style.opacity = '0';
+    const head = q('.pa-album__head'), wrap = q('.pa-tabs-wrap');
+    await App.scrollTo(App.scrollY() + head.getBoundingClientRect().top - barH() - wrap.offsetHeight - 8, { duration: 480 });
+    if (S.tab !== 'album' || !S.logged) { book.style.opacity = ''; return; }
+  }
   const sr = stage.getBoundingClientRect(); const br = book.getBoundingClientRect();
-  if (!sr.width) { auto.classList.add('is-on'); return; }
+  if (!sr.width) { book.style.opacity = ''; auto.classList.add('is-on'); return; }
   book.style.opacity = '0';
   const cx = br.left - sr.left + br.width * (lang() === 'he' ? .25 : .75), cy = br.top - sr.top + br.height / 2;
   fly.innerHTML = ALBUM.map((a, i) => `<div class="pa-fly__c" style="--i:${i}">${scene(a.scene)}</div>`).join('');
@@ -1527,7 +1612,7 @@ const I18N = {
     'pa.menuBtn': 'תפריט חשבון', 'pa.notifs': 'התראות לטלפון', 'pa.logout': 'התנתקות', 'pa.loggedOut': 'התנתקתם. להתראות!',
     'pa.tabs': 'מדורים באזור ההורים', 'pa.tab.today': 'היום', 'pa.tab.pay': 'תשלומים', 'pa.tab.cal': 'לוח שנה', 'pa.tab.menu': 'תפריט', 'pa.tab.docs': 'מסמכים', 'pa.tab.album': 'אלבום',
     'pa.qa.title': 'פעולות מהירות',
-    'pa.qa.absent': 'לא מגיעים מחר', 'pa.qa.absentSub': 'עדכון לצוות', 'pa.qa.late': 'מאחרים', 'pa.qa.lateSub': 'כמה דקות?',
+    'pa.qa.absent': 'לא מגיעים מחר', 'pa.qa.absentSun': 'לא מגיעים ביום א׳', 'pa.qa.absentSub': 'עדכון לצוות', 'pa.qa.late': 'מאחרים', 'pa.qa.lateSub': 'כמה דקות?',
     'pa.qa.pickup': 'מי אוסף היום', 'pa.qa.pickupSub': 'קוד איסוף חד-פעמי', 'pa.qa.msg': 'הודעה לצוות', 'pa.qa.msgSub': 'בעברית או ברוסית', 'pa.qa.sentShort': 'נשלח',
     'pa.sending': 'שולחים…', 'pa.close': 'סגירה', 'pa.note': 'רוצים להוסיף משהו? (לא חובה)', 'pa.note.ph': 'למשל: חוזרים ביום רביעי',
     'pa.abs.when': 'מתי לא מגיעים', 'pa.abs.why': 'מה קרה?', 'pa.abs.send': 'שליחה לצוות', 'pa.abs.pick': 'בחרו סיבה, שהצוות יידע',
@@ -1552,7 +1637,7 @@ const I18N = {
     'pa.pay.viewRcpt': 'פתיחת הקבלה', 'pa.pay.payBtn': 'תשלום {sum}', 'pa.pay.secure': 'תשלום מאובטח. בדמו אין חיוב אמיתי.',
     'pa.pay.receipts': 'קבלות', 'pa.pay.rcptOf': 'קבלה · {m}', 'pa.pay.paidOn': 'שולם ב-{d}', 'pa.pay.auto': 'הקבלה נוצרת לבד אחרי כל תשלום.',
     'pa.pay.title': 'תשלום', 'pa.pay.for': 'החשבון של {m}', 'pa.pay.how': 'איך משלמים?', 'pa.pay.saved': 'הכרטיס השמור', 'pa.pay.exp': 'תוקף', 'pa.pay.new': 'כרטיס אחר',
-    'pa.pay.ccNum': 'מספר כרטיס', 'pa.pay.ccExp': 'תוקף', 'pa.pay.sample': 'למלא כרטיס לדוגמה', 'pa.pay.payNow': 'תשלום {sum}',
+    'pa.pay.ccNum': 'מספר כרטיס', 'pa.pay.ccExp': 'תוקף', 'pa.pay.expPh': 'MM/YY', 'pa.pay.sample': 'למלא כרטיס לדוגמה', 'pa.pay.payNow': 'תשלום {sum}',
     'pa.pay.missing': 'חסרים פרטי כרטיס', 'pa.pay.processing': 'מעבדים את התשלום…', 'pa.pay.doneT': 'שולם, תודה!', 'pa.pay.done': 'הקבלה כבר מחכה לכם ברשימת הקבלות.',
     'pa.pay.rcptNo': 'קבלה מס׳ {n}', 'pa.pay.date': 'תאריך', 'pa.pay.forWho': 'עבור', 'pa.pay.period': 'חודש', 'pa.pay.method': 'אמצעי תשלום',
     'pa.pay.share': 'שליחה בוואטסאפ', 'pa.pay.shared': 'שלחנו לכם את הקבלה',
@@ -1587,12 +1672,12 @@ const I18N = {
     'pa.login.d1': 'Цифра 1 из 4', 'pa.login.d2': 'Цифра 2 из 4', 'pa.login.d3': 'Цифра 3 из 4', 'pa.login.d4': 'Цифра 4 из 4', 'pa.login.demo': 'В демо подойдёт любой мобильный, сообщения на самом деле не отправляются.',
     'pa.login.smsApp': 'Сообщения', 'pa.login.smsNow': 'сейчас', 'pa.login.smsText': 'Сад «Синдерелла»: ваш код для входа 4815',
     'pa.hi.morning': 'Доброе утро, {name}', 'pa.hi.day': 'Добрый день, {name}', 'pa.hi.evening': 'Добрый вечер, {name}', 'pa.hi.night': 'Доброй ночи, {name}',
-    'pa.group': '{g}', 'pa.status.in': 'В саду с 07:48', 'pa.status.home': 'Сегодня в саду: 07:48–16:50',
+    'pa.group': '{g}', 'pa.status.in': 'В саду с 07:48', 'pa.status.home': 'В саду: 07:48–16:50',
     'pa.trust': 'Фото Ноа только у вас, не в общих чатах', 'pa.onlyYou': 'Только у вас',
     'pa.menuBtn': 'Меню аккаунта', 'pa.notifs': 'Уведомления на телефон', 'pa.logout': 'Выйти', 'pa.loggedOut': 'Вы вышли. До встречи!',
     'pa.tabs': 'Разделы кабинета', 'pa.tab.today': 'Сегодня', 'pa.tab.pay': 'Оплата', 'pa.tab.cal': 'Календарь', 'pa.tab.menu': 'Меню', 'pa.tab.docs': 'Документы', 'pa.tab.album': 'Альбом',
     'pa.qa.title': 'Быстрые действия',
-    'pa.qa.absent': 'Завтра не придём', 'pa.qa.absentSub': 'Предупредить', 'pa.qa.late': 'Опаздываем', 'pa.qa.lateSub': 'На сколько?',
+    'pa.qa.absent': 'Завтра не придём', 'pa.qa.absentSun': 'Не придём в воскресенье', 'pa.qa.absentSub': 'Предупредить', 'pa.qa.late': 'Опаздываем', 'pa.qa.lateSub': 'На сколько?',
     'pa.qa.pickup': 'Кто заберёт сегодня', 'pa.qa.pickupSub': 'Одноразовый код', 'pa.qa.msg': 'Написать воспитателям', 'pa.qa.msgSub': 'По-русски или на иврите', 'pa.qa.sentShort': 'Отправлено',
     'pa.sending': 'Отправляем…', 'pa.close': 'Закрыть', 'pa.note': 'Хотите что-то добавить? (необязательно)', 'pa.note.ph': 'Например: вернёмся в среду',
     'pa.abs.when': 'Когда не придём', 'pa.abs.why': 'Что случилось?', 'pa.abs.send': 'Предупредить воспитателей', 'pa.abs.pick': 'Выберите причину, чтобы воспитатели знали',
@@ -1602,7 +1687,7 @@ const I18N = {
     'pa.late.doneT': 'Воспитатели в курсе', 'pa.late.done': 'Передали, что вы задержитесь минут на\u00a0{n}. Не спешите, Ноа в надёжных руках.', 'pa.late.chip': '~{n} мин',
     'pa.pick.lead': 'Только те, кто есть в вашем списке. Каждый код действует один раз.', 'pa.pick.make': 'Создать код', 'pa.pick.making': 'Создаём код…',
     'pa.pick.only': 'Воспитатели видят список и спрашивают код', 'pa.pick.pick': 'Выберите, кто заберёт сегодня', 'pa.pick.codeA': 'Код, чтобы забрать Ноа: {code}',
-    'pa.pick.until': 'Действует сегодня до {time}', 'pa.pick.staff': 'Воспитатели спросят код, когда будут отдавать Ноа.', 'pa.pick.send': 'Отправить код: {name}', 'pa.pick.sent': 'Код отправлен: {name}',
+    'pa.pick.until': 'Действует сегодня до {time}', 'pa.pick.staff': 'Воспитатели спросят код, когда будут отдавать Ноа.', 'pa.pick.send': 'Отправить код {name}', 'pa.pick.sent': 'Код отправлен {name}',
     'pa.pick.doneM': 'Сегодня Ноа забирает {name}', 'pa.pick.doneF': 'Сегодня Ноа забирает {name}',
     'pa.msg.lead': 'Пишите по-русски или на иврите. Воспитатели получат на иврите.', 'pa.msg.examples': 'Готовые примеры', 'pa.msg.label': 'Ваше сообщение', 'pa.msg.ph': 'Что хотите рассказать воспитателям?',
     'pa.msg.send': 'Отправить', 'pa.msg.empty': 'Напишите пару слов или выберите пример', 'pa.msg.asIs': 'Ушло как есть, на иврите', 'pa.msg.translated': 'Переведено на иврит автоматически',
@@ -1617,7 +1702,7 @@ const I18N = {
     'pa.pay.viewRcpt': 'Открыть квитанцию', 'pa.pay.payBtn': 'Оплатить {sum}', 'pa.pay.secure': 'Безопасная оплата. В демо деньги не списываются.',
     'pa.pay.receipts': 'Квитанции', 'pa.pay.rcptOf': 'Квитанция · {m}', 'pa.pay.paidOn': 'Оплачено {d}', 'pa.pay.auto': 'Квитанция появляется сама после каждой оплаты.',
     'pa.pay.title': 'Оплата', 'pa.pay.for': 'Счёт · {m}', 'pa.pay.how': 'Чем платим?', 'pa.pay.saved': 'Сохранённая карта', 'pa.pay.exp': 'до', 'pa.pay.new': 'Другая карта',
-    'pa.pay.ccNum': 'Номер карты', 'pa.pay.ccExp': 'Срок действия', 'pa.pay.sample': 'Заполнить тестовой картой', 'pa.pay.payNow': 'Оплатить {sum}',
+    'pa.pay.ccNum': 'Номер карты', 'pa.pay.ccExp': 'Срок действия', 'pa.pay.expPh': 'ММ/ГГ', 'pa.pay.sample': 'Заполнить тестовой картой', 'pa.pay.payNow': 'Оплатить {sum}',
     'pa.pay.missing': 'Заполните данные карты', 'pa.pay.processing': 'Проводим оплату…', 'pa.pay.doneT': 'Оплачено, спасибо!', 'pa.pay.done': 'Квитанция уже ждёт вас в разделе «Оплата».',
     'pa.pay.rcptNo': 'Квитанция №\u00a0{n}', 'pa.pay.date': 'Дата', 'pa.pay.forWho': 'За кого', 'pa.pay.period': 'Месяц', 'pa.pay.method': 'Способ оплаты',
     'pa.pay.share': 'Отправить себе в WhatsApp', 'pa.pay.shared': 'Отправили вам квитанцию',
@@ -1667,15 +1752,25 @@ App.module('parent', {
     q('[data-book="next"]').addEventListener('click', () => flip(1));
     App.on('lang', () => {
       S.sumLang = lang();
+      /* an open sheet was built with the old language (and direction): open it again in the new one */
+      const cur = S.cur;
+      if (cur && !cur.sh.closed && App.ui.sheets.includes(cur.sh)) { cur.sh.close('lang'); setTimeout(() => { if (S.logged && App.state.view === 'parents') cur.reopen(); }, 80); }
       if (!S.logged) return;
       renderAll();
-      requestAnimationFrame(() => moveInd(true));
+      requestAnimationFrame(() => { moveInd(true); sideTop(); });
       if (S.tab === 'docs') sizeSig();
     });
-    addEventListener('resize', () => { if (S.logged && App.state.view === 'parents') moveInd(true); }, { passive: true });
+    let lastW = innerWidth;
+    addEventListener('resize', () => {
+      if (!S.logged || App.state.view !== 'parents') return;
+      moveInd(true);
+      /* touch: ignore height-only resizes (browser bars showing/hiding) */
+      if (!App.isTouch || innerWidth !== lastW) sideTop();
+      lastW = innerWidth;
+    }, { passive: true });
   },
   onEnter() {
-    if (S.logged) { requestAnimationFrame(() => moveInd(true)); renderHeader(); if (S.tab === 'docs') sizeSig(); }
+    if (S.logged) { requestAnimationFrame(() => { moveInd(true); sideTop(); }); renderHeader(); if (S.tab === 'docs') sizeSig(); }
     observeLive();
   },
   onLeave() { closeMenu(); hideSms(); },

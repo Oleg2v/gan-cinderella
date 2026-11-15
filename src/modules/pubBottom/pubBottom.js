@@ -182,7 +182,8 @@ const mine = new Map(); // type -> sheet api
    moment, so the second tap of "Send" can't land on the "Done" that just took its place (or on the next step's
    "Next"). Programmatic .click() (guided tour) is not affected. */
 const ARM_MS = 450;
-function armFoot(f) { f.classList.add('is-arming'); clearTimeout(f._arm); f._arm = setTimeout(() => f.classList.remove('is-arming'), ARM_MS); }
+let lastArm = 0;
+function armFoot(f) { lastArm = performance.now(); f.classList.add('is-arming'); clearTimeout(f._arm); f._arm = setTimeout(() => f.classList.remove('is-arming'), ARM_MS); }
 function openSheet(type, o) {
   const prev = mine.get(type); if (prev && !prev.closed) prev.close('replace');
   let mo = null;
@@ -190,10 +191,11 @@ function openSheet(type, o) {
     className: `pb-sh pb-sh--${type} ${o.className || ''}`,
     onClose: r => { if (mo) mo.disconnect(); if (mine.get(type) === s) mine.delete(type); o.onClose && o.onClose(r); setTimeout(() => Fab.schedule(), 560); }
   }));
-  // the second tap of a double tap on the opener must not hit the fresh backdrop and close the sheet again
+  // the second tap of a double tap must not hit the backdrop and close the sheet: neither right after opening,
+  // nor right after a step re-draws (a centred desktop dialog shrinks and the backdrop appears under the pointer)
   const t0 = performance.now();
   s.root.addEventListener('click', e => {
-    if (performance.now() - t0 < ARM_MS + 150 && e.target.classList && e.target.classList.contains('sheet-backdrop')) e.stopImmediatePropagation();
+    if (performance.now() - Math.max(t0, lastArm) < ARM_MS + 150 && e.target.classList && e.target.classList.contains('sheet-backdrop')) e.stopImmediatePropagation();
   }, true);
   $$('.pb-sfoot', s.body).forEach(armFoot);
   if ('MutationObserver' in window) {
@@ -362,9 +364,16 @@ function renderSeats() {
 /* ---------- door, seal, slipper teaser, footer loops ---------- */
 function initArt() {
   const door = $('.pb-door', root);
-  io([door], (el, vis) => { clearTimeout(el._t); if (vis) el._t = setTimeout(() => el.classList.add('is-open'), App.motion.reduced ? 0 : 450); else el.classList.remove('is-open'); }, { threshold: .45 });
-  const seal = $('.pb-seal', root), foot = $('.pb-foot__scene', root);
-  io([seal, foot, $('.pb-askcard', root), $('.pb-reviews', root)], (el, vis) => el.classList.toggle('pb-on', vis), { threshold: .1 });
+  // opens once it is well in view, closes again only when fully out of sight (never swings shut while visible)
+  io([door], (el, vis, e) => {
+    clearTimeout(el._t);
+    if (vis && (!e || e.intersectionRatio >= .44)) el._t = setTimeout(() => el.classList.add('is-open'), App.motion.reduced ? 0 : 450);
+    else if (!vis) el.classList.remove('is-open');
+  }, { threshold: [0, .45] });
+  const seal = $('.pb-seal', root), foot = $('.pb-foot__scene', root), ask = $('.pb-askcard', root);
+  io([seal, foot, $('.pb-reviews', root)], (el, vis) => el.classList.toggle('pb-on', vis), { threshold: .1 });
+  // the little demo conversation plays once; it must not blink away and replay every time the card re-enters
+  io([ask], (el, vis) => { if (vis) el.classList.add('pb-on'); }, { threshold: .25 });
   const sl = $('.pb-rg__art', root);
   io([sl], (el, vis) => {
     if (!vis || el._done) return; el._done = true;
@@ -1082,7 +1091,7 @@ const M = App.module('pubBottom', {
   onLeave() { root && root.classList.add('pb-paused'); clearTimeout(Fab.showTmo); Fab.set(false); Shuffle.stop(); },
   reset() {
     closeMine(); CH.log = []; CH.busy = Promise.resolve(); CH.gen++; CH.greeted = false;
-    WL.ref = null; Plate.reset();
+    WL.ref = null; WL.name = ''; WL.group = 'big'; Plate.reset();
   },
   openBooking, openEligibility, openRegistration, openAssistant, openWaitlist, openCheck,
   tour: {

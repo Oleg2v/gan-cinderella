@@ -78,6 +78,7 @@
 
     <div class="pa-tabs-sentinel" aria-hidden="true"></div>
     <div class="pa-tabs-wrap">
+      <div class="pa-tabs-pill">
       <div class="pa-tabs" role="tablist" aria-label="מדורים באזור ההורים" data-i18n-attr="aria-label:pa.tabs">
         <span class="pa-tabs__ind" aria-hidden="true"></span>
         <button type="button" class="pa-tab" role="tab" id="pa-t-today" aria-controls="pa-p-today" aria-selected="true" data-tab="today"><svg class="ic" aria-hidden="true"><use href="#i-sun"/></svg><span data-i18n="pa.tab.today">היום</span></button>
@@ -86,6 +87,7 @@
         <button type="button" class="pa-tab" role="tab" id="pa-t-menu" aria-controls="pa-p-menu" aria-selected="false" tabindex="-1" data-tab="menu"><svg class="ic" aria-hidden="true"><use href="#i-plate"/></svg><span data-i18n="pa.tab.menu">תפריט</span></button>
         <button type="button" class="pa-tab" role="tab" id="pa-t-docs" aria-controls="pa-p-docs" aria-selected="false" tabindex="-1" data-tab="docs"><svg class="ic" aria-hidden="true"><use href="#i-doc"/></svg><span data-i18n="pa.tab.docs">מסמכים</span></button>
         <button type="button" class="pa-tab" role="tab" id="pa-t-album" aria-controls="pa-p-album" aria-selected="false" tabindex="-1" data-tab="album"><svg class="ic" aria-hidden="true"><use href="#i-book"/></svg><span data-i18n="pa.tab.album">אלבום</span></button>
+      </div>
       </div>
     </div>
 
@@ -96,7 +98,7 @@
           <div class="pa-today__main">
             <h2 class="sr-only" data-i18n="pa.qa.title">פעולות מהירות</h2>
             <div class="pa-tiles">
-              <button type="button" class="pa-tile" data-qa="absent"><span class="pa-tile__ic pa-tone-pink" aria-hidden="true"><svg class="ic" aria-hidden="true"><use href="#i-home-heart"/></svg></span><span class="pa-tile__t" data-i18n="pa.qa.absent">לא מגיעים מחר</span><span class="pa-tile__s" data-i18n="pa.qa.absentSub">עדכון לצוות</span><span class="pa-tile__state" aria-live="polite"></span></button>
+              <button type="button" class="pa-tile" data-qa="absent"><span class="pa-tile__ic pa-tone-pink" aria-hidden="true"><svg class="ic" aria-hidden="true"><use href="#i-home-heart"/></svg></span><span class="pa-tile__t">לא מגיעים מחר</span><span class="pa-tile__s" data-i18n="pa.qa.absentSub">עדכון לצוות</span><span class="pa-tile__state" aria-live="polite"></span></button>
               <button type="button" class="pa-tile" data-qa="late"><span class="pa-tile__ic pa-tone-sun" aria-hidden="true"><svg class="ic" aria-hidden="true"><use href="#i-clock"/></svg></span><span class="pa-tile__t" data-i18n="pa.qa.late">מאחרים</span><span class="pa-tile__s" data-i18n="pa.qa.lateSub">כמה דקות?</span><span class="pa-tile__state" aria-live="polite"></span></button>
               <button type="button" class="pa-tile" data-qa="pickup"><span class="pa-tile__ic pa-tone-sky" aria-hidden="true"><svg class="ic" aria-hidden="true"><use href="#i-key"/></svg></span><span class="pa-tile__t" data-i18n="pa.qa.pickup">מי אוסף היום</span><span class="pa-tile__s" data-i18n="pa.qa.pickupSub">קוד איסוף חד-פעמי</span><span class="pa-tile__state" aria-live="polite"></span></button>
               <button type="button" class="pa-tile" data-qa="msg"><span class="pa-tile__ic pa-tone-mint" aria-hidden="true"><svg class="ic" aria-hidden="true"><use href="#i-translate"/></svg></span><span class="pa-tile__t" data-i18n="pa.qa.msg">הודעה לצוות</span><span class="pa-tile__s" data-i18n="pa.qa.msgSub">בעברית או ברוסית</span><span class="pa-tile__state" aria-live="polite"></span></button>
@@ -178,13 +180,13 @@
                 <canvas class="pa-sig__cv" role="img" aria-labelledby="pa-sig-l"></canvas>
                 <span class="pa-sig__ph" aria-hidden="true"><svg class="ic" aria-hidden="true"><use href="#i-pen"/></svg><span data-i18n="pa.docs.sigPh">חתמו כאן באצבע</span></span>
                 <span class="pa-sig__line" aria-hidden="true"></span>
+                <button type="button" class="pa-sig__clear" data-pa="sigClear"><svg class="ic" aria-hidden="true"><use href="#i-refresh"/></svg><span data-i18n="pa.docs.clear">מחיקה</span></button>
               </div>
               <p class="pa-err" data-pa="sigErr" role="alert" hidden></p>
               <div class="pa-sig__btns">
-                <button type="button" class="btn btn--ghost btn--sm" data-pa="sigClear"><svg class="ic" aria-hidden="true"><use href="#i-refresh"/></svg><span data-i18n="pa.docs.clear">מחיקה</span></button>
-                <button type="button" class="btn btn--primary btn--sm" data-pa="sigDone"><svg class="ic" aria-hidden="true"><use href="#i-sign"/></svg><span data-i18n="pa.docs.sign">חתימה ושליחה</span></button>
+                <button type="button" class="btn btn--primary btn--block" data-pa="sigDone"><svg class="ic" aria-hidden="true"><use href="#i-sign"/></svg><span data-i18n="pa.docs.sign">חתימה ושליחה</span></button>
+                <button type="button" class="link-btn pa-sig__typed" data-pa="sigTyped" data-i18n="pa.docs.typed">לחתום בהקלדה</button>
               </div>
-              <button type="button" class="link-btn pa-sig__typed" data-pa="sigTyped" data-i18n="pa.docs.typed">לחתום בהקלדה</button>
             </div>
             <div class="pa-doc__signed" hidden>
               <img alt="" class="pa-doc__sigimg">

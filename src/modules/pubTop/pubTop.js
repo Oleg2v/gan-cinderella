@@ -8,14 +8,13 @@ const clamp = App.clamp, lerp = App.lerp;
 const smooth = (x, a, b) => { const t = clamp((x - a) / (b - a), 0, 1); return t * t * (3 - 2 * t); };
 const pad = n => String(n).padStart(2, '0');
 
-/* ---------- arm the intro before first paint ---------- */
+/* ---------- intro: CSS keeps it hidden from the first paint until html.pt-booted ---------- */
 const isNightAuto = () => { const h = new Date().getHours(); return h >= 18 || h < 6; };
 const heroEl0 = document.getElementById('hero');
 if (heroEl0 && isNightAuto()) heroEl0.classList.add('is-night');
-if (!App.motion.reduced) {
-  html.classList.add('pt-armed');
-  setTimeout(() => { if (!S.introStarted) html.classList.remove('pt-armed'); }, 3200);
-}
+const boot = () => html.classList.add('pt-booted');
+if (App.motion.reduced) boot();
+else setTimeout(() => { if (!S.introStarted) boot(); }, 3200);
 
 /* ---------- state ---------- */
 const S = {
@@ -312,7 +311,7 @@ function smallVH() {
 }
 function heightClasses() {
   const v = smallVH(); S.svh = v;
-  if (hero) hero.classList.toggle('pt-h800', v <= 800);
+  if (hero) { hero.classList.toggle('pt-h800', v <= 800); hero.classList.toggle('pt-h680', v <= 680); }
   if (stage) { stage.classList.toggle('pt-h780', v <= 780); stage.classList.toggle('pt-h690', v <= 690); stage.classList.toggle('pt-h620', v <= 620); }
 }
 /* layout: the castle fills the room left between the content and the bottom chrome */
@@ -327,14 +326,39 @@ function layout() {
   // phone: dock + gap + the scroll cue (40) + breathing room, so the cue sits on clean grass below the castle
   const short = H < 760;
   const base = desk ? clamp(Math.round(H * .14), 104, 150) : Math.round(dockH + 22 + 40 + (short ? 12 : 22));
-  const minCh = desk ? 230 : (short ? 112 : 150), maxCh = desk ? 440 : 320;
+  const minCh = desk ? 230 : (short ? 100 : 150), maxCh = desk ? 440 : 320;
   let room = H - cb - base - (desk ? 18 : 14);
   if (room < minCh) { H += minCh - room; hero.style.minHeight = H + 'px'; room = minCh; }
   const ch = clamp(Math.round(room), minCh, maxCh);
   hero.style.setProperty('--pt-base', base + 'px');
   hero.style.setProperty('--pt-ch', ch + 'px');
   S.heroH = hero.offsetHeight;
+  hero.style.setProperty('--pt-hh', S.heroH + 'px');
+  hero.classList.add('pt-laid');
   measureTrail();
+  if (S.introDone) declutter();
+}
+/* night stars and sparkles must never sit on text (they read as stray glyphs): switch off the ones that would */
+function declutter() {
+  if (!hero || hero.offsetParent === null) return;
+  const moved = [...layers.map(l => l.el), content];
+  const saved = moved.map(el => el.style.translate);
+  moved.forEach(el => { el.style.translate = '0px 0px'; });
+  const boxes = [];
+  const add = (r, p) => { if (r && r.width) boxes.push([r.left - p, r.top - p, r.right + p, r.bottom + p]); };
+  $$('.pt-w', content).forEach(w => add(w.getBoundingClientRect(), 8));
+  const lead = $('.pt-lead', content);
+  if (lead) { const rg = document.createRange(); rg.selectNodeContents(lead); [...rg.getClientRects()].forEach(r => add(r, 8)); }
+  ['.pt-eyebrow', '.pt-cta'].forEach(sel => $$(sel, content).forEach(el => add(el.getBoundingClientRect(), 6)));
+  const logo = $('.pt-logo', content); if (logo) add(logo.getBoundingClientRect(), 4);
+  [$('.pt-mode', hero), $('.pt-cue', hero)].forEach(el => el && add(el.getBoundingClientRect(), 6));
+  $$('.pt-star, .pt-sp', hero).forEach(el => {
+    el.classList.toggle('pt-hid', false);
+    const r = el.getBoundingClientRect(), cx = (r.left + r.right) / 2, cy = (r.top + r.bottom) / 2;
+    const rad = (parseFloat(el.style.getPropertyValue('--s')) || r.width) / 2;
+    if (boxes.some(b => cx + rad > b[0] && cx - rad < b[2] && cy + rad > b[1] && cy - rad < b[3])) el.classList.add('pt-hid');
+  });
+  moved.forEach((el, i) => { el.style.translate = saved[i]; });
 }
 function measureTrail() {
   if (!trailPath || !trailPath.getTotalLength) return;
@@ -360,7 +384,16 @@ function placeCarriage() {
   carriage.style.transform = `translate3d(${x.toFixed(1)}px, ${y.toFixed(1)}px, 0) rotate(${ang.toFixed(1)}deg) scale(${(flip * sc).toFixed(3)}, ${sc.toFixed(3)})`;
   carriage.style.opacity = App.motion.reduced ? 1 : String(clamp(Math.min(t / .05, (.9 - t) / .05), 0, 1));
 }
+const SDA = !App.isFine && !!(window.CSS && CSS.supports && CSS.supports('animation-timeline: scroll()'));
+function setSda(on) {
+  on = !!(on && SDA && !App.motion.reduced);
+  if (on === !!S.sda) return; S.sda = on;
+  if (on) { layers.forEach(l => { l.el.style.translate = ''; }); content.style.translate = ''; content.style.opacity = ''; }
+  html.classList.toggle('pt-sda', on);
+  if (!on) applyLayers(true);
+}
 function applyLayers(force) {
+  if (S.sda) return;
   const sy = Math.min(S.sy, S.heroH), p = S.ptr, fine = App.isFine && !App.motion.reduced;
   if (App.motion.reduced) { layers.forEach(l => { l.el.style.translate = ''; }); content.style.translate = ''; content.style.opacity = ''; return; }
   const key = sy.toFixed(1) + '|' + p.x.toFixed(3) + '|' + p.y.toFixed(3);
@@ -377,7 +410,8 @@ function tick(now) {
   const dt = Math.min(.05, (now - (S.lastNow || now)) / 1000); S.lastNow = now;
   S.carT += dt;
   const p = S.ptr; p.x += (p.tx - p.x) * .06; p.y += (p.ty - p.y) * .06;
-  applyLayers(); placeCarriage();
+  if (!S.sda) { S.sy = App.scrollY(); applyLayers(); }
+  placeCarriage();
   S.loop = requestAnimationFrame(tick);
 }
 function startLoop() {
@@ -393,10 +427,10 @@ function stopLoop() {
 
 function playIntro() {
   if (S.introStarted) return; S.introStarted = true;
-  if (App.motion.reduced) { html.classList.remove('pt-armed'); S.introDone = true; return; }
-  hero.classList.add('pt-go'); html.classList.remove('pt-armed');
+  if (App.motion.reduced) { boot(); S.introDone = true; declutter(); return; }
+  hero.classList.add('pt-go'); boot();
   setTimeout(() => { const b = $('.pt-title__b', hero); if (b && S.active && S.sy < 200) App.fx.burstAt(b, { count: App.isTouch ? 22 : 34, speed: [120, 360], life: [600, 1150], gravity: 120, colors: ['magenta', 'gold', 'pink', 'white', 'blue'] }); }, 900);
-  setTimeout(() => { hero.classList.remove('pt-go'); S.introDone = true; }, 1900);
+  setTimeout(() => { hero.classList.remove('pt-go'); S.introDone = true; declutter(); setSda(S.active); }, 1900);
 }
 
 /* =====================================================================
@@ -424,6 +458,7 @@ function measureRuler() {
   S.winL = win.offsetLeft; S.winW = win.offsetWidth; S.stripW = strip.offsetWidth;
   S.beadX = R.beads.map(b => b.offsetLeft + b.offsetWidth / 2);
   S.stW = stage.offsetWidth; S.stH = stage.offsetHeight;
+  S.dcy = dial.offsetTop + dial.offsetHeight * .525; S.dr = dial.offsetWidth / 2;
   S.ckey = '';
 }
 /* the dial takes whatever height the stage has left (tour captions / floating buttons reserve the bottom) */
@@ -473,9 +508,12 @@ function updateClock(force) {
   R.dim.style.opacity = (dim * .24).toFixed(3);
   R.ns.style.opacity = dim.toFixed(3);
   const nap = dim > .02; if (nap !== S.nap) { S.nap = nap; stage.classList.toggle('is-nap', nap); }
-  const sw = S.stW || 390, sh = S.stH || 800, fr = min / 600;
-  R.sun.style.transform = `translate3d(${((fr - .5) * sw * .84).toFixed(1)}px, ${(sh * (.6 - .48 * Math.sin(Math.PI * fr))).toFixed(1)}px, 0)`;
-  R.sun.style.opacity = (1 - dim * .8).toFixed(3);
+  const sw = S.stW || 390, sh = S.stH || 800, fr = min / 600, dir = html.dir === 'rtl' ? -1 : 1;
+  let sx, sy;
+  if (sw < 900 && S.dcy) { const a = Math.PI * fr, ry = S.dr * .95; sx = -Math.cos(a) * sw * .43; sy = S.dcy + ry * .25 - ry * Math.sin(a); }
+  else { sx = (fr - .5) * sw * .84; sy = sh * (.6 - .48 * Math.sin(Math.PI * fr)); }
+  R.sun.style.transform = `translate3d(${(sx * dir).toFixed(1)}px, ${sy.toFixed(1)}px, 0)`;
+  R.sun.style.opacity = (1 - dim).toFixed(3); // nap: the sun leaves the sky (a dimmed sun read as a grey disc)
   // scene
   let idx = 0; for (let i = 0; i < SCENES.length; i++) if (min >= SCENES[i].from) idx = i;
   if (idx !== S.scene) setScene(idx, S.scene !== -1);
@@ -522,7 +560,7 @@ function buildTimeline() {
     <div class="pt-tl__head"><h2 class="h2" data-i18n="pt.clock.title"></h2><p class="pt-stage__sub"><span data-i18n="pt.clock.sub"></span> <span class="demo-tag" data-i18n="pt.clock.example"></span></p></div>
     <ol class="pt-tl__list">${SCENES.map((sc, i) => `<li class="pt-tl__it"><div class="pt-tl__clock">${miniClock(sc.at)}<bdi class="tnum" dir="ltr">${fmtMin(sc.at)}</bdi></div>
       <div class="pt-tl__body"><div class="pt-tl__art" style="background:${sc.bg}">${ART[sc.art]()}</div><div><h3 class="pt-tl__t" data-i18n="pt.s${i}.t"></h3><p class="pt-tl__l" data-i18n="pt.s${i}.l"></p></div></div></li>`).join('')}
-      <li class="pt-tl__it"><div class="pt-tl__clock">${miniClock(600)}<bdi class="tnum" dir="ltr">17:00</bdi></div><div class="pt-tl__body"><div class="pt-tl__fin" style="grid-column: span 2"><svg class="pt-fin__ic" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-sparkles"/></svg><p class="pt-fin__big" data-i18n="pt.fin.big"></p><p class="pt-fin__small" data-i18n-html="pt.fin.small"></p></div></div></li>
+      <li class="pt-tl__it pt-tl__it--fin"><div class="pt-tl__fin"><div class="pt-tl__finclock">${miniClock(600)}<bdi class="tnum" dir="ltr">17:00</bdi></div><p class="pt-fin__big" data-i18n="pt.fin.big"></p><p class="pt-fin__small" data-i18n-html="pt.fin.small"></p></div></li>
     </ol></div>`;
   App.i18n.apply(tl);
 }
@@ -559,29 +597,29 @@ const I18N = {
     'pt.s6.t': 'ארוחת מנחה', 'pt.s6.l': 'מתעוררים לאט, ומשהו טעים כבר מחכה על השולחן.',
     'pt.s7.t': 'ההורים מגיעים', 'pt.s7.l': 'ריצה אל הדלת, חיבוק גדול, ויש המון מה לספר.',
     'pt.fin.big': 'אצלנו היום נגמר ב-17:00, לא בחצות',
-    'pt.fin.small': '<span class="pt-nw">אפשר להאריך עד 18:00</span>&nbsp;· <span class="pt-nw">ביום ו׳ <bdi dir="ltr">07:00–13:00</bdi></span>'
+    'pt.fin.small': '<span class="pt-nw">אפשר להאריך עד 18:00</span><span class="pt-fin__sep" aria-hidden="true">&nbsp;· </span><span class="pt-nw">ביום ו׳ <bdi dir="ltr">07:00–13:00</bdi></span>'
   },
   ru: {
     'pt.eyebrow': 'Мэон (ясли-сад) · Ашдод',
     'pt.slogan': 'Детский сад из сказки', 'pt.slogan.a': 'Детский сад', 'pt.slogan.b': 'из сказки',
-    'pt.lead': 'Признанный мэон под надзором, для детей от рождения до 3\u00a0лет',
+    'pt.lead': 'Признанный мэон под\u00a0надзором, для\u00a0детей от\u00a0рождения до\u00a03\u00a0лет',
     'pt.cta.visit': 'Экскурсия в сад', 'pt.cta.avail': 'Есть ли места?',
     'pt.mode': 'Ночной режим', 'pt.cue': 'День в саду', 'pt.cueA': 'День в саду: к часам Синдереллы',
-    'pt.f1': 'С рождения до 3\u00a0лет', 'pt.f2': 'Признанный мэон под надзором', 'pt.f3': 'Своя кухня, свежая еда каждый день',
+    'pt.f1': 'С рождения до 3\u00a0лет', 'pt.f2': 'Признанный мэон под\u00a0надзором', 'pt.f3': 'Своя кухня, свежая еда каждый день',
     'pt.f4': '<span class="pt-nw">вс–чт <bdi class="tnum">07:00–17:00</bdi></span><br><span class="pt-nw">пт <bdi class="tnum">07:00–13:00</bdi></span>',
     'pt.clock.title': 'Часы Синдереллы', 'pt.clock.sub': 'День в саду, час за часом', 'pt.clock.example': 'пример дня',
     'pt.clock.aria': 'Часы, стрелки которых идут с 07:00 до 17:00 при прокрутке',
     'pt.ruler': 'Выбрать время дня', 'pt.bead': 'Перейти к {t}',
-    'pt.s0.t': 'Доброе утро', 'pt.s0.l': 'Приходите без спешки, у двери вас уже встречают с улыбкой.',
-    'pt.s1.t': 'Завтрак с нашей кухни', 'pt.s1.l': 'Готовим прямо в саду. Всё свежее, каждый день.',
-    'pt.s2.t': 'Три кружка в неделю', 'pt.s2.l': 'Музыка, спорт, природа и животные. Поём, прыгаем и гладим зверушек.',
-    'pt.s3.t': 'Гуляем во дворе', 'pt.s3.l': 'Играем на свежем воздухе, немного пачкаемся и много смеёмся.',
-    'pt.s4.t': 'Обед', 'pt.s4.l': 'Домашняя еда с нашей кухни, меню утверждено диетологом.',
-    'pt.s5.t': 'Тихий час', 'pt.s5.l': 'Мягкое одеяло, приглушённый свет и тишина. Набираемся сил.',
-    'pt.s6.t': 'Полдник', 'pt.s6.l': 'Просыпаемся не спеша, а на столе уже ждёт что-то вкусное.',
-    'pt.s7.t': 'Родители пришли', 'pt.s7.l': 'Бегом к двери, крепкие объятия, и дома есть что рассказать.',
-    'pt.fin.big': 'У нас день заканчивается в 17:00, а не в полночь',
-    'pt.fin.small': '<span class="pt-nw">Можно продлить до 18:00</span>&nbsp;· <span class="pt-nw">в пятницу 07:00–13:00</span>'
+    'pt.s0.t': 'Доброе утро', 'pt.s0.l': 'Приходите без\u00a0спешки, у\u00a0двери вас уже встречают с\u00a0улыбкой.',
+    'pt.s1.t': 'Завтрак с нашей кухни', 'pt.s1.l': 'Готовим прямо в\u00a0саду. Всё свежее, каждый день.',
+    'pt.s2.t': 'Три кружка в неделю', 'pt.s2.l': 'Музыка, спорт, природа и\u00a0животные. Поём, прыгаем и\u00a0гладим зверушек.',
+    'pt.s3.t': 'Гуляем во дворе', 'pt.s3.l': 'Играем на\u00a0свежем воздухе, немного пачкаемся и\u00a0много смеёмся.',
+    'pt.s4.t': 'Обед', 'pt.s4.l': 'Домашняя еда с\u00a0нашей кухни, меню утверждено диетологом.',
+    'pt.s5.t': 'Тихий час', 'pt.s5.l': 'Мягкое одеяло, приглушённый свет и\u00a0тишина. Набираемся сил.',
+    'pt.s6.t': 'Полдник', 'pt.s6.l': 'Просыпаемся не\u00a0спеша, а\u00a0на\u00a0столе уже ждёт что-то вкусное.',
+    'pt.s7.t': 'Родители пришли', 'pt.s7.l': 'Бегом к\u00a0двери, крепкие объятия, и\u00a0дома есть что рассказать.',
+    'pt.fin.big': 'У нас день заканчивается в\u00a017:00, а\u00a0не в\u00a0полночь',
+    'pt.fin.small': '<span class="pt-nw">Можно продлить до 18:00</span><span class="pt-fin__sep" aria-hidden="true">&nbsp;· </span><span class="pt-nw">в пятницу 07:00–13:00</span>'
   }
 };
 
@@ -595,7 +633,7 @@ App.module('pubTop', {
     root = r; hero = $('#hero', r); content = $('.pt-hero__content', r);
     track = $('.pt-track', r); stage = $('.pt-stage', r); dial = $('.pt-dial', r);
     carriage = $('.pt-carriage', r); hillc = $('.pt-hillc', r); trailPath = $('.pt-trail', r);
-    layers = $$('.pt-L', hero).map(el => ({ el, sp: +el.dataset.sp || 0, pd: +el.dataset.pd || 0 }));
+    layers = $$('.pt-L', hero).map(el => { const sp = +el.dataset.sp || 0; el.style.setProperty('--sp', sp); return { el, sp, pd: +el.dataset.pd || 0 }; });
     // shared symbols + generated art
     $('.pt-defs defs', r).insertAdjacentHTML('beforeend', faceSymbol());
     makeStars($('.pt-stars', hero), 34, 7, [3, 92]);
@@ -660,17 +698,23 @@ App.module('pubTop', {
       splitTitle(); buildBeads();
       if (S.static) buildTimeline();
       if (S.active) { layout(); sizeDial(); measureRuler(); updateClock(true); }
+      // Russian headings use another display face: measure again once it has loaded
+      if (document.fonts && document.fonts.ready) document.fonts.ready.then(() => { if (S.active) { layout(); sizeDial(); measureRuler(); updateClock(true); } });
     });
     App.on('motion', reduced => {
+      if (!!reduced === S.static) return;
+      const rc = $('.pt-clock', r).getBoundingClientRect(), inClock = S.active && rc.top < innerHeight * .5 && rc.bottom > innerHeight * .5;
       setStatic(!!reduced);
-      if (reduced) { stopLoop(); html.classList.remove('pt-armed'); hero.classList.remove('pt-go'); applyLayers(); placeCarriage(); }
-      else if (S.active) { S.scene = -1; sizeDial(); measureRuler(); updateClock(true); startLoop(); }
+      if (reduced) { stopLoop(); setSda(false); boot(); hero.classList.remove('pt-go'); applyLayers(); placeCarriage(); }
+      else if (S.active) { S.scene = -1; sizeDial(); measureRuler(); updateClock(true); startLoop(); if (S.introDone) setSda(true); }
+      if (inClock) App.scrollTo(reduced ? '#clock' : track, { offset: reduced ? 70 : 0, duration: 0 });
     });
     setStatic(App.motion.reduced);
     if (document.fonts && document.fonts.ready) document.fonts.ready.then(() => { if (S.active) { layout(); sizeDial(); measureRuler(); updateClock(true); } });
   },
   onEnter() {
     S.active = true; root.classList.remove('pt-paused');
+    if (S.introDone) setSda(true);
     S.sy = App.scrollY();
     layout(); sizeDial(); measureRuler();
     S.scene = -1; updateClock(true);

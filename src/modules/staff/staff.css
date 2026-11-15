@@ -86,7 +86,8 @@
 .st-eodbtn { --bh: 48px; flex: 1; min-width: 0; }
 .st-eodbtn .ic { color: var(--pink); }
 
-@media (min-width: 600px) and (max-width: 1023px) {
+/* wide tablets in portrait: counters and buttons share one row (narrower ones keep the phone stack) */
+@media (min-width: 860px) and (max-width: 1023px) {
   .st-head { grid-template-columns: minmax(0, 1fr) auto; align-items: center; }
   .st-head__id { grid-column: 1 / -1; }
   .st-stats { display: flex; min-width: 0; }
@@ -332,14 +333,16 @@ html[lang="ru"] .st-kid__name { font-weight: 800; font-size: .95rem; }
   .st-main { overflow-y: auto; overscroll-behavior: contain; padding: 4px 22px 14px 18px; scrollbar-width: thin; transition: padding-bottom .35s var(--ease-out); }
   [dir="rtl"] .st-main { padding: 4px 18px 14px 22px; }
   .st-has-bar .st-main { padding-bottom: 90px; }
-  .st-tools { margin: 6px 0 6px; flex-wrap: nowrap; }
+  .st-tools { margin: 4px 0 6px; flex-wrap: nowrap; }
   .st-hint { flex-basis: auto; flex: 1; min-width: 0; font-size: 13px; }
   .st-seg button { min-height: 38px; }
   .st-allchip { min-height: 40px; flex: none; }
-  .st-grid { grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 10px; }
-  .st-kid { --av: 48px; padding: 19px 6px 6px; border-radius: 20px; }
-  .st-kid__moon { bottom: -6px; height: 17px; font-size: 10.5px; }
-  .st-kid__name { margin-top: 10px; font-size: 15px; }
+  /* three rows + the action bar fit the 680px screen: the last row never hides under the bar */
+  .st-grid { grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 8px 10px; }
+  .st-kid { --av: 46px; padding: 18px 6px 5px; border-radius: 20px; }
+  .st-kid__moon { bottom: -4px; height: 17px; font-size: 10.5px; }
+  .st-kid__name { margin-top: 8px; font-size: 15px; }
+  .st-kid__time { line-height: 1.3; min-height: 1.3em; }
   .st-kid__st { margin-top: 3px; }
 
   .st-side { display: flex; flex-direction: column; gap: 0; margin: 0; overflow-y: auto; overscroll-behavior: contain; background: #fff; border-inline-start: 1px solid var(--line); scrollbar-width: thin; }
@@ -372,13 +375,18 @@ html[lang="ru"] .st-q { font-weight: 800; }
 .st-lang--he { background: var(--sky); color: var(--ink); }
 .st-lang--ru { background: var(--ink); color: #fff; }
 .st-actions { display: flex; flex-wrap: wrap; gap: 10px; }
-/* sticky sheet footer: the primary button stays in reach while the sheet body scrolls (390x664) */
+/* sticky sheet footer: the primary button stays in reach while the sheet body scrolls (390x664).
+   Sticky offsets are measured inside the body's padding, so a body with a footer drops its bottom padding. */
+.sheet__body:has(.st-foot) { padding-bottom: 0; }
 .st-foot {
   position: sticky; bottom: 0; z-index: 3; display: flex; flex-direction: column; gap: 8px;
-  margin: 0 -20px -24px; padding: 14px 20px 18px;
-  background: linear-gradient(180deg, rgba(255, 250, 252, 0), var(--paper) 22px);
+  margin: 0 -20px; padding: 10px 20px 18px; background: var(--paper);
 }
+.st-foot::before { content: ""; position: absolute; left: 0; right: 0; bottom: 100%; height: 18px; pointer-events: none; background: linear-gradient(180deg, rgba(255, 250, 252, 0), var(--paper)); }
 .st-foot .st-need:empty { display: none; }
+.st-actions--cam { flex-wrap: nowrap; }
+.st-actions--cam .btn--icon { flex: none; }
+.st-actions--cam .btn--primary { flex: 1 1 auto; min-width: 0; }
 .st-actions .btn { flex: 1 1 auto; white-space: normal; text-align: center; line-height: 1.2; padding-block: 8px; }
 
 /* ---------- allergy alert ---------- */
@@ -395,6 +403,17 @@ html[lang="ru"] .st-al__t { font-weight: 900; }
 .st-al__lines { list-style: none; display: grid; gap: 8px; width: 100%; }
 .st-al__lines li { display: flex; align-items: center; gap: 12px; padding: 10px 14px; border-radius: 18px; background: var(--danger-bg); color: var(--ink); font-weight: 700; font-size: 1.1rem; line-height: 1.3; text-align: start; }
 .st-al__lines li:first-child { font-size: 1.25rem; }
+/* short phones (Safari bars shown): the whole alert, both buttons included, fits without scrolling */
+@media (max-height: 740px) and (max-width: 759px) {
+  .st-al { gap: 9px; padding-top: 16px; }
+  .st-al__ic { width: 62px; height: 62px; box-shadow: 0 0 0 7px var(--danger-bg), 0 14px 26px -12px rgba(180, 18, 58, .7); margin-bottom: 4px; }
+  .st-al__ic .ic { width: 30px; height: 30px; }
+  .st-al__t { font-size: 1.65rem; }
+  .st-al__lines { gap: 6px; }
+  .st-al__lines li { padding: 7px 12px; font-size: 1.02rem; }
+  .st-al__lines li:first-child { font-size: 1.12rem; }
+  .st-al__lines .av { --s: 34px !important; }
+}
 .st-al__sub { color: var(--ink-2); font-size: var(--fs-sm); }
 .st-al__btns { display: grid; gap: 8px; width: 100%; margin-top: 4px; }
 .st-al__ok { background: var(--danger); color: #fff; box-shadow: 0 12px 26px -12px rgba(180, 18, 58, .8), inset 0 -3px 0 rgba(0, 0, 0, .14); white-space: normal; }

@@ -278,6 +278,7 @@ html[lang="ru"] .pb-grp__head .h3 { font-size: 1.2rem; }
 .pb-askcard__demo .bubble { --bfs: .9375rem; box-shadow: 0 10px 20px -12px rgba(0,0,0,.35); }
 .pb-askcard__demo .bubble--out { background: var(--sky); }
 .pb-askcard__sp { position: absolute; top: -22px; inset-inline-end: -10px; width: 64px; height: 64px; }
+.pb-askcard:not(.pb-on) .pb-askcard__demo .bubble { opacity: 0; }
 .pb-askcard.pb-on .pb-askcard__b1 { animation: pb-pop .6s var(--ease-spring) both .2s; }
 .pb-askcard.pb-on .pb-askcard__b2 { animation: pb-pop .6s var(--ease-spring) both .9s; }
 .pb-askcard.pb-on .pb-askcard__b3 { animation: pb-pop .6s var(--ease-spring) both 1.6s; }
@@ -393,7 +394,7 @@ html.is-touring .pb-fab, html.sheet-open .pb-fab { display: none; }
 .pb-sfoot { flex-wrap: wrap; }
 .pb-sfoot > .btn { min-width: 0; }
 .pb-sfoot .btn--ghost { flex: none; }
-.pb-sfoot .btn--ghost.pb-grow { flex: 1 1 auto; }
+.pb-sfoot > .pb-grow, .pb-sfoot .btn--ghost.pb-grow { flex: 1 1 0; min-width: max-content; } /* equal halves; wraps to full rows when labels are long */
 .pb-sfoot.is-arming > * { pointer-events: none; }
 /* on phones the "back" button folds to an icon so the primary label never gets clipped */
 @media (max-width: 420px) {
@@ -430,6 +431,7 @@ html.is-touring .pb-fab, html.sheet-open .pb-fab { display: none; }
 .pb-done { display: flex; flex-direction: column; align-items: center; gap: 16px; text-align: center; padding-top: 4px; }
 .pb-done__head { display: flex; align-items: center; gap: 16px; width: 100%; text-align: start; }
 .pb-done__head .h3 { line-height: 1.2; }
+.pb-done__head .pb-stamp { margin-inline-start: 6px; } /* the rotated stamp's ring must not poke into the sheet padding */
 .pb-stamp {
   position: relative; flex: none; width: 88px; height: 88px; border-radius: 50%; display: grid; place-content: center; justify-items: center; gap: 0;
   background: var(--magenta-600); color: #fff; transform: rotate(-12deg);
@@ -528,7 +530,7 @@ button.pb-cal__day:active { transform: scale(.93); }
 .pb-cal__day:disabled b { text-decoration: line-through; text-decoration-thickness: 1.5px; font-weight: 500; }
 .pb-cal__day.is-off { background: transparent; color: #B5B3C9; }
 .pb-cal__day.is-today b { color: var(--ink-3); }
-.pb-cal__day.is-today { box-shadow: inset 0 0 0 1.5px dashed; }
+.pb-cal__day.is-today { outline: 1.5px dashed var(--line-2); outline-offset: -4px; }
 .pb-slots { gap: 8px; }
 .pb-slot { min-height: 46px; padding-inline: 14px 16px; }
 .pb-slot .ic { width: 18px; height: 18px; }
