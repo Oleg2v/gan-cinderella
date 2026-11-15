@@ -75,10 +75,17 @@
       };
       const main = $('#main');
       if (!animate || motion.reduced || !main || !main.animate) { run(); return; }
-      main.animate([{ opacity: 1 }, { opacity: 0 }], { duration: 140, easing: 'ease-in', fill: 'forwards' }).finished.then(() => {
+      // cancel anything still running on #main (rapid double toggles), fade out, swap, fade in,
+      // then drop the fade-out's forwards fill — otherwise it keeps #main at opacity 0 forever
+      main.getAnimations().forEach(a => a.cancel());
+      const out = main.animate([{ opacity: 1 }, { opacity: 0 }], { duration: 140, easing: 'ease-in', fill: 'forwards' });
+      const fin = () => {
         run();
-        main.animate([{ opacity: 0, transform: 'translateY(6px)' }, { opacity: 1, transform: 'none' }], { duration: 320, easing: 'cubic-bezier(.22,1,.36,1)' });
-      });
+        const inn = main.animate([{ opacity: 0, transform: 'translateY(6px)' }, { opacity: 1, transform: 'none' }], { duration: 320, easing: 'cubic-bezier(.22,1,.36,1)' });
+        out.cancel();
+        inn.finished.catch(() => { }).then(() => { main.style.opacity = ''; });
+      };
+      out.finished.then(fin, () => { run(); });
     }
   };
   const t = (k, v) => i18n.t(k, v);
