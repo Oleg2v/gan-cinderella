@@ -571,10 +571,11 @@
     return { x: innerWidth / 2, y: innerHeight - 50 };
   }
   async function pixie(origin, swap) {
-    const box = $('.pixie'), bloom = $('.pixie__bloom');
+    const box = $('.pixie'), bloom = $('.pixie__bloom'), ring = $('.pixie__ring');
     const { x, y } = originOf(origin);
     const R = Math.hypot(Math.max(x, innerWidth - x), Math.max(y, innerHeight - y)) + 40;
     Object.assign(bloom.style, { width: R * 2 + 'px', height: R * 2 + 'px', left: x - R + 'px', top: y - R + 'px' });
+    if (ring) Object.assign(ring.style, { width: R * 2 + 'px', height: R * 2 + 'px', left: x - R + 'px', top: y - R + 'px' });
     box.hidden = false;
     // ring of dust riding the bloom edge
     const T1 = 560, t0 = performance.now();
@@ -582,18 +583,19 @@
     const ringLoop = now => {
       if (!alive) return;
       const k = clamp((now - t0) / T1, 0, 1), e = easeIO(k), r = R * e;
-      const n = isTouch ? 4 : 7;
-      for (let i = 0; i < n; i++) { const a = rand(0, Math.PI * 2); FX.trail(x + Math.cos(a) * r, y + Math.sin(a) * r, { speed: [20, 90], size: [8, 20], life: [500, 900], angle: a, spread: .8, gravity: 30, colors: ['magenta', 'gold', 'white', 'blue', 'pink'] }); }
+      const n = isTouch ? 5 : 8;
+      for (let i = 0; i < n; i++) { const a = rand(0, Math.PI * 2); FX.trail(x + Math.cos(a) * r, y + Math.sin(a) * r, { speed: [30, 120], size: [12, 30], life: [550, 1000], angle: a, spread: .8, gravity: 30, colors: ['magenta', 'gold', 'gold', 'white', 'blue'] }); }
       if (k < 1) requestAnimationFrame(ringLoop);
     };
     FX.burst(x, y, { count: isTouch ? 34 : 60, speed: [180, 620], life: [700, 1300], gravity: 120, size: [10, 28] });
     requestAnimationFrame(ringLoop);
+    if (ring) ring.animate([{ transform: 'scale(0)', opacity: 1 }, { transform: 'scale(1.02)', opacity: .9 }, { transform: 'scale(1.1)', opacity: 0 }], { duration: T1 + 260, easing: 'cubic-bezier(.62,0,.32,1)', fill: 'forwards' });
     await bloom.animate([{ transform: 'scale(0)', opacity: 1 }, { transform: 'scale(1)', opacity: 1 }], { duration: T1, easing: 'cubic-bezier(.62,0,.32,1)', fill: 'forwards' }).finished.catch(() => { });
     alive = false;
     swap();
-    FX.rain(isTouch ? 36 : 70, { colors: ['magenta', 'gold', 'white', 'blue', 'pink'] });
+    FX.rain(isTouch ? 44 : 80, { colors: ['magenta', 'gold', 'gold', 'white', 'blue', 'pink'], size: [10, 26] });
     await bloom.animate([{ transform: 'scale(1)', opacity: 1 }, { transform: 'scale(1.08)', opacity: 0 }], { duration: 620, easing: 'cubic-bezier(.22,1,.36,1)', fill: 'forwards' }).finished.catch(() => { });
-    box.hidden = true; bloom.getAnimations && bloom.getAnimations().forEach(a => a.cancel());
+    box.hidden = true; [bloom, ring].forEach(el => el && el.getAnimations && el.getAnimations().forEach(a => a.cancel()));
   }
 
   /* ---------- top bar ---------- */
