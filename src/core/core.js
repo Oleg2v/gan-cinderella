@@ -341,6 +341,22 @@
     setTimeout(() => { const f = o.focus ? $(o.focus, root) : null; try { (f || panel).focus({ preventScroll: true }); } catch (e) { } }, 60);
     return api;
   }
+  /* iOS ignores overflow:hidden on html/body for touch scrolling: while a sheet is open, block touch-drags that would
+     scroll the page behind it (backdrop, sheet header, or a sheet body that has nothing to scroll). Horizontal
+     scrollers inside a sheet keep working. */
+  document.addEventListener('touchmove', e => {
+    if (!sheets.length || e.touches.length > 1) return;
+    const tg = e.target; if (!tg || !tg.closest) return;
+    if (tg.closest('.tour-shield')) return;
+    const body = tg.closest('.sheet__body');
+    if (!body) { if (tg.closest('.sheet-root')) e.preventDefault(); return; }
+    for (let el = tg; el && el !== body; el = el.parentElement) {
+      const cs = getComputedStyle(el);
+      if (/(auto|scroll)/.test(cs.overflowX) && el.scrollWidth > el.clientWidth + 1) return;
+      if (/(auto|scroll)/.test(cs.overflowY) && el.scrollHeight > el.clientHeight + 1) return;
+    }
+    if (body.scrollHeight <= body.clientHeight + 1) e.preventDefault();
+  }, { passive: false });
   function trapTab(e) {
     const top = sheets[sheets.length - 1]; if (!top || e.key !== 'Tab') return;
     const f = $$(FOCUSABLE, top.el).filter(x => x.offsetParent !== null); if (!f.length) return;

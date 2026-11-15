@@ -197,12 +197,13 @@ html[lang="ru"] .display { font-weight: 900; letter-spacing: -.025em; line-heigh
   background: linear-gradient(105deg, transparent 30%, rgba(255,255,255,.38) 48%, transparent 66%);
   transform: translateX(-120%); transition: transform .8s var(--ease-out);
 }
-.btn--primary:hover::after, .btn--primary:focus-visible::after { transform: translateX(120%); }
-.btn--primary:hover { box-shadow: 0 16px 34px -12px rgba(209,3,125,.8), inset 0 -3px 0 rgba(0,0,0,.12); }
+.btn--primary:focus-visible::after { transform: translateX(120%); }
+@media (hover: hover) { .btn--primary:hover::after { transform: translateX(120%); } }
+@media (hover: hover) { .btn--primary:hover { box-shadow: 0 16px 34px -12px rgba(209,3,125,.8), inset 0 -3px 0 rgba(0,0,0,.12); } }
 .btn--ghost { background: #fff; color: var(--ink); box-shadow: inset 0 0 0 2px var(--line-2), var(--shadow-cut); }
-.btn--ghost:hover { box-shadow: inset 0 0 0 2px var(--magenta), var(--shadow-1); }
+@media (hover: hover) { .btn--ghost:hover { box-shadow: inset 0 0 0 2px var(--magenta), var(--shadow-1); } }
 .btn--soft { background: var(--sky); color: var(--ink); }
-.btn--soft:hover { background: #bfe5fb; }
+@media (hover: hover) { .btn--soft:hover { background: #bfe5fb; } }
 .btn--night { background: var(--ink); color: #fff; }
 .btn--sm { --bh: 40px; padding: 0 16px; font-size: .9375rem; gap: 8px; }
 .btn--xs { --bh: 32px; padding: 0 12px; font-size: .8125rem; gap: 6px; }
@@ -218,7 +219,7 @@ html[lang="ru"] .display { font-weight: 900; letter-spacing: -.025em; line-heigh
   box-shadow: inset 0 0 0 1.5px var(--line-2); font-weight: 500; font-size: .9375rem;
   transition: background-color .2s, box-shadow .2s, color .2s, transform .3s var(--ease-spring);
 }
-.chip:hover { box-shadow: inset 0 0 0 1.5px var(--magenta); }
+@media (hover: hover) { .chip:hover { box-shadow: inset 0 0 0 1.5px var(--magenta); } }
 .chip:active { transform: scale(.95); }
 .chip[aria-pressed="true"], .chip[aria-checked="true"], .chip.is-on {
   background: var(--ink); color: #fff; box-shadow: none;
@@ -358,7 +359,7 @@ input.input[type="date"]::-webkit-calendar-picker-indicator { opacity: .55; curs
   background: #fff; color: var(--ink); box-shadow: inset 0 0 0 1px var(--line-2), var(--shadow-cut); font-weight: 600; font-size: var(--fs-sm);
   transition: transform .3s var(--ease-spring), box-shadow .2s;
 }
-.tb-btn:hover { box-shadow: inset 0 0 0 1.5px var(--magenta), var(--shadow-1); }
+@media (hover: hover) { .tb-btn:hover { box-shadow: inset 0 0 0 1.5px var(--magenta), var(--shadow-1); } }
 .tb-btn .ic { width: 18px; height: 18px; }
 .tb-btn--tour { background: var(--ink); color: #fff; box-shadow: 0 8px 20px -10px rgba(27,26,75,.8); padding-inline: 12px 14px; }
 .tb-btn--tour .ic { color: var(--pink); }
@@ -420,7 +421,7 @@ input.input[type="date"]::-webkit-calendar-picker-indicator { opacity: .55; curs
 .dock__btn .ic { width: 22px; height: 22px; transition: transform .45s var(--ease-spring); }
 .dock__btn[aria-current="page"] { color: #fff; }
 .dock__btn[aria-current="page"] .ic { transform: translateY(-1px) scale(1.08); }
-.dock__btn:hover { color: #fff; }
+@media (hover: hover) { .dock__btn:hover { color: #fff; } }
 .dock__btn:focus-visible { outline-color: var(--gold); outline-offset: -2px; }
 @media (min-width: 760px) { .dock__btn { flex-direction: row; gap: 8px; font-size: .8125rem; } }
 
@@ -459,7 +460,7 @@ input.input[type="date"]::-webkit-calendar-picker-indicator { opacity: .55; curs
 .sheet__title { flex: 1; font-family: var(--font-display); font-size: var(--fs-xl); font-weight: 600; min-width: 0; }
 html[lang="ru"] .sheet__title { font-weight: 800; }
 .sheet__close { width: 40px; height: 40px; border-radius: 50%; display: grid; place-items: center; background: rgba(27,26,75,.06); color: var(--ink); flex: none; }
-.sheet__close:hover { background: rgba(27,26,75,.12); }
+@media (hover: hover) { .sheet__close:hover { background: rgba(27,26,75,.12); } }
 .sheet__body { overflow-y: auto; overflow-x: hidden; overscroll-behavior: contain; padding: 4px 20px 24px; -webkit-overflow-scrolling: touch; min-width: 0; }
 .sheet__body > * { max-width: 100%; }
 .sheet { overflow: hidden; }
@@ -620,3 +621,8 @@ html.sheet-open .tour-cap { bottom: auto; top: calc(var(--safe-t) + 10px); }
 html.is-touring .tour-invite { display: none; }
 .view:focus { outline: none; }
 .sheet:focus, .sheet:focus-visible { outline: none; }
+
+/* ---------- touch hygiene (real phones) ---------- */
+button, a, [role="button"], [role="switch"], [role="tab"], label, .chip, summary { touch-action: manipulation; }
+button, .btn, .chip, .tb-btn, .dock__btn, [role="tab"], [role="switch"] { -webkit-user-select: none; user-select: none; -webkit-touch-callout: none; }
+.sheet-backdrop { touch-action: none; }
